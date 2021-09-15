@@ -58,9 +58,9 @@ function App() {
 }
 
 const Home = () => {
-  <div>
+  return (<div>
     <h1>Home Page</h1>
-  </div>
+  </div>);
 }
 
 
