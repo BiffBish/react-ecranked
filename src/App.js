@@ -1,9 +1,10 @@
-import React, {useState , useRef, useEffect} from 'react'
+// import React, {useState , useRef, useEffect} from 'react'
+import React from 'react'
+
 import Replay from "./pages/Replay"
 import User from "./pages/User"
 import Nav from "./components/Nav"
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-const LOCAL_STORAGE_KEY = "noe"
 function App() {
 
   // const [todos, setTodos] = useState([])
