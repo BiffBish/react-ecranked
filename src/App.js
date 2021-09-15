@@ -4,7 +4,9 @@ import React from 'react'
 import Replay from "./pages/Replay"
 import User from "./pages/User"
 import Nav from "./components/Nav"
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+// import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+
 function App() {
 
   // const [todos, setTodos] = useState([])
