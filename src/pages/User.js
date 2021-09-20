@@ -296,12 +296,7 @@ const FailedSearchBarTitleStyle = styled.h2`
 `;
 const FailedSearchBar = ({ shown, onFormSubmit }) => {
   const [allUsernames, setAllUsernames] = useState(null);
-  const headers = (
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="upgrade-insecure-requests"
-    ></meta>
-  );
+
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/user/@all")
       .then(async (response) => {
