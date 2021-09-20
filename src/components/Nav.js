@@ -89,7 +89,7 @@ export default function Nav() {
 
   const [allUsernames, setAllUsernames] = useState(null);
   useEffect(() => {
-    fetch("http://ecranked.ddns.net/api/v1/user/@all")
+    fetch("https://ecranked.ddns.net/api/v1/user/@all")
       .then(async (response) => {
         const data = await response.json();
         console.log("allUsernames code:" + response.statusCode);

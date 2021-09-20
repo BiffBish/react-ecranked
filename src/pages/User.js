@@ -296,8 +296,14 @@ const FailedSearchBarTitleStyle = styled.h2`
 `;
 const FailedSearchBar = ({ shown, onFormSubmit }) => {
   const [allUsernames, setAllUsernames] = useState(null);
+  const headers = (
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests"
+    ></meta>
+  );
   useEffect(() => {
-    fetch("http://ecranked.ddns.net/api/v1/user/@all")
+    fetch("https://ecranked.ddns.net/api/v1/user/@all")
       .then(async (response) => {
         const data = await response.json();
         console.log("allUsernames code:" + response.statusCode);
@@ -500,7 +506,7 @@ export default function User({ username }) {
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
   useEffect(() => {
-    fetch("http://ecranked.ddns.net/user/" + username + "/stats.json")
+    fetch("https://ecranked.ddns.net/user/" + username + "/stats.json")
       .then(async (response) => {
         const data = await response.json();
         console.log("code:" + response.statusCode);
