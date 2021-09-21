@@ -2,6 +2,9 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
+import moment from "moment-timezone";
+import { formatTimeByOffset } from "../helpers/formatTimeByOffset";
+import * as RNLocalize from "react-native-localize";
 
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
@@ -181,18 +184,36 @@ const RecentGamesStyle = styled.div`
   float: left;
   border: 2px solid white;
   border-radius: 10px;
-  min-width: 200px;
-  flex-grow: 2;
+  flex: 200px 2;
 `;
 const RecentGames = ({ replays }) => {
+  const deviceTimeZone = RNLocalize.getTimeZone();
+
+  // Make moment of right now, using the device timezone
+  const today = moment().tz(deviceTimeZone);
+
+  // Get the UTC offset in hours
+  const currentTimeZoneOffsetInHours = today.utcOffset() / 60;
   if (!replays) return;
   return (
     <RecentGamesStyle>
       <ContainerTitle>Replays</ContainerTitle>
       {replays.map((replay) => {
+        const convertedToLocalTime = formatTimeByOffset(
+          replay["start_time"],
+          currentTimeZoneOffsetInHours
+        );
         return (
           <RecentGameStyle>
-            <p style={{ margin: 0 }}>{replay}</p>
+            <p style={{ margin: 0 }}>
+              {replay["start_time"] +
+                "       " +
+                convertedToLocalTime +
+                "[" +
+                moment(convertedToLocalTime).format("MMM Do LT") +
+                "] -" +
+                replay["map"]}
+            </p>
           </RecentGameStyle>
         );
       })}
@@ -497,6 +518,7 @@ export default function User({ username }) {
       ["62", 0.0],
       ["63", 0.0],
     ],
+    recent_games: [],
   };
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
@@ -524,7 +546,6 @@ export default function User({ username }) {
       });
   }, [username]);
 
-  const REPLAYS = ["replay 1", "replay 2", "replay 3"];
   function WhatApiRequest() {
     console.log("APIDATA");
 
@@ -548,7 +569,7 @@ export default function User({ username }) {
           userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
-        <RecentGames replays={REPLAYS} />
+        <RecentGames replays={WhatApiRequest()["recent_games"]} />
         <CenterColumn userData={WhatApiRequest()} />
         <AboutMe />
       </UserBody>
