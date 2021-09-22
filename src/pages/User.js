@@ -13,7 +13,7 @@ const LoadoutStyle = styled.div`
   flex-wrap: wrap;
 
   display: flex;
-  padding: 10px 10px 0px;
+  padding: 10px 10px 10px;
   margin: 20px 10px 20px;
   background-color: #222;
   color: white;
@@ -24,7 +24,7 @@ const LoadoutStyle = styled.div`
 
 const LoadoutBoxStyle = styled.div`
   display: flex;
-  padding: 10px 10px 0px;
+  padding: 10px 10px 10px;
   margin: 20px 10px 20px;
   background-color: #222;
   color: white;
@@ -35,6 +35,7 @@ const LoadoutBoxStyle = styled.div`
   font-size: 12px;
   text-align: center;
   flex-direction: column;
+  min-width: 100px;
 `;
 const LoadoutBoxItemStyle = styled.div`
   flex-grow: 1;
@@ -65,13 +66,33 @@ const LoadoutBox = ({ number, frequency }) => {
     </LoadoutBoxStyle>
   );
 };
+const LoadoutExpandButtonStyle = styled.div`
+  border: 2px solid white;
+  border-radius: 10px;
+  flex-grow: 1;
+  margin: 10px;
+  height: 40px;
+  text-align: center;
+  cursor: pointer;
+`;
 const Loadout = ({ top_loadout }) => {
+  const [numOfEntrys, setNumOfEntrys] = useState(4);
   return (
-    <LoadoutStyle>
-      {top_loadout.slice(0, 4).map((loadout) => {
-        return <LoadoutBox number={loadout[0]} frequency={loadout[1]} />;
-      }, 4)}
-    </LoadoutStyle>
+    <>
+      <LoadoutStyle>
+        {top_loadout.slice(0, numOfEntrys).map((loadout) => {
+          return <LoadoutBox number={loadout[0]} frequency={loadout[1]} />;
+        }, 4)}{" "}
+        <LoadoutExpandButtonStyle
+          onClick={() => {
+            setNumOfEntrys(numOfEntrys * 2);
+          }}
+        >
+          {" "}
+          Click to show more{" "}
+        </LoadoutExpandButtonStyle>
+      </LoadoutStyle>
+    </>
   );
 };
 
