@@ -5,7 +5,6 @@ import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
 import { formatTimeByOffset } from "../helpers/formatTimeByOffset";
 import * as RNLocalize from "react-native-localize";
-import { fontWeight, style } from "@mui/system";
 
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
