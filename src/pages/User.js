@@ -5,6 +5,7 @@ import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
 import { formatTimeByOffset } from "../helpers/formatTimeByOffset";
 import * as RNLocalize from "react-native-localize";
+import { fontWeight, style } from "@mui/system";
 
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
@@ -34,6 +35,10 @@ const LoadoutBoxStyle = styled.div`
   flex: 60px 1;
   font-size: 12px;
   text-align: center;
+  flex-direction: column;
+`;
+const LoadoutBoxItemStyle = styled.div`
+  flex-grow: 1;
 `;
 const LoadoutBox = ({ number, frequency }) => {
   const techNumber = number % 4;
@@ -52,12 +57,12 @@ const LoadoutBox = ({ number, frequency }) => {
 
   return (
     <LoadoutBoxStyle>
-      {weaponMap[weaponNumber] +
-        "\n" +
-        grenadeMap[grenadeNumber] +
-        "\n" +
-        techMap[techNumber]}
-      <br /> {Math.round(frequency * 10000) / 100 + "%"}
+      <LoadoutBoxItemStyle>{weaponMap[weaponNumber]} </LoadoutBoxItemStyle>
+      <LoadoutBoxItemStyle>{grenadeMap[grenadeNumber]} </LoadoutBoxItemStyle>
+      <LoadoutBoxItemStyle>{techMap[techNumber]} </LoadoutBoxItemStyle>
+      <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
+        {Math.round(frequency * 10000) / 100 + "%"}{" "}
+      </LoadoutBoxItemStyle>
     </LoadoutBoxStyle>
   );
 };
@@ -186,7 +191,7 @@ const UserStats = ({ userData }) => {
       />
       <UserStat
         name={"Deaths/game"}
-        displayValue={userData["average_deaths"].toFixed(1) + "ms"}
+        displayValue={userData["average_deaths"].toFixed(1)}
         value={map_range(userData["average_deaths"], 0, 15, 0, 1)}
       />
     </UserStatsStyle>
