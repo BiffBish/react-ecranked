@@ -14,15 +14,11 @@ function AutoCompleteMatches(
   maxAllowed,
   OptionDiv
 ) {
-  console.debug(options, currentText);
   var currentShowed = 0;
   if (options) {
-    console.log("AutoComplete 290", currentText);
-
     return options.map((option) => {
       if (currentText && currentText.length > 0) {
         if (option.toLowerCase().startsWith(currentText.toLowerCase())) {
-          console.log("AutoComplete 297", option);
           currentShowed++;
           if (currentShowed > maxAllowed) return null;
           return (

@@ -22,16 +22,15 @@ export const formatTimeByOffset = (dateString, offset) => {
   const dateObject = new Date(
     `${year}-${month}-${day}T${hour}:${minute}:${second}`
   );
-  // Step 3: Get the current hours from the object
-  // const currentHours = dateObject.getHours();
+  //Step 3: Get the current hours from the object
+  const currentHours = dateObject.getHours();
 
-  // // Step 4: Add the offset to the date object
-  // dateObject.setHours(currentHours + 0);
+  // Step 4: Add the offset to the date object
+  dateObject.setHours(currentHours + -4);
+  dateObject.setMinutes(100);
+  // Step 5: stringify the date object, replace the T with a space and slice off the seconds.
+  const newDateString = dateObject.toString();
 
-  // // Step 5: stringify the date object, replace the T with a space and slice off the seconds.
-  // const newDateString = dateObject.toISOString().slice(0, 19);
-
-  // // Step 6: Return the new formatted date string with the added offset
-  // return `${newDateString}`;
-  return `${dateObject}`;
+  // Step 6: Return the new formatted date string with the added offset
+  return `${newDateString}`;
 };

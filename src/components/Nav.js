@@ -37,12 +37,40 @@ const LinkStyle = styled(NavLink)`
   }
   transition-duration: 0.1s;
 `;
-
-const TopBarLink = ({ link, text }) => {
+const ExternalLinkStyle = styled.a`
+  text-align: center;
+  color: #fff;
+  background-color: #222;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 200;
+  float: left;
+  text-decoration: none;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  transition-duration: 0.1s;
+  cursor: pointer;
+`;
+const TopBarLink = ({ link, text, externalLink }) => {
+  if (externalLink) {
+    return (
+      <ExternalLinkStyle
+        activeStyle={{ backgroundColor: "#fff", color: "#000" }}
+        href={link}
+      >
+        {text}
+      </ExternalLinkStyle>
+    );
+  }
   return (
     <LinkStyle
       activeStyle={{ backgroundColor: "#fff", color: "#000" }}
       to={link}
+      onclick={() => {
+        window.location.href = "https://google.com/contact";
+      }}
     >
       {text}
     </LinkStyle>
@@ -120,8 +148,13 @@ export default function Nav() {
         <TopBarLink
           link="https://echopedia.gg/wiki/Replay_Viewer#Installation"
           text="Replay Viewer"
+          externalLink={true}
         />
-        <TopBarLink link="/home.json" text="API" />
+        <TopBarLink
+          link="https://ecranked.ddns.net/docs"
+          text="API"
+          externalLink={true}
+        />
         <AutoComplete
           options={allUsernames}
           onFormSubmit={whenSearchSubmit}

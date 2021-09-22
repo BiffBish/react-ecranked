@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-//import Replay from "./pages/Replay";
+import Replay from "./pages/Replay";
 import User from "./pages/User";
 import Nav from "./components/Nav";
 
@@ -16,7 +16,7 @@ const PageBody = styled.div`
   width: 100%;
   z-index: -1;
   background-color: #222;
-  height: 1000px;
+  min-height: 1000px;
 `;
 const combatBackground = "/images/combat_background.jpg";
 const Banner = styled(AnimateHeight)`
@@ -106,6 +106,15 @@ function App() {
             setBannerText(props.match.params.username);
             console.log("User");
             return <User username={props.match.params.username} />;
+          }}
+        />
+        <Route
+          path={`/replay/:session_id`}
+          render={(props) => {
+            setBannerHeight(100);
+            setBannerText("Replay");
+            console.log("User");
+            return <Replay session_id={props.match.params.session_id} />;
           }}
         />
       </PageBody>

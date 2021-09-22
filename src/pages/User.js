@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
@@ -10,6 +10,9 @@ function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
 const LoadoutStyle = styled.div`
+  flex-wrap: wrap;
+
+  display: flex;
   padding: 10px 10px 0px;
   margin: 20px 10px 20px;
   background-color: #222;
@@ -18,8 +21,54 @@ const LoadoutStyle = styled.div`
   border: 2px solid white;
   border-radius: 10px;
 `;
-const Loadout = ({ replays }) => {
-  return <LoadoutStyle> Loadout</LoadoutStyle>;
+
+const LoadoutBoxStyle = styled.div`
+  display: flex;
+  padding: 10px 10px 0px;
+  margin: 20px 10px 20px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 2px solid white;
+  border-radius: 10px;
+  flex: 60px 1;
+  font-size: 12px;
+  text-align: center;
+`;
+const LoadoutBox = ({ number, frequency }) => {
+  const techNumber = number % 4;
+  const grenadeNumber = ((number - techNumber) % 16) / 4;
+  const weaponNumber = ((number - (techNumber + grenadeNumber * 4)) % 64) / 16;
+
+  const weaponMap = ["Pulsar", "Nova", "Comet", "Meteor"];
+  const grenadeMap = ["Detonator", "Stun Field", "Arc Mine", "Instant Repair"];
+
+  const techMap = [
+    "Repair Matrix",
+    "Threat Scanner",
+    "Energy Barrier",
+    "Phase Shift",
+  ];
+
+  return (
+    <LoadoutBoxStyle>
+      {weaponMap[weaponNumber] +
+        "\n" +
+        grenadeMap[grenadeNumber] +
+        "\n" +
+        techMap[techNumber]}
+      <br /> {Math.round(frequency * 10000) / 100 + "%"}
+    </LoadoutBoxStyle>
+  );
+};
+const Loadout = ({ top_loadout }) => {
+  return (
+    <LoadoutStyle>
+      {top_loadout.slice(0, 4).map((loadout) => {
+        return <LoadoutBox number={loadout[0]} frequency={loadout[1]} />;
+      }, 4)}
+    </LoadoutStyle>
+  );
 };
 
 const UserStatStyle = styled.div`
@@ -154,10 +203,20 @@ const CenterColumn = ({ userData }) => {
   return (
     <CenterColumnStyle>
       <UserStats userData={userData} />
-      <Loadout />
+      <Loadout top_loadout={userData["top_loadout"]} />
     </CenterColumnStyle>
   );
 };
+
+const RecentGameFadeIN = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
 const RecentGameStyle = styled.div`
   display: flex;
   align-items: center;
@@ -175,6 +234,7 @@ const RecentGameStyle = styled.div`
     color: #000;
   }
   cursor: pointer;
+  animation: ${RecentGameFadeIN} 0.2s;
 `;
 const RecentGamesStyle = styled.div`
   padding: 10px 10px 0px;
@@ -187,31 +247,69 @@ const RecentGamesStyle = styled.div`
   flex: 200px 2;
 `;
 const RecentGames = ({ replays }) => {
+  const [replayList, setReplayList] = useState([]);
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  useEffect(() => {
+    async function loadInReplayAnimation(replays) {
+      var AnimationList = [];
+      for (const replay of replays) {
+        AnimationList.push(replay);
+        setReplayList([...AnimationList]);
+        await delay(20);
+      }
+    }
+    loadInReplayAnimation(replays);
+  }, [replays]);
   const deviceTimeZone = RNLocalize.getTimeZone();
 
   // Make moment of right now, using the device timezone
   const today = moment().tz(deviceTimeZone);
-
   // Get the UTC offset in hours
   const currentTimeZoneOffsetInHours = today.utcOffset() / 60;
-  if (!replays) return;
+  let history = useHistory();
+  function recentGameClick(session_id) {
+    history.push("/replay/" + session_id);
+  }
+
   return (
     <RecentGamesStyle>
       <ContainerTitle>Replays</ContainerTitle>
-      {replays.map((replay) => {
+      {replayList.map((replay) => {
+        const UtcGameTime = moment(replay["start_time"]);
+        const UtcNow = moment.utc();
+
         const convertedToLocalTime = formatTimeByOffset(
           replay["start_time"],
           currentTimeZoneOffsetInHours
         );
+        const dateDiffrence = UtcGameTime.diff(UtcNow, "d");
+        const hourDiffrence = UtcGameTime.diff(UtcNow, "h");
+
+        var TimeString = "";
+
+        if (dateDiffrence === 0) {
+          TimeString = `${-hourDiffrence}h ago`;
+        }
+        if (dateDiffrence < 0) {
+          TimeString = `${-dateDiffrence} days ago`;
+        }
+        const OnGameClick = () => {
+          recentGameClick(replay["session_id"]);
+        };
         return (
-          <RecentGameStyle>
+          <RecentGameStyle
+            key={replay["session_id"]}
+            onClick={OnGameClick}
+            style={{ opacity: 1 }}
+          >
             <p style={{ margin: 0 }}>
-              {replay["start_time"] +
-                "       " +
-                convertedToLocalTime +
+              {"{" +
+                TimeString +
+                "}" +
                 "[" +
-                moment(convertedToLocalTime).format("MMM Do LT") +
-                "] -" +
+                moment(convertedToLocalTime).format("MMM DD LTS") + //+
+                "] - " +
                 replay["map"]}
             </p>
           </RecentGameStyle>
@@ -228,14 +326,12 @@ const AboutMeStyle = styled.div`
   float: left;
   border: 2px solid white;
   border-radius: 10px;
-  min-width: 100px;
-  flex-grow: 1;
+  flex: 100px 2;
 `;
 const AboutMe = ({ replays }) => {
   return (
     <AboutMeStyle>
       <ContainerTitle>About Me</ContainerTitle>
-      About Me!
     </AboutMeStyle>
   );
 };
@@ -298,10 +394,12 @@ const FailedSearchBarStyle = styled.div`
   flex-grow: 1;
   height: 0px;
   transition-duration: 1s;
-  transition-property: height border margin;
+  border-width: 2px
+  transition-property: height border margin border-width;
   background-color: #222;
   overflow: hidden;
-  border: 2px solid #222;
+  border-style: solid;
+  
   border-radius: 10px;
   margin: 10px;
   display: flex;
@@ -350,7 +448,7 @@ const FailedSearchBar = ({ shown, onFormSubmit }) => {
             }
           : {
               height: `0px`,
-              border: "2px solid #222",
+              border: "0px solid #222",
               margin: "0px 10px 0px",
             }
       }
