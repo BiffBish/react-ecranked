@@ -332,10 +332,11 @@ const AboutMeStyle = styled.div`
   border-radius: 10px;
   flex: 100px 2;
 `;
-const AboutMe = ({ replays }) => {
+const AboutMe = ({ userData }) => {
   return (
     <AboutMeStyle>
       <ContainerTitle>About Me</ContainerTitle>
+      {userData["about_string"]}
     </AboutMeStyle>
   );
 };
@@ -673,7 +674,7 @@ export default function User({ username }) {
       >
         <RecentGames replays={WhatApiRequest()["recent_games"]} />
         <CenterColumn userData={WhatApiRequest()} />
-        <AboutMe />
+        <AboutMe userData={WhatApiRequest()} />
       </UserBody>
     </>
   );
