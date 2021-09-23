@@ -59,45 +59,12 @@ export var ProgressBar = ({ percent, displayValue }) => {
 //     </ReplayStatStyle>
 //   );
 // };
-const ReplayStatsStyle = styled.div`
-  padding: 10px 10px 0px;
-  margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 2px solid white;
-  border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0px 10px;
-`;
-const ReplayStats = ({ userData }) => {
-  return (
-    <ReplayStatsStyle>
-      <ContainerTitle>Stats</ContainerTitle>
-    </ReplayStatsStyle>
-  );
-};
-const CenterColumnStyle = styled.div`
-  background-color: #222;
-  float: left;
-  display: flex;
-  flex: 400px 4;
-  flex-direction: column;
-`;
-const CenterColumn = ({ userData }) => {
-  return (
-    <CenterColumnStyle>
-      <ReplayStats userData={userData} />
-    </CenterColumnStyle>
-  );
-};
+
 const RecentGameStyle = styled.div`
   display: flex;
   align-items: center;
   background-color: #333;
-  padding: 10px;
-  margin: 10px 0px;
+  padding: 7px;
   text-decoration: none;
   border: 2px solid white;
   border-radius: 10px;
@@ -118,10 +85,21 @@ const RecentGamesStyle = styled.div`
   float: left;
   border: 2px solid white;
   border-radius: 10px;
-  flex: 200px 2;
+  flex: 200px 12;
 `;
-const UserList = ({ users }) => {
-  let history = useHistory();
+
+const TimelineContainerStyle = styled.div`
+  display: flex;
+`;
+
+const UserListStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 100px 1;
+`;
+
+const Timeline = ({ skimData, users }) => {
   const [userList, setUserList] = useState([]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -142,13 +120,49 @@ const UserList = ({ users }) => {
   }, [users]);
 
   if (!users) return null;
+
+  return (
+    <RecentGamesStyle>
+      <ContainerTitle>Users</ContainerTitle>
+      <TimelineContainerStyle>
+        <UserList users={userList} />
+        <TimelineUserList users={userList} api_data={skimData} />
+      </TimelineContainerStyle>
+      {/* {userList.map((user) => {
+        const onUserClick = () => {
+          userClick(user["name"]);
+        };
+        return (
+          <RecentGameStyle
+            onClick={onUserClick}
+            style={(() => {
+              switch (user["team"]) {
+                case 0:
+                  return { borderColor: "rgb(65, 160, 228)" };
+                case 1:
+                  return { borderColor: "rgb(230, 167, 50)" };
+                default:
+                  return { borderColor: "rgb(255, 255, 255)" };
+              }
+            })()}
+          >
+            <p style={{ margin: 0 }}>{user["name"]}</p>
+          </RecentGameStyle>
+        );
+      })} */}
+    </RecentGamesStyle>
+  );
+};
+
+const UserList = ({ users }) => {
+  let history = useHistory();
+
   function userClick(username) {
     history.push("/user/" + username + "/stats");
   }
   return (
-    <RecentGamesStyle>
-      <ContainerTitle>Users</ContainerTitle>
-      {userList.map((user) => {
+    <UserListStyle>
+      {users.map((user) => {
         const onUserClick = () => {
           userClick(user["name"]);
         };
@@ -170,7 +184,214 @@ const UserList = ({ users }) => {
           </RecentGameStyle>
         );
       })}
-    </RecentGamesStyle>
+    </UserListStyle>
+  );
+};
+const TimelineSubStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  flex: 200px 8;
+`;
+
+const TimelineUserList = ({ users, api_data }) => {
+  return (
+    <TimelineSubStyle>
+      {users.map((user) => {
+        return <TimelineUserItem user={user} api_data={api_data} />;
+      })}
+    </TimelineSubStyle>
+  );
+};
+const TimelineUserItemStyle = styled.div`
+  position: relative;
+  align-items: center;
+  background-color: #222;
+  text-decoration: none;
+  #border: 2px solid white;
+  border-radius: 10px;
+  line-height: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  overflow: hidden;
+  height: 40.5px;
+`;
+const TimeLineItemActiveBar = styled.div`
+  background-color: #333;
+  width: 100%;
+  height: 10px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  height: 32px;
+  overflow: hidden;
+`;
+
+const DeathBar = styled.div`
+  background-color: red;
+  width: 0.5%;
+  height: 10px;
+  border: 0px solid red;
+  border-radius: 10px;
+  height: 3px;
+  overflow: hidden;
+`;
+
+const GetDeathPoints = ({ user, api_data }) => {
+  const totalFrames = api_data["frames"];
+  let TotalListOfElements = [];
+  for (let index = 0; index < user["framestamps"]["deaths"].length; index++) {
+    var RespawnIndexOffset = 1;
+    if (user["framestamps"]["deaths"][0] < user["framestamps"]["respawns"][0]) {
+      RespawnIndexOffset = 0;
+    }
+    const deathFrame = user["framestamps"]["deaths"][index];
+
+    var width = 0.005;
+
+    // AT THE LAST DEATH
+    if (index + RespawnIndexOffset === user["framestamps"]["respawns"].length) {
+      width = (totalFrames - deathFrame) / totalFrames;
+    } else {
+      width =
+        (user["framestamps"]["respawns"][index + RespawnIndexOffset] -
+          deathFrame) /
+        totalFrames;
+    }
+
+    const transformPercentageHorisontal =
+      (deathFrame / totalFrames) * 100 * (1 / width);
+    const transformPercentageVertical = (1 + index) * 100;
+
+    TotalListOfElements.push(
+      <DeathBar
+        style={{
+          width: `${width * 100}%`,
+          transform: `translate(${transformPercentageHorisontal}%,-${transformPercentageVertical}%)`,
+        }}
+      />
+    );
+  }
+  return TotalListOfElements.map((element) => {
+    return element;
+  });
+};
+
+const LoadoutBarItem = styled.div`
+  position: absolute;
+  top: 2px;
+  left: 0px;
+  background-color: #444;
+  height: 20px;
+  width: 0.5%;
+  height: 10px;
+  border: 0px solid red;
+  border-radius: 5px;
+  height: 3px;
+  overflow: hidden;
+  height: 26px;
+`;
+
+const LoadoutImage = ({ number }) => {
+  const techMod = number % 4;
+  const ordinance = ((number - techMod) % 16) / 4;
+  const weapon = ((number - (techMod + ordinance * 4)) % 64) / 16;
+
+  const techModMap = [
+    "/images/repair_matrix.png",
+    "/images/threat_scanner.png",
+    "/images/energy_barrier.png",
+    "/images/phaseshift.png",
+  ];
+  const ordinanceMap = [
+    "/images/detonator.png",
+    "/images/stun_field.png",
+    "/images/arcmine.png",
+    "/images/instant_repair.png",
+  ];
+  const weaponMap = [
+    "/images/pulsar.png",
+    "/images/nova.png",
+    "/images/comet.png",
+    "/images/meteor.png",
+  ];
+
+  return (
+    <>
+      <img
+        src={weaponMap[weapon]}
+        alt={"weapon"}
+        style={{ width: "15px", height: "15px" }}
+      ></img>
+      <img
+        src={ordinanceMap[ordinance]}
+        alt={"ordinance"}
+        style={{ width: "15px", height: "15px" }}
+      ></img>
+      <img
+        src={techModMap[techMod]}
+        alt={"techMod"}
+        style={{ width: "15px", height: "15px" }}
+      ></img>
+    </>
+  );
+};
+const LoadoutBar = ({ user, api_data }) => {
+  let LoadoutBarItems = [];
+  for (let index = 0; index < user["framestamps"]["loadout"].length; index++) {
+    console.debug(user["framestamps"]["loadout"][index][0]);
+    const startFrame = user["framestamps"]["loadout"][index][0];
+    console.debug(startFrame);
+
+    var endFrame = user["stats"]["total_frames"] + user["startFrame"];
+    if (index + 1 < user["framestamps"]["loadout"].length) {
+      endFrame = user["framestamps"]["loadout"][index + 1][0];
+    }
+    const totalFrames = api_data["frames"];
+    const width = (endFrame - startFrame) / totalFrames;
+    const transformPercentageHorisontal = (startFrame / totalFrames) * 100;
+
+    LoadoutBarItems.push(
+      <LoadoutBarItem
+        // style={{ width: `${width * 100}%` }}
+        style={{
+          width: `${width * 100}%`,
+          left: `${transformPercentageHorisontal}%`,
+        }}
+      >
+        <LoadoutImage number={user["framestamps"]["loadout"][index][1]} />
+      </LoadoutBarItem>
+    );
+  }
+
+  return LoadoutBarItems.map((element) => {
+    return element;
+  });
+};
+
+const TimelineUserItem = ({ user, api_data }) => {
+  const startFrame = user["startFrame"];
+  const totalFrames = api_data["frames"];
+  const totalWidth = user["stats"]["total_frames"] / totalFrames;
+  const startPercentage = (startFrame / totalFrames) * (1 / totalWidth);
+
+  return (
+    <TimelineUserItemStyle>
+      <TimeLineItemActiveBar
+        style={{
+          width:
+            (100 * user["stats"]["total_frames"]) / api_data["frames"] + "%",
+          transform: `translate(${startPercentage * 100}%,0)`,
+        }}
+      />
+      <GetDeathPoints user={user} api_data={api_data} />
+      <LoadoutBar user={user} api_data={api_data} />
+    </TimelineUserItemStyle>
   );
 };
 
@@ -338,8 +559,11 @@ export default function Replay({ session_id }) {
         replayNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
       }
     >
-      <UserList users={WhatApiRequest()["players"]} />
-      <CenterColumn userData={WhatApiRequest()} />
+      <Timeline
+        users={WhatApiRequest()["players"]}
+        skimData={WhatApiRequest()}
+      />
+      {/* <CenterColumn userData={WhatApiRequest()} /> */}
       <Download session_id={session_id} />
     </ReplayBody>
   );
