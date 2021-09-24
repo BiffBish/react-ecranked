@@ -256,7 +256,9 @@ const GetDeathPoints = ({ user, api_data }) => {
 
     // AT THE LAST DEATH
     if (index + RespawnIndexOffset === user["framestamps"]["respawns"].length) {
-      width = (totalFrames - deathFrame) / totalFrames;
+      width =
+        (user["startFrame"] + user["stats"]["total_frames"] - deathFrame) /
+        totalFrames;
     } else {
       width =
         (user["framestamps"]["respawns"][index + RespawnIndexOffset] -
