@@ -214,6 +214,11 @@ const UserStats = ({ userData }) => {
         displayValue={userData["average_deaths"].toFixed(1)}
         value={map_range(userData["average_deaths"], 0, 15, 0, 1)}
       />
+      <UserStat
+        name={"Crash/Leave"}
+        displayValue={(userData["percent_crash"] * 100).toFixed(2) + "%"}
+        value={userData["percent_crash"]}
+      />
     </UserStatsStyle>
   );
 };
