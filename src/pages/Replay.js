@@ -439,13 +439,13 @@ const Download = ({ session_id }) => {
   const onButtonClick = () => {
     fetch("https://ecranked.ddns.net/replay/" + session_id + "/trydownload")
       .then(async (response) => {
-        const data = await response.text();
+        const data = await response.json();
         console.log("data", data);
         console.log("code:", response.status);
         if (response.status === 429) {
           console.error("RateLimit!");
           setIsRateLimit(true);
-          setRateLimitTime(data);
+          setRateLimitTime(data["ratelimit"]);
         } else {
           setIsRateLimit(false);
           window.location.assign(
