@@ -78,6 +78,7 @@ const RecentGameStyle = styled.div`
   cursor: pointer;
 `;
 const RecentGamesStyle = styled.div`
+  position: relative;
   padding: 10px 10px 0px;
   margin: 20px 10px 20px;
   background-color: #222;
@@ -123,7 +124,19 @@ const Timeline = ({ skimData, users }) => {
 
   return (
     <RecentGamesStyle>
-      <ContainerTitle>Users</ContainerTitle>
+      <ContainerTitle>
+        Game over time{" "}
+        <p
+          style={{
+            position: "absolute",
+            right: "20px",
+            fontSize: "20px",
+            top: "0px",
+          }}
+        >
+          red: deaths
+        </p>
+      </ContainerTitle>
       <TimelineContainerStyle>
         <UserList users={userList} />
         <TimelineUserList users={userList} api_data={skimData} />
@@ -214,12 +227,8 @@ const TimelineUserItemStyle = styled.div`
   line-height: 0;
   font-size: 15px;
   line-height: 1.5;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
+
   cursor: pointer;
-  overflow: hidden;
   height: 40.5px;
 `;
 const TimeLineItemActiveBar = styled.div`
@@ -284,7 +293,7 @@ const GetDeathPoints = ({ user, api_data }) => {
   });
 };
 
-const LoadoutBarItem = styled.div`
+const LoadoutBarItemStyle = styled.div`
   position: absolute;
   top: 2px;
   left: 0px;
@@ -295,16 +304,19 @@ const LoadoutBarItem = styled.div`
   border: 0px solid red;
   border-radius: 5px;
   height: 3px;
-  overflow: hidden;
   height: 26px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
 `;
 
 const LoadoutImage = ({ number }) => {
-  const techMod = number % 4;
-  const ordinance = ((number - techMod) % 16) / 4;
-  const weapon = ((number - (techMod + ordinance * 4)) % 64) / 16;
+  const tacMod = number % 4;
+  const ordinance = ((number - tacMod) % 16) / 4;
+  const weapon = ((number - (tacMod + ordinance * 4)) % 64) / 16;
 
-  const techModMap = [
+  const tacModMap = [
     "/images/repair_matrix.png",
     "/images/threat_scanner.png",
     "/images/energy_barrier.png",
@@ -328,21 +340,137 @@ const LoadoutImage = ({ number }) => {
       <img
         src={weaponMap[weapon]}
         alt={"weapon"}
-        style={{ width: "15px", height: "15px" }}
+        style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
       <img
         src={ordinanceMap[ordinance]}
         alt={"ordinance"}
-        style={{ width: "15px", height: "15px" }}
+        style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
       <img
-        src={techModMap[techMod]}
-        alt={"techMod"}
-        style={{ width: "15px", height: "15px" }}
+        src={tacModMap[tacMod]}
+        alt={"tacMod"}
+        style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
     </>
   );
 };
+
+const LoadoutBarSelectedDivStyle = styled.div`
+  color: white;
+  background-color: #444;
+  position: absolute;
+  width: 200px;
+  height: 150px;
+  bottom: 100%;
+  border: 2px solid #555;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const LoadoutBarSelected = ({ number, onHover }) => {
+  const tacMod = number % 4;
+  const ordinance = ((number - tacMod) % 16) / 4;
+  const weapon = ((number - (tacMod + ordinance * 4)) % 64) / 16;
+
+  const tacModMap = [
+    "/images/repair_matrix.png",
+    "/images/threat_scanner.png",
+    "/images/energy_barrier.png",
+    "/images/phaseshift.png",
+  ];
+  const ordinanceMap = [
+    "/images/detonator.png",
+    "/images/stun_field.png",
+    "/images/arcmine.png",
+    "/images/instant_repair.png",
+  ];
+  const weaponMap = [
+    "/images/pulsar.png",
+    "/images/nova.png",
+    "/images/comet.png",
+    "/images/meteor.png",
+  ];
+  const tacModMapName = [
+    "Repair Matrix",
+    "Threat Scanner",
+    "Energy Barrier",
+    "Phaseshift",
+  ];
+  const ordinanceMapName = [
+    "Detonator",
+    "Stun Field",
+    "Arcmine",
+    "Instant Repair",
+  ];
+  const weaponMapName = ["Pulsar", "Nova", "Comet", "Meteor"];
+
+  return (
+    <LoadoutBarSelectedDivStyle onMouseEnter={onHover}>
+      <p style={{ margin: "0px" }}>
+        <img
+          src={weaponMap[weapon]}
+          alt={"weapon"}
+          style={{ justifyContent: "center", width: "40px", height: "40px" }}
+        />
+        {weaponMapName[weapon]}
+      </p>
+      <p style={{ margin: "0px" }}>
+        <img
+          src={ordinanceMap[ordinance]}
+          alt={"ordinance"}
+          style={{ justifyContent: "center", width: "40px", height: "40px" }}
+        />
+        {ordinanceMapName[ordinance]}
+      </p>
+      <p style={{ margin: "0px" }}>
+        <img
+          src={tacModMap[tacMod]}
+          alt={"tacMod"}
+          style={{ justifyContent: "center", width: "40px", height: "40px" }}
+        />
+        {tacModMapName[tacMod]}
+      </p>
+    </LoadoutBarSelectedDivStyle>
+  );
+};
+const LoadoutBarItem = ({ width, transformHorisontal, loadoutNumber }) => {
+  const [onHovered, setOnHovered] = useState(false);
+  var HoveredObject = null;
+
+  if (onHovered) {
+    HoveredObject = (
+      <LoadoutBarSelected
+        number={loadoutNumber}
+        onHover={() => {
+          setOnHovered(false);
+        }}
+      />
+    );
+  }
+  return (
+    <LoadoutBarItemStyle
+      // style={{ width: `${width * 100}%` }}
+      style={{
+        width: `${width * 100}%`,
+        left: `${transformHorisontal}%`,
+      }}
+      onMouseEnter={() => {
+        console.log("Twe");
+
+        setOnHovered(true);
+      }}
+      onMouseLeave={() => {
+        setOnHovered(false);
+      }}
+    >
+      <LoadoutImage number={loadoutNumber} />
+      {HoveredObject}
+    </LoadoutBarItemStyle>
+  );
+};
+
 const LoadoutBar = ({ user, api_data }) => {
   let LoadoutBarItems = [];
   for (let index = 0; index < user["framestamps"]["loadout"].length; index++) {
@@ -360,14 +488,10 @@ const LoadoutBar = ({ user, api_data }) => {
 
     LoadoutBarItems.push(
       <LoadoutBarItem
-        // style={{ width: `${width * 100}%` }}
-        style={{
-          width: `${width * 100}%`,
-          left: `${transformPercentageHorisontal}%`,
-        }}
-      >
-        <LoadoutImage number={user["framestamps"]["loadout"][index][1]} />
-      </LoadoutBarItem>
+        width={width}
+        transformHorisontal={transformPercentageHorisontal}
+        loadoutNumber={user["framestamps"]["loadout"][index][1]}
+      />
     );
   }
 

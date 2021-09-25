@@ -23,7 +23,7 @@ const LoadoutStyle = styled.div`
 `;
 
 const LoadoutBoxStyle = styled.div`
-  display: flex;
+  justify-content: center;
   padding: 10px 10px 10px;
   margin: 20px 10px 20px;
   background-color: #222;
@@ -35,31 +35,52 @@ const LoadoutBoxStyle = styled.div`
   font-size: 12px;
   text-align: center;
   flex-direction: column;
-  min-width: 100px;
+  min-width: 60px;
 `;
 const LoadoutBoxItemStyle = styled.div`
   flex-grow: 1;
 `;
 const LoadoutBox = ({ number, frequency }) => {
-  const techNumber = number % 4;
-  const grenadeNumber = ((number - techNumber) % 16) / 4;
-  const weaponNumber = ((number - (techNumber + grenadeNumber * 4)) % 64) / 16;
+  const tacNumber = number % 4;
+  const grenadeNumber = ((number - tacNumber) % 16) / 4;
+  const weaponNumber = ((number - (tacNumber + grenadeNumber * 4)) % 64) / 16;
 
-  const weaponMap = ["Pulsar", "Nova", "Comet", "Meteor"];
-  const grenadeMap = ["Detonator", "Stun Field", "Arc Mine", "Instant Repair"];
-
-  const techMap = [
-    "Repair Matrix",
-    "Threat Scanner",
-    "Energy Barrier",
-    "Phase Shift",
+  const tacModMap = [
+    "/images/repair_matrix.png",
+    "/images/threat_scanner.png",
+    "/images/energy_barrier.png",
+    "/images/phaseshift.png",
+  ];
+  const ordinanceMap = [
+    "/images/detonator.png",
+    "/images/stun_field.png",
+    "/images/arcmine.png",
+    "/images/instant_repair.png",
+  ];
+  const weaponMap = [
+    "/images/pulsar.png",
+    "/images/nova.png",
+    "/images/comet.png",
+    "/images/meteor.png",
   ];
 
   return (
     <LoadoutBoxStyle>
-      <LoadoutBoxItemStyle>{weaponMap[weaponNumber]} </LoadoutBoxItemStyle>
-      <LoadoutBoxItemStyle>{grenadeMap[grenadeNumber]} </LoadoutBoxItemStyle>
-      <LoadoutBoxItemStyle>{techMap[techNumber]} </LoadoutBoxItemStyle>
+      <img
+        src={weaponMap[weaponNumber]}
+        alt={"weapon"}
+        style={{ width: "60px", height: "60px" }}
+      />
+      <img
+        src={ordinanceMap[grenadeNumber]}
+        alt={"weapon"}
+        style={{ width: "60px", height: "60px" }}
+      />
+      <img
+        src={tacModMap[tacNumber]}
+        alt={"tacMod"}
+        style={{ width: "60px", height: "60px" }}
+      />
       <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
         {Math.round(frequency * 10000) / 100 + "%"}{" "}
       </LoadoutBoxItemStyle>
@@ -76,7 +97,7 @@ const LoadoutExpandButtonStyle = styled.div`
   cursor: pointer;
 `;
 const Loadout = ({ top_loadout }) => {
-  const [numOfEntrys, setNumOfEntrys] = useState(4);
+  const [numOfEntrys, setNumOfEntrys] = useState(5);
   return (
     <>
       <LoadoutStyle>
