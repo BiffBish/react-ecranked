@@ -254,7 +254,7 @@ const CenterColumn = ({ userData }) => {
   return (
     <CenterColumnStyle>
       <UserStats userData={userData} />
-      <Loadout top_loadout={userData["top_loadout"]} />
+      <Loadout top_loadout={userData["top_loadout"] ? userData["top_loadout"] : [] } />
     </CenterColumnStyle>
   );
 };
