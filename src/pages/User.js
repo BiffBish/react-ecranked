@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
-import { formatTimeByOffset } from "../helpers/formatTimeByOffset";
-import * as RNLocalize from "react-native-localize";
 
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
@@ -312,12 +310,7 @@ const RecentGames = ({ replays }) => {
     }
     loadInReplayAnimation(replays);
   }, [replays]);
-  const deviceTimeZone = RNLocalize.getTimeZone();
 
-  // Make moment of right now, using the device timezone
-  const today = moment().tz(deviceTimeZone);
-  // Get the UTC offset in hours
-  const currentTimeZoneOffsetInHours = today.utcOffset() / 60;
   let history = useHistory();
   function recentGameClick(session_id) {
     history.push("/replay/" + session_id);
@@ -327,13 +320,9 @@ const RecentGames = ({ replays }) => {
     <RecentGamesStyle>
       <ContainerTitle>Replays</ContainerTitle>
       {replayList.map((replay) => {
-        const UtcGameTime = moment(replay["start_time"]);
+        const LocalGameTime = moment.unix(replay["start_time"]);  // Assumes seconds.  Defaults to local time
+        const UtcGameTime = moment.unix(replay["start_time"]).utc();  // Must be separate object b/c utc() just sets a flag
         const UtcNow = moment.utc();
-
-        const convertedToLocalTime = formatTimeByOffset(
-          replay["start_time"],
-          currentTimeZoneOffsetInHours
-        );
         const dateDiffrence = UtcGameTime.diff(UtcNow, "d");
         const hourDiffrence = UtcGameTime.diff(UtcNow, "h");
 
@@ -359,7 +348,7 @@ const RecentGames = ({ replays }) => {
                 TimeString +
                 "}" +
                 "[" +
-                moment(convertedToLocalTime).format("MMM DD LTS") + //+
+                moment(LocalGameTime).format("MMM DD LTS") + //+
                 "] - " +
                 replay["map"]}
             </p>
