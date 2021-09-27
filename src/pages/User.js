@@ -254,7 +254,7 @@ const CenterColumn = ({ userData }) => {
   return (
     <CenterColumnStyle>
       <UserStats userData={userData} />
-      <Loadout top_loadout={userData["top_loadout"]} />
+      <Loadout top_loadout={userData["top_loadout"] ? userData["top_loadout"] : [] } />
     </CenterColumnStyle>
   );
 };
@@ -675,6 +675,7 @@ export default function User({ username }) {
   useEffect(() => {
     fetch("https://ecranked.ddns.net/user/" + username + "/stats.json")
       .then(async (response) => {
+        console.log("code:" + response.statusCode);
         const data = await response.json();
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
