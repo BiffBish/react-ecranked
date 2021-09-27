@@ -327,13 +327,9 @@ const RecentGames = ({ replays }) => {
     <RecentGamesStyle>
       <ContainerTitle>Replays</ContainerTitle>
       {replayList.map((replay) => {
-        const UtcGameTime = moment(replay["start_time"]);
+        const LocalGameTime = moment.unix(replay["start_time"]);  // Assumes seconds.  If millis, use moment(millis);  // Defaults to local time
+        const UtcGameTime = moment.unix(replay["start_time"]).utc();
         const UtcNow = moment.utc();
-
-        const convertedToLocalTime = formatTimeByOffset(
-          replay["start_time"],
-          currentTimeZoneOffsetInHours
-        );
         const dateDiffrence = UtcGameTime.diff(UtcNow, "d");
         const hourDiffrence = UtcGameTime.diff(UtcNow, "h");
 
@@ -359,7 +355,7 @@ const RecentGames = ({ replays }) => {
                 TimeString +
                 "}" +
                 "[" +
-                moment(convertedToLocalTime).format("MMM DD LTS") + //+
+                moment(LocalGameTime).format("MMM DD LTS") + //+
                 "] - " +
                 replay["map"]}
             </p>
