@@ -242,6 +242,8 @@ const TimeLineItemActiveBar = styled.div`
 `;
 
 const DeathBar = styled.div`
+  position: absolute;
+  top: 30px;
   background-color: red;
   width: 0.5%;
   height: 10px;
@@ -254,39 +256,43 @@ const DeathBar = styled.div`
 const GetDeathPoints = ({ user, api_data }) => {
   const totalFrames = api_data["frames"];
   let TotalListOfElements = [];
-  for (let index = 0; index < user["framestamps"]["deaths"].length; index++) {
-    var RespawnIndexOffset = 1;
-    if (user["framestamps"]["deaths"][0] < user["framestamps"]["respawns"][0]) {
-      RespawnIndexOffset = 0;
-    }
-    const deathFrame = user["framestamps"]["deaths"][index];
-
+  for (
+    let index = 0;
+    index < user["framestamps"]["in_bounds"].length;
+    index++
+  ) {
     var width = 0.005;
 
-    // AT THE LAST DEATH
-    if (index + RespawnIndexOffset === user["framestamps"]["respawns"].length) {
-      width =
-        (user["startFrame"] + user["stats"]["total_frames"] - deathFrame) /
-        totalFrames;
-    } else {
-      width =
-        (user["framestamps"]["respawns"][index + RespawnIndexOffset] -
-          deathFrame) /
-        totalFrames;
+    var startFrame = 0;
+    var endFrame = 100;
+    if (!user["framestamps"]["in_bounds"][index][1]) {
+      //If the in_bound point is false
+      if (user["framestamps"]["in_bounds"].length === index + 1) {
+        // On the last deathPoint
+        endFrame = user["startFrame"] + user["stats"]["total_frames"];
+      } else {
+        console.log(user["framestamps"]);
+        endFrame = user["framestamps"]["in_bounds"][index + 1][0];
+      }
+      startFrame = user["framestamps"]["in_bounds"][index][0];
+      // AT THE LAST DEATH
+      // startFrame = 100;
+      // endFrame = 600;
+      width = (endFrame - startFrame) / totalFrames;
+
+      const transformPercentageHorisontal =
+        (startFrame / totalFrames) * 100 * (1 / width);
+      const transformPercentageVertical = (1 + index) * 100;
+
+      TotalListOfElements.push(
+        <DeathBar
+          style={{
+            width: `${width * 100}%`,
+            transform: `translate(${transformPercentageHorisontal}%,0%)`,
+          }}
+        />
+      );
     }
-
-    const transformPercentageHorisontal =
-      (deathFrame / totalFrames) * 100 * (1 / width);
-    const transformPercentageVertical = (1 + index) * 100;
-
-    TotalListOfElements.push(
-      <DeathBar
-        style={{
-          width: `${width * 100}%`,
-          transform: `translate(${transformPercentageHorisontal}%,-${transformPercentageVertical}%)`,
-        }}
-      />
-    );
   }
   return TotalListOfElements.map((element) => {
     return element;
