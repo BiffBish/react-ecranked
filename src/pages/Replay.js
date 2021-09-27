@@ -282,7 +282,6 @@ const GetDeathPoints = ({ user, api_data }) => {
 
       const transformPercentageHorisontal =
         (startFrame / totalFrames) * 100 * (1 / width);
-      const transformPercentageVertical = (1 + index) * 100;
 
       TotalListOfElements.push(
         <DeathBar
