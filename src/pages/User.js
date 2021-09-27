@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
-import { formatTimeByOffset } from "../helpers/formatTimeByOffset";
-import * as RNLocalize from "react-native-localize";
 
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
@@ -312,12 +310,7 @@ const RecentGames = ({ replays }) => {
     }
     loadInReplayAnimation(replays);
   }, [replays]);
-  const deviceTimeZone = RNLocalize.getTimeZone();
 
-  // Make moment of right now, using the device timezone
-  const today = moment().tz(deviceTimeZone);
-  // Get the UTC offset in hours
-  const currentTimeZoneOffsetInHours = today.utcOffset() / 60;
   let history = useHistory();
   function recentGameClick(session_id) {
     history.push("/replay/" + session_id);
