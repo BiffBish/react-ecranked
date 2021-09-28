@@ -1,6 +1,8 @@
 // import React, {useState , useRef, useEffect} from 'react'
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
+import moment from "moment-timezone";
 
 import Replay from "./pages/Replay";
 import User from "./pages/User";
@@ -38,41 +40,160 @@ const Banner = styled(AnimateHeight)`
   color: #fff;
 `;
 
+
+  const RecentGameFadeIN = keyframes`
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  `;
+
+
+  const RecentGameStyle = styled.div`
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    margin: 10px 0px;
+    text-decoration: none;
+    border: 2px solid white;
+    border-radius: 10px;
+    line-height: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    &:hover {
+      background-color: #555;
+      color: #000;
+    }
+    cursor: pointer;
+    animation: ${RecentGameFadeIN} 0.2s;
+  `;
+
+  const RecentGamesStyle = styled.div`
+    padding: 10px 10px 0px;
+    margin: 20px 10px 20px;
+    background-color: #222;
+    color: white;
+    float: left;
+    border: 2px solid white;
+    border-radius: 10px;
+    flex: 300px 2;
+  `;
+
+
+  const ContainerTitle = styled.h2`
+    font-size: 36px;
+    font-weight: 400;
+    margin: 10px 0px;
+    text-align: center;
+    flex: 0 0 100%;
+    color: #fff;
+  `;
+
+const RecentGames = ({ replays }) => {
+    const [replayList, setReplayList] = useState([]);
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    useEffect(() => {
+      async function loadInReplayAnimation(replays) {
+        var AnimationList = [];
+        for (const replay of replays) {
+          AnimationList.push(replay);
+          setReplayList([...AnimationList]);
+          await delay(20);
+        }
+      }
+      loadInReplayAnimation(replays);
+    }, [replays]);
+
+    let history = useHistory();
+    function recentGameClick(session_id) {
+      history.push("/replay/" + session_id);
+    }
+
+    return (
+      <RecentGamesStyle>
+        <ContainerTitle>Replays</ContainerTitle>
+        {replayList.map((replay) => {
+          const LocalGameTime = moment.unix(replay["start_time"]);  // Assumes seconds.  Defaults to local time
+          const UtcGameTime = moment.unix(replay["start_time"]).utc();  // Must be separate object b/c utc() just sets a flag
+          const UtcNow = moment.utc();
+          const dateDiff = UtcNow.diff(UtcGameTime, "d");
+          const hourDiff = UtcNow.diff(UtcGameTime, "h");
+          const minuteDiff = UtcNow.diff(UtcGameTime, "m");
+
+          var TimeString = "";
+
+          if (dateDiff > 0) {
+            TimeString = `${dateDiff} days ago`;
+          } else if (hourDiff > 0) {
+            TimeString = `${hourDiff}h ago`;
+          } else if (minuteDiff > 0) {
+            TimeString = `${minuteDiff}m ago`;
+          }
+
+          const OnGameClick = () => {
+            recentGameClick(replay["session_id"]);
+          };
+          return (
+            <RecentGameStyle
+              key={replay["session_id"]}
+              onClick={OnGameClick}
+              style={{ opacity: 1 }}
+            >
+              <p style={{ margin: 0 }}>
+                {"{" +
+                  TimeString +
+                  "}" +
+                  "[" +
+                  moment(LocalGameTime).format("MMM DD LTS") + //+
+                  "] - " +
+                  replay["map"]}
+              </p>
+            </RecentGameStyle>
+          );
+        })}
+      </RecentGamesStyle>
+    );
+  };
+
 function App() {
-  // const [todos, setTodos] = useState([])
-  // const todoNameRef = useRef()
-  // useEffect(() => {
-  //   const storedTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-  //   if (storedTodos) setTodos(storedTodos)
-  // },[])
-
-  // useEffect(()=>{
-  //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
-  // },[todos])
-
-  // function toggleTodo(id){
-  //   const newTodos = [...todos]
-  //   const todo = newTodos.find(todo => todo.id === id)
-  //   todo.complete = !todo.complete
-  //   setTodos(newTodos)
-  // }
-
-  // function handleAddTodo(e) {
-  //   const name = todoNameRef.current.value
-  //   if (name === '') return
-  //   setTodos(prefTodos =>{
-  //     return [...prefTodos, {id:name, name:name , complete:false}]
-  //   })
-
-  // }
-
-  // function clearTodos(e) {
-  //   const newTodos = todos.filter(todo => !todo.complete)
-  //   setTodos(newTodos)
-  // }
-
+  const [apiData, setApiData] = React.useState(null);
   const [BannerHeight, setBannerHeight] = useState(400);
   const [BannerText, setBannerText] = useState("ECRanked");
+
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/api/v1/replay/@recent")
+      .then(async (response) => {
+        const data = await response.json();
+        console.log("code:" + response.statusCode);
+        if (response.status === 404) {
+          console.error("No recent games found!");
+        } else {
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setApiData(data);
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }, "hi");
+
+  function WhatApiRequest() {
+      console.log("APIDATA");
+      console.log(apiData);
+      if (apiData) {
+        return apiData;
+      }
+      return [];
+    }
 
   return (
     <Router>
@@ -117,6 +238,7 @@ function App() {
             return <Replay session_id={props.match.params.session_id} />;
           }}
         />
+        <RecentGames replays={WhatApiRequest()} />
       </PageBody>
     </Router>
   );
