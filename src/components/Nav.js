@@ -144,7 +144,7 @@ export default function Nav() {
   return (
     <TopBar>
       <TopBarLinksDesktop>
-        <TopBarLink link="/home" text="Home" />
+        <TopBarLink link="/" text="Home" />
         <TopBarLink
           link="https://echopedia.gg/wiki/Replay_Viewer#Installation"
           text="Replay Viewer"

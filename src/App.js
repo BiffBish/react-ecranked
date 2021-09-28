@@ -212,9 +212,9 @@ function App() {
           {BannerText}
         </Banner>
         <Route
-          path={`/home`}
+          path={`/`}
           render={(props) => {
-            console.log("Home");
+            console.log("/");
             setBannerHeight(400);
             setBannerText("ECRanked");
             return <RecentGames replays={WhatApiRequest()} />;
