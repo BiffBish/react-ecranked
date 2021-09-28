@@ -184,7 +184,7 @@ function App() {
       .catch((error) => {
         console.error("There was an error!", error);
       });
-  }, "hi");
+  }, []);
 
   function WhatApiRequest() {
       console.log("APIDATA");
