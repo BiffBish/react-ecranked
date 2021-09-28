@@ -74,12 +74,12 @@ const Banner = styled(AnimateHeight)`
 
   const RecentGamesStyle = styled.div`
     padding: 10px 10px 0px;
-    margin: 20px 10px 20px;
+    margin: auto;
     background-color: #222;
     color: white;
-    float: left;
     border: 2px solid white;
     border-radius: 10px;
+    width:50%;
     flex: 300px 2;
   `;
 
@@ -116,7 +116,7 @@ const RecentGames = ({ replays }) => {
 
     return (
       <RecentGamesStyle>
-        <ContainerTitle>Replays</ContainerTitle>
+        <ContainerTitle>Recent Games</ContainerTitle>
         {replayList.map((replay) => {
           const LocalGameTime = moment.unix(replay["start_time"]);  // Assumes seconds.  Defaults to local time
           const UtcGameTime = moment.unix(replay["start_time"]).utc();  // Must be separate object b/c utc() just sets a flag
@@ -161,7 +161,7 @@ const RecentGames = ({ replays }) => {
   };
 
 function App() {
-  const [apiData, setApiData] = React.useState(null);
+  const [apiData, setApiData] = React.useState([]);
   const [BannerHeight, setBannerHeight] = useState(400);
   const [BannerText, setBannerText] = useState("ECRanked");
 
@@ -217,7 +217,7 @@ function App() {
             console.log("Home");
             setBannerHeight(400);
             setBannerText("ECRanked");
-            return <></>;
+            return <RecentGames replays={WhatApiRequest()} />;
           }}
         />
         <Route
@@ -238,7 +238,7 @@ function App() {
             return <Replay session_id={props.match.params.session_id} />;
           }}
         />
-        <RecentGames replays={WhatApiRequest()} />
+        
       </PageBody>
     </Router>
   );
