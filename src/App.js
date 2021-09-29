@@ -212,7 +212,7 @@ function App() {
           {BannerText}
         </Banner>
         <Route
-          exact path={`/`}
+          exact path={["/home", "/"]}
           render={(props) => {
             console.log("/");
             setBannerHeight(400);
