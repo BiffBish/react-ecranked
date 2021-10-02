@@ -566,7 +566,9 @@ const Download = ({ session_id }) => {
   const [rateLimitTime, setRateLimitTime] = useState(0);
 
   const onButtonClick = () => {
-    fetch("https://ecranked.ddns.net/replay/" + session_id + "/trydownload")
+    fetch(
+      "https://ecranked.ddns.net/api/v1/replay/" + session_id + "/trydownload"
+    )
       .then(async (response) => {
         const data = await response.json();
         console.log("data", data);
@@ -578,7 +580,7 @@ const Download = ({ session_id }) => {
         } else {
           setIsRateLimit(false);
           window.location.assign(
-            "https://ecranked.ddns.net/replay/" + session_id + "/download"
+            "https://ecranked.ddns.net/api/v1/repla/" + session_id + "/download"
           );
           if (!response.ok) {
             // get error message from body or default to response statusText
@@ -647,7 +649,7 @@ export default function Replay({ session_id }) {
   const [apiData, setApiData] = React.useState(null);
   const [replayNotFound, setReplayNotFound] = React.useState(false);
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/replay/" + session_id + ".json")
+    fetch("https://ecranked.ddns.net/api/v1/replay/" + session_id)
       .then(async (response) => {
         console.log("finding api data");
         const data = await response.json();

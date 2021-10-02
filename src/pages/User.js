@@ -252,7 +252,9 @@ const CenterColumn = ({ userData }) => {
   return (
     <CenterColumnStyle>
       <UserStats userData={userData} />
-      <Loadout top_loadout={userData["top_loadout"] ? userData["top_loadout"] : [] } />
+      <Loadout
+        top_loadout={userData["top_loadout"] ? userData["top_loadout"] : []}
+      />
     </CenterColumnStyle>
   );
 };
@@ -320,8 +322,8 @@ const RecentGames = ({ replays }) => {
     <RecentGamesStyle>
       <ContainerTitle>Replays</ContainerTitle>
       {replayList.map((replay) => {
-        const LocalGameTime = moment.unix(replay["start_time"]);  // Assumes seconds.  Defaults to local time
-        const UtcGameTime = moment.unix(replay["start_time"]).utc();  // Must be separate object b/c utc() just sets a flag
+        const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
+        const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
         const UtcNow = moment.utc();
         const dateDiffrence = UtcGameTime.diff(UtcNow, "d");
         const hourDiffrence = UtcGameTime.diff(UtcNow, "h");
@@ -662,7 +664,7 @@ export default function User({ username }) {
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/user/" + username + "/stats.json")
+    fetch("https://ecranked.ddns.net/api/v1/user/" + username)
       .then(async (response) => {
         const data = await response.json();
         console.log("code:" + response.statusCode);
