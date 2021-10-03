@@ -283,7 +283,7 @@ const StatChoice = ({ currentSelected, onClick }) => {
     <StatChoiceStyle>
       <StatChoiceButton
         style={
-          currentSelected == "weekly_stats" ? { backgroundColor: "#333" } : {}
+          currentSelected === "weekly_stats" ? { backgroundColor: "#333" } : {}
         }
         onClick={() => {
           onClick("weekly_stats");
@@ -292,7 +292,7 @@ const StatChoice = ({ currentSelected, onClick }) => {
         7 Days
       </StatChoiceButton>
       <StatChoiceButton
-        style={currentSelected == "stats" ? { backgroundColor: "#333" } : {}}
+        style={currentSelected === "stats" ? { backgroundColor: "#333" } : {}}
         onClick={() => {
           onClick("stats");
         }}
