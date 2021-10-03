@@ -198,6 +198,7 @@ const UserStats = ({ userData }) => {
   return (
     <UserStatsStyle>
       <ContainerTitle>Stats</ContainerTitle>
+
       <UserStat
         name={"Total Games"}
         displayValue={userData["total_games"]}
@@ -248,12 +249,77 @@ const CenterColumnStyle = styled.div`
   flex: 400px 4;
   flex-direction: column;
 `;
+const StatChoiceStyle = styled.div`
+  margin: 20px 10px 0px;
+  padding: 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 10px;
+`;
+
+const StatChoiceButton = styled.div`
+  padding: 10px 10px 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 2px solid white;
+  border-radius: 10px;
+  gap: 0px 10px;
+  flex-grow: 1;
+  text-align: center;
+  height: 40px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+`;
+const StatChoice = ({ currentSelected, onClick }) => {
+  return (
+    <StatChoiceStyle>
+      <StatChoiceButton
+        style={
+          currentSelected == "weekly_stats" ? { backgroundColor: "#333" } : {}
+        }
+        onClick={() => {
+          onClick("weekly_stats");
+        }}
+      >
+        7 Days
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={currentSelected == "stats" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("stats");
+        }}
+      >
+        All time
+      </StatChoiceButton>
+    </StatChoiceStyle>
+  );
+};
 const CenterColumn = ({ userData }) => {
+  const [statChoice, setStatChoice] = useState("stats");
+
   return (
     <CenterColumnStyle>
-      <UserStats userData={userData} />
+      <StatChoice
+        currentSelected={statChoice}
+        onClick={(table) => {
+          setStatChoice(table);
+        }}
+      />
+      <UserStats userData={userData[statChoice]} />
       <Loadout
-        top_loadout={userData["top_loadout"] ? userData["top_loadout"] : []}
+        top_loadout={
+          userData[statChoice]["top_loadout"]
+            ? userData[statChoice]["top_loadout"]
+            : []
+        }
       />
     </CenterColumnStyle>
   );
@@ -518,148 +584,30 @@ export default function User({ username }) {
   };
 
   const EMPTYREQUEST = {
-    average_speed: 0,
-    average_ping: 0,
-    percent_stopped: 0,
-    percent_upsidedown: 0,
-    total_games: 0,
-    total_deaths: 0,
-    average_deaths: 0,
     discord_name: null,
     discord_pfp: null,
-    loadout: {
-      0: 0.000477,
-      1: 0.000195,
-      2: 0.0,
-      3: 0.002625,
-      4: 0.0,
-      5: 0.0,
-      6: 0.0,
-      7: 0.0,
-      8: 0.000668,
-      9: 0.0,
-      10: 0.0,
-      11: 0.0,
-      12: 0.0,
-      13: 0.0,
-      14: 0.0,
-      15: 0.0,
-      16: 0.001513,
-      17: 7.3e-5,
-      18: 1e-5,
-      19: 0.004462,
-      20: 5e-6,
-      21: 0.0,
-      22: 0.0,
-      23: 1.7e-5,
-      24: 8.9e-5,
-      25: 0.00583,
-      26: 0.000339,
-      27: 0.019384,
-      28: 0.001617,
-      29: 0.0,
-      30: 0.0,
-      31: 1.3e-5,
-      32: 0.156949,
-      33: 0.378763,
-      34: 0.018567,
-      35: 0.242486,
-      36: 0.000111,
-      37: 5e-6,
-      38: 5e-6,
-      39: 0.000398,
-      40: 0.029968,
-      41: 0.004429,
-      42: 2.4e-5,
-      43: 6.8e-5,
-      44: 0.027134,
-      45: 1.3e-5,
-      46: 0.0,
-      47: 3.2e-5,
-      48: 4.6e-5,
-      49: 0.06147,
-      50: 0.0,
-      51: 5.4e-5,
-      52: 0.0,
-      53: 0.0,
-      54: 0.0,
-      55: 0.0,
-      56: 0.041852,
-      57: 0.0,
-      58: 0.0,
-      59: 0.0,
-      60: 0.000314,
-      61: 0.0,
-      62: 0.0,
-      63: 0.0,
-    },
-    top_loadout: [
-      ["33", 0.378763],
-      ["35", 0.242486],
-      ["32", 0.156949],
-      ["49", 0.06147],
-      ["56", 0.041852],
-      ["40", 0.029968],
-      ["44", 0.027134],
-      ["27", 0.019384],
-      ["34", 0.018567],
-      ["25", 0.00583],
-      ["19", 0.004462],
-      ["41", 0.004429],
-      ["3", 0.002625],
-      ["28", 0.001617],
-      ["16", 0.001513],
-      ["8", 0.000668],
-      ["0", 0.000477],
-      ["39", 0.000398],
-      ["26", 0.000339],
-      ["60", 0.000314],
-      ["1", 0.000195],
-      ["36", 0.000111],
-      ["24", 8.9e-5],
-      ["17", 7.3e-5],
-      ["43", 6.8e-5],
-      ["51", 5.4e-5],
-      ["48", 4.6e-5],
-      ["47", 3.2e-5],
-      ["42", 2.4e-5],
-      ["23", 1.7e-5],
-      ["31", 1.3e-5],
-      ["45", 1.3e-5],
-      ["18", 1e-5],
-      ["20", 5e-6],
-      ["37", 5e-6],
-      ["38", 5e-6],
-      ["2", 0.0],
-      ["4", 0.0],
-      ["5", 0.0],
-      ["6", 0.0],
-      ["7", 0.0],
-      ["9", 0.0],
-      ["10", 0.0],
-      ["11", 0.0],
-      ["12", 0.0],
-      ["13", 0.0],
-      ["14", 0.0],
-      ["15", 0.0],
-      ["21", 0.0],
-      ["22", 0.0],
-      ["29", 0.0],
-      ["30", 0.0],
-      ["46", 0.0],
-      ["50", 0.0],
-      ["52", 0.0],
-      ["53", 0.0],
-      ["54", 0.0],
-      ["55", 0.0],
-      ["57", 0.0],
-      ["58", 0.0],
-      ["59", 0.0],
-      ["61", 0.0],
-      ["62", 0.0],
-      ["63", 0.0],
-    ],
     recent_games: [],
+    about_string: null,
+    stats: {
+      average_speed: 0,
+      average_ping: 0,
+      percent_stopped: 0,
+      percent_upsidedown: 0,
+      total_games: 0,
+      total_deaths: 0,
+      average_deaths: 0,
+      top_loadout: [],
+    },
+    weekly_stats: {
+      average_speed: 0,
+      average_ping: 0,
+      percent_stopped: 0,
+      percent_upsidedown: 0,
+      total_games: 0,
+      total_deaths: 0,
+      average_deaths: 0,
+      top_loadout: [],
+    },
   };
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
