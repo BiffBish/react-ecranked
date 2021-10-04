@@ -12,6 +12,7 @@ import AnimateHeight from "react-animate-height";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import SignUp from "./containers/SignUp";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -237,8 +238,19 @@ function App() {
           }}
         />
         <Route
+          path={`/auth/signup/:creation_key`}
+          render={(props) => {
+            setBannerHeight(100);
+            setBannerText("Sign");
+            console.log("User");
+            return <SignUp creation_key={props.match.params.creation_key} />;
+          }}
+        />
+        <Route
           path={`/TermsOfUse`}
           render={() => {
+            setBannerHeight(100);
+            setBannerText("Terms Of Service");
             return <PrivacyPolicy />;
           }}
         />
