@@ -151,8 +151,13 @@ export default function Nav() {
           externalLink={true}
         />
         <TopBarLink
-          link="https://ecranked.ddns.net/docs"
+          link="https://ecranked.ddns.net"
           text="API"
+          externalLink={true}
+        />
+        <TopBarLink
+          link="https://ecranked.ddns.net/TermsOfUse"
+          text="Terms Of Use"
           externalLink={true}
         />
         <AutoComplete
