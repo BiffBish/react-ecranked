@@ -40,9 +40,9 @@ export default function PrivacyPolicy() {
       follow your headset's regulations. For example: Oculus Terms of Use, Vive
       Terms of Use, Pimax Terms of Use, Valve Index Terms of Use, HP Reverb
       Terms of Use. You acknowledge and follow Discord Terms of Use. You
-      acknowledge and follow the game ratings of the game(s) you play in VRML.
-      You have verified for any additional regional regulations, to play Virtual
-      Reality games, based on your location.
+      acknowledge and follow the game ratings of the game(s) you play in Echo
+      Combat. You have verified for any additional regional regulations, to play
+      Virtual Reality games, based on your location.
       <h2>4. Ownership of Website Content </h2>
       As between you and the Website, ECRanked owns all intellectual property
       rights, including without limitation copyright and trade-mark rights, in
