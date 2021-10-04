@@ -155,11 +155,7 @@ export default function Nav() {
           text="API"
           externalLink={true}
         />
-        <TopBarLink
-          link="https://ecranked.ddns.net/TermsOfUse"
-          text="Terms Of Use"
-          externalLink={true}
-        />
+        <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
         <AutoComplete
           options={allUsernames}
           onFormSubmit={whenSearchSubmit}
