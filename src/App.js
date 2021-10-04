@@ -9,7 +9,7 @@ import User from "./pages/User";
 import Nav from "./components/Nav";
 
 import AnimateHeight from "react-animate-height";
-
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 //import { Button } from "@mui/material";
@@ -40,8 +40,7 @@ const Banner = styled(AnimateHeight)`
   color: #fff;
 `;
 
-
-  const RecentGameFadeIN = keyframes`
+const RecentGameFadeIN = keyframes`
     from {
       opacity: 0;
     }
@@ -51,114 +50,112 @@ const Banner = styled(AnimateHeight)`
     }
   `;
 
+const RecentGameStyle = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  padding: 10px;
+  margin: 10px 0px;
+  text-decoration: none;
+  border: 2px solid white;
+  border-radius: 10px;
+  line-height: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  animation: ${RecentGameFadeIN} 0.2s;
+`;
 
-  const RecentGameStyle = styled.div`
-    display: flex;
-    align-items: center;
-    background-color: #333;
-    padding: 10px;
-    margin: 10px 0px;
-    text-decoration: none;
-    border: 2px solid white;
-    border-radius: 10px;
-    line-height: 0;
-    font-size: 15px;
-    line-height: 1.5;
-    &:hover {
-      background-color: #555;
-      color: #000;
-    }
-    cursor: pointer;
-    animation: ${RecentGameFadeIN} 0.2s;
-  `;
+const RecentGamesStyle = styled.div`
+  padding: 10px 10px 0px;
+  margin: auto;
+  background-color: #222;
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  width: 50%;
+  flex: 300px 2;
+`;
 
-  const RecentGamesStyle = styled.div`
-    padding: 10px 10px 0px;
-    margin: auto;
-    background-color: #222;
-    color: white;
-    border: 2px solid white;
-    border-radius: 10px;
-    width:50%;
-    flex: 300px 2;
-  `;
-
-
-  const ContainerTitle = styled.h2`
-    font-size: 36px;
-    font-weight: 400;
-    margin: 10px 0px;
-    text-align: center;
-    flex: 0 0 100%;
-    color: #fff;
-  `;
+const ContainerTitle = styled.h2`
+  font-size: 36px;
+  font-weight: 400;
+  margin: 10px 0px;
+  text-align: center;
+  flex: 0 0 100%;
+  color: #fff;
+`;
 
 const RecentGames = ({ replays }) => {
-    const [replayList, setReplayList] = useState([]);
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const [replayList, setReplayList] = useState([]);
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    useEffect(() => {
-      async function loadInReplayAnimation(replays) {
-        var AnimationList = [];
-        for (const replay of replays) {
-          AnimationList.push(replay);
-          setReplayList([...AnimationList]);
-          await delay(20);
-        }
+  useEffect(() => {
+    async function loadInReplayAnimation(replays) {
+      var AnimationList = [];
+      for (const replay of replays) {
+        AnimationList.push(replay);
+        setReplayList([...AnimationList]);
+        await delay(20);
       }
-      loadInReplayAnimation(replays);
-    }, [replays]);
-
-    let history = useHistory();
-    function recentGameClick(session_id) {
-      history.push("/replay/" + session_id);
     }
+    loadInReplayAnimation(replays);
+  }, [replays]);
 
-    return (
-      <RecentGamesStyle>
-        <ContainerTitle>Recent Games</ContainerTitle>
-        {replayList.map((replay) => {
-          const LocalGameTime = moment.unix(replay["start_time"]);  // Assumes seconds.  Defaults to local time
-          const UtcGameTime = moment.unix(replay["start_time"]).utc();  // Must be separate object b/c utc() just sets a flag
-          const UtcNow = moment.utc();
-          const dateDiff = UtcNow.diff(UtcGameTime, "d");
-          const hourDiff = UtcNow.diff(UtcGameTime, "h");
-          const minuteDiff = UtcNow.diff(UtcGameTime, "m");
+  let history = useHistory();
+  function recentGameClick(session_id) {
+    history.push("/replay/" + session_id);
+  }
 
-          var TimeString = "";
+  return (
+    <RecentGamesStyle>
+      <ContainerTitle>Recent Games</ContainerTitle>
+      {replayList.map((replay) => {
+        const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
+        const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
+        const UtcNow = moment.utc();
+        const dateDiff = UtcNow.diff(UtcGameTime, "d");
+        const hourDiff = UtcNow.diff(UtcGameTime, "h");
+        const minuteDiff = UtcNow.diff(UtcGameTime, "m");
 
-          if (dateDiff > 0) {
-            TimeString = `${dateDiff} days ago`;
-          } else if (hourDiff > 0) {
-            TimeString = `${hourDiff}h ago`;
-          } else if (minuteDiff > 0) {
-            TimeString = `${minuteDiff}m ago`;
-          }
+        var TimeString = "";
 
-          const OnGameClick = () => {
-            recentGameClick(replay["session_id"]);
-          };
-          return (
-            <RecentGameStyle
-              key={replay["session_id"]}
-              onClick={OnGameClick}
-              style={{ opacity: 1 }}
-            >
-              <p style={{ margin: 0 }}>
-                {"{" +
-                  TimeString +
-                  "}" +
-                  "[" +
-                  moment(LocalGameTime).format("MMM DD LTS") + //+
-                  "] - " +
-                  replay["map"]}
-              </p>
-            </RecentGameStyle>
-          );
-        })}
-      </RecentGamesStyle>
-    );
-  };
+        if (dateDiff > 0) {
+          TimeString = `${dateDiff} days ago`;
+        } else if (hourDiff > 0) {
+          TimeString = `${hourDiff}h ago`;
+        } else if (minuteDiff > 0) {
+          TimeString = `${minuteDiff}m ago`;
+        }
+
+        const OnGameClick = () => {
+          recentGameClick(replay["session_id"]);
+        };
+        return (
+          <RecentGameStyle
+            key={replay["session_id"]}
+            onClick={OnGameClick}
+            style={{ opacity: 1 }}
+          >
+            <p style={{ margin: 0 }}>
+              {"{" +
+                TimeString +
+                "}" +
+                "[" +
+                moment(LocalGameTime).format("MMM DD LTS") + //+
+                "] - " +
+                replay["map"]}
+            </p>
+          </RecentGameStyle>
+        );
+      })}
+    </RecentGamesStyle>
+  );
+};
 
 function App() {
   const [apiData, setApiData] = React.useState([]);
@@ -187,13 +184,13 @@ function App() {
   }, []);
 
   function WhatApiRequest() {
-      console.log("APIDATA");
-      console.log(apiData);
-      if (apiData) {
-        return apiData;
-      }
-      return [];
+    console.log("APIDATA");
+    console.log(apiData);
+    if (apiData) {
+      return apiData;
     }
+    return [];
+  }
 
   return (
     <Router>
@@ -212,7 +209,8 @@ function App() {
           {BannerText}
         </Banner>
         <Route
-          exact path={["/home", "/"]}
+          exact
+          path={["/home", "/"]}
           render={(props) => {
             console.log("/");
             setBannerHeight(400);
@@ -238,7 +236,12 @@ function App() {
             return <Replay session_id={props.match.params.session_id} />;
           }}
         />
-        
+        <Route
+          path={`/TermsOfUse`}
+          render={() => {
+            return <PrivacyPolicy />;
+          }}
+        />
       </PageBody>
     </Router>
   );
