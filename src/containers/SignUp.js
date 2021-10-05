@@ -62,6 +62,8 @@ export default function Signup({ creation_key }) {
   // const [newUser, setNewUser] = useState(null);
   // const { userHasAuthenticated } = useAppContext();
   // const [isLoading, setIsLoading] = useState(false);
+  let history = useHistory();
+
   const handleOnSumbit = (event) => {
     console.log(creation_key);
     const username = event.target[0].value;
@@ -84,9 +86,8 @@ export default function Signup({ creation_key }) {
     alert(
       "Signed Up! there are no features at the moment but when there are you'll have full access to them."
     );
-    event.preventDefault();
-    let history = useHistory();
     history.push("/home");
+    event.preventDefault();
   };
   return (
     <MainStyle>
