@@ -12,7 +12,6 @@ import AnimateHeight from "react-animate-height";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import SignUp from "./containers/SignUp";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -244,26 +243,17 @@ function App() {
             const callbackCode = new URLSearchParams(props.location.search).get(
               "code"
             );
-            console.log("Callback");
-            console.log(callbackCode);
-
-            const requestOptions = {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                access_token: callbackCode,
-              }),
-            };
-            fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
-              .then((response) => response.json())
-              .then((data) => {
-                console.log(data);
-                props.history.push("/home");
-                localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
-              });
+            setBannerText("Redirecting");
             setBannerHeight(100);
-            setBannerText("Sign");
-            return <SignUp creation_key={props.match.params.creation_key} />;
+
+            return (
+              <DiscordOAuthCallback
+                callbackCode={callbackCode}
+                onFinish={() => {
+                  props.history.push("/home");
+                }}
+              />
+            );
           }}
         />
         <Route
@@ -277,6 +267,28 @@ function App() {
       </PageBody>
     </Router>
   );
+}
+
+function DiscordOAuthCallback({ callbackCode, onFinish }) {
+  useEffect(() => {
+    console.log("Callback");
+    console.log(callbackCode);
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        access_token: callbackCode,
+      }),
+    };
+    fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        onFinish();
+        localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
+      });
+  });
 }
 
 // const Home = () => {
