@@ -61,7 +61,10 @@ const LoadoutBox = ({ number, frequency }) => {
     "/images/comet.png",
     "/images/meteor.png",
   ];
-
+  let displayNumber = Math.round(frequency * 10000) / 100;
+  if (displayNumber === 100) {
+    displayNumber = 99.99;
+  }
   return (
     <LoadoutBoxStyle>
       <img
@@ -80,7 +83,7 @@ const LoadoutBox = ({ number, frequency }) => {
         style={{ width: "60px", height: "60px" }}
       />
       <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
-        {Math.round(frequency * 10000) / 100 + "%"}{" "}
+        {displayNumber + "%"}{" "}
       </LoadoutBoxItemStyle>
     </LoadoutBoxStyle>
   );
