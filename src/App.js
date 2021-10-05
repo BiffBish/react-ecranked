@@ -289,6 +289,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
         localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
       });
   });
+  return null;
 }
 
 // const Home = () => {
