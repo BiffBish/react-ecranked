@@ -63,7 +63,7 @@ const LoadoutBox = ({ number, frequency }) => {
   ];
   let displayNumber = Math.round(frequency * 10000) / 100;
   if (displayNumber === 100) {
-    displayNumber = 99.99;
+    displayNumber = 99.999;
   }
   return (
     <LoadoutBoxStyle>
