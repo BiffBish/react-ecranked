@@ -254,7 +254,7 @@ function App() {
                 access_token: callbackCode,
               }),
             };
-            fetch("https://localhost/api/v1/auth/login", requestOptions)
+            fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
               .then((response) => response.json())
               .then((data) => {
                 console.log(data);
