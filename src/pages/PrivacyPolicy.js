@@ -85,27 +85,27 @@ export default function PrivacyPolicy() {
       us.
       <h2>6. Code of Conduct </h2>
       You may not use the ECRanked Website for any illegal or unauthorized
-      purpose. In addition to the laws of Canada, you also agree to comply with
-      all local laws that apply to your use of the Website. You may not use the
-      Website in any manner which could disable, overburden, damage, or impair
-      the Website, ECRanked's servers or computer network, or interfere with any
-      other party's use and enjoyment of the Website. You agree that you are
-      responsible for your own conduct and communications while using the
-      Website and for any consequences of that use. By way of example, and not
-      as a limitation, you agree that when using the Website, you will not: post
-      or upload any inappropriate, promotional, defamatory, destructive,
-      obscene, or unlawful content; defame, abuse, harass, stalk, threaten or
-      otherwise violate the legal rights (such as rights of privacy and
-      publicity) of others; post or upload any User Content that infringes any
-      patent, trademark, copyright, trade secret or other intellectual property
-      right of any party; impersonate another person, or falsify or delete any
-      author attributions, legal or other proper notices or proprietary
-      designations or labels of the origin or source of any content; use the
-      Website in connection with surveys, contests, junk email, spamming or any
-      duplicative messages (commercial or otherwise); use any robot, spider,
-      site search/retrieval application, or other device to retrieve or index
-      any portion of the Website to collect information about other users or
-      domain names; upload files that contain bugs, viruses, trojan horses,
+      purpose. In addition to the laws of The United States Of America, you also
+      agree to comply with all local laws that apply to your use of the Website.
+      You may not use the Website in any manner which could disable, overburden,
+      damage, or impair the Website, ECRanked's servers or computer network, or
+      interfere with any other party's use and enjoyment of the Website. You
+      agree that you are responsible for your own conduct and communications
+      while using the Website and for any consequences of that use. By way of
+      example, and not as a limitation, you agree that when using the Website,
+      you will not: post or upload any inappropriate, promotional, defamatory,
+      destructive, obscene, or unlawful content; defame, abuse, harass, stalk,
+      threaten or otherwise violate the legal rights (such as rights of privacy
+      and publicity) of others; post or upload any User Content that infringes
+      any patent, trademark, copyright, trade secret or other intellectual
+      property right of any party; impersonate another person, or falsify or
+      delete any author attributions, legal or other proper notices or
+      proprietary designations or labels of the origin or source of any content;
+      use the Website in connection with surveys, contests, junk email, spamming
+      or any duplicative messages (commercial or otherwise); use any robot,
+      spider, site search/retrieval application, or other device to retrieve or
+      index any portion of the Website to collect information about other users
+      or domain names; upload files that contain bugs, viruses, trojan horses,
       worms, or any other similar software or programs that may damage the
       operation of the computer or property of another; or submit User Content
       that falsely expresses or implies that such User Content is sponsored or
