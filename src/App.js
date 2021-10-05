@@ -288,7 +288,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
         onFinish();
         localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
       });
-  }, []);
+  }, [callbackCode, onFinish]);
   return null;
 }
 
