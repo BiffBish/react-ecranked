@@ -1,5 +1,5 @@
 // import React, {useState , useRef, useEffect} from 'react'
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import moment from "moment-timezone";
@@ -270,24 +270,31 @@ function App() {
 }
 
 function DiscordOAuthCallback({ callbackCode, onFinish }) {
+  const hasFetchedData = useRef(false);
   useEffect(() => {
-    console.log("Callback");
-    console.log(callbackCode);
+    const getAuthToken = () => {
+      if (!hasFetchedData.current) {
+        hasFetchedData.current = true;
+        console.log("Callback");
+        console.log(callbackCode);
 
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        access_token: callbackCode,
-      }),
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            access_token: callbackCode,
+          }),
+        };
+        fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            onFinish();
+            localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
+          });
+      }
     };
-    fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        onFinish();
-        localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
-      });
+    getAuthToken();
   }, [callbackCode, onFinish]);
   return null;
 }
