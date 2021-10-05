@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import sjcl from "sjcl";
+import { useHistory } from "react-router-dom";
 
 const MainStyle = styled.div`
   color: white;
@@ -80,7 +81,12 @@ export default function Signup({ creation_key }) {
     fetch("https://ecranked.ddns.net/api/v1/auth/signup", requestOptions)
       .then((response) => response.json())
       .then((data) => null);
+    alert(
+      "Signed Up! there are no features at the moment but when there are you'll have full access to them."
+    );
     event.preventDefault();
+    let history = useHistory();
+    history.push("/home");
   };
   return (
     <MainStyle>
