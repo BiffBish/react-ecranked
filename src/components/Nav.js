@@ -53,10 +53,11 @@ const ExternalLinkStyle = styled.a`
   transition-duration: 0.1s;
   cursor: pointer;
 `;
-const TopBarLink = ({ link, text, externalLink }) => {
+const TopBarLink = ({ link, text, externalLink, floatRight }) => {
   if (externalLink) {
     return (
       <ExternalLinkStyle
+        style={floatRight ? { float: "right" } : {}}
         activeStyle={{ backgroundColor: "#fff", color: "#000" }}
         href={link}
       >
@@ -156,6 +157,12 @@ export default function Nav() {
           externalLink={true}
         />
         <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
+        <TopBarLink
+          link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify"
+          text="Login with discord"
+          externalLink={true}
+          floatRight={true}
+        />
         <AutoComplete
           options={allUsernames}
           onFormSubmit={whenSearchSubmit}

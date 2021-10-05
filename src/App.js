@@ -192,7 +192,8 @@ function App() {
     }
     return [];
   }
-
+  let history = useHistory();
+  console.log(history);
   return (
     <Router>
       <Nav style={{ height: "10px" }} />
@@ -238,11 +239,30 @@ function App() {
           }}
         />
         <Route
-          path={`/auth/signup/:creation_key`}
+          path={`/auth/discord/callback`}
           render={(props) => {
+            const callbackCode = new URLSearchParams(props.location.search).get(
+              "code"
+            );
+            console.log("Callback");
+            console.log(callbackCode);
+
+            const requestOptions = {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                access_token: callbackCode,
+              }),
+            };
+            fetch("https://localhost/api/v1/auth/login", requestOptions)
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                props.history.push("/home");
+                localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
+              });
             setBannerHeight(100);
             setBannerText("Sign");
-            console.log("User");
             return <SignUp creation_key={props.match.params.creation_key} />;
           }}
         />
