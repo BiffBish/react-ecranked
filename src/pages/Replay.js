@@ -580,7 +580,9 @@ const Download = ({ session_id }) => {
         } else {
           setIsRateLimit(false);
           window.location.assign(
-            "https://ecranked.ddns.net/api/v1/repla/" + session_id + "/download"
+            "https://ecranked.ddns.net/api/v1/replay/" +
+              session_id +
+              "/download"
           );
           if (!response.ok) {
             // get error message from body or default to response statusText
