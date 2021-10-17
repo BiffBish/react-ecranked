@@ -6,7 +6,7 @@ function map_range(value, low1, high1, low2, high2) {
 }
 
 const AchievementSize = 40;
-const AchievementGap = 15;
+const AchievementGap = 5;
 
 const ProgressDivStyle = styled.div`
   position: relative;
