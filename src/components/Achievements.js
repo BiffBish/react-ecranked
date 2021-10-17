@@ -110,7 +110,7 @@ export var SegmentedProgressBar = ({
 
 const AchievementsContainer = styled.div`
   width: 100%;
-  height: 500px;
+  height: 1500px;
   display: flex;
   align-items: stretch;
   flex-wrap: wrap;
@@ -155,6 +155,14 @@ const AchievementSquareStyle = styled.div`
   height: ${AchievementSize - 4}px;
   flex: none;
 `;
+const AchievementWideStyle = styled.div`
+  background-color: yellow;
+  border: 2px solid white;
+  border-radius: 10px;
+  width: ${AchievementSize * 5 + AchievementGap * 4 - 4}px;
+  height: ${AchievementSize - 4}px;
+  flex: none;
+`;
 
 const AchievementSquare = ({ num, complete }) => {
   return (
@@ -167,6 +175,19 @@ const AchievementSquare = ({ num, complete }) => {
     >
       {num}
     </AchievementSquareStyle>
+  );
+};
+const AchievementWide = ({ num, complete }) => {
+  return (
+    <AchievementWideStyle
+      style={
+        complete
+          ? { backgroundColor: "green" }
+          : { backgroundColor: "transparent" }
+      }
+    >
+      {num}
+    </AchievementWideStyle>
   );
 };
 const AchievementSingleRow = styled.div`
@@ -245,6 +266,7 @@ export default function Achievements({ userData }) {
               ]}
             />
           </AchievementDoubleRow>
+
           <AchievementDoubleRow>
             <SegmentedProgressBar
               percent={userData["weekly_stats"]["percent_close_mate"] / 0.55}
@@ -259,6 +281,7 @@ export default function Achievements({ userData }) {
               ]}
             />
           </AchievementDoubleRow>
+
           <AchievementSingleRow>
             <SegmentedProgressBar
               percent={userData["weekly_stats"]["payload_games"] / 55}
@@ -269,6 +292,101 @@ export default function Achievements({ userData }) {
               ]}
             />
           </AchievementSingleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 110}
+              displayValue={`dyson`}
+              segments={[
+                { percentage: 100 / 110, earned: achievementData["0"] },
+              ]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 110}
+              displayValue={`combustion`}
+              segments={[
+                { percentage: 100 / 110, earned: achievementData["0"] },
+              ]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementDoubleRow>
+            <SegmentedProgressBar
+              percent={0.005 / 0.016}
+              displayValue={`MinimumLoadoutUsage`}
+              segments={[
+                { percentage: 0.5 / 1.6, earned: achievementData["36"] },
+                { percentage: 0.75 / 1.6, earned: achievementData["37"] },
+                { percentage: 1 / 1.6, earned: achievementData["38"] },
+                { percentage: 1.25 / 1.6, earned: achievementData["39"] },
+              ]}
+            />
+          </AchievementDoubleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 28}
+              displayValue={`repair matrix`}
+              segments={[{ percentage: 25 / 28, earned: achievementData["0"] }]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 28}
+              displayValue={`threat scanner`}
+              segments={[{ percentage: 25 / 28, earned: achievementData["0"] }]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 28}
+              displayValue={`detonator`}
+              segments={[{ percentage: 25 / 28, earned: achievementData["0"] }]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 28}
+              displayValue={`stun field`}
+              segments={[{ percentage: 25 / 28, earned: achievementData["0"] }]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementDoubleRow>
+            <SegmentedProgressBar
+              percent={userData["weekly_stats"]["average_speed"] / 5}
+              displayValue={`${userData["weekly_stats"]["average_speed"]}m/s`}
+              segments={[
+                { percentage: 3.0 / 5, earned: achievementData["61"] },
+                { percentage: 3.5 / 5, earned: achievementData["62"] },
+                { percentage: 4.0 / 5, earned: achievementData["63"] },
+                { percentage: 4.5 / 5, earned: achievementData["64"] },
+              ]}
+            />
+          </AchievementDoubleRow>
+
+          <AchievementDoubleRow>
+            <SegmentedProgressBar
+              percent={userData["weekly_stats"]["average_deaths"] / 9}
+              displayValue={`${userData["weekly_stats"]["average_deaths"]}`}
+              segments={[
+                { percentage: 8 / 9, earned: achievementData["81"] },
+                { percentage: 7 / 9, earned: achievementData["82"] },
+                { percentage: 6 / 9, earned: achievementData["83"] },
+                { percentage: 5 / 9, earned: achievementData["84"] },
+              ]}
+            />
+          </AchievementDoubleRow>
+
+          <AchievementDoubleRow>
+            <SegmentedProgressBar
+              percent={userData["stats"]["total_deaths"] / 4200}
+              displayValue={`${userData["stats"]["total_deaths"]}`}
+              segments={[
+                { percentage: 500 / 4200, earned: achievementData["91"] },
+                { percentage: 1000 / 4200, earned: achievementData["92"] },
+                { percentage: 2000 / 4200, earned: achievementData["93"] },
+                { percentage: 4000 / 4200, earned: achievementData["94"] },
+              ]}
+            />
+          </AchievementDoubleRow>
         </LeftAchievementCollumn>
         <CenterAchievementCollumn>
           <AchievementSquare num={6} complete={achievementData["6"]} />
@@ -318,6 +436,74 @@ export default function Achievements({ userData }) {
           <AchievementSquare num={40} complete={achievementData["40"]} />
           <AchievementSquare num={28} complete={achievementData["28"]} />
           <AchievementSquare num={29} complete={achievementData["29"]} />
+
+          <AchievementSquare num={96} complete={achievementData["96"]} />
+          <AchievementSquare num={97} complete={achievementData["97"]} />
+          <AchievementSquare num={45} complete={achievementData["45"]} />
+          <AchievementSquare num={98} complete={achievementData["98"]} />
+          <AchievementSquare num={99} complete={achievementData["99"]} />
+
+          <AchievementSquare num={36} complete={achievementData["36"]} />
+          <AchievementSquare num={37} complete={achievementData["37"]} />
+          <AchievementSquare num={50} complete={achievementData["50"]} />
+          <AchievementSquare num={52} complete={achievementData["52"]} />
+          <AchievementSquare num={51} complete={achievementData["51"]} />
+
+          <AchievementSquare num={38} complete={achievementData["38"]} />
+          <AchievementSquare num={39} complete={achievementData["39"]} />
+          <AchievementSquare num={55} complete={achievementData["55"]} />
+          <AchievementSquare num={54} complete={achievementData["54"]} />
+          <AchievementSquare num={53} complete={achievementData["53"]} />
+
+          <AchievementSquare num={56} complete={achievementData["56"]} />
+          <AchievementSquare num={57} complete={achievementData["57"]} />
+          <AchievementSquare num={60} complete={achievementData["60"]} />
+          <AchievementSquare num={58} complete={achievementData["58"]} />
+          <AchievementSquare num={59} complete={achievementData["59"]} />
+
+          <AchievementSquare num={71} complete={achievementData["71"]} />
+          <AchievementSquare num={72} complete={achievementData["72"]} />
+          <AchievementSquare num={65} complete={achievementData["65"]} />
+          <AchievementSquare num={73} complete={achievementData["73"]} />
+          <AchievementSquare num={74} complete={achievementData["74"]} />
+
+          <AchievementSquare num={61} complete={achievementData["61"]} />
+          <AchievementSquare num={62} complete={achievementData["62"]} />
+          <AchievementSquare num={70} complete={achievementData["70"]} />
+          <AchievementSquare num={77} complete={achievementData["77"]} />
+          <AchievementSquare num={76} complete={achievementData["76"]} />
+
+          <AchievementSquare num={63} complete={achievementData["63"]} />
+          <AchievementSquare num={64} complete={achievementData["64"]} />
+          <AchievementSquare num={75} complete={achievementData["75"]} />
+          <AchievementSquare num={79} complete={achievementData["79"]} />
+          <AchievementSquare num={78} complete={achievementData["78"]} />
+
+          <AchievementSquare num={81} complete={achievementData["81"]} />
+          <AchievementSquare num={82} complete={achievementData["82"]} />
+          <AchievementSquare num={80} complete={achievementData["80"]} />
+          <AchievementSquare num={87} complete={achievementData["87"]} />
+          <AchievementSquare num={86} complete={achievementData["86"]} />
+
+          <AchievementSquare num={83} complete={achievementData["83"]} />
+          <AchievementSquare num={84} complete={achievementData["84"]} />
+          <AchievementSquare num={85} complete={achievementData["85"]} />
+          <AchievementSquare num={89} complete={achievementData["89"]} />
+          <AchievementSquare num={88} complete={achievementData["88"]} />
+
+          <AchievementSquare num={91} complete={achievementData["91"]} />
+          <AchievementSquare num={92} complete={achievementData["92"]} />
+          <AchievementSquare num={90} complete={achievementData["80"]} />
+          <AchievementSquare num={67} complete={achievementData["67"]} />
+          <AchievementSquare num={66} complete={achievementData["66"]} />
+
+          <AchievementSquare num={93} complete={achievementData["93"]} />
+          <AchievementSquare num={94} complete={achievementData["94"]} />
+          <AchievementSquare num={95} complete={achievementData["95"]} />
+          <AchievementSquare num={69} complete={achievementData["69"]} />
+          <AchievementSquare num={68} complete={achievementData["68"]} />
+          <AchievementWide num={100} complete={achievementData["100"]} />
+          <AchievementWide num={101} complete={achievementData["101"]} />
         </CenterAchievementCollumn>
         <RightAchievementCollumn>
           <AchievementSingleRow>
@@ -348,6 +534,7 @@ export default function Achievements({ userData }) {
               ]}
             />
           </AchievementDoubleRow>
+
           <AchievementDoubleRow>
             <SegmentedProgressBar
               percent={userData["daily_stats"]["total_games"] / 45}
@@ -361,6 +548,7 @@ export default function Achievements({ userData }) {
               ]}
             />
           </AchievementDoubleRow>
+
           <AchievementDoubleRow>
             <SegmentedProgressBar
               percent={userData["weekly_stats"]["percent_close_enemy"] / 0.042}
@@ -383,6 +571,124 @@ export default function Achievements({ userData }) {
               segments={[
                 { percentage: 25 / 55, earned: achievementData["28"] },
                 { percentage: 50 / 55, earned: achievementData["29"] },
+              ]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 110}
+              displayValue={`fission`}
+              segments={[
+                { percentage: 100 / 110, earned: achievementData["0"] },
+              ]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 110}
+              displayValue={`surge`}
+              segments={[
+                { percentage: 100 / 110, earned: achievementData["0"] },
+              ]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementDoubleRow>
+            <SegmentedProgressBar
+              percent={userData["daily_stats"]["top_speed"] / 38}
+              displayValue={`${userData["daily_stats"]["top_speed"]}m/s`}
+              segments={[
+                { percentage: 20 / 38, earned: achievementData["51"] },
+                { percentage: 25 / 38, earned: achievementData["52"] },
+                { percentage: 30 / 38, earned: achievementData["53"] },
+                { percentage: 35 / 38, earned: achievementData["54"] },
+              ]}
+            />
+          </AchievementDoubleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`energy barrier`}
+              segments={[{ percentage: 4 / 4.2, earned: achievementData["0"] }]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`phase shift`}
+              segments={[{ percentage: 4 / 4.2, earned: achievementData["0"] }]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`arcmine`}
+              segments={[{ percentage: 4 / 4.2, earned: achievementData["0"] }]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`instant repair`}
+              segments={[{ percentage: 4 / 4.2, earned: achievementData["0"] }]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementDoubleRow>
+            <SegmentedProgressBar
+              percent={userData["weekly_stats"]["percent_upsidedown"] / 100}
+              displayValue={`${
+                userData["weekly_stats"]["percent_upsidedown"] * 100
+              }%`}
+              segments={[
+                { percentage: 5 / 100, earned: achievementData["76"] },
+                { percentage: 25 / 100, earned: achievementData["77"] },
+                { percentage: 50 / 100, earned: achievementData["78"] },
+                { percentage: 75 / 100, earned: achievementData["79"] },
+              ]}
+            />
+          </AchievementDoubleRow>
+
+          <AchievementDoubleRow>
+            <SegmentedProgressBar
+              percent={0.01 / 0.5}
+              displayValue={`0.01%`}
+              segments={[
+                { percentage: 5 / 50, earned: achievementData["86"] },
+                { percentage: 10 / 50, earned: achievementData["87"] },
+                { percentage: 25 / 50, earned: achievementData["88"] },
+                { percentage: 40 / 50, earned: achievementData["89"] },
+              ]}
+            />
+          </AchievementDoubleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`arcmine`}
+              segments={[
+                { percentage: 4 / 4.2, earned: achievementData["67"] },
+              ]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`instant repair`}
+              segments={[
+                { percentage: 4 / 4.2, earned: achievementData["66"] },
+              ]}
+            />
+          </AchievementSingleRow>
+
+          <AchievementSingleRow>
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`arcmine`}
+              segments={[
+                { percentage: 4 / 4.2, earned: achievementData["69"] },
+              ]}
+            />
+            <SegmentedProgressBar
+              percent={1 / 4.2}
+              displayValue={`instant repair`}
+              segments={[
+                { percentage: 4 / 4.2, earned: achievementData["68"] },
               ]}
             />
           </AchievementSingleRow>
