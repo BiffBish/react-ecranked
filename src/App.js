@@ -1,15 +1,18 @@
 // import React, {useState , useRef, useEffect} from 'react'
 import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
-import moment from "moment-timezone";
+import styled from "styled-components";
 
 import Replay from "./pages/Replay";
 import User from "./pages/User";
+import Home from "./pages/Home";
+
 import Nav from "./components/Nav";
 
 import AnimateHeight from "react-animate-height";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Changelog from "./pages/Changelog";
+
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 //import { Button } from "@mui/material";
@@ -39,123 +42,6 @@ const Banner = styled(AnimateHeight)`
   flex-direction: column;
   color: #fff;
 `;
-
-const RecentGameFadeIN = keyframes`
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  `;
-
-const RecentGameStyle = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: #333;
-  padding: 10px;
-  margin: 10px 0px;
-  text-decoration: none;
-  border: 2px solid white;
-  border-radius: 10px;
-  line-height: 0;
-  font-size: 15px;
-  line-height: 1.5;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-  cursor: pointer;
-  animation: ${RecentGameFadeIN} 0.2s;
-`;
-
-const RecentGamesStyle = styled.div`
-  padding: 10px 10px 0px;
-  margin: auto;
-  background-color: #222;
-  color: white;
-  border: 2px solid white;
-  border-radius: 10px;
-  width: 50%;
-  flex: 300px 2;
-`;
-
-const ContainerTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 400;
-  margin: 10px 0px;
-  text-align: center;
-  flex: 0 0 100%;
-  color: #fff;
-`;
-
-const RecentGames = ({ replays }) => {
-  const [replayList, setReplayList] = useState([]);
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  useEffect(() => {
-    async function loadInReplayAnimation(replays) {
-      var AnimationList = [];
-      for (const replay of replays) {
-        AnimationList.push(replay);
-        setReplayList([...AnimationList]);
-        await delay(20);
-      }
-    }
-    loadInReplayAnimation(replays);
-  }, [replays]);
-
-  let history = useHistory();
-  function recentGameClick(session_id) {
-    history.push("/replay/" + session_id);
-  }
-
-  return (
-    <RecentGamesStyle>
-      <ContainerTitle>Recent Games</ContainerTitle>
-      {replayList.map((replay) => {
-        const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
-        const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
-        const UtcNow = moment.utc();
-        const dateDiff = UtcNow.diff(UtcGameTime, "d");
-        const hourDiff = UtcNow.diff(UtcGameTime, "h");
-        const minuteDiff = UtcNow.diff(UtcGameTime, "m");
-
-        var TimeString = "";
-
-        if (dateDiff > 0) {
-          TimeString = `${dateDiff} days ago`;
-        } else if (hourDiff > 0) {
-          TimeString = `${hourDiff}h ago`;
-        } else if (minuteDiff > 0) {
-          TimeString = `${minuteDiff}m ago`;
-        }
-
-        const OnGameClick = () => {
-          recentGameClick(replay["session_id"]);
-        };
-        return (
-          <RecentGameStyle
-            key={replay["session_id"]}
-            onClick={OnGameClick}
-            style={{ opacity: 1 }}
-          >
-            <p style={{ margin: 0 }}>
-              {"{" +
-                TimeString +
-                "}" +
-                "[" +
-                moment(LocalGameTime).format("MMM DD LTS") + //+
-                "] - " +
-                replay["map"]}
-            </p>
-          </RecentGameStyle>
-        );
-      })}
-    </RecentGamesStyle>
-  );
-};
 
 function App() {
   const [apiData, setApiData] = React.useState([]);
@@ -216,16 +102,25 @@ function App() {
             console.log("/");
             setBannerHeight(400);
             setBannerText("ECRanked");
-            return <RecentGames replays={WhatApiRequest()} />;
+            return <Home replays={WhatApiRequest()} />;
           }}
         />
         <Route
-          path={`/user/:username/stats`}
+          path={`/user/:username/:subDomain`}
           render={(props) => {
             setBannerHeight(100);
-            setBannerText(props.match.params.username);
+            const setBannerTextCallback = (username) => {
+              console.log(username);
+              setBannerText(username);
+            };
             console.log("User");
-            return <User username={props.match.params.username} />;
+            return (
+              <User
+                username={props.match.params.username}
+                setBannerCallback={setBannerTextCallback}
+                subDomain={props.match.params.subDomain}
+              />
+            );
           }}
         />
         <Route
@@ -262,6 +157,14 @@ function App() {
             setBannerHeight(100);
             setBannerText("Terms Of Service");
             return <PrivacyPolicy />;
+          }}
+        />
+        <Route
+          path={`/Changelog`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Terms Of Service");
+            return <Changelog />;
           }}
         />
       </PageBody>

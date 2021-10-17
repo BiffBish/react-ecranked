@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 
 function map_range(value, low1, high1, low2, high2) {
@@ -91,6 +91,8 @@ const RecentGamesStyle = styled.div`
 
 const TimelineContainerStyle = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 `;
 
 const UserListStyle = styled.div`
@@ -100,10 +102,44 @@ const UserListStyle = styled.div`
   flex: 100px 1;
 `;
 
+const TimelineBar = styled.div`
+  position: absolute;
+  width: 0px;
+  zindex: 1;
+  top: 0;
+  height: 400px;
+  border: 2px solid white;
+  border-radius: 10px;
+  #background-color: white;
+  pointer-events: none;
+`;
+const TimelineBarText = styled.div`
+  position: relative;
+  width: 100%;
+  zindex: 100;
+  fontsize: 20;
+  cursor: pointer;
+`;
 const Timeline = ({ skimData, users }) => {
   const [userList, setUserList] = useState([]);
+  const [hoverTimeline, setHoverTimeline] = useState(0);
+  //const [timelineBarPos, setTimelineBarPos] = useState(0);
+  const innerTimelineRef = useRef();
+  const globalTimelineRef = useRef();
+  const [flipedTimelineTime, setFlipedTimelineTime] = useState(true);
+
+  const totalTime = skimData.end_time - skimData.start_time;
+
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  const onHoverMove = (num) => {
+    //const globalRect = globalTimelineRef.current.getBoundingClientRect();
+    //const timelineRect = innerTimelineRef.current.getBoundingClientRect();
+    setHoverTimeline(num);
+    // setTimelineBarPos(
+    //   timelineRect.left - globalRect.left + timelineRect.width * num
+    // );
+  };
   useEffect(() => {
     async function loadInReplayAnimation(replays) {
       replays.sort((replay1, replay2) => {
@@ -119,13 +155,37 @@ const Timeline = ({ skimData, users }) => {
     }
     loadInReplayAnimation(users);
   }, [users]);
+  function secondsToTime(seconds) {
+    if (seconds < 0 || isNaN(seconds)) {
+      seconds = 0;
+    }
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return min + ":" + String(sec).padStart(2, "0");
+  }
 
+  const getBarHeight = () => {
+    if (innerTimelineRef.current === undefined) {
+      return 0;
+    }
+    return innerTimelineRef.current.getBoundingClientRect().height - 10;
+  };
+  const getBarPosition = () => {
+    if (globalTimelineRef.current === undefined) {
+      return 0;
+    }
+    const globalRect = globalTimelineRef.current.getBoundingClientRect();
+    const timelineRect = innerTimelineRef.current.getBoundingClientRect();
+    return (
+      timelineRect.left - globalRect.left + timelineRect.width * hoverTimeline
+    );
+  };
   if (!users) return null;
 
   return (
-    <RecentGamesStyle>
+    <RecentGamesStyle ref={globalTimelineRef}>
       <ContainerTitle>
-        Game over time{" "}
+        Timeline
         <p
           style={{
             position: "absolute",
@@ -137,10 +197,36 @@ const Timeline = ({ skimData, users }) => {
           red: deaths
         </p>
       </ContainerTitle>
-      <TimelineContainerStyle>
-        <UserList users={userList} />
-        <TimelineUserList users={userList} api_data={skimData} />
-      </TimelineContainerStyle>
+      <>
+        <TimelineBarText
+          style={{
+            left: getBarPosition() - 50,
+          }}
+          onClick={() => {
+            setFlipedTimelineTime(!flipedTimelineTime);
+          }}
+        >
+          {flipedTimelineTime
+            ? secondsToTime(hoverTimeline * totalTime)
+            : "-" + secondsToTime(totalTime - hoverTimeline * totalTime)}
+        </TimelineBarText>
+        <TimelineContainerStyle>
+          <UserList style={{ padding: 40 }} users={userList} />
+          <TimelineUserList
+            refCallback={innerTimelineRef}
+            users={userList}
+            api_data={skimData}
+            callbackPositionFunction={onHoverMove}
+          />
+        </TimelineContainerStyle>
+        <TimelineBar
+          style={{
+            left: getBarPosition(),
+            top: 110,
+            height: getBarHeight(),
+          }}
+        />
+      </>
       {/* {userList.map((user) => {
         const onUserClick = () => {
           userClick(user["name"]);
@@ -208,13 +294,29 @@ const TimelineSubStyle = styled.div`
   flex: 200px 8;
 `;
 
-const TimelineUserList = ({ users, api_data }) => {
+const TimelineUserList = ({
+  users,
+  api_data,
+  callbackPositionFunction,
+  refCallback,
+}) => {
+  const mouseMove = (ev) => {
+    const rect = refCallback.current.getBoundingClientRect();
+    callbackPositionFunction((ev.clientX - rect.left) / rect.width);
+  };
   return (
-    <TimelineSubStyle>
-      {users.map((user) => {
-        return <TimelineUserItem user={user} api_data={api_data} />;
-      })}
-    </TimelineSubStyle>
+    <>
+      <TimelineSubStyle
+        ref={refCallback}
+        onMouseMoveCapture={(ev) => {
+          mouseMove(ev);
+        }}
+      >
+        {users.map((user) => {
+          return <TimelineUserItem user={user} api_data={api_data} />;
+        })}
+      </TimelineSubStyle>
+    </>
   );
 };
 const TimelineUserItemStyle = styled.div`
@@ -271,7 +373,6 @@ const GetDeathPoints = ({ user, api_data }) => {
         // On the last deathPoint
         endFrame = user["startFrame"] + user["stats"]["total_frames"];
       } else {
-        console.log(user["framestamps"]);
         endFrame = user["framestamps"]["in_bounds"][index + 1][0];
       }
       startFrame = user["framestamps"]["in_bounds"][index][0];
@@ -462,8 +563,6 @@ const LoadoutBarItem = ({ width, transformHorisontal, loadoutNumber }) => {
         left: `${transformHorisontal}%`,
       }}
       onMouseEnter={() => {
-        console.log("Twe");
-
         setOnHovered(true);
       }}
       onMouseLeave={() => {
@@ -479,9 +578,7 @@ const LoadoutBarItem = ({ width, transformHorisontal, loadoutNumber }) => {
 const LoadoutBar = ({ user, api_data }) => {
   let LoadoutBarItems = [];
   for (let index = 0; index < user["framestamps"]["loadout"].length; index++) {
-    console.debug(user["framestamps"]["loadout"][index][0]);
     const startFrame = user["framestamps"]["loadout"][index][0];
-    console.debug(startFrame);
 
     var endFrame = user["stats"]["total_frames"] + user["startFrame"];
     if (index + 1 < user["framestamps"]["loadout"].length) {

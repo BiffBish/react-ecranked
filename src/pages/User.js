@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
-
+import Achievements from "../components/Achievements";
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -578,7 +578,7 @@ const FailedSearchBar = ({ shown, onFormSubmit }) => {
   );
 };
 
-export default function User({ username }) {
+export default function User({ username, setBannerCallback, subDomain }) {
   let history = useHistory();
   const whenSearchSubmit = (text) => {
     console.log(text);
@@ -609,8 +609,26 @@ export default function User({ username }) {
       total_games: 0,
       total_deaths: 0,
       average_deaths: 0,
+      top_speed: 0,
+      percent_left: 0,
+      percent_right: 0,
+
       top_loadout: [],
     },
+    daily_stats: {
+      average_speed: 0,
+      average_ping: 0,
+      percent_stopped: 0,
+      percent_upsidedown: 0,
+      total_games: 0,
+      total_deaths: 0,
+      average_deaths: 0,
+      top_speed: 0,
+      percent_left: 0,
+      percent_right: 0,
+      top_loadout: [],
+    },
+    test: {},
   };
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
@@ -628,20 +646,26 @@ export default function User({ username }) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
           }
-          setApiData(data);
-          setUserNotFound(false);
+          if ("oculus_name" in data) {
+            setUserNotFound(false);
+            setBannerCallback(data["oculus_name"]);
+            console.log(data["oculus_name"]);
+            setApiData(data);
+          } else {
+            setBannerCallback("Unknown");
+            setUserNotFound(true);
+          }
         }
       })
       .catch((error) => {
         setUserNotFound(true);
         console.error("There was an error!", error);
       });
-  }, [username]);
+  }, [username, setBannerCallback]);
 
   function WhatApiRequest() {
     console.log("APIDATA");
 
-    console.log(apiData);
     if (userNotFound) {
       return EMPTYREQUEST;
     }
@@ -655,6 +679,8 @@ export default function User({ username }) {
   console.log("userNotFound", userNotFound);
   return (
     <>
+      <Achievements userData={WhatApiRequest()} />
+
       <FailedSearchBar shown={userNotFound} onFormSubmit={whenSearchSubmit} />
       <UserBody
         style={
