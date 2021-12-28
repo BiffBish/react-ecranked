@@ -536,6 +536,8 @@ const LeftBar = styled.div`
   border-radius: 10px;
   flex: 100px 2;
   display: flex;
+  flex-direction: column;
+  gap: 35px;
 `;
 const DownloadContainerStyle = styled.div`
   padding: 10px 10px 0px;
@@ -546,7 +548,7 @@ const DownloadContainerStyle = styled.div`
   border: 2px solid white;
   border-radius: 10px;
   cursor: pointer;
-  flex-grow: 1;
+  flex-grow: 0;
   height: 80px;
   transition-duration: 0.5s;
   transition-property: height;
@@ -601,6 +603,11 @@ const Download = ({ session_id }) => {
     //   "https://ecranked.ddns.net/replay/" + session_id + "/download"
     // );
   };
+  const onViewReplayButtonClick = () => {
+    window.location.assign(
+      "https://ec-web-replayer-ycfsx.ondigitalocean.app/#replay=" + session_id
+    );
+  };
   return (
     <LeftBar>
       <DownloadContainerStyle
@@ -608,6 +615,19 @@ const Download = ({ session_id }) => {
         style={isRateLimit ? { height: "100px" } : { height: "80px" }}
       >
         <ContainerTitle>Download</ContainerTitle>
+        <DownloadRatelimitStyle
+          style={isRateLimit ? { height: "60px" } : { height: "0px" }}
+        >
+          please wait {rateLimitTime} seconds
+        </DownloadRatelimitStyle>
+      </DownloadContainerStyle>
+      <DownloadContainerStyle
+        onClick={onViewReplayButtonClick}
+        style={{ height: "45px", padding: "0px" }}
+      >
+        <ContainerTitle style={{ fontSize: "30px", margin: "0px" }}>
+          [Beta] View Replay
+        </ContainerTitle>
         <DownloadRatelimitStyle
           style={isRateLimit ? { height: "60px" } : { height: "0px" }}
         >
