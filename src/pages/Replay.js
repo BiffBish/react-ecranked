@@ -605,7 +605,7 @@ const Download = ({ session_id }) => {
   };
   const onViewReplayButtonClick = () => {
     window.location.assign(
-      "https://ec-web-replayer-ycfsx.ondigitalocean.app/#replay=" + session_id
+      "https://replayviewer.ecranked.com/#replay=" + session_id
     );
   };
   return (
