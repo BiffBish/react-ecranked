@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
-
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -16,7 +15,7 @@ const LoadoutStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
 `;
 
@@ -27,10 +26,10 @@ const LoadoutBoxStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   flex: 60px 1;
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
   flex-direction: column;
   min-width: 60px;
@@ -62,9 +61,9 @@ const LoadoutBox = ({ number, frequency }) => {
     "/images/meteor.png",
   ];
   let displayNumber = Math.round(frequency * 10000) / 100;
-  if (displayNumber === 100) {
-    displayNumber = 99.999;
-  }
+  // if (displayNumber === 100) {
+  //   displayNumber = 99.999;
+  // }
   return (
     <LoadoutBoxStyle>
       <img
@@ -89,7 +88,7 @@ const LoadoutBox = ({ number, frequency }) => {
   );
 };
 const LoadoutExpandButtonStyle = styled.div`
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   flex-grow: 1;
   margin: 10px;
@@ -119,7 +118,7 @@ const Loadout = ({ top_loadout }) => {
 };
 
 const UserStatStyle = styled.div`
-  margin: 2px;
+  margin: 1px;
   float: left;
   background-color: #222;
   color: white;
@@ -135,7 +134,7 @@ const UserStatStyle = styled.div`
 
 const ProgressDivStyle = styled.div`
   border-radius: 0.5rem;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   height: 30px;
   overflow: hidden;
@@ -191,56 +190,62 @@ const UserStatsStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 0px 10px;
 `;
-const UserStats = ({ userData }) => {
+const UserStats = ({ userData, statChoice }) => {
+  const userStats = userData[statChoice];
   return (
     <UserStatsStyle>
       <ContainerTitle>Stats</ContainerTitle>
 
       <UserStat
         name={"Total Games"}
-        displayValue={userData["total_games"]}
+        displayValue={userStats["total_games"]}
         value={1}
       />
       <UserStat
         name={"Total Deaths"}
-        displayValue={userData["total_deaths"]}
+        displayValue={userStats["total_deaths"]}
         value={1}
       />
       <UserStat
         name={"Average Ping"}
-        displayValue={userData["average_ping"].toFixed(1) + "ms"}
-        value={map_range(userData["average_ping"], 0, 200, 0, 1)}
+        displayValue={userStats["average_ping"].toFixed(1) + "ms"}
+        value={map_range(userStats["average_ping"], 0, 200, 0, 1)}
       />
       <UserStat
         name={"Average Speed"}
-        displayValue={userData["average_speed"].toFixed(2) + "m/s"}
-        value={map_range(userData["average_speed"], 0, 5, 0, 1)}
+        displayValue={userStats["average_speed"].toFixed(2) + "m/s"}
+        value={map_range(userStats["average_speed"], 0, 5, 0, 1)}
       />
       <UserStat
         name={"Time Stopped"}
-        displayValue={(userData["percent_stopped"] * 100).toFixed(1) + "%"}
-        value={userData["percent_stopped"]}
+        displayValue={(userStats["percent_stopped"] * 100).toFixed(1) + "%"}
+        value={userStats["percent_stopped"]}
       />
       <UserStat
         name={"Inverted"}
-        displayValue={(userData["percent_upsidedown"] * 100).toFixed(1) + "%"}
-        value={userData["percent_upsidedown"]}
+        displayValue={(userStats["percent_upsidedown"] * 100).toFixed(1) + "%"}
+        value={userStats["percent_upsidedown"]}
       />
       <UserStat
         name={"Deaths/game"}
-        displayValue={userData["average_deaths"].toFixed(1)}
-        value={map_range(userData["average_deaths"], 0, 15, 0, 1)}
+        displayValue={userStats["average_deaths"].toFixed(1)}
+        value={map_range(userStats["average_deaths"], 0, 15, 0, 1)}
       />
       <UserStat
         name={"Crash/Leave"}
-        displayValue={(userData["percent_crash"] * 100).toFixed(2) + "%"}
-        value={userData["percent_crash"]}
+        displayValue={(userStats["percent_crash"] * 100).toFixed(2) + "%"}
+        value={userStats["percent_crash"]}
+      />
+      <UserStat
+        name={"Level"}
+        displayValue={userData["level"]}
+        value={map_range(userData["level"], 0, 50, 0, 1)}
       />
     </UserStatsStyle>
   );
@@ -263,23 +268,23 @@ const StatChoiceStyle = styled.div`
   flex-wrap: wrap;
   gap: 0px 10px;
 `;
-
 const StatChoiceButton = styled.div`
   padding: 10px 10px 0px;
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   gap: 0px 10px;
   flex-grow: 1;
   text-align: center;
-  height: 40px;
+  height: 20px;
   &:hover {
     background-color: #555;
     color: #000;
   }
   cursor: pointer;
+  line-height: 20px;
 `;
 const StatChoice = ({ currentSelected, onClick }) => {
   return (
@@ -316,7 +321,7 @@ const CenterColumn = ({ userData }) => {
           setStatChoice(table);
         }}
       />
-      <UserStats userData={userData[statChoice]} />
+      <UserStats userData={userData} statChoice={statChoice} />
       <Loadout
         top_loadout={
           userData[statChoice]["top_loadout"]
@@ -344,7 +349,7 @@ const RecentGameStyle = styled.div`
   padding: 10px;
   margin: 10px 0px;
   text-decoration: none;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   line-height: 0;
   font-size: 15px;
@@ -362,7 +367,7 @@ const RecentGamesStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   flex: 200px 2;
 `;
@@ -435,7 +440,7 @@ const AboutMeStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   flex: 100px 2;
 `;
@@ -467,7 +472,7 @@ const ContainerTitle = styled.h2`
   color: #fff;
 `;
 const autoCompleteBox = styled.form`
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   display: inline-block;
   float: center;
@@ -506,7 +511,7 @@ const FailedSearchBarStyle = styled.div`
   flex-grow: 1;
   height: 0px;
   transition-duration: 1s;
-  border-width: 2px
+  border-width: 1px
   transition-property: height border margin border-width;
   background-color: #222;
   overflow: hidden;
@@ -521,7 +526,7 @@ const FailedSearchBarStyle = styled.div`
 
 const FailedSearchBarTitleStyle = styled.h2`
   text-align: center;
-  font-size: 42px;
+  font-size: 41px;
   color: #fff;
   line-height: 1;
 `;
@@ -555,7 +560,7 @@ const FailedSearchBar = ({ shown, onFormSubmit }) => {
         shown
           ? {
               height: `600px`,
-              border: "2px solid #fff",
+              border: "1px solid #fff",
               margin: "10px 10px 0px",
             }
           : {
@@ -578,7 +583,7 @@ const FailedSearchBar = ({ shown, onFormSubmit }) => {
   );
 };
 
-export default function User({ username }) {
+export default function User({ username, setBannerCallback, subDomain }) {
   let history = useHistory();
   const whenSearchSubmit = (text) => {
     console.log(text);
@@ -609,8 +614,26 @@ export default function User({ username }) {
       total_games: 0,
       total_deaths: 0,
       average_deaths: 0,
+      top_speed: 0,
+      percent_left: 0,
+      percent_right: 0,
+
       top_loadout: [],
     },
+    daily_stats: {
+      average_speed: 0,
+      average_ping: 0,
+      percent_stopped: 0,
+      percent_upsidedown: 0,
+      total_games: 0,
+      total_deaths: 0,
+      average_deaths: 0,
+      top_speed: 0,
+      percent_left: 0,
+      percent_right: 0,
+      top_loadout: [],
+    },
+    test: {},
   };
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
@@ -628,20 +651,26 @@ export default function User({ username }) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
           }
-          setApiData(data);
-          setUserNotFound(false);
+          if ("oculus_name" in data) {
+            setUserNotFound(false);
+            setBannerCallback(data["oculus_name"]);
+            console.log(data["oculus_name"]);
+            setApiData(data);
+          } else {
+            setBannerCallback("Unknown");
+            setUserNotFound(true);
+          }
         }
       })
       .catch((error) => {
         setUserNotFound(true);
         console.error("There was an error!", error);
       });
-  }, [username]);
+  }, [username, setBannerCallback]);
 
   function WhatApiRequest() {
     console.log("APIDATA");
 
-    console.log(apiData);
     if (userNotFound) {
       return EMPTYREQUEST;
     }

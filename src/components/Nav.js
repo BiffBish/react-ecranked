@@ -147,11 +147,6 @@ export default function Nav() {
       <TopBarLinksDesktop>
         <TopBarLink link="/" text="Home" />
         <TopBarLink
-          link="https://echopedia.gg/wiki/Replay_Viewer#Installation"
-          text="Replay Viewer"
-          externalLink={true}
-        />
-        <TopBarLink
           link="https://ecranked.ddns.net"
           text="API"
           externalLink={true}
