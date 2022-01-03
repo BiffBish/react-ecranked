@@ -472,6 +472,10 @@ const AboutMe = ({ userData }) => {
   if (oculus_id == parseInt(userData["oculus_id"])) {
     is_editable = true;
   }
+  // eslint-disable-next-line
+  if (localStorage.getItem("MODERATOR") == 1) {
+    is_editable = true;
+  }
   console.log(
     "[TEST] " +
       oculus_id +

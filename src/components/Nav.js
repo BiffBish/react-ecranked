@@ -134,6 +134,8 @@ const AuthorizeButton = () => {
   const logout = () => {
     localStorage.removeItem("AUTHORIZATION_TOKEN");
     localStorage.removeItem("OCULUS_ID");
+    localStorage.removeItem("MODERATOR");
+
     window.location.reload(false);
   };
   if (authToken == null) {

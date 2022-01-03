@@ -195,6 +195,10 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
             onFinish();
             localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
             localStorage.setItem("OCULUS_ID", data["oculus_id"]);
+            // eslint-disable-next-line
+            if (data["moderator"] == 1) {
+              localStorage.setItem("MODERATOR", data["moderator"]);
+            }
           });
       }
     };
