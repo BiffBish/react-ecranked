@@ -638,14 +638,19 @@ const FileUploadButton = ({ userData }) => {
 };
 const ModeratorAvatarControls = ({ userData }) => {
   const onApprove = () => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"], {
-      method: "PUT",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ approve: true }),
-    })
+    fetch(
+      "https://ecranked.ddns.net/api/v1/user/" +
+        userData["oculus_id"] +
+        "/avatar",
+      {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ approve: true }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -653,14 +658,19 @@ const ModeratorAvatarControls = ({ userData }) => {
       });
   };
   const onRemove = () => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"], {
-      method: "PUT",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ approve: false }),
-    })
+    fetch(
+      "https://ecranked.ddns.net/api/v1/user/" +
+        userData["oculus_id"] +
+        "/avatar",
+      {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ approve: false }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
