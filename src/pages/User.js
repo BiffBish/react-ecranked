@@ -565,17 +565,28 @@ const AboutMe = ({ userData }) => {
         </AboutMeStyle>
       );
     } else {
-      return (
-        <AboutMeStyle>
-          <div>
-            <AboutMeTitle>About Me</AboutMeTitle>
-          </div>
-          <div>{userData["about_string"]}</div>
-          <EditTextButtonStyle>
-            Login to change your aboutMe
-          </EditTextButtonStyle>
-        </AboutMeStyle>
-      );
+      if (oculus_id == null) {
+        return (
+          <AboutMeStyle>
+            <div>
+              <AboutMeTitle>About Me</AboutMeTitle>
+            </div>
+            <div>{userData["about_string"]}</div>
+            <EditTextButtonStyle>
+              Login to change your aboutMe
+            </EditTextButtonStyle>
+          </AboutMeStyle>
+        );
+      } else {
+        return (
+          <AboutMeStyle>
+            <div>
+              <AboutMeTitle>About Me</AboutMeTitle>
+            </div>
+            <div>{userData["about_string"]}</div>
+          </AboutMeStyle>
+        );
+      }
     }
   }
 };
