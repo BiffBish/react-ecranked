@@ -644,7 +644,7 @@ const ModeratorAvatarControls = ({ userData }) => {
         Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
         "Content-Type": "application/json",
       },
-      body: { approve: true },
+      body: JSON.stringify({ approve: true }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -659,7 +659,7 @@ const ModeratorAvatarControls = ({ userData }) => {
         Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
         "Content-Type": "application/json",
       },
-      body: { approve: false },
+      body: JSON.stringify({ approve: false }),
     })
       .then((response) => response.json())
       .then((data) => {
