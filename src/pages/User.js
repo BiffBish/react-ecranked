@@ -461,9 +461,8 @@ const EditButtonStyle = styled.div`
   font-size: 15px;
   cursor: pointer;
 `;
-const AboutMe = ({ userData }) => {
-  const oculus_id = localStorage.getItem("OCULUS_ID");
 
+const AboutStringBox = ({ userData, oculus_id }) => {
   var is_editable = false;
   if (oculus_id == null) {
     is_editable = false;
@@ -514,10 +513,7 @@ const AboutMe = ({ userData }) => {
   };
   if (editing) {
     return (
-      <AboutMeStyle>
-        <div>
-          <AboutMeTitle>About Me</AboutMeTitle>
-        </div>
+      <>
         <textarea
           style={{
             backgroundColor: "transparent",
@@ -548,15 +544,12 @@ const AboutMe = ({ userData }) => {
 
           <EditButtonStyle onClick={onClickSubmit}>Save</EditButtonStyle>
         </EditButtonsStyle>
-      </AboutMeStyle>
+      </>
     );
   } else {
     if (is_editable) {
       return (
-        <AboutMeStyle>
-          <div>
-            <AboutMeTitle>About Me</AboutMeTitle>
-          </div>
+        <>
           <div style={{ whiteSpace: "pre-wrap" }}>
             {userData["about_string"]}
           </div>
@@ -568,35 +561,200 @@ const AboutMe = ({ userData }) => {
           >
             Edit
           </EditButtonStyle>
-        </AboutMeStyle>
+        </>
       );
     } else {
       if (oculus_id == null) {
         return (
-          <AboutMeStyle>
-            <div>
-              <AboutMeTitle>About Me</AboutMeTitle>
-            </div>
+          <>
             <div style={{ whiteSpace: "pre-wrap" }}>
               {userData["about_string"]}
             </div>
             <EditTextButtonStyle>
               Login to change your aboutMe
             </EditTextButtonStyle>
-          </AboutMeStyle>
+          </>
         );
       } else {
         return (
-          <AboutMeStyle>
-            <div>
-              <AboutMeTitle>About Me</AboutMeTitle>
-            </div>
+          <>
             <div>{userData["about_string"]}</div>
-          </AboutMeStyle>
+          </>
         );
       }
     }
   }
+};
+
+const AvatarStyle = styled.img`
+  // min-height: 100%;
+  width: 100%;
+  height: auto;
+  min-width: 0;
+`;
+const FileUploadButton = ({ userData }) => {
+  const [selectedFile, setSelectedFile] = useState();
+
+  const changeHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmission = () => {
+    const formData = new FormData();
+
+    formData.append("image", selectedFile);
+
+    fetch(
+      "https://ecranked.ddns.net/api/v1/user/" +
+        userData["oculus_id"] +
+        "/avatar",
+      {
+        method: "POST",
+        body: formData,
+        headers: { Authorization: localStorage.getItem("AUTHORIZATION_TOKEN") },
+      }
+    )
+      .then((response) => response.json())
+
+      .then((result) => {
+        console.log("Success:", result);
+        window.location.reload(false);
+      })
+
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  return (
+    <div>
+      <input type="file" name="file" onChange={changeHandler} />
+
+      <div>
+        <button onClick={handleSubmission}>Submit</button>
+      </div>
+    </div>
+  );
+};
+const ModeratorAvatarControls = ({ userData }) => {
+  const onApprove = () => {
+    fetch("https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"], {
+      method: "PUT",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+      body: { approve: true },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        window.location.reload(false);
+      });
+  };
+  const onRemove = () => {
+    fetch("https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"], {
+      method: "PUT",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+      body: { approve: false },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        window.location.reload(false);
+      });
+  };
+  return (
+    <EditButtonsStyle>
+      <EditButtonStyle onClick={onRemove}>Remove</EditButtonStyle>
+
+      {userData["avatar_pending"] ? (
+        <EditButtonStyle onClick={onApprove}>Approve</EditButtonStyle>
+      ) : (
+        <></>
+      )}
+    </EditButtonsStyle>
+  );
+};
+const AvatarControls = ({ moderator, userData, oculus_id }) => {
+  // eslint-disable-next-line
+  var ownPage = oculus_id == userData["oculus_id"];
+  var avatar = userData["avatar"];
+  // var pending = userData["avatar_pending"];
+
+  return (
+    <>
+      {moderator && avatar ? (
+        <ModeratorAvatarControls userData={userData} />
+      ) : (
+        <> </>
+      )}
+      {ownPage ? <FileUploadButton userData={userData} /> : <> </>}
+    </>
+  );
+  // return <></>;
+};
+const AboutAvatar = ({ userData, oculus_id }) => {
+  var avatar = userData["avatar"];
+
+  // var pending = userData["avatar_pending"];
+  var isModerator = false;
+
+  // eslint-disable-next-line
+  if (localStorage.getItem("MODERATOR") == 1) {
+    isModerator = true;
+  }
+  console.log(userData);
+  if (avatar) {
+    return (
+      <>
+        <AvatarStyle src={avatar} />
+        {/* <EditButtonsStyle>
+          <EditButtonStyle
+            onClick={() => {
+              setEditing(false);
+            }}
+          >
+            Discard
+          </EditButtonStyle>
+
+          <EditButtonStyle onClick={onClickSubmit}>Save</EditButtonStyle>
+        </EditButtonsStyle> */}
+        <AvatarControls
+          moderator={isModerator}
+          userData={userData}
+          oculus_id={oculus_id}
+        />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <AvatarControls
+          moderator={isModerator}
+          userData={userData}
+          oculus_id={oculus_id}
+        />
+      </>
+    );
+  }
+};
+const AboutMe = ({ userData }) => {
+  const oculus_id = localStorage.getItem("OCULUS_ID");
+
+  return (
+    <AboutMeStyle>
+      <div>
+        <AboutMeTitle>About Me</AboutMeTitle>
+      </div>
+
+      <AboutStringBox userData={userData} oculus_id={oculus_id} />
+      <AboutAvatar userData={userData} oculus_id={oculus_id} />
+    </AboutMeStyle>
+  );
 };
 const UserBody = styled.div`
   display: flex;
@@ -795,8 +953,15 @@ export default function User({ username, setBannerCallback, subDomain }) {
   };
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
+
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + username)
+    fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+    })
       .then(async (response) => {
         const data = await response.json();
         console.log("code:" + response.statusCode);
