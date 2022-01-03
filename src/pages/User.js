@@ -457,7 +457,7 @@ const EditButtonsStyle = styled.div`
   justify-content: space-between;
 `;
 const EditButtonStyle = styled.div`
-  color: #fff;
+  color: #aaa;
   font-size: 15px;
   cursor: pointer;
 `;
