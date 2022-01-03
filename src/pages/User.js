@@ -553,7 +553,9 @@ const AboutMe = ({ userData }) => {
           <div>
             <AboutMeTitle>About Me</AboutMeTitle>
           </div>
-          <div contenteditable={"false"}>{userData["about_string"]}</div>
+          <div style={{ whiteSpace: "pre-wrap" }}>
+            {userData["about_string"]}
+          </div>
           <EditButtonStyle
             onClick={() => {
               setCurrentText(userData["about_string"]);
@@ -571,7 +573,9 @@ const AboutMe = ({ userData }) => {
             <div>
               <AboutMeTitle>About Me</AboutMeTitle>
             </div>
-            <div>{userData["about_string"]}</div>
+            <div style={{ whiteSpace: "pre-wrap" }}>
+              {userData["about_string"]}
+            </div>
             <EditTextButtonStyle>
               Login to change your aboutMe
             </EditTextButtonStyle>
