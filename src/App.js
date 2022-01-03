@@ -194,6 +194,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
             console.log(data);
             onFinish();
             localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
+            localStorage.setItem("OCULUS_ID", data["oculus_id"]);
           });
       }
     };

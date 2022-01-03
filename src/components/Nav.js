@@ -37,6 +37,23 @@ const LinkStyle = styled(NavLink)`
   }
   transition-duration: 0.1s;
 `;
+const LogoutButton = styled.div`
+  text-align: center;
+  color: #fff;
+  background-color: #222;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 200;
+  float: left;
+  text-decoration: none;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  transition-duration: 0.1s;
+  float: right;
+  cursor: pointer;
+`;
 const ExternalLinkStyle = styled.a`
   text-align: center;
   color: #fff;
@@ -112,7 +129,26 @@ const autoCompleteOptionDiv = styled.div`
   }
   transition-duration: 0.1s;
 `;
-
+const AuthorizeButton = () => {
+  const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
+  const logout = () => {
+    localStorage.removeItem("AUTHORIZATION_TOKEN");
+    localStorage.removeItem("OCULUS_ID");
+    window.location.reload(false);
+  };
+  if (authToken == null) {
+    return (
+      <TopBarLink
+        link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify"
+        text="Login with discord"
+        externalLink={true}
+        floatRight={true}
+      />
+    );
+  } else {
+    return <LogoutButton onClick={logout}>Logout</LogoutButton>;
+  }
+};
 export default function Nav() {
   let history = useHistory();
 
@@ -152,12 +188,7 @@ export default function Nav() {
           externalLink={true}
         />
         <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
-        <TopBarLink
-          link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify"
-          text="Login with discord"
-          externalLink={true}
-          floatRight={true}
-        />
+        <AuthorizeButton />
         <AutoComplete
           options={allUsernames}
           onFormSubmit={whenSearchSubmit}

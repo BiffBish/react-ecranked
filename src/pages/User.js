@@ -443,14 +443,155 @@ const AboutMeStyle = styled.div`
   border: 1px solid white;
   border-radius: 10px;
   flex: 100px 2;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+`;
+
+const EditTextButtonStyle = styled.div`
+  color: #888;
+  font-size: 10px;
+`;
+const aboutMeEditInput = styled.input`
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 18px;
+  padding: 8px;
+  font-family: "Montserrat", sans-serif;
+  z-index: 50;
+`;
+
+const EditButtonsStyle = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const EditButtonStyle = styled.div`
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
 `;
 const AboutMe = ({ userData }) => {
-  return (
-    <AboutMeStyle>
-      <ContainerTitle>About Me</ContainerTitle>
-      {userData["about_string"]}
-    </AboutMeStyle>
+  const oculus_id = localStorage.getItem("OCULUS_ID");
+
+  var is_editable = false;
+  if (oculus_id == null) {
+    is_editable = false;
+  }
+  // eslint-disable-next-line
+  if (oculus_id == parseInt(userData["oculus_id"])) {
+    is_editable = true;
+  }
+  console.log(
+    "[TEST] " +
+      oculus_id +
+      "   " +
+      parseInt(userData["oculus_id"]) +
+      "    " +
+      is_editable
   );
+  const handleChange = (e) => {};
+  const updateIsEdit = (e, value = "null") => {};
+  const [currentText, setCurrentText] = useState(userData["about_string"]);
+  const [editing, setEditing] = useState(false);
+
+  const onClickEdit = () => {
+    setEditing(true);
+  };
+  const onClickSubmit = () => {
+    if (currentText.length > 200) {
+      return;
+    }
+
+    const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
+
+    const requestOptions = {
+      method: "PUT",
+      headers: { Authorization: authToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ about_string: currentText }),
+    };
+    console.log({ about_string: currentText });
+
+    fetch(
+      "https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"],
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+  if (editing) {
+    return (
+      <AboutMeStyle>
+        <div>
+          <AboutMeTitle>About Me</AboutMeTitle>
+        </div>
+        <textarea
+          style={{
+            backgroundColor: "transparent",
+            // border: "none",
+            outline: "none",
+            color: "#fff",
+            fontSize: "18px",
+            padding: "8px",
+            fontFamily: "Montserrat",
+            flexGrow: 1,
+            minWidth: "120px",
+            // f: "Montserrat", sans-serif,
+          }}
+          type="textarea"
+          name="userName"
+          value={currentText}
+          onChange={(e) => setCurrentText(e.target.value)}
+          onBlur={updateIsEdit}
+        />
+        <EditButtonsStyle>
+          <EditButtonStyle
+            onClick={() => {
+              setEditing(false);
+            }}
+          >
+            Discard
+          </EditButtonStyle>
+
+          <EditButtonStyle onClick={onClickSubmit}>Save</EditButtonStyle>
+        </EditButtonsStyle>
+      </AboutMeStyle>
+    );
+  } else {
+    if (is_editable) {
+      return (
+        <AboutMeStyle>
+          <div>
+            <AboutMeTitle>About Me</AboutMeTitle>
+          </div>
+          <div contenteditable={"false"}>{userData["about_string"]}</div>
+          <EditButtonStyle
+            onClick={() => {
+              setCurrentText(userData["about_string"]);
+              setEditing(true);
+            }}
+          >
+            Edit
+          </EditButtonStyle>
+        </AboutMeStyle>
+      );
+    } else {
+      return (
+        <AboutMeStyle>
+          <div>
+            <AboutMeTitle>About Me</AboutMeTitle>
+          </div>
+          <div>{userData["about_string"]}</div>
+          <EditTextButtonStyle>
+            Login to change your aboutMe
+          </EditTextButtonStyle>
+        </AboutMeStyle>
+      );
+    }
+  }
 };
 const UserBody = styled.div`
   display: flex;
@@ -463,13 +604,25 @@ const UserBody = styled.div`
   transition-property: height margin opacity;
 `;
 
-const ContainerTitle = styled.h2`
+const ContainerTitle = styled.div`
   font-size: 36px;
   font-weight: 400;
   margin: 10px 0px;
   text-align: center;
   flex: 0 0 100%;
   color: #fff;
+  flex-grow: 0;
+`;
+
+const AboutMeTitle = styled.div`
+  font-size: 36px;
+  font-weight: 400;
+  margin: 10px 0px;
+  text-align: center;
+  flex: 0 0 100%;
+  color: #fff;
+  flex-grow: 0;
+  flex-shrink: 0;
 `;
 const autoCompleteBox = styled.form`
   border: 1px solid white;
