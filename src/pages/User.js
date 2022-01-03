@@ -452,17 +452,6 @@ const EditTextButtonStyle = styled.div`
   color: #888;
   font-size: 10px;
 `;
-const aboutMeEditInput = styled.input`
-  background-color: transparent;
-  border: none;
-  outline: none;
-  color: #fff;
-  font-size: 18px;
-  padding: 8px;
-  font-family: "Montserrat", sans-serif;
-  z-index: 50;
-`;
-
 const EditButtonsStyle = styled.div`
   display: flex;
   justify-content: space-between;
@@ -491,14 +480,10 @@ const AboutMe = ({ userData }) => {
       "    " +
       is_editable
   );
-  const handleChange = (e) => {};
   const updateIsEdit = (e, value = "null") => {};
   const [currentText, setCurrentText] = useState(userData["about_string"]);
   const [editing, setEditing] = useState(false);
 
-  const onClickEdit = () => {
-    setEditing(true);
-  };
   const onClickSubmit = () => {
     if (currentText.length > 200) {
       return;
@@ -520,6 +505,7 @@ const AboutMe = ({ userData }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        window.location.reload(false);
       });
   };
   if (editing) {
