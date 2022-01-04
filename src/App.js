@@ -180,6 +180,7 @@ function App() {
                 callbackCode={callbackCode}
                 onFinish={() => {
                   props.history.push("/home");
+                  window.location.reload(false);
                 }}
               />
             );
