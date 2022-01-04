@@ -129,8 +129,7 @@ const autoCompleteOptionDiv = styled.div`
   }
   transition-duration: 0.1s;
 `;
-const AuthorizeButton = () => {
-  const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
+const AuthorizeButton = ({ userData }) => {
   const logout = () => {
     localStorage.removeItem("AUTHORIZATION_TOKEN");
     localStorage.removeItem("OCULUS_ID");
@@ -138,7 +137,8 @@ const AuthorizeButton = () => {
 
     window.location.reload(false);
   };
-  if (authToken == null) {
+  console.log(userData.authorization_token);
+  if (userData.authorization_token == null) {
     return (
       <TopBarLink
         link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify"
@@ -151,7 +151,7 @@ const AuthorizeButton = () => {
     return <LogoutButton onClick={logout}>Logout</LogoutButton>;
   }
 };
-export default function Nav() {
+export default function Nav({ clientData }) {
   let history = useHistory();
 
   const [allUsernames, setAllUsernames] = useState(null);
@@ -189,8 +189,14 @@ export default function Nav() {
           text="API"
           externalLink={true}
         />
+
         <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
-        <AuthorizeButton />
+        {clientData.moderator ? (
+          <TopBarLink link="/Moderator/UnapprovedImages" text="Moderator" />
+        ) : (
+          ""
+        )}
+        <AuthorizeButton userData={clientData} />
         <AutoComplete
           options={allUsernames}
           onFormSubmit={whenSearchSubmit}

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Replay from "./pages/Replay";
 import User from "./pages/User";
 import Home from "./pages/Home";
-
+import Moderator from "./pages/Moderator";
 import Nav from "./components/Nav";
 
 import AnimateHeight from "react-animate-height";
@@ -44,6 +44,40 @@ const Banner = styled(AnimateHeight)`
 `;
 
 function App() {
+  const [clientData, setClientData] = React.useState({
+    oculus_id: localStorage.getItem("OCULUS_ID"),
+    authorization_token: localStorage.getItem("AUTHORIZATION_TOKEN"),
+    confirmed_authorized: false,
+    moderator: localStorage.getItem("MODERATOR"),
+  });
+
+  useEffect(() => {
+    if (clientData.authorization_token && !clientData.confirmed_authorized) {
+      fetch("https://ecranked.ddns.net/api/v1/user/@me", {
+        headers: { Authorization: clientData.authorization_token },
+      })
+        .then(async (response) => {
+          if (response.status === 200) {
+            clientData.confirmed_authorized = true;
+          } else {
+            localStorage.removeItem("AUTHORIZATION_TOKEN");
+            localStorage.removeItem("OCULUS_ID");
+            localStorage.removeItem("MODERATOR");
+            setClientData((prev) => ({
+              ...prev,
+              oculus_id: null,
+              authorization_token: null,
+              moderator: null,
+            }));
+            window.location.reload(false);
+          }
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+        });
+    }
+  }, [clientData]);
+
   const [apiData, setApiData] = React.useState([]);
   const [BannerHeight, setBannerHeight] = useState(400);
   const [BannerText, setBannerText] = useState("ECRanked");
@@ -81,7 +115,7 @@ function App() {
   console.log(history);
   return (
     <Router>
-      <Nav style={{ height: "10px" }} />
+      <Nav clientData={clientData} style={{ height: "10px" }} />
       <PageBody>
         {}
         <Banner
@@ -165,6 +199,14 @@ function App() {
             setBannerHeight(100);
             setBannerText("Terms Of Service");
             return <Changelog />;
+          }}
+        />
+        <Route
+          path={`/Moderator/UnapprovedImages`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Moderation");
+            return <Moderator />;
           }}
         />
       </PageBody>
