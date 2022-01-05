@@ -446,6 +446,7 @@ const AboutMeStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  gap: 10px;
 `;
 
 const EditTextButtonStyle = styled.div`
@@ -453,13 +454,28 @@ const EditTextButtonStyle = styled.div`
   font-size: 10px;
 `;
 const EditButtonsStyle = styled.div`
+  padding: 10px;
   display: flex;
   justify-content: space-between;
+  border: 1px solid white;
+  border-radius: 10px;
+  background-color: #222;
+  flex-wrap: wrap;
 `;
 const EditButtonStyle = styled.div`
+  padding: 0px 10px;
+  // margin: 20px 10px 20px;
   color: #aaa;
   font-size: 15px;
   cursor: pointer;
+  border: 1px solid white;
+  border-radius: 10px;
+  background-color: #222;
+
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
 `;
 
 const AboutStringBox = ({ userData, oculus_id }) => {
@@ -548,21 +564,37 @@ const AboutStringBox = ({ userData, oculus_id }) => {
     );
   } else {
     if (is_editable) {
-      return (
-        <>
-          <div style={{ whiteSpace: "pre-wrap" }}>
-            {userData["about_string"]}
-          </div>
-          <EditButtonStyle
-            onClick={() => {
-              setCurrentText(userData["about_string"]);
-              setEditing(true);
-            }}
-          >
-            Edit
-          </EditButtonStyle>
-        </>
-      );
+      if (userData["about_string"] == null) {
+        return (
+          <>
+            <EditButtonStyle
+              style={{ color: "white" }}
+              onClick={() => {
+                setCurrentText(userData["about_string"]);
+                setEditing(true);
+              }}
+            >
+              Click here to enter some text about yourself!
+            </EditButtonStyle>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <div style={{ whiteSpace: "pre-wrap" }}>
+              {userData["about_string"]}
+            </div>
+            <EditButtonStyle
+              onClick={() => {
+                setCurrentText(userData["about_string"]);
+                setEditing(true);
+              }}
+            >
+              Edit
+            </EditButtonStyle>
+          </>
+        );
+      }
     } else {
       if (oculus_id == null) {
         return (
@@ -591,6 +623,25 @@ const AvatarStyle = styled.img`
   width: 100%;
   height: auto;
   min-width: 0;
+  border: 1px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+const SubmitButton = styled.button`
+  padding: 0px 10px;
+  // margin: 20px 10px 20px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 1px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
 `;
 const FileUploadButton = ({ userData }) => {
   const [selectedFile, setSelectedFile] = useState();
@@ -631,7 +682,7 @@ const FileUploadButton = ({ userData }) => {
       <input type="file" name="file" onChange={changeHandler} />
 
       <div>
-        <button onClick={handleSubmission}>Submit</button>
+        <SubmitButton onClick={handleSubmission}>Submit</SubmitButton>
       </div>
     </div>
   );
@@ -679,6 +730,10 @@ const ModeratorAvatarControls = ({ userData }) => {
   };
   return (
     <EditButtonsStyle>
+      <p style={{ width: "100%", textAlign: "center", margin: "0" }}>
+        {" "}
+        Moderator control's
+      </p>
       <EditButtonStyle onClick={onRemove}>Remove</EditButtonStyle>
 
       {userData["avatar_pending"] ? (
@@ -702,11 +757,36 @@ const AvatarControls = ({ moderator, userData, oculus_id }) => {
       ) : (
         <> </>
       )}
-      {ownPage ? <FileUploadButton userData={userData} /> : <> </>}
+      <div>
+        {ownPage && !avatar ? (
+          <>
+            <AvatarGuideText>
+              Upload a picture of yourself in EchoVR! Requirements:
+              <br />
+              -Image is taken in EchoVR.
+              <br />
+              -Your chassis is visible.
+              <br />
+              <br /> The image wont be displayed on your page until its been
+              approved by moderator.
+            </AvatarGuideText>
+            <div>
+              <FileUploadButton userData={userData} />
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </>
   );
   // return <></>;
 };
+const AvatarGuideText = styled.p`
+  font-size: 12px;
+  color: rgb(170, 170, 170);
+`;
+const AvatarContainer = styled.div``;
 const AboutAvatar = ({ userData, oculus_id }) => {
   var avatar = userData["avatar"];
 
@@ -721,7 +801,10 @@ const AboutAvatar = ({ userData, oculus_id }) => {
   if (avatar) {
     return (
       <>
-        <AvatarStyle src={avatar} />
+        <AvatarContainer>
+          <AvatarStyle src={avatar} />
+        </AvatarContainer>
+
         {/* <EditButtonsStyle>
           <EditButtonStyle
             onClick={() => {
