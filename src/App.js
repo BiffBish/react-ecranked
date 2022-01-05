@@ -15,6 +15,7 @@ import Changelog from "./pages/Changelog";
 
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Leaderboard from "./pages/Leaderboard";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -151,6 +152,24 @@ function App() {
             return (
               <User
                 username={props.match.params.username}
+                setBannerCallback={setBannerTextCallback}
+                subDomain={props.match.params.subDomain}
+              />
+            );
+          }}
+        />
+        <Route
+          path={`/leaderboard/:leaderboardStatistic/:subDomain`}
+          render={(props) => {
+            setBannerHeight(100);
+            const setBannerTextCallback = (username) => {
+              console.log(username);
+              setBannerText(username);
+            };
+            console.log("Leaderboard");
+            return (
+              <Leaderboard
+                leaderboardStatistic={props.match.params.leaderboardStatistic}
                 setBannerCallback={setBannerTextCallback}
                 subDomain={props.match.params.subDomain}
               />

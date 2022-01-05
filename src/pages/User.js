@@ -1,5 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
@@ -19,7 +21,7 @@ const LoadoutStyle = styled.div`
   border-radius: 10px;
 `;
 
-const LoadoutBoxStyle = styled.div`
+const LoadoutBoxStyle = styled(NavLink)`
   justify-content: center;
   padding: 10px 10px 10px;
   margin: 20px 10px 20px;
@@ -65,7 +67,7 @@ const LoadoutBox = ({ number, frequency }) => {
   //   displayNumber = 99.999;
   // }
   return (
-    <LoadoutBoxStyle>
+    <LoadoutBoxStyle to={"/leaderboard/loadout/" + number}>
       <img
         src={weaponMap[weaponNumber]}
         alt={"weapon"}
