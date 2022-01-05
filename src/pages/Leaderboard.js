@@ -15,12 +15,23 @@ const LeaderboardListFadeIN = keyframes`
     opacity: 1;
   }
 `;
+const LeaderboardListContainer = styled.div`
+  display: flex;
+  align-items: center;
+  // background-color: #333;
+  // padding: 10px;
+  margin: 10px 0px;
+
+  cursor: pointer;
+  gap: 10px;
+  animation: ${LeaderboardListFadeIN} 0.2s;
+`;
 const LeaderboardListStyle = styled.div`
   display: flex;
   align-items: center;
   background-color: #333;
   padding: 10px;
-  margin: 10px 0px;
+  // margin: 10px 0px;
   text-decoration: none;
   border: 1px solid white;
   border-radius: 10px;
@@ -33,6 +44,7 @@ const LeaderboardListStyle = styled.div`
   }
   cursor: pointer;
   animation: ${LeaderboardListFadeIN} 0.2s;
+  flex-grow: 1;
 `;
 const LeaderboardListsStyle = styled.div`
   padding: 10px 10px 0px;
@@ -134,7 +146,34 @@ const LoadoutBox = ({ number, frequency }) => {
     </LoadoutBoxStyle>
   );
 };
-
+const LeaderboardListRankingBoxStyle = styled.div`
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 10px;
+  width: 50px;
+  text-align: right;
+`;
+function ordinal_suffix_of(i) {
+  var j = i % 10,
+    k = i % 100;
+  if (j === 1 && k !== 11) {
+    return i + "st";
+  }
+  if (j === 2 && k !== 12) {
+    return i + "nd";
+  }
+  if (j === 3 && k !== 13) {
+    return i + "rd";
+  }
+  return i + "th";
+}
+const LeaderboardListRankingBox = ({ rank }) => {
+  return (
+    <LeaderboardListRankingBoxStyle>
+      {ordinal_suffix_of(rank)}
+    </LeaderboardListRankingBoxStyle>
+  );
+};
 const LeaderboardList = ({ userList }) => {
   const [replayList, setReplayList] = useState([]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -142,9 +181,12 @@ const LeaderboardList = ({ userList }) => {
   useEffect(() => {
     console.log("LOADING ANIMATION");
     console.log(userList);
+    var index = 1;
     async function loadInReplayAnimation() {
       if (userList !== undefined) {
         for (const user of userList) {
+          user.index = index;
+          index++;
           setReplayList((prev) => [...prev, user]);
           await delay(20);
         }
@@ -166,18 +208,22 @@ const LeaderboardList = ({ userList }) => {
           LeaderboardListClick(user["oculus_name"]);
         };
         return (
-          <LeaderboardListStyle
-            key={user["oculus_name"]}
-            onClick={OnGameClick}
-            style={{ opacity: 1 }}
-          >
-            <p style={{ margin: 0 }}>
-              {user["oculus_name"] +
-                " [" +
-                Math.round((user["frames_used"] / (30 * 60 * 60)) * 100) / 100 + //+
-                " h]"}
-            </p>
-          </LeaderboardListStyle>
+          <LeaderboardListContainer>
+            <LeaderboardListRankingBox rank={user.index} />
+            <LeaderboardListStyle
+              key={user["oculus_name"]}
+              onClick={OnGameClick}
+              style={{ opacity: 1 }}
+            >
+              <p style={{ margin: "auto" }}>
+                {user["oculus_name"] +
+                  " [" +
+                  Math.round((user["frames_used"] / (30 * 60 * 60)) * 100) /
+                    100 + //+
+                  " h]"}
+              </p>
+            </LeaderboardListStyle>
+          </LeaderboardListContainer>
         );
       })}
     </LeaderboardListsStyle>
@@ -187,6 +233,7 @@ const TotalLeaderboardList = styled.div`
   display: flex;
   flex-direction: column;
   width: 40%;
+  min-width: 400px;
   gap: 10px;
   margin: 10px auto;
 `;

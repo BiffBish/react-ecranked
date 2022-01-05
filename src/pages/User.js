@@ -39,6 +39,29 @@ const LoadoutBoxStyle = styled(NavLink)`
 const LoadoutBoxItemStyle = styled.div`
   flex-grow: 1;
 `;
+function ordinal_suffix_of(i) {
+  var j = i % 10,
+    k = i % 100;
+  if (j === 1 && k !== 11) {
+    return i + "st";
+  }
+  if (j === 2 && k !== 12) {
+    return i + "nd";
+  }
+  if (j === 3 && k !== 13) {
+    return i + "rd";
+  }
+  return i + "th";
+}
+const RankingText = styled.p`
+  font-size: 10px;
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
+`;
 const LoadoutBox = ({ user_id, number, frequency }) => {
   const [ranking, setRanking] = useState(0);
   useEffect(() => {
@@ -81,6 +104,7 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
   // if (displayNumber === 100) {
   //   displayNumber = 99.999;
   // }
+
   return (
     <LoadoutBoxStyle to={"/leaderboard/loadout/" + number}>
       <img
@@ -100,7 +124,13 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
       />
       <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
         {displayNumber + "%"} <br />
-        {"#" + ranking}
+        {ranking > 0 && ranking < 10 ? (
+          <RankingText>
+            {"#" + ordinal_suffix_of(ranking) + " Globaly!"}{" "}
+          </RankingText>
+        ) : (
+          ""
+        )}
       </LoadoutBoxItemStyle>
     </LoadoutBoxStyle>
   );
