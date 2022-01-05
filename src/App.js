@@ -61,6 +61,9 @@ function App() {
           if (response.status === 200) {
             clientData.confirmed_authorized = true;
           } else {
+            alert(
+              "You have been logged out. Please log back in or contact a moderator if the problem persists."
+            );
             localStorage.removeItem("AUTHORIZATION_TOKEN");
             localStorage.removeItem("OCULUS_ID");
             localStorage.removeItem("MODERATOR");
@@ -253,6 +256,12 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
         fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
           .then((response) => response.json())
           .then((data) => {
+            if (data["token"] == undefined) {
+              alert(
+                "Your discord has not been linked yet to ECRanked. Please contact a moderator to resolve your issue"
+              );
+              return;
+            }
             console.log(data);
             onFinish();
             localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
