@@ -61,9 +61,12 @@ function App() {
           if (response.status === 200) {
             clientData.confirmed_authorized = true;
           } else {
-            alert(
-              "You have been logged out. Please log back in or contact a moderator if the problem persists."
-            );
+            if (localStorage.getItem("AUTHORIZATION_TOKEN") !== null) {
+              alert(
+                "You have been logged out. Please log back in or contact a moderator if the problem persists."
+              );
+            }
+
             localStorage.removeItem("AUTHORIZATION_TOKEN");
             localStorage.removeItem("OCULUS_ID");
             localStorage.removeItem("MODERATOR");
