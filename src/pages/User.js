@@ -39,7 +39,22 @@ const LoadoutBoxStyle = styled(NavLink)`
 const LoadoutBoxItemStyle = styled.div`
   flex-grow: 1;
 `;
-const LoadoutBox = ({ number, frequency }) => {
+const LoadoutBox = ({ user_id, number, frequency }) => {
+  const [ranking, setRanking] = useState(0);
+  useEffect(() => {
+    fetch(
+      "https://ecranked.ddns.net/api/v1/leaderboard/rank/" +
+        user_id +
+        "/loadout/" +
+        number +
+        "/global"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setRanking(data[0]["rank"]);
+      });
+  });
+
   const tacNumber = number % 4;
   const grenadeNumber = ((number - tacNumber) % 16) / 4;
   const weaponNumber = ((number - (tacNumber + grenadeNumber * 4)) % 64) / 16;
@@ -84,7 +99,8 @@ const LoadoutBox = ({ number, frequency }) => {
         style={{ width: "60px", height: "60px" }}
       />
       <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
-        {displayNumber + "%"}{" "}
+        {displayNumber + "%"} <br />
+        {"#" + ranking}
       </LoadoutBoxItemStyle>
     </LoadoutBoxStyle>
   );
@@ -98,13 +114,20 @@ const LoadoutExpandButtonStyle = styled.div`
   text-align: center;
   cursor: pointer;
 `;
-const Loadout = ({ top_loadout }) => {
+const Loadout = ({ user_id, top_loadout }) => {
   const [numOfEntrys, setNumOfEntrys] = useState(5);
   return (
     <>
       <LoadoutStyle>
         {top_loadout.slice(0, numOfEntrys).map((loadout) => {
-          return <LoadoutBox number={loadout[0]} frequency={loadout[1]} />;
+          return (
+            <LoadoutBox
+              user_id={user_id}
+              number={loadout[0]}
+              frequency={loadout[1]}
+              key={loadout[0]}
+            />
+          );
         }, 4)}{" "}
         <LoadoutExpandButtonStyle
           onClick={() => {
@@ -325,6 +348,7 @@ const CenterColumn = ({ userData }) => {
       />
       <UserStats userData={userData} statChoice={statChoice} />
       <Loadout
+        user_id={userData["oculus_id"]}
         top_loadout={
           userData[statChoice]["top_loadout"]
             ? userData[statChoice]["top_loadout"]

@@ -256,7 +256,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
         fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
           .then((response) => response.json())
           .then((data) => {
-            if (data["token"] == undefined) {
+            if (data["token"] === undefined) {
               alert(
                 "Your discord has not been linked yet to ECRanked. Please contact a moderator to resolve your issue"
               );
