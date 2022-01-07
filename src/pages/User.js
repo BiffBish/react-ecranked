@@ -125,9 +125,7 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
       <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
         {displayNumber + "%"} <br />
         {ranking > 0 && ranking < 10 ? (
-          <RankingText>
-            {"#" + ordinal_suffix_of(ranking) + " Globaly!"}{" "}
-          </RankingText>
+          <RankingText>{ordinal_suffix_of(ranking) + " Globaly!"} </RankingText>
         ) : (
           ""
         )}
@@ -240,7 +238,7 @@ const UserStat = ({ name, value, displayValue }) => {
   );
 };
 const UserStatsStyle = styled.div`
-  padding: 10px 10px 0px;
+  padding: 10px 10px 10px;
   margin: 20px 10px 20px;
   background-color: #222;
   color: white;
@@ -498,7 +496,7 @@ const AboutMeStyle = styled.div`
   float: left;
   border: 1px solid white;
   border-radius: 10px;
-  flex: 100px 2;
+  flex: 200px 2;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -891,8 +889,10 @@ const AboutAvatar = ({ userData, oculus_id }) => {
     );
   }
 };
+
 const AboutMe = ({ userData }) => {
   const oculus_id = localStorage.getItem("OCULUS_ID");
+  // var iconSrc = null;
 
   return (
     <AboutMeStyle>
@@ -1102,8 +1102,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
   };
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
-
-  useEffect(() => {
+  const FetchUserData = () => {
     fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
       method: "GET",
       headers: {
@@ -1125,12 +1124,16 @@ export default function User({ username, setBannerCallback, subDomain }) {
           }
           if ("oculus_name" in data) {
             setUserNotFound(false);
-            setBannerCallback(data["oculus_name"]);
-            console.log(data["oculus_name"]);
+            var iconSrc = null;
+            if (data.discord_name !== null) {
+              iconSrc = "/images/verified_icon.png";
+            }
+            if (data.moderator === true) {
+              iconSrc = "/images/moderator_icon.png";
+            }
+            console.log(data);
+            setBannerCallback(data["oculus_name"], iconSrc);
             setApiData(data);
-          } else {
-            setBannerCallback("Unknown");
-            setUserNotFound(true);
           }
         }
       })
@@ -1138,7 +1141,12 @@ export default function User({ username, setBannerCallback, subDomain }) {
         setUserNotFound(true);
         console.error("There was an error!", error);
       });
-  }, [username, setBannerCallback]);
+  };
+
+  useEffect(() => {
+    FetchUserData();
+    // eslint-disable-next-line
+  }, [username]);
 
   function WhatApiRequest() {
     console.log("APIDATA");

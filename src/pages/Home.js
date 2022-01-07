@@ -57,6 +57,7 @@ const PageContainer = styled.div`
   display: flex;
   gap: 20px;
   padding: 20px;
+  flex-wrap: wrap-reverse;
 `;
 const AboutContainer = styled.div`
   display: flex;
@@ -66,7 +67,7 @@ const AboutContainer = styled.div`
   gap: 20px;
 `;
 const AboutPage = styled.div`
-  flex: 300px 2;
+  flex: 100px 2;
   background-color: #222;
   color: white;
   border: 2px solid white;
@@ -104,20 +105,20 @@ const RecentGames = ({ replays }) => {
       <AboutContainer>
         <AboutPage>
           <ContainerTitle>About Us</ContainerTitle>
-          We are a collection of passionate Echo Combat Players that thrives to
+          We are a collection of passionate Echo Combat Players who thrive to
           build a strong and close community. We've built numerous bots and
           tools to assist both our casual and competitive players to both have
-          fun, but also learn and build upon their play style.
+          fun, but also learn and build upon their playstyle.
           <br />
           <br />
           ECRanked is a piece of software that gather RAW data through the Echo
-          Combat API. We then collate and simplified this data into more
-          readable data, which we use for player statistics (& more coming soon)
-          for our Echo Combat community.
+          Combat API. We then collate and simplify this data into more readable
+          data used for player statistics (& more coming soon) for our Echo
+          Combat community.
           <br />
           <br />
           If you've played Echo Combat. Feel free to search for your Oculus
-          Username above to learn more.
+          Username above to learn more. Pew pew!
         </AboutPage>
         <AboutPage style={{ fontSize: "20px", fontWeight: "100" }}>
           <ContainerTitle>Collaborators</ContainerTitle>

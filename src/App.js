@@ -43,7 +43,11 @@ const Banner = styled(AnimateHeight)`
   flex-direction: column;
   color: #fff;
 `;
-
+const UserIcon = styled.img`
+  width: 40px;
+  height: 40px;
+  margin: 20px;
+`;
 function App() {
   const [clientData, setClientData] = React.useState({
     oculus_id: localStorage.getItem("OCULUS_ID"),
@@ -87,8 +91,14 @@ function App() {
 
   const [apiData, setApiData] = React.useState([]);
   const [BannerHeight, setBannerHeight] = useState(400);
-  const [BannerText, setBannerText] = useState("ECRanked");
+  const [BannerText, setBannerTextCallback] = useState("ECRanked");
+  const [BannerIconSrc, setBannerIconSrc] = useState(null);
 
+  const setBannerText = (Text, IconSrc) => {
+    console.log(Text, IconSrc);
+    setBannerTextCallback(Text);
+    setBannerIconSrc(IconSrc);
+  };
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/replay/@recent")
       .then(async (response) => {
@@ -120,11 +130,18 @@ function App() {
   }
   let history = useHistory();
   console.log(history);
+
+  var BannerIconTitle = "";
+  if (BannerIconSrc === "/images/moderator_icon.png") {
+    BannerIconTitle = "Moderator";
+  }
+  if (BannerIconSrc === "/images/verified_icon.png") {
+    BannerIconTitle = "Verified User";
+  }
   return (
     <Router>
       <Nav clientData={clientData} style={{ height: "10px" }} />
       <PageBody>
-        {}
         <Banner
           id="example-panel"
           duration={500}
@@ -132,10 +149,25 @@ function App() {
           style={{
             backgroundImage: `url(${combatBackground})`,
             overflow: "visible",
+            display: "flex",
           }}
         >
-          {BannerText}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {BannerText}
+            {BannerIconSrc ? (
+              <UserIcon title={BannerIconTitle} src={BannerIconSrc} />
+            ) : (
+              ""
+            )}
+          </div>
         </Banner>
+
         <Route
           exact
           path={["/home", "/"]}
@@ -150,9 +182,9 @@ function App() {
           path={`/user/:username/:subDomain`}
           render={(props) => {
             setBannerHeight(100);
-            const setBannerTextCallback = (username) => {
+            const setBannerTextCallback = (username, iconSRC) => {
               console.log(username);
-              setBannerText(username);
+              setBannerText(username, iconSRC);
             };
             console.log("User");
             return (

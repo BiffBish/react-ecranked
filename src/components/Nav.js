@@ -21,8 +21,31 @@ const TopBarLinksDesktop = styled.div`
   background-color: #222;
   height: 50.67px;
 `;
+const TopBarLinksMobile = styled.div`
+  width: 100%;
+  width: auto;
+  background-color: #222;
+  height: 50.67px;
+  display: flex;
+  flex-direction: column;
+`;
 
 const LinkStyle = styled(NavLink)`
+  text-align: center;
+  color: #fff;
+  background-color: #222;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 200;
+  float: left;
+  text-decoration: none;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  transition-duration: 0.1s;
+`;
+const LinkLikeButtonStyle = styled.div`
   text-align: center;
   color: #fff;
   background-color: #222;
@@ -137,7 +160,7 @@ const AuthorizeButton = ({ userData }) => {
 
     window.location.reload(false);
   };
-  console.log(userData.authorization_token);
+  // console.log(userData.authorization_token);
   if (userData.authorization_token == null) {
     return (
       <TopBarLink
@@ -151,7 +174,27 @@ const AuthorizeButton = ({ userData }) => {
     return <LogoutButton onClick={logout}>Logout</LogoutButton>;
   }
 };
+
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
 export default function Nav({ clientData }) {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   let history = useHistory();
 
   const [allUsernames, setAllUsernames] = useState(null);
@@ -180,48 +223,84 @@ export default function Nav({ clientData }) {
     history.push("/user/" + text + "/stats");
     //Change url without reloading: /user/{text}/stats
   };
-  return (
-    <TopBar>
-      <TopBarLinksDesktop>
-        <TopBarLink link="/" text="Home" />
-        <TopBarLink
-          link="https://ecranked.ddns.net"
-          text="API"
-          externalLink={true}
-        />
+  const [navigationPopupOut, setNavigationPopupOut] = useState(false);
+  if (windowDimensions.width > 800) {
+    return (
+      <TopBar>
+        <TopBarLinksDesktop>
+          <TopBarLink link="/" text="Home" />
+          <TopBarLink
+            link="https://ecranked.ddns.net"
+            text="API"
+            externalLink={true}
+          />
 
-        <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
-        {clientData.moderator ? (
-          <TopBarLink link="/Moderator/UnapprovedImages" text="Moderator" />
-        ) : (
-          ""
-        )}
-        <AuthorizeButton userData={clientData} />
-        <AutoComplete
-          options={allUsernames}
-          onFormSubmit={whenSearchSubmit}
-          Box={autoCompleteBox}
-          OptionDiv={autoCompleteOptionDiv}
-          Input={autoCompleteInput}
-          maxAllowed={12}
-        />
-        {/* <AutocompleteStyled
-          id="Oculus Username"
-          freeSolo
-          options={top100Films.map((option) => option.title)}
-          renderInput={(params) => (
-            <TextFieldStyled {...params} label="Oculus Username" />
+          <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
+          {clientData.moderator ? (
+            <TopBarLink link="/Moderator/UnapprovedImages" text="Moderator" />
+          ) : (
+            ""
           )}
-        /> */}
-      </TopBarLinksDesktop>
+          <AuthorizeButton userData={clientData} />
+          <AutoComplete
+            options={allUsernames}
+            onFormSubmit={whenSearchSubmit}
+            Box={autoCompleteBox}
+            OptionDiv={autoCompleteOptionDiv}
+            Input={autoCompleteInput}
+            maxAllowed={12}
+          />
+        </TopBarLinksDesktop>
+      </TopBar>
+    );
+  } else {
+    return (
+      <TopBar>
+        <TopBarLinksMobile style={{}}>
+          <div>
+            <TopBarLink link="/" text="Home" />
+            <LinkLikeButtonStyle
+              style={{ float: "right" }}
+              onClickCapture={() => {
+                setNavigationPopupOut(!navigationPopupOut);
+              }}
+            >
+              ≡
+            </LinkLikeButtonStyle>
+            <AutoComplete
+              options={allUsernames}
+              onFormSubmit={whenSearchSubmit}
+              Box={autoCompleteBox}
+              OptionDiv={autoCompleteOptionDiv}
+              Input={autoCompleteInput}
+              maxAllowed={12}
+            />
+          </div>
+          {navigationPopupOut ? (
+            <>
+              <TopBarLink link="/" text="Home" />
+              <TopBarLink
+                link="https://ecranked.ddns.net"
+                text="API"
+                externalLink={true}
+              />
 
-      {/* <!-- Navbar on small screens -->
-            <div id="navDemo" className="w3-bar-block w3-darkgrey w3-hide w3-hide-large w3-hide-medium w3-large" style ="background-color:#222;color:white">
-            <a href="#" className="round w3-button" style = "width:100%">Link 1</a>
-            <a href="#" className="round w3-button" style = "width:100%">Link 2</a>
-            <a href="#" className="round w3-button" style = "width:100%">Link 3</a>
-            <a href="#" className="round w3-button" style = "width:100%">Link 4</a>
-            </div> */}
-    </TopBar>
-  );
+              <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
+              {clientData.moderator ? (
+                <TopBarLink
+                  link="/Moderator/UnapprovedImages"
+                  text="Moderator"
+                />
+              ) : (
+                ""
+              )}
+              <AuthorizeButton userData={clientData} />
+            </>
+          ) : (
+            <></>
+          )}
+        </TopBarLinksMobile>
+      </TopBar>
+    );
+  }
 }
