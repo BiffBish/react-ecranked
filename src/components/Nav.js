@@ -224,7 +224,7 @@ export default function Nav({ clientData }) {
     //Change url without reloading: /user/{text}/stats
   };
   const [navigationPopupOut, setNavigationPopupOut] = useState(false);
-  if (windowDimensions.width > 800) {
+  if (windowDimensions.width > 850) {
     return (
       <TopBar>
         <TopBarLinksDesktop>
@@ -257,16 +257,8 @@ export default function Nav({ clientData }) {
     return (
       <TopBar>
         <TopBarLinksMobile style={{}}>
-          <div>
+          <div style={{ display: "flex" }}>
             <TopBarLink link="/" text="Home" />
-            <LinkLikeButtonStyle
-              style={{ float: "right" }}
-              onClickCapture={() => {
-                setNavigationPopupOut(!navigationPopupOut);
-              }}
-            >
-              ≡
-            </LinkLikeButtonStyle>
             <AutoComplete
               options={allUsernames}
               onFormSubmit={whenSearchSubmit}
@@ -275,6 +267,14 @@ export default function Nav({ clientData }) {
               Input={autoCompleteInput}
               maxAllowed={12}
             />
+            <LinkLikeButtonStyle
+              style={{ float: "right" }}
+              onClickCapture={() => {
+                setNavigationPopupOut(!navigationPopupOut);
+              }}
+            >
+              ≡
+            </LinkLikeButtonStyle>
           </div>
           {navigationPopupOut ? (
             <>
