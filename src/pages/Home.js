@@ -111,7 +111,7 @@ const RecentGames = ({ replays }) => {
           fun, but also learn and build upon their playstyle.
           <br />
           <br />
-          ECRanked is a piece of software that gather RAW data through the Echo
+          ECRanked is a piece of software that gathers RAW data through the Echo
           Combat API. We then collate and simplify this data into more readable
           data used for player statistics (& more coming soon) for our Echo
           Combat community.
@@ -178,7 +178,8 @@ const RecentGames = ({ replays }) => {
                   "[" +
                   moment(LocalGameTime).format("MMM DD LTS") + //+
                   "] - " +
-                  replay["map"]}
+                  replay["map"].charAt(0).toUpperCase() +
+                  replay["map"].slice(1)}
               </p>
             </RecentGameStyle>
           );

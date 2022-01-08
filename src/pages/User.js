@@ -100,6 +100,19 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
     "/images/comet.png",
     "/images/meteor.png",
   ];
+  const tacModMapName = [
+    "Repair matrix",
+    "Threat scanner",
+    "Energy barrier",
+    "Phase shift",
+  ];
+  const ordinanceMapName = [
+    "Detonator",
+    "Stun field",
+    "Arc mine",
+    "Instant repair",
+  ];
+  const weaponMapName = ["Pulsar", "Nova", "Comet", "Meteor"];
   let displayNumber = Math.round(frequency * 10000) / 100;
   // if (displayNumber === 100) {
   //   displayNumber = 99.999;
@@ -109,23 +122,28 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
     <LoadoutBoxStyle to={"/leaderboard/loadout/" + number}>
       <img
         src={weaponMap[weaponNumber]}
-        alt={"weapon"}
+        alt={weaponMapName[weaponNumber]}
         style={{ width: "60px", height: "60px" }}
+        title={weaponMapName[weaponNumber]}
       />
       <img
         src={ordinanceMap[grenadeNumber]}
-        alt={"weapon"}
+        alt={ordinanceMapName[grenadeNumber]}
         style={{ width: "60px", height: "60px" }}
+        title={ordinanceMapName[grenadeNumber]}
       />
       <img
         src={tacModMap[tacNumber]}
-        alt={"tacMod"}
+        alt={tacModMapName[tacNumber]}
         style={{ width: "60px", height: "60px" }}
+        title={tacModMapName[tacNumber]}
       />
       <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
         {displayNumber + "%"} <br />
         {ranking > 0 && ranking < 10 ? (
-          <RankingText>{ordinal_suffix_of(ranking) + " Globaly!"} </RankingText>
+          <RankingText>
+            {ordinal_suffix_of(ranking) + " Globally!"}{" "}
+          </RankingText>
         ) : (
           ""
         )}
@@ -286,7 +304,7 @@ const UserStats = ({ userData, statChoice }) => {
         value={userStats["percent_upsidedown"]}
       />
       <UserStat
-        name={"Deaths/game"}
+        name={"Deaths/Game"}
         displayValue={userStats["average_deaths"].toFixed(1)}
         value={map_range(userStats["average_deaths"], 0, 15, 0, 1)}
       />
@@ -480,7 +498,8 @@ const RecentGames = ({ replays }) => {
                 "[" +
                 moment(LocalGameTime).format("MMM DD LTS") + //+
                 "] - " +
-                replay["map"]}
+                replay["map"].charAt(0).toUpperCase() +
+                replay["map"].slice(1)}
             </p>
           </RecentGameStyle>
         );

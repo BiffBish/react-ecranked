@@ -165,7 +165,7 @@ const AuthorizeButton = ({ userData }) => {
     return (
       <TopBarLink
         link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify"
-        text="Login with discord"
+        text="Login"
         externalLink={true}
         floatRight={true}
       />
@@ -230,11 +230,15 @@ export default function Nav({ clientData }) {
         <TopBarLinksDesktop>
           <TopBarLink link="/" text="Home" />
           <TopBarLink
-            link="https://ecranked.ddns.net"
+            link="https://ecranked.ddns.net/docs"
             text="API"
             externalLink={true}
           />
-
+          <TopBarLink
+            link="https://discord.gg/4fxM7tPRdZ"
+            text="Join us on Discord"
+            externalLink={true}
+          />
           <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
           {clientData.moderator ? (
             <TopBarLink link="/Moderator/UnapprovedImages" text="Moderator" />
@@ -294,6 +298,11 @@ export default function Nav({ clientData }) {
               ) : (
                 ""
               )}
+              <TopBarLink
+                link="https://discord.gg/4fxM7tPRdZ"
+                text="Join us on Discord"
+                externalLink={true}
+              />
               <AuthorizeButton userData={clientData} />
             </>
           ) : (

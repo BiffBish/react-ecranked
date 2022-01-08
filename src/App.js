@@ -293,7 +293,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
           .then((data) => {
             if (data["token"] === undefined) {
               alert(
-                "Your discord has not been linked yet to ECRanked. Please contact a moderator to resolve your issue"
+                "Your discord has not been linked yet to ECRanked. Join the discord server from the navigation bar and contact a moderator to link your account."
               );
               return;
             }
