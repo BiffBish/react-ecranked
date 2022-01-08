@@ -1,0 +1,28 @@
+.rounded-clickable-button {
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  padding: 10px;
+  margin: 10px 0px;
+  text-decoration: none;
+  border: 1px solid white;
+  border-radius: 10px;
+  line-height: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  cursor: pointer;
+  animation: FadeIn 0.2s;
+}
+:hover {
+  background-color: #555;
+  color: #000;
+}
+
+@keyframes FadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

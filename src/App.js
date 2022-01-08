@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Replay from "./pages/Replay";
 import User from "./pages/User";
 import Home from "./pages/Home";
+import ApproveImagesModeration from "./pages/Moderation/ApproveImagesModeration";
 import Moderator from "./pages/Moderator";
 import Nav from "./components/Nav";
 
@@ -16,6 +17,7 @@ import Changelog from "./pages/Changelog";
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Leaderboard from "./pages/Leaderboard";
+import UncontactedUsersModeration from "./pages/Moderation/UncontactedModeration";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -261,6 +263,23 @@ function App() {
         />
         <Route
           path={`/Moderator/UnapprovedImages`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Moderation");
+            return <ApproveImagesModeration />;
+          }}
+        />
+        <Route
+          path={`/Moderator/UncontactedUsers`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Moderation");
+            return <UncontactedUsersModeration />;
+          }}
+        />
+        <Route
+          exact
+          path={`/Moderator`}
           render={() => {
             setBannerHeight(100);
             setBannerText("Moderation");
