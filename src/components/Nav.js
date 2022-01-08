@@ -241,7 +241,7 @@ export default function Nav({ clientData }) {
           />
           <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
           {clientData.moderator ? (
-            <TopBarLink link="/Moderator/UnapprovedImages" text="Moderator" />
+            <TopBarLink link="/Moderator" text="Moderator" />
           ) : (
             ""
           )}

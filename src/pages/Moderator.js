@@ -19,6 +19,7 @@ const Button = styled(NavLink)`
     color: #000;
   }
   cursor: pointer;
+  color: white;
 `;
 export default function Moderator() {
   return (
