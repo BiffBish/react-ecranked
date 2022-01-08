@@ -5,6 +5,8 @@ import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "../components/AutoComplete";
 import moment from "moment-timezone";
+import MetaTags from "react-meta-tags";
+
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -294,7 +296,7 @@ const UserStats = ({ userData, statChoice }) => {
         value={map_range(userStats["average_speed"], 0, 5, 0, 1)}
       />
       <UserStat
-        name={"Time Stopped"}
+        name={"Time idle"}
         displayValue={(userStats["percent_stopped"] * 100).toFixed(1) + "%"}
         value={userStats["percent_stopped"]}
       />
@@ -1189,6 +1191,12 @@ export default function User({ username, setBannerCallback, subDomain }) {
           userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
+        <MetaTags>
+          <title>{username}'s Page!</title>
+          <meta name="description" content={"Visit " + username + "'s Page!"} />
+          <meta property="og:title" content="MyApp" />
+          <meta property="og:image" content="path/to/image.jpg" />
+        </MetaTags>
         <RecentGames replays={WhatApiRequest()["recent_games"]} />
         <CenterColumn userData={WhatApiRequest()} />
         <AboutMe userData={WhatApiRequest()} />
