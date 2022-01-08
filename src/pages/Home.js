@@ -141,6 +141,14 @@ const RecentGames = ({ replays }) => {
           - Moderator and Creative control
           <br />
         </AboutPage>
+        <AboutPage>
+          <ContainerTitle>Fun Facts!</ContainerTitle>
+          The combat community as a whole has traveled over{" "}
+          {Math.round(((18302.751128 * 3534) / 1000) * 100) / 100} kilometers
+          while playing echo combat! Thats{" "}
+          {Math.round(((18302.751128 * 3534) / 1000 / 40075) * 10) / 10} times
+          around the earth.
+        </AboutPage>
       </AboutContainer>
       <RecentGamesStyle>
         <ContainerTitle>Recent Games</ContainerTitle>
