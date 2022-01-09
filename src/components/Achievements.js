@@ -1,22 +1,22 @@
+import { height } from "@mui/system";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-
+var achievementData = require("./AchievementData.json");
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
-
-const AchievementSize = 40;
+var collectedAchievementData = {};
+const AchievementSize = 35;
 const AchievementGap = 5;
 
 const ProgressDivStyle = styled.div`
   position: relative;
 
   border-radius: 0.5rem;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
-  height: 30px;
+  height: 7px;
   overflow: hidden;
-  flex-grow: 1;
 `;
 
 const ProgressBarStyle = styled.div`
@@ -36,6 +36,7 @@ const ProgressBarTextStyle = styled.p`
 
   z-index: 5;
 `;
+
 export var ProgressBar = ({ percent, displayValue }) => {
   const [value, setValue] = React.useState(0);
 
@@ -55,13 +56,25 @@ export var ProgressBar = ({ percent, displayValue }) => {
 };
 
 const SegmentOfProgressBar = styled.div`
-  width: 4px;
+  width: 2px;
   position: absolute;
-  height: ${AchievementSize}px;
   z-index: 10;
+  height: 10px;
   opacity: 100%;
   background-color: white;
-  margin: -10px 0px;
+  top: 0px;
+`;
+
+const SegmentedProgressBarContainerStyle = styled.div`
+  height: ${AchievementSize}px;
+
+  display: flex;
+  flex-direction: column;
+  line-height: 16px;
+  flex-grow: 1;
+  transition-property: background-color;
+  transition-duration: 0.2f;
+  flex-basis: 0;
 `;
 export var SegmentedProgressBar = ({
   percent,
@@ -74,6 +87,8 @@ export var SegmentedProgressBar = ({
 }) => {
   const [value, setValue] = React.useState(0);
   const barRef = useRef();
+  const [backgroundHighlighted, setBackgroundHighlighted] =
+    React.useState(false);
   React.useEffect(() => {
     setValue(percent * 100);
   }, [percent]);
@@ -84,39 +99,55 @@ export var SegmentedProgressBar = ({
     return barRef.current.getBoundingClientRect().width;
   }
   return (
-    <ProgressDivStyle
-      className="progress-div"
-      style={fullWidth ? { height: height, width: "100%" } : { height: height }}
-      ref={barRef}
+    <SegmentedProgressBarContainerStyle
+      style={
+        backgroundHighlighted
+          ? {
+              backgroundColor: "#fff4",
+            }
+          : {
+              backgroundColor: "#fff0",
+            }
+      }
       onMouseEnter={() => {
         updateHoverCallback(selectedNumbers);
+        setBackgroundHighlighted(true);
       }}
       onMouseLeave={() => {
         updateHoverCallback([]);
+        setBackgroundHighlighted(false);
       }}
     >
-      <ProgressBarStyle
-        style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
-        className="progress"
-      ></ProgressBarStyle>
-      <ProgressBarTextStyle>{displayValue}</ProgressBarTextStyle>
-      {segments.map((segment) => {
-        return (
-          <SegmentOfProgressBar
-            style={{
-              backgroundColor: segment.earned ? `green` : `white`,
-              transform: `translate(${
-                segment.percentage * 100 * 0.25 * getWidth()
-              }%, 0%)`,
-            }}
-          />
-        );
-      })}
-    </ProgressDivStyle>
+      {displayValue}
+      <ProgressDivStyle
+        className="progress-div"
+        style={fullWidth ? { height: "7px" } : { height: "7px" }}
+        ref={barRef}
+      >
+        <ProgressBarStyle
+          style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
+          className="progress"
+        ></ProgressBarStyle>
+        <ProgressBarTextStyle></ProgressBarTextStyle>
+        {segments.map((segment) => {
+          return (
+            <SegmentOfProgressBar
+              style={{
+                backgroundColor: segment.earned ? `green` : `white`,
+                transform: `translate(${
+                  segment.percentage * 100 * 0.5 * getWidth()
+                }%, 0%)`,
+              }}
+            />
+          );
+        })}
+      </ProgressDivStyle>
+    </SegmentedProgressBarContainerStyle>
   );
 };
 
 const AchievementsContainer = styled.div`
+  font-size:15px;
   width: 100%;
   height: 1500px;
   display: flex;
@@ -128,6 +159,8 @@ const AchievementsContainer = styled.div`
   transition-property: height margin opacity;
   color: white;
   line-height: ${AchievementSize - 4}px;
+  width: 800px;
+  margin: auto;
 
 `;
 
@@ -159,38 +192,57 @@ const RightAchievementCollumn = styled.div`
 `;
 const AchievementSquareStyle = styled.div`
   background-color: transparent;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
-  width: ${AchievementSize - 4}px;
-  height: ${AchievementSize - 4}px;
+  width: ${AchievementSize - 2}px;
+  height: ${AchievementSize - 2}px;
   flex: none;
   padding: 0px;
   text-align: center;
   transition-property: background-color;
 
   transition-duration: 0.1s;
+  cursor: pointer;
 `;
 const AchievementWideStyle = styled.div`
   background-color: yellow;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 10px;
   width: ${AchievementSize * 5 + AchievementGap * 4 - 4}px;
   height: ${AchievementSize - 4}px;
   flex: none;
 `;
 
-const AchievementSquare = ({ num, complete, hn = [] }) => {
+const AchievementSquare = ({ num, data, cb, hn = [] }) => {
+  var ref = React.useRef();
+  let backGroundColor = "#A44";
+
+  if (data["complete"][num.toString()]) {
+    if (hn.includes(num)) {
+      backGroundColor = "#4A4";
+    } else {
+      backGroundColor = "#008000ff";
+    }
+  } else if (data["locked"][num.toString()]) {
+    if (hn.includes(num)) {
+      backGroundColor = "#A44";
+    } else {
+      backGroundColor = "#f004";
+    }
+  } else {
+    if (hn.includes(num)) {
+      backGroundColor = "#444";
+    } else {
+      backGroundColor = "#0000";
+    }
+  }
   return (
     <AchievementSquareStyle
-      style={
-        hn.includes(num)
-          ? complete
-            ? { backgroundColor: "#4A4" }
-            : { backgroundColor: "#fff4" }
-          : complete
-          ? { backgroundColor: "#008000ff" }
-          : { backgroundColor: "#fff0" }
-      }
+      onClick={() => {
+        cb(ref, num);
+      }}
+      ref={ref}
+      style={{ backgroundColor: backGroundColor }}
     >
       {num}
     </AchievementSquareStyle>
@@ -219,9 +271,207 @@ const AchievementDoubleRow = styled.div`
   display: flex;
   align-items: center;
 `;
+
+const AchievementPopupStyle = styled.div`
+  position: absolute;
+  color: white;
+  padding: 10px;
+  // margin: 20px 10px 20px;
+  background-color: #222;
+  color: white;
+  // float: left;
+  border: 1px solid white;
+  border-radius: 10px;
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: 0px 10px;
+`;
+
+const AchievementPopup = ({
+  topPosition,
+  leftPosition,
+  visible,
+  visibilityCallback,
+  selectedNumber,
+}) => {
+  let SelectedAchievement = achievementData[selectedNumber];
+  let SelectedAchievementDataName = SelectedAchievement.progressDataName;
+  let NumberEarned = null;
+  if (SelectedAchievementDataName != undefined) {
+    NumberEarned = collectedAchievementData[SelectedAchievementDataName];
+  }
+
+  let MaxNumber = SelectedAchievement.progressTotal;
+
+  const PopupProgressBar = () => {
+    if (NumberEarned != null) {
+      return (
+        <SegmentedProgressBar
+          percent={NumberEarned / MaxNumber}
+          segments={[{ percentage: 999, earned: false }]}
+          updateHoverCallback={() => {}}
+        />
+      );
+    } else {
+      return <></>;
+    }
+  };
+
+  let uncompletedStatement = SelectedAchievement.uncompletedInfo;
+
+  if (NumberEarned != null) {
+    uncompletedStatement = uncompletedStatement.replace("%c", NumberEarned);
+    uncompletedStatement = uncompletedStatement.replace("%m", MaxNumber);
+  }
+
+  return (
+    <AchievementPopupStyle
+      onMouseLeave={() => {
+        visibilityCallback(false);
+      }}
+      style={{
+        top: topPosition,
+        left: leftPosition,
+        visibility: visible ? "visible" : "hidden",
+      }}
+    >
+      <div style={{ fontSize: 20 }}>{SelectedAchievement.title}</div>
+      <div style={{ fontSize: 10, padding: "0px 0px 10px" }}>
+        {SelectedAchievement.description}
+      </div>
+      <div style={{ fontSize: 10 }}>{uncompletedStatement}</div>
+
+      <div style={{ height: "10px" }}>
+        <PopupProgressBar />{" "}
+      </div>
+    </AchievementPopupStyle>
+  );
+};
+
 export default function Achievements({ userData }) {
-  let achData = userData["test"];
+  let ahData = { complete: userData["test"], locked: {} };
+
+  let dailyLoadoutData = userData["daily_stats"]["top_loadout"];
+
+  collectedAchievementData["total_games"] = 4;
+
+  let dailyItemUsage = {
+    pulsar: false,
+    nova: false,
+    comet: false,
+    meteor: false,
+    repair: false,
+    threat: false,
+    energy: false,
+    phase: false,
+    detonator: false,
+    stun: false,
+    arcmine: false,
+    instant: false,
+  };
+  if (dailyLoadoutData != undefined) {
+    for (let index = 0; index < dailyLoadoutData.length; index++) {
+      const element = dailyLoadoutData[index];
+      if (element[1] == 0) {
+        continue;
+      }
+      let itemID = parseInt(element[0]);
+      switch (itemID >>> 4) {
+        case 0:
+          ahData["locked"]["16"] = true;
+          ahData["locked"]["17"] = true;
+          ahData["locked"]["18"] = true;
+          ahData["locked"]["19"] = true;
+
+          ahData["locked"]["11"] = true;
+          ahData["locked"]["12"] = true;
+          ahData["locked"]["13"] = true;
+          ahData["locked"]["14"] = true;
+
+          ahData["locked"]["21"] = true;
+          ahData["locked"]["22"] = true;
+          ahData["locked"]["23"] = true;
+          ahData["locked"]["24"] = true;
+          ahData["locked"]["11"] = true;
+          dailyItemUsage["pulsar"] = true;
+
+          break;
+        case 1:
+          ahData["locked"]["16"] = true;
+          ahData["locked"]["17"] = true;
+          ahData["locked"]["18"] = true;
+          ahData["locked"]["19"] = true;
+
+          ahData["locked"]["11"] = true;
+          ahData["locked"]["12"] = true;
+          ahData["locked"]["13"] = true;
+          ahData["locked"]["14"] = true;
+
+          ahData["locked"]["21"] = true;
+          ahData["locked"]["22"] = true;
+          ahData["locked"]["23"] = true;
+          ahData["locked"]["24"] = true;
+          dailyItemUsage["nova"] = true;
+
+          break;
+        case 2:
+          ahData["locked"]["6"] = true;
+          ahData["locked"]["7"] = true;
+          ahData["locked"]["8"] = true;
+          ahData["locked"]["9"] = true;
+
+          ahData["locked"]["11"] = true;
+          ahData["locked"]["12"] = true;
+          ahData["locked"]["13"] = true;
+          ahData["locked"]["14"] = true;
+
+          ahData["locked"]["21"] = true;
+          ahData["locked"]["22"] = true;
+          ahData["locked"]["23"] = true;
+          ahData["locked"]["24"] = true;
+
+          dailyItemUsage["comet"] = true;
+
+          break;
+        case 3:
+          ahData["locked"]["6"] = true;
+          ahData["locked"]["7"] = true;
+          ahData["locked"]["8"] = true;
+          ahData["locked"]["9"] = true;
+
+          ahData["locked"]["16"] = true;
+          ahData["locked"]["17"] = true;
+          ahData["locked"]["18"] = true;
+          ahData["locked"]["19"] = true;
+
+          ahData["locked"]["11"] = true;
+          ahData["locked"]["12"] = true;
+          ahData["locked"]["13"] = true;
+          ahData["locked"]["14"] = true;
+          dailyItemUsage["meteor"] = true;
+          break;
+        default:
+          break;
+      }
+      if (itemID >>> 4 == 0) {
+      }
+    }
+  }
   const [hn, setHn] = useState([]);
+
+  const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+  const [popupVisibility, setPopupVisibility] = useState(true);
+  const [popupSelectedNumber, setPopupSelectedNumber] = useState(0);
+
+  var cb = (ref, selectedNumber) => {
+    setPopupPosition({
+      top: ref.current.offsetTop + ref.current.offsetWidth,
+      left: ref.current.offsetLeft,
+    });
+    setPopupVisibility(true);
+    setPopupSelectedNumber(selectedNumber);
+  };
+
   return (
     <>
       <div style={{ margin: ` 0px 0px ${AchievementGap}px` }}>
@@ -230,16 +480,16 @@ export default function Achievements({ userData }) {
           percent={userData["daily_stats"]["total_games"] / 53}
           displayValue={`${userData["daily_stats"]["total_games"]}`}
           segments={[
-            { percentage: 5 / 53, earned: achData["5"] },
-            { percentage: 10 / 53, earned: achData["10"] },
-            { percentage: 15 / 53, earned: achData["15"] },
-            { percentage: 20 / 53, earned: achData["20"] },
-            { percentage: 25 / 53, earned: achData["25"] },
-            { percentage: 30 / 53, earned: achData["30"] },
-            { percentage: 35 / 53, earned: achData["35"] },
-            { percentage: 40 / 53, earned: achData["40"] },
-            { percentage: 45 / 53, earned: achData["45"] },
-            { percentage: 50 / 53, earned: achData["50"] },
+            { percentage: 5 / 53, earned: ahData },
+            { percentage: 10 / 53, earned: ahData },
+            { percentage: 15 / 53, earned: ahData },
+            { percentage: 20 / 53, earned: ahData },
+            { percentage: 25 / 53, earned: ahData },
+            { percentage: 30 / 53, earned: ahData },
+            { percentage: 35 / 53, earned: ahData },
+            { percentage: 40 / 53, earned: ahData },
+            { percentage: 45 / 53, earned: ahData },
+            { percentage: 50 / 53, earned: ahData },
           ]}
           updateHoverCallback={setHn}
           selectedNumbers={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
@@ -252,14 +502,14 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`weapons`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["6"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[6]}
             />
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`tac-mods`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["7"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[7]}
             />
@@ -267,33 +517,33 @@ export default function Achievements({ userData }) {
 
           <AchievementDoubleRow>
             <SegmentedProgressBar
-              percent={userData["daily_stats"]["total_games"] / 45}
+              percent={userData["daily_stats"]["total_games"] / 17}
               displayValue={"pulsar:" + userData["daily_stats"]["total_games"]}
               fullWidth={true}
               segments={[
-                { percentage: 10 / 45, earned: achData["11"] },
-                { percentage: 20 / 45, earned: achData["12"] },
-                { percentage: 30 / 45, earned: achData["13"] },
-                { percentage: 40 / 45, earned: achData["14"] },
+                { percentage: 1 / 17, earned: ahData },
+                { percentage: 5 / 17, earned: ahData },
+                { percentage: 10 / 17, earned: ahData },
+                { percentage: 15 / 17, earned: ahData },
               ]}
               updateHoverCallback={setHn}
-              selectedNumbers={[11, 12, 13, 14]}
+              selectedNumbers={[6, 7, 8, 9]}
             />
           </AchievementDoubleRow>
 
           <AchievementDoubleRow>
             <SegmentedProgressBar
-              percent={userData["daily_stats"]["total_games"] / 45}
-              displayValue={"comet:" + userData["daily_stats"]["total_games"]}
+              percent={userData["daily_stats"]["total_games"] / 17}
+              displayValue={"nova:" + userData["daily_stats"]["total_games"]}
               fullWidth={true}
               segments={[
-                { percentage: 10 / 45, earned: achData["31"] },
-                { percentage: 20 / 45, earned: achData["32"] },
-                { percentage: 30 / 45, earned: achData["33"] },
-                { percentage: 40 / 45, earned: achData["34"] },
+                { percentage: 1 / 17, earned: ahData },
+                { percentage: 5 / 17, earned: ahData },
+                { percentage: 10 / 17, earned: ahData },
+                { percentage: 15 / 17, earned: ahData },
               ]}
               updateHoverCallback={setHn}
-              selectedNumbers={[31, 32, 33, 34]}
+              selectedNumbers={[11, 12, 13, 14]}
             />
           </AchievementDoubleRow>
 
@@ -301,14 +551,14 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={1 / 28}
               displayValue={`repair matrix`}
-              segments={[{ percentage: 25 / 28, earned: achData["51"] }]}
+              segments={[{ percentage: 25 / 28, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[51]}
             />
             <SegmentedProgressBar
               percent={1 / 28}
               displayValue={`threat scanner`}
-              segments={[{ percentage: 25 / 28, earned: achData["52"] }]}
+              segments={[{ percentage: 25 / 28, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[52]}
             />
@@ -318,7 +568,7 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`energy barrier`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["53"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[53]}
             />
@@ -326,7 +576,7 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`phase shift`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["54"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[54]}
             />
@@ -339,10 +589,10 @@ export default function Achievements({ userData }) {
                 userData["weekly_stats"]["percent_close_mate"] * 100
               }%`}
               segments={[
-                { percentage: 20 / 55, earned: achData["16"] },
-                { percentage: 30 / 55, earned: achData["17"] },
-                { percentage: 40 / 55, earned: achData["18"] },
-                { percentage: 50 / 55, earned: achData["19"] },
+                { percentage: 20 / 55, earned: ahData },
+                { percentage: 30 / 55, earned: ahData },
+                { percentage: 40 / 55, earned: ahData },
+                { percentage: 50 / 55, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[16, 17, 18, 19]}
@@ -354,8 +604,8 @@ export default function Achievements({ userData }) {
               percent={userData["weekly_stats"]["payload_games"] / 55}
               displayValue={`capture point :${userData["weekly_stats"]["payload_games"]}`}
               segments={[
-                { percentage: 25 / 55, earned: achData["36"] },
-                { percentage: 50 / 55, earned: achData["37"] },
+                { percentage: 25 / 55, earned: ahData },
+                { percentage: 50 / 55, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[36, 37]}
@@ -366,14 +616,14 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={userData["stats"]["dyson_games"] / 110}
               displayValue={`dyson: ${userData["stats"]["dyson_games"]}`}
-              segments={[{ percentage: 100 / 110, earned: achData["46"] }]}
+              segments={[{ percentage: 100 / 110, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[46]}
             />
             <SegmentedProgressBar
               percent={userData["stats"]["combustion_games"] / 110}
               displayValue={`combustion: ${userData["stats"]["combustion_games"]}`}
-              segments={[{ percentage: 100 / 110, earned: achData["47"] }]}
+              segments={[{ percentage: 100 / 110, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[47]}
             />
@@ -384,10 +634,10 @@ export default function Achievements({ userData }) {
               percent={userData["stats"]["percent_upsidedown"] / 0.5}
               displayValue={`inverted: ${userData["stats"]["percent_upsidedown"]}%`}
               segments={[
-                { percentage: 5 / 50, earned: achData["56"] },
-                { percentage: 10 / 50, earned: achData["57"] },
-                { percentage: 25 / 50, earned: achData["58"] },
-                { percentage: 40 / 50, earned: achData["59"] },
+                { percentage: 5 / 50, earned: ahData },
+                { percentage: 10 / 50, earned: ahData },
+                { percentage: 25 / 50, earned: ahData },
+                { percentage: 40 / 50, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[56, 57, 58, 59]}
@@ -399,10 +649,10 @@ export default function Achievements({ userData }) {
               percent={userData["weekly_stats"]["average_speed"] / 5}
               displayValue={`Average Speed: ${userData["weekly_stats"]["average_speed"]}m/s`}
               segments={[
-                { percentage: 3.0 / 5, earned: achData["81"] },
-                { percentage: 3.5 / 5, earned: achData["82"] },
-                { percentage: 4.0 / 5, earned: achData["83"] },
-                { percentage: 4.5 / 5, earned: achData["84"] },
+                { percentage: 3.0 / 5, earned: ahData },
+                { percentage: 3.5 / 5, earned: ahData },
+                { percentage: 4.0 / 5, earned: ahData },
+                { percentage: 4.5 / 5, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[81, 82, 83, 84]}
@@ -414,10 +664,10 @@ export default function Achievements({ userData }) {
               percent={userData["weekly_stats"]["average_deaths"] / 9}
               displayValue={`Average Deaths: ${userData["weekly_stats"]["average_deaths"]}`}
               segments={[
-                { percentage: 8 / 9, earned: achData["76"] },
-                { percentage: 7 / 9, earned: achData["77"] },
-                { percentage: 6 / 9, earned: achData["78"] },
-                { percentage: 5 / 9, earned: achData["79"] },
+                { percentage: 8 / 9, earned: ahData },
+                { percentage: 7 / 9, earned: ahData },
+                { percentage: 6 / 9, earned: ahData },
+                { percentage: 5 / 9, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[76, 77, 78, 79]}
@@ -429,10 +679,10 @@ export default function Achievements({ userData }) {
               percent={0 / 1.4}
               displayValue={`Loadout Stuff%`}
               segments={[
-                { percentage: 0.5 / 1.4, earned: achData["96"] },
-                { percentage: 0.75 / 1.4, earned: achData["97"] },
-                { percentage: 1.0 / 1.4, earned: achData["98"] },
-                { percentage: 1.25 / 1.4, earned: achData["99"] },
+                { percentage: 0.5 / 1.4, earned: ahData },
+                { percentage: 0.75 / 1.4, earned: ahData },
+                { percentage: 1.0 / 1.4, earned: ahData },
+                { percentage: 1.25 / 1.4, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[96, 97, 98, 99]}
@@ -440,135 +690,149 @@ export default function Achievements({ userData }) {
           </AchievementDoubleRow>
         </LeftAchievementCollumn>
         <CenterAchievementCollumn>
-          <AchievementSquare num={6} complete={achData["6"]} hn={hn} />
-          <AchievementSquare num={7} complete={achData["7"]} hn={hn} />
-          <AchievementSquare num={5} complete={achData["5"]} hn={hn} />
-          <AchievementSquare num={8} complete={achData["8"]} hn={hn} />
-          <AchievementSquare num={9} complete={achData["9"]} hn={hn} />
+          <AchievementSquare num={1} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={2} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={0} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={3} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={4} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={11} complete={achData["11"]} hn={hn} />
-          <AchievementSquare num={12} complete={achData["12"]} hn={hn} />
-          <AchievementSquare num={10} complete={achData["10"]} hn={hn} />
-          <AchievementSquare num={22} complete={achData["22"]} hn={hn} />
-          <AchievementSquare num={21} complete={achData["21"]} hn={hn} />
+          <AchievementSquare num={6} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={11} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={5} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={16} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={21} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={13} complete={achData["13"]} hn={hn} />
-          <AchievementSquare num={14} complete={achData["14"]} hn={hn} />
-          <AchievementSquare num={15} complete={achData["15"]} hn={hn} />
-          <AchievementSquare num={24} complete={achData["24"]} hn={hn} />
-          <AchievementSquare num={23} complete={achData["23"]} hn={hn} />
+          <AchievementSquare num={7} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={12} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={10} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={17} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={22} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={31} complete={achData["31"]} hn={hn} />
-          <AchievementSquare num={32} complete={achData["32"]} hn={hn} />
-          <AchievementSquare num={20} complete={achData["20"]} hn={hn} />
-          <AchievementSquare num={42} complete={achData["42"]} hn={hn} />
-          <AchievementSquare num={41} complete={achData["41"]} hn={hn} />
+          <AchievementSquare num={8} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={13} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={15} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={18} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={23} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={33} complete={achData["33"]} hn={hn} />
-          <AchievementSquare num={34} complete={achData["34"]} hn={hn} />
-          <AchievementSquare num={25} complete={achData["25"]} hn={hn} />
-          <AchievementSquare num={44} complete={achData["44"]} hn={hn} />
-          <AchievementSquare num={43} complete={achData["43"]} hn={hn} />
+          <AchievementSquare num={9} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={14} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={20} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={19} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={24} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={51} complete={achData["51"]} hn={hn} />
-          <AchievementSquare num={52} complete={achData["52"]} hn={hn} />
-          <AchievementSquare num={30} complete={achData["30"]} hn={hn} />
-          <AchievementSquare num={61} complete={achData["61"]} hn={hn} />
-          <AchievementSquare num={62} complete={achData["62"]} hn={hn} />
+          <AchievementSquare num={33} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={34} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={25} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={44} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={43} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={53} complete={achData["53"]} hn={hn} />
-          <AchievementSquare num={54} complete={achData["54"]} hn={hn} />
-          <AchievementSquare num={35} complete={achData["35"]} hn={hn} />
-          <AchievementSquare num={63} complete={achData["63"]} hn={hn} />
-          <AchievementSquare num={64} complete={achData["64"]} hn={hn} />
+          <AchievementSquare num={51} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={52} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={30} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={61} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={62} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={16} complete={achData["16"]} hn={hn} />
-          <AchievementSquare num={17} complete={achData["17"]} hn={hn} />
-          <AchievementSquare num={40} complete={achData["40"]} hn={hn} />
-          <AchievementSquare num={27} complete={achData["27"]} hn={hn} />
-          <AchievementSquare num={26} complete={achData["26"]} hn={hn} />
+          <AchievementSquare num={53} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={54} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={35} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={63} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={64} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={18} complete={achData["18"]} hn={hn} />
-          <AchievementSquare num={19} complete={achData["19"]} hn={hn} />
-          <AchievementSquare num={45} complete={achData["45"]} hn={hn} />
-          <AchievementSquare num={29} complete={achData["29"]} hn={hn} />
-          <AchievementSquare num={28} complete={achData["28"]} hn={hn} />
+          <AchievementSquare num={16} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={17} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={40} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={27} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={26} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={36} complete={achData["36"]} hn={hn} />
-          <AchievementSquare num={37} complete={achData["37"]} hn={hn} />
-          <AchievementSquare num={50} complete={achData["50"]} hn={hn} />
-          <AchievementSquare num={38} complete={achData["38"]} hn={hn} />
-          <AchievementSquare num={39} complete={achData["39"]} hn={hn} />
+          <AchievementSquare num={18} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={19} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={45} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={29} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={28} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={46} complete={achData["46"]} hn={hn} />
-          <AchievementSquare num={47} complete={achData["47"]} hn={hn} />
-          <AchievementSquare num={55} complete={achData["55"]} hn={hn} />
-          <AchievementSquare num={48} complete={achData["48"]} hn={hn} />
-          <AchievementSquare num={49} complete={achData["49"]} hn={hn} />
+          <AchievementSquare num={36} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={37} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={50} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={38} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={39} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={56} complete={achData["56"]} hn={hn} />
-          <AchievementSquare num={57} complete={achData["57"]} hn={hn} />
-          <AchievementSquare num={60} complete={achData["60"]} hn={hn} />
-          <AchievementSquare num={92} complete={achData["92"]} hn={hn} />
-          <AchievementSquare num={91} complete={achData["91"]} hn={hn} />
+          <AchievementSquare num={46} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={47} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={55} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={48} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={49} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={58} complete={achData["58"]} hn={hn} />
-          <AchievementSquare num={59} complete={achData["59"]} hn={hn} />
-          <AchievementSquare num={65} complete={achData["65"]} hn={hn} />
-          <AchievementSquare num={94} complete={achData["94"]} hn={hn} />
-          <AchievementSquare num={93} complete={achData["93"]} hn={hn} />
+          <AchievementSquare num={56} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={57} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={60} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={92} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={91} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={81} complete={achData["81"]} hn={hn} />
-          <AchievementSquare num={82} complete={achData["82"]} hn={hn} />
-          <AchievementSquare num={70} complete={achData["70"]} hn={hn} />
-          <AchievementSquare num={72} complete={achData["72"]} hn={hn} />
-          <AchievementSquare num={71} complete={achData["71"]} hn={hn} />
+          <AchievementSquare num={58} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={59} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={65} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={94} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={93} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={83} complete={achData["83"]} hn={hn} />
-          <AchievementSquare num={84} complete={achData["84"]} hn={hn} />
-          <AchievementSquare num={75} complete={achData["75"]} hn={hn} />
-          <AchievementSquare num={74} complete={achData["74"]} hn={hn} />
-          <AchievementSquare num={73} complete={achData["73"]} hn={hn} />
+          <AchievementWide num={65} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={76} complete={achData["76"]} hn={hn} />
-          <AchievementSquare num={77} complete={achData["77"]} hn={hn} />
-          <AchievementSquare num={80} complete={achData["80"]} hn={hn} />
-          <AchievementSquare num={87} complete={achData["87"]} hn={hn} />
-          <AchievementSquare num={86} complete={achData["86"]} hn={hn} />
+          <AchievementSquare num={58} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={59} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={65} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={94} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={93} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={78} complete={achData["78"]} hn={hn} />
-          <AchievementSquare num={79} complete={achData["79"]} hn={hn} />
-          <AchievementSquare num={85} complete={achData["85"]} hn={hn} />
-          <AchievementSquare num={89} complete={achData["89"]} hn={hn} />
-          <AchievementSquare num={88} complete={achData["88"]} hn={hn} />
+          <AchievementSquare num={81} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={82} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={70} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={72} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={71} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={96} complete={achData["96"]} hn={hn} />
-          <AchievementSquare num={97} complete={achData["97"]} hn={hn} />
-          <AchievementSquare num={90} complete={achData["80"]} hn={hn} />
-          <AchievementSquare num={67} complete={achData["67"]} hn={hn} />
-          <AchievementSquare num={66} complete={achData["66"]} hn={hn} />
+          <AchievementSquare num={83} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={84} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={75} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={74} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={73} data={ahData} hn={hn} cb={cb} />
 
-          <AchievementSquare num={98} complete={achData["98"]} hn={hn} />
-          <AchievementSquare num={99} complete={achData["99"]} hn={hn} />
-          <AchievementSquare num={95} complete={achData["95"]} hn={hn} />
-          <AchievementSquare num={69} complete={achData["69"]} hn={hn} />
-          <AchievementSquare num={68} complete={achData["68"]} hn={hn} />
-          <AchievementWide num={100} complete={achData["100"]} hn={hn} />
-          <AchievementWide num={101} complete={achData["101"]} hn={hn} />
+          <AchievementSquare num={76} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={77} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={80} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={87} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={86} data={ahData} hn={hn} cb={cb} />
+
+          <AchievementSquare num={78} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={79} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={85} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={89} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={88} data={ahData} hn={hn} cb={cb} />
+
+          <AchievementSquare num={96} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={97} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={90} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={67} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={66} data={ahData} hn={hn} cb={cb} />
+
+          <AchievementSquare num={98} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={99} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={95} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={69} data={ahData} hn={hn} cb={cb} />
+          <AchievementSquare num={68} data={ahData} hn={hn} cb={cb} />
+          <AchievementWide num={100} data={ahData} hn={hn} cb={cb} />
+          <AchievementWide num={101} data={ahData} hn={hn} cb={cb} />
         </CenterAchievementCollumn>
         <RightAchievementCollumn>
           <AchievementSingleRow>
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`ordnances`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["8"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[8]}
             />
             <SegmentedProgressBar
               percent={1 / 16.4}
               displayValue={`equipables`}
-              segments={[{ percentage: 16 / 16.8, earned: achData["9"] }]}
+              segments={[{ percentage: 16 / 16.8, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[9]}
             />
@@ -576,47 +840,47 @@ export default function Achievements({ userData }) {
 
           <AchievementDoubleRow>
             <SegmentedProgressBar
-              percent={userData["daily_stats"]["total_games"] / 45}
-              displayValue={"nova:" + userData["daily_stats"]["total_games"]}
+              percent={userData["daily_stats"]["total_games"] / 17}
+              displayValue={"comet:" + userData["daily_stats"]["total_games"]}
               fullWidth={true}
               segments={[
-                { percentage: 10 / 45, earned: achData["21"] },
-                { percentage: 20 / 45, earned: achData["22"] },
-                { percentage: 30 / 45, earned: achData["23"] },
-                { percentage: 40 / 45, earned: achData["24"] },
+                { percentage: 1 / 17, earned: ahData },
+                { percentage: 5 / 17, earned: ahData },
+                { percentage: 10 / 17, earned: ahData },
+                { percentage: 15 / 17, earned: ahData },
               ]}
               updateHoverCallback={setHn}
-              selectedNumbers={[21, 22, 23, 24]}
+              selectedNumbers={[16, 17, 18, 19]}
             />
           </AchievementDoubleRow>
 
           <AchievementDoubleRow>
             <SegmentedProgressBar
-              percent={userData["daily_stats"]["total_games"] / 45}
-              displayValue={"meateor:" + userData["daily_stats"]["total_games"]}
+              percent={userData["daily_stats"]["total_games"] / 17}
+              displayValue={"meteor:" + userData["daily_stats"]["total_games"]}
               fullWidth={true}
               segments={[
-                { percentage: 10 / 45, earned: achData["41"] },
-                { percentage: 20 / 45, earned: achData["42"] },
-                { percentage: 30 / 45, earned: achData["43"] },
-                { percentage: 40 / 45, earned: achData["44"] },
+                { percentage: 1 / 17, earned: ahData },
+                { percentage: 5 / 17, earned: ahData },
+                { percentage: 10 / 17, earned: ahData },
+                { percentage: 15 / 17, earned: ahData },
               ]}
               updateHoverCallback={setHn}
-              selectedNumbers={[41, 42, 43, 44]}
+              selectedNumbers={[21, 22, 23, 24]}
             />
           </AchievementDoubleRow>
           <AchievementSingleRow>
             <SegmentedProgressBar
               percent={1 / 28}
               displayValue={`detonator`}
-              segments={[{ percentage: 25 / 28, earned: achData["61"] }]}
+              segments={[{ percentage: 25 / 28, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[61]}
             />
             <SegmentedProgressBar
               percent={1 / 28}
               displayValue={`stun field`}
-              segments={[{ percentage: 25 / 28, earned: achData["62"] }]}
+              segments={[{ percentage: 25 / 28, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[62]}
             />
@@ -626,14 +890,14 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`arcmine`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["63"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[63]}
             />
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`instant repair`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["64"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[64]}
             />
@@ -646,10 +910,10 @@ export default function Achievements({ userData }) {
                 userData["weekly_stats"]["percent_close_enemy"] * 100
               }%`}
               segments={[
-                { percentage: 1 / 4.2, earned: achData["26"] },
-                { percentage: 2 / 4.2, earned: achData["27"] },
-                { percentage: 3 / 4.2, earned: achData["28"] },
-                { percentage: 4 / 4.2, earned: achData["29"] },
+                { percentage: 1 / 4.2, earned: ahData },
+                { percentage: 2 / 4.2, earned: ahData },
+                { percentage: 3 / 4.2, earned: ahData },
+                { percentage: 4 / 4.2, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[26, 27, 28, 29]}
@@ -661,8 +925,8 @@ export default function Achievements({ userData }) {
               percent={userData["weekly_stats"]["payload_games"] / 55}
               displayValue={`payload: ${userData["weekly_stats"]["payload_games"]}`}
               segments={[
-                { percentage: 25 / 55, earned: achData["38"] },
-                { percentage: 50 / 55, earned: achData["39"] },
+                { percentage: 25 / 55, earned: ahData },
+                { percentage: 50 / 55, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[38, 39]}
@@ -673,14 +937,14 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={userData["stats"]["fission_games"] / 110}
               displayValue={`fission: ${userData["stats"]["fission_games"]}`}
-              segments={[{ percentage: 100 / 110, earned: achData["48"] }]}
+              segments={[{ percentage: 100 / 110, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[48]}
             />
             <SegmentedProgressBar
               percent={userData["stats"]["surge_games"] / 110}
               displayValue={`surge: ${userData["stats"]["surge_games"]}`}
-              segments={[{ percentage: 100 / 110, earned: achData["49"] }]}
+              segments={[{ percentage: 100 / 110, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[49]}
             />
@@ -691,10 +955,10 @@ export default function Achievements({ userData }) {
               percent={0 / 50}
               displayValue={`Both hands stuff`}
               segments={[
-                { percentage: 5 / 50, earned: achData["91"] },
-                { percentage: 10 / 50, earned: achData["92"] },
-                { percentage: 25 / 50, earned: achData["93"] },
-                { percentage: 40 / 50, earned: achData["94"] },
+                { percentage: 5 / 50, earned: ahData },
+                { percentage: 10 / 50, earned: ahData },
+                { percentage: 25 / 50, earned: ahData },
+                { percentage: 40 / 50, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[91, 92, 93, 94]}
@@ -706,10 +970,10 @@ export default function Achievements({ userData }) {
               percent={userData["daily_stats"]["top_speed"] / 38}
               displayValue={`${userData["daily_stats"]["top_speed"]}m/s`}
               segments={[
-                { percentage: 20 / 38, earned: achData["71"] },
-                { percentage: 25 / 38, earned: achData["72"] },
-                { percentage: 30 / 38, earned: achData["73"] },
-                { percentage: 35 / 38, earned: achData["74"] },
+                { percentage: 20 / 38, earned: ahData },
+                { percentage: 25 / 38, earned: ahData },
+                { percentage: 30 / 38, earned: ahData },
+                { percentage: 35 / 38, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[71, 72, 73, 74]}
@@ -721,10 +985,10 @@ export default function Achievements({ userData }) {
               percent={userData["stats"]["total_deaths"] / 4200}
               displayValue={`${userData["stats"]["total_deaths"]}`}
               segments={[
-                { percentage: 500 / 4200, earned: achData["86"] },
-                { percentage: 1000 / 4200, earned: achData["87"] },
-                { percentage: 2000 / 4200, earned: achData["88"] },
-                { percentage: 4000 / 4200, earned: achData["89"] },
+                { percentage: 500 / 4200, earned: ahData },
+                { percentage: 1000 / 4200, earned: ahData },
+                { percentage: 2000 / 4200, earned: ahData },
+                { percentage: 4000 / 4200, earned: ahData },
               ]}
               updateHoverCallback={setHn}
               selectedNumbers={[86, 87, 88, 89]}
@@ -735,14 +999,14 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`arcmine`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["67"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[67]}
             />
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`instant repair`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["66"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[66]}
             />
@@ -752,20 +1016,27 @@ export default function Achievements({ userData }) {
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`arcmine`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["69"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[69]}
             />
             <SegmentedProgressBar
               percent={1 / 4.2}
               displayValue={`instant repair`}
-              segments={[{ percentage: 4 / 4.2, earned: achData["68"] }]}
+              segments={[{ percentage: 4 / 4.2, earned: ahData }]}
               updateHoverCallback={setHn}
               selectedNumbers={[68]}
             />
           </AchievementSingleRow>
         </RightAchievementCollumn>
       </AchievementsContainer>
+      <AchievementPopup
+        topPosition={popupPosition.top}
+        leftPosition={popupPosition.left}
+        visible={popupVisibility}
+        visibilityCallback={setPopupVisibility}
+        selectedNumber={popupSelectedNumber}
+      />
     </>
   );
 }

@@ -1,0 +1,410 @@
+{
+  "0": { "title": "Bootup Initiated", "description": "Buy/Own Echo Combat" },
+  "1": {
+    "title": "Beep Boop",
+    "description": "Player in Echo Games Discord Server"
+  },
+  "2": {
+    "title": "One Of Us",
+    "description": "Player in Combat Lounge Discord Server"
+  },
+  "3": {
+    "title": "Calibration Complete",
+    "description": "Player bio listed on ecranked.com"
+  },
+  "4": {
+    "title": "Got That Chassis Drip",
+    "description": "Player chassis picture listed on ecranked.com"
+  },
+  "5": {
+    "title": "Pwn Or Be Pwned",
+    "description": "Play 5+ Combat pubs within 24 hours",
+    "progressDataName": "total_games",
+    "progressTotal": 5,
+    "uncompletedInfo": "Play more games while only using pulsar (%c/%m)"
+  },
+  "6": {
+    "title": "Locked ‘n Loaded",
+    "description": "Use all weapons in 24 hours"
+  },
+  "7": {
+    "title": "Tactical Advantage",
+    "description": "Use all tac-mods in 24 hours"
+  },
+  "8": {
+    "title": "Cookies ‘n Biscuits",
+    "description": "Use all ordnance in 24 hours"
+  },
+  "9": {
+    "title": "Versatile Bot",
+    "description": "Use all equipables in 24 hours"
+  },
+  "10": {
+    "title": "Let’s gooo!",
+    "description": "Play 10+ Combat pubs within 24 hours"
+  },
+  "11": {
+    "title": "Pew Pew!",
+    "description": "Use only pulsar for 10+ games in 24 hours"
+  },
+  "12": {
+    "title": "Pew Pew Pew!",
+    "description": "Use only pulsar for 20+ games in 24 hours"
+  },
+  "13": {
+    "title": "Pulsar Main",
+    "description": "Use only pulsar for 30+ games in 24 hours"
+  },
+  "14": {
+    "title": "One With The Pulsar",
+    "description": "Use only pulsar for 40+ games in 24 hours"
+  },
+  "15": {
+    "title": "Get On! There’s Games!",
+    "description": "Play 15+ Combat Pubs within 24 hours"
+  },
+  "16": {
+    "title": "Get It Together",
+    "description": "Proximity to teammate 20% or more"
+  },
+  "17": {
+    "title": "Teamwork Makes The Dreamwork",
+    "description": "Proximity to teammate 30% or more"
+  },
+  "18": {
+    "title": "The Friend Zone",
+    "description": "Proximity to teammate 40% or more"
+  },
+  "19": {
+    "title": "Tech Support w/RAD_Natalie ",
+    "description": "Proximity to teammate 50% or more"
+  },
+  "20": {
+    "title": "GG’s",
+    "description": "Play 20+ Combat pubs within 24 hours"
+  },
+  "21": {
+    "title": "Spray ‘n Pray",
+    "description": "Use only nova for 10+ games in 24 hours"
+  },
+  "22": {
+    "title": "Nova Cone Is My Friend",
+    "description": "Use only nova for 20+ games in 24 hours"
+  },
+  "23": {
+    "title": "Nova Main",
+    "description": "Use only nova for 30+ games in 24 hours"
+  },
+  "24": {
+    "title": "One With The Nova",
+    "description": "Use only nova for 40+ games in 24 hours"
+  },
+  "25": {
+    "title": "We Win These",
+    "description": "Play 25+ Combat pubs within 24 hours"
+  },
+  "26": {
+    "title": "Engage The Enemy",
+    "description": "Proximity to enemy 1% or more"
+  },
+  "27": {
+    "title": "Know Your Opponent",
+    "description": "Proximity to enemy 2% or more"
+  },
+  "28": {
+    "title": "Behind Enemy Lines",
+    "description": "Proximity to enemy 3% or more"
+  },
+  "29": {
+    "title": "Hug Your Frenemy",
+    "description": "Proximity to enemy 4% or more"
+  },
+  "30": {
+    "title": "I Don’t Get Skipped",
+    "description": "Play 30+ Combat pubs within 24 hours"
+  },
+  "31": {
+    "title": "Yeah I Snipe, Do You Snipe?",
+    "description": "Use only comet for 10+ games in 24 hours"
+  },
+  "32": {
+    "title": "Snippity Snipe",
+    "description": "Use only comet for 20+ games in 24 hours"
+  },
+  "33": {
+    "title": "Comet Main",
+    "description": "Use only comet for 30+ games in 24 hours"
+  },
+  "34": {
+    "title": "One With The Comet",
+    "description": "Use only comet for 40+ games in 24 hours"
+  },
+  "35": {
+    "title": "Pub Pandemonium",
+    "description": "Play 35+ Combat pubs within 24 hours"
+  },
+  "36": {
+    "title": "I'd Rather Be on Kronos II",
+    "description": "Play 25 Capture Point games in one week"
+  },
+  "37": {
+    "title": "Contest, Die, Respawn, Repeat.",
+    "description": "Play 50 Capture Point games in one week"
+  },
+  "38": {
+    "title": "It’s Not A Swan!",
+    "description": "Play 25 Payload games in one week"
+  },
+  "39": {
+    "title": "Sakura’s Dancing Flamingo",
+    "description": "Play 50 Payload games in one week"
+  },
+  "40": {
+    "title": "Pub Stomper",
+    "description": "Play 40+ Combat pubs within 24 hours"
+  },
+  "41": {
+    "title": "Fear The Splash",
+    "description": "Use only meteor for 10+ games in 24 hours"
+  },
+  "42": {
+    "title": "Rocket Man",
+    "description": "Use only meteor for 20+ games in 24 hours"
+  },
+  "43": {
+    "title": "Meteor Main",
+    "description": "Use only meteor for 30+ games in 24 hours"
+  },
+  "44": {
+    "title": "One With The Meteor",
+    "description": "Use only meteor for 40+ games in 24 hours"
+  },
+  "45": {
+    "title": "Instant Queue!",
+    "description": "Play 45+ Combat pubs in 24 hours"
+  },
+  "46": {
+    "title": "Brute Force Attack",
+    "description": "Play 100 games of Dyson (cumulative)"
+  },
+  "47": {
+    "title": "Mechanical Mayhem",
+    "description": "Play 100 games of Combustion (cumulative)"
+  },
+  "48": {
+    "title": "Payload Predator",
+    "description": "Play 100 games of Fission (cumulative)"
+  },
+  "49": {
+    "title": "Flamingo Firebath",
+    "description": "Play 100 games of Surge (cumulative)"
+  },
+  "50": {
+    "title": "I Heart Echo Combat",
+    "description": "Play 50+Combat pubs in 24 hours"
+  },
+  "51": {
+    "title": "How Are You Still Alive?!",
+    "description": "Use repair matrix for 25 games in a week"
+  },
+  "52": {
+    "title": "Robot Radar",
+    "description": "Use threat scanner for 25 games in a week"
+  },
+  "53": {
+    "title": "Noob Protector 9000",
+    "description": "Use enery barrier for 25 games in a week"
+  },
+  "54": {
+    "title": "Ghost In The Machine",
+    "description": "Use phase shift for 25 games in a week"
+  },
+  "55": {
+    "title": "I Dream of Combat Updates",
+    "description": "Play 50+ Combat pubs in one week"
+  },
+  "56": {
+    "title": "Bottoms Up",
+    "description": "Play inverted for 5% of one week"
+  },
+  "57": {
+    "title": "Just Hangin' Out",
+    "description": "Play inverted for 25% of one week"
+  },
+  "58": {
+    "title": "Iuʌǝɹʇǝp",
+    "description": "Play inverted for 50% of one week"
+  },
+  "59": {
+    "title": "I’m A Bat",
+    "description": "Play inverted for 75% of one week"
+  },
+  "60": {
+    "title": "Combat Connoisseur",
+    "description": "Play 75+ Combat pubs in one week"
+  },
+  "61": {
+    "title": "Yeet And Delete",
+    "description": "Use only detonator for 25 games in a week"
+  },
+  "62": {
+    "title": "You Look Stunning",
+    "description": "Use only stun field for 25 games in a week"
+  },
+  "63": {
+    "title": "An Electrifying Personality",
+    "description": "Use only arc mine for 25 games in a week"
+  },
+  "64": {
+    "title": "RAD_DavidN Heal Us w/5th Map ",
+    "description": "Use only instant heal for 25 games in a week"
+  },
+  "65": {
+    "title": "Arena? What’s That?",
+    "description": "Play 100+ Combat pubs in one week"
+  },
+  "66": {
+    "title": "Comfort Zone",
+    "description": "Use one loadout 100% for one week - 50 game minimum"
+  },
+  "67": {
+    "title": "Versatile Pro Bot",
+    "description": "Use every loadout in one week - 50 game minimum"
+  },
+  "68": {
+    "title": "How The Game Should Play",
+    "description": "0% crash/leave rate for one week - 50 game minimum"
+  },
+  "69": {
+    "title": "Nice",
+    "description": "Compete In One Combat League Event (single day or full season)"
+  },
+  "70": {
+    "title": "Combat Junkie",
+    "description": "Play 125+ Combat pubs in one week"
+  },
+  "71": {
+    "title": "Don’t Float!",
+    "description": "Hit top speed of 20m/s in a single game"
+  },
+  "72": {
+    "title": "Boost Action",
+    "description": "Hit top speed of 25m/s in a single game"
+  },
+  "73": {
+    "title": "Overclocked",
+    "description": "Hit top speed of 30m/s in a single game"
+  },
+  "74": {
+    "title": "The Wings of RAD_Wyvern",
+    "description": "Hit top speed of 35m/s in a single game"
+  },
+  "75": {
+    "title": "Combat Is Life",
+    "description": "Play 150 Combat pubs in one week"
+  },
+  "76": {
+    "title": "Deathwish",
+    "description": "Average less than 8 deaths per game in one week - 25 game requirement"
+  },
+  "77": {
+    "title": "About As Useful As A Shield",
+    "description": "Average less than 7 deaths per game in one week - 25 game requirement"
+  },
+  "78": {
+    "title": "Armored Core",
+    "description": "Average less than 6 deaths per game in one week - 25 game requirement"
+  },
+  "79": {
+    "title": "Pew Pew Proof",
+    "description": "Average less than 5 deaths per game in one week - 25 game requirement"
+  },
+  "80": {
+    "title": "Prototype Unit",
+    "description": "Play 200 Combat pubs (cumulative)"
+  },
+  "81": {
+    "title": "I'm Not Camping!",
+    "description": "Average speed over 3.0m/s in one week (50 game minimum)"
+  },
+  "82": {
+    "title": "CrabCrabCrab!",
+    "description": "Average speed over 3.5m/s in one week (50 game minimum)"
+  },
+  "83": {
+    "title": "I’m Not Lagging, You’re Lagging",
+    "description": "Average speed over 4.0m/s in one week (50 game minimum)"
+  },
+  "84": {
+    "title": "Regrabby Grabby Grabs",
+    "description": "Average speed over 4.5m/s in one week (50 game minimum)"
+  },
+  "85": {
+    "title": "Robot Evolution",
+    "description": "Play 300 Combat pubs (cumulative)"
+  },
+  "86": {
+    "title": "Blame It On The Tracking",
+    "description": "Die 500 times (cumulative)"
+  },
+  "87": {
+    "title": "Pixel Party!",
+    "description": "Die 1000 times (cumulative)"
+  },
+  "88": {
+    "title": "Battle Scarred",
+    "description": "Die 2000 times (cumulative)"
+  },
+  "89": {
+    "title": "Spare Parts",
+    "description": "Die 4000 times (cumulative)"
+  },
+  "90": {
+    "title": "Atlas Intelligence",
+    "description": "Play 400 Combat pubs (cumulative)"
+  },
+  "91": {
+    "title": "System Malfunction",
+    "description": "Use both hands at least 5% in one week"
+  },
+  "92": {
+    "title": "Scrambled Circuits",
+    "description": "Use both hands at least 10% in one week"
+  },
+  "93": {
+    "title": "Broken Swear Monkey ",
+    "description": "Use both hands at least 25% in one week"
+  },
+  "94": {
+    "title": "These Hands Are Deadly",
+    "description": "Use both hands at least 40% in one week"
+  },
+  "95": {
+    "title": "Sentient Machine",
+    "description": "Play 500 Combat pubs (cumulative)"
+  },
+  "96": {
+    "title": "Fully Functional",
+    "description": "Use all loadout combinations 0.50% or more (64 possible loadouts)"
+  },
+  "97": {
+    "title": "Echo One Of All Trades",
+    "description": "Use all loadout combinations 0.75% or more (64 possible loadouts)"
+  },
+  "98": {
+    "title": "Protean Bot",
+    "description": "Use all loadout combinations 1.00% or more (64 possible loadouts)"
+  },
+  "99": {
+    "title": "5th Loadout when? Soon™",
+    "description": "Use all loadout combinations 1.25% or more (64 possible loadouts)"
+  },
+  "100": {
+    "title": "King/Queen of Pubs",
+    "description": "Play 600 Combat pubs (cumulative) to beat zhidel’s August 2021 record"
+  },
+  "101": {
+    "title": "Pro Flamingo",
+    "description": "Complete all (100) Combat Pub achievements)"
+  }
+}
