@@ -199,7 +199,7 @@ const UserStatStyle = styled.div`
   font-size: 20px;
   flex-basis: 0;
   flex-grow: 1;
-  min-width: 120px;
+  min-width: 200px;
   font-size: 14px;
   text-align: center;
   line-height: 1.5;
@@ -281,11 +281,11 @@ const UserStats = ({ userData, statChoice }) => {
         displayValue={userStats["total_deaths"]}
         value={1}
       />
-      <UserStat
+      {/* <UserStat
         name={"Average Ping"}
         displayValue={userStats["average_ping"].toFixed(1) + "ms"}
         value={map_range(userStats["average_ping"], 0, 200, 0, 1)}
-      />
+      /> */}
       <UserStat
         name={"Average Speed"}
         displayValue={userStats["average_speed"].toFixed(2) + "m/s"}
@@ -306,11 +306,11 @@ const UserStats = ({ userData, statChoice }) => {
         displayValue={userStats["average_deaths"].toFixed(1)}
         value={map_range(userStats["average_deaths"], 0, 15, 0, 1)}
       />
-      <UserStat
+      {/* <UserStat
         name={"Crash/Leave"}
         displayValue={(userStats["percent_crash"] * 100).toFixed(2) + "%"}
         value={userStats["percent_crash"]}
-      />
+      /> */}
       <UserStat
         name={"Level"}
         displayValue={userData["level"]}
