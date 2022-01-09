@@ -7,7 +7,7 @@ import { FailedSearchBar } from "../components/FailedSearch";
 import { AboutMe } from "../components/AboutMe";
 import { Statistics } from "../components/Statistics";
 import { RecentGames } from "../components/RecentGames";
-
+import Achievements from "../components/Achievements";
 const UserBody = styled.div`
   display: flex;
   align-items: stretch;
