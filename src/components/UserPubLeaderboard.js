@@ -103,11 +103,14 @@ const LeaderboardList = ({ userList, username }) => {
           <LeaderboardListContainer key={user.oculus_name}>
             <LeaderboardListStyle
               onClick={OnGameClick}
-              style={{
-                opacity: 1,
-                backgroundColor:
-                  username === user.oculus_name ? "#0f05" : "#0000",
-              }}
+              style={
+                username === user.oculus_name
+                  ? {
+                      opacity: 1,
+                      backgroundColor: "#151",
+                    }
+                  : {}
+              }
             >
               <p style={{ margin: "0", float: "left" }}>
                 {user.position + ".   " + user["oculus_name"]}
@@ -155,6 +158,29 @@ export default function UserPubLeaderboard({ oculus_name }) {
     if (apiData == null) {
       return;
     }
+    // apiData.forEach((user) => {
+    //   if (user.oculus_name === oculus_name) {
+    //     userScore = user.total_games;
+    //   }
+    // });
+    // var DuplicateRemovedList = [];
+
+    // var CurrentScore = 0;
+    // apiData.forEach((element) => {
+    //   if (element.total_games === userScore) {
+    //     if (element.oculus_name === oculus_name) {
+    //       DuplicateRemovedList.push(element);
+    //     }
+    //     return;
+    //   }
+
+    //   if (element.total_games == CurrentScore) {
+    //     return;
+    //   }
+    //   CurrentScore = element.total_games;
+    //   DuplicateRemovedList.push(element);
+    // });
+    // console.log("DuplicateRemovedList", DuplicateRemovedList);
     var LeaderboardPosition = 0;
     for (let index = 0; index < apiData.length; index++) {
       const element = apiData[index];

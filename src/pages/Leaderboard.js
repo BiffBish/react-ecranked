@@ -146,13 +146,6 @@ const LoadoutBox = ({ number, frequency }) => {
     </LoadoutBoxStyle>
   );
 };
-const LeaderboardListRankingBoxStyle = styled.div`
-  border: 1px solid white;
-  border-radius: 10px;
-  padding: 10px;
-  width: 50px;
-  text-align: right;
-`;
 // function ordinal_suffix_of(i) {
 //   var j = i % 10,
 //     k = i % 100;
@@ -167,13 +160,6 @@ const LeaderboardListRankingBoxStyle = styled.div`
 //   }
 //   return i + "th";
 // }
-const LeaderboardListRankingBox = ({ rank }) => {
-  return (
-    <LeaderboardListRankingBoxStyle>
-      {"#" + rank}
-    </LeaderboardListRankingBoxStyle>
-  );
-};
 const LeaderboardList = ({ userList }) => {
   const [replayList, setReplayList] = useState([]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -209,18 +195,27 @@ const LeaderboardList = ({ userList }) => {
         };
         return (
           <LeaderboardListContainer>
-            <LeaderboardListRankingBox rank={user.index} />
+            {/* <LeaderboardListRankingBox rank={user.index} /> */}
             <LeaderboardListStyle
               key={user["oculus_name"]}
               onClick={OnGameClick}
-              style={{ opacity: 1 }}
+              style={
+                // eslint-disable-next-line
+                localStorage.getItem("OCULUS_ID") == user.oculus_id
+                  ? {
+                      opacity: 1,
+                      backgroundColor: "#151",
+                    }
+                  : {}
+              }
             >
-              <p style={{ margin: "auto" }}>
-                {user["oculus_name"] +
-                  " [" +
-                  Math.round((user["frames_used"] / (30 * 60 * 60)) * 100) /
-                    100 + //+
-                  " h]"}
+              <p style={{ margin: "0" }}>
+                {user.index + ".  " + user["oculus_name"]}
+              </p>
+              <p style={{ margin: "0 0 0 auto" }}>
+                {Math.round((user["frames_used"] / (30 * 60 * 60)) * 100) /
+                  100 + //+
+                  "h"}
               </p>
             </LeaderboardListStyle>
           </LeaderboardListContainer>
