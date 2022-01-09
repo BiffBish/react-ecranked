@@ -238,7 +238,12 @@ function App() {
               <DiscordOAuthCallback
                 callbackCode={callbackCode}
                 onFinish={() => {
-                  props.history.push("/home");
+                  var redirectLink = localStorage.getItem(
+                    "REDIRECT_URI",
+                    window.location
+                  );
+
+                  props.history.push(redirectLink ? redirectLink : "/home");
                   window.location.reload(false);
                 }}
               />
@@ -317,13 +322,14 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
               return;
             }
             console.log(data);
-            onFinish();
+
             localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
             localStorage.setItem("OCULUS_ID", data["oculus_id"]);
             // eslint-disable-next-line
             if (data["moderator"] == 1) {
               localStorage.setItem("MODERATOR", data["moderator"]);
             }
+            onFinish();
           });
       }
     };
