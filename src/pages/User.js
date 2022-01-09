@@ -76,6 +76,7 @@ const LeftSideStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 200px 1;
 `;
 const LeftSide = ({ username, replays }) => {
   console.log("80 REPLAYS", replays);

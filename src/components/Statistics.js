@@ -401,7 +401,6 @@ export const Statistics = ({ userData }) => {
 
   return (
     <CenterColumnStyle>
-      <LeftCenterSection></LeftCenterSection>
       <LeftCenterSection>
         <StatChoice
           currentSelected={statChoice}
