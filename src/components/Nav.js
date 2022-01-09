@@ -180,6 +180,7 @@ const AuthorizeButton = ({ userData }) => {
   if (userData.authorization_token == null) {
     return (
       <ButtonLink
+        style={{ float: "right" }}
         onClick={() => {
           console.log("TEST");
           localStorage.setItem("REDIRECT_URI", window.location);

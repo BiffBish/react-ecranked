@@ -238,12 +238,9 @@ function App() {
               <DiscordOAuthCallback
                 callbackCode={callbackCode}
                 onFinish={() => {
-                  var redirectLink = localStorage.getItem(
-                    "REDIRECT_URI",
-                    window.location
-                  );
+                  var redirectLink = localStorage.getItem("REDIRECT_URI");
 
-                  props.history.push(redirectLink ? redirectLink : "/home");
+                  window.location.href = redirectLink ? redirectLink : "/home";
                   window.location.reload(false);
                 }}
               />
