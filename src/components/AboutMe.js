@@ -10,8 +10,8 @@ const ContainerTitle = styled.div`
 `;
 
 const AboutMeStyle = styled.div`
-  padding: 10px 10px 0px;
-  margin: 20px 10px 20px;
+  padding: 10px;
+  // margin: 20px 10px 20px;
   background-color: #222;
   color: white;
   float: left;

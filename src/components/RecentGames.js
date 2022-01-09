@@ -41,7 +41,7 @@ const RecentGameStyle = styled.div`
 `;
 const RecentGamesStyle = styled.div`
   padding: 10px 10px 0px;
-  margin: 20px 10px 20px;
+  // margin: 20px 10px 20px;
   background-color: #222;
   color: white;
   float: left;
@@ -69,47 +69,48 @@ export const RecentGames = ({ replays }) => {
   function recentGameClick(session_id) {
     history.push("/replay/" + session_id);
   }
-
   return (
-    <RecentGamesStyle>
-      <ContainerTitle>Replays</ContainerTitle>
-      {replayList.map((replay) => {
-        const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
-        const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
-        const UtcNow = moment.utc();
-        const dateDiffrence = UtcGameTime.diff(UtcNow, "d");
-        const hourDiffrence = UtcGameTime.diff(UtcNow, "h");
+    <>
+      <RecentGamesStyle>
+        <ContainerTitle>Replays</ContainerTitle>
+        {replayList.map((replay) => {
+          const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
+          const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
+          const UtcNow = moment.utc();
+          const dateDiffrence = UtcGameTime.diff(UtcNow, "d");
+          const hourDiffrence = UtcGameTime.diff(UtcNow, "h");
 
-        var TimeString = "";
+          var TimeString = "";
 
-        if (dateDiffrence === 0) {
-          TimeString = `${-hourDiffrence}h ago`;
-        }
-        if (dateDiffrence < 0) {
-          TimeString = `${-dateDiffrence} days ago`;
-        }
-        const OnGameClick = () => {
-          recentGameClick(replay["session_id"]);
-        };
-        return (
-          <RecentGameStyle
-            key={replay["session_id"]}
-            onClick={OnGameClick}
-            style={{ opacity: 1 }}
-          >
-            <p style={{ margin: 0 }}>
-              {"{" +
-                TimeString +
-                "}" +
-                "[" +
-                moment(LocalGameTime).format("MMM DD LTS") + //+
-                "] - " +
-                replay["map"].charAt(0).toUpperCase() +
-                replay["map"].slice(1)}
-            </p>
-          </RecentGameStyle>
-        );
-      })}
-    </RecentGamesStyle>
+          if (dateDiffrence === 0) {
+            TimeString = `${-hourDiffrence}h ago`;
+          }
+          if (dateDiffrence < 0) {
+            TimeString = `${-dateDiffrence} days ago`;
+          }
+          const OnGameClick = () => {
+            recentGameClick(replay["session_id"]);
+          };
+          return (
+            <RecentGameStyle
+              key={replay["session_id"]}
+              onClick={OnGameClick}
+              style={{ opacity: 1 }}
+            >
+              <p style={{ margin: 0 }}>
+                {"{" +
+                  TimeString +
+                  "}" +
+                  "[" +
+                  moment(LocalGameTime).format("MMM DD LTS") + //+
+                  "] - " +
+                  replay["map"].charAt(0).toUpperCase() +
+                  replay["map"].slice(1)}
+              </p>
+            </RecentGameStyle>
+          );
+        })}
+      </RecentGamesStyle>
+    </>
   );
 };

@@ -19,7 +19,6 @@ const LoadoutStyle = styled.div`
 
   display: flex;
   padding: 10px 10px 10px;
-  margin: 20px 10px 20px;
   background-color: #222;
   color: white;
   float: left;
@@ -257,7 +256,6 @@ const UserStat = ({ name, value, displayValue }) => {
 };
 const UserStatsStyle = styled.div`
   padding: 10px 10px 10px;
-  margin: 20px 10px 20px;
   background-color: #222;
   color: white;
   float: left;
@@ -326,10 +324,9 @@ const CenterColumnStyle = styled.div`
   float: left;
   display: flex;
   flex: 400px 4;
-  flex-direction: column;
+  gap: 10px;
 `;
 const StatChoiceStyle = styled.div`
-  margin: 20px 10px 0px;
   padding: 0px;
   background-color: #222;
   color: white;
@@ -371,9 +368,13 @@ const StatChoice = ({ currentSelected, onClick }) => {
         7 Days
       </StatChoiceButton>
       <StatChoiceButton
-        style={currentSelected === "stats" ? { backgroundColor: "#333" } : {}}
+        style={
+          currentSelected === "monthly_resetting_stats"
+            ? { backgroundColor: "#333" }
+            : {}
+        }
         onClick={() => {
-          onClick("stats");
+          onClick("monthly_resetting_stats");
         }}
       >
         Monthly
@@ -389,26 +390,35 @@ const StatChoice = ({ currentSelected, onClick }) => {
     </StatChoiceStyle>
   );
 };
+const LeftCenterSection = styled.div`
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+`;
+
 export const Statistics = ({ userData }) => {
   const [statChoice, setStatChoice] = useState("stats");
 
   return (
     <CenterColumnStyle>
-      <StatChoice
-        currentSelected={statChoice}
-        onClick={(table) => {
-          setStatChoice(table);
-        }}
-      />
-      <UserStats userData={userData} statChoice={statChoice} />
-      <Loadout
-        user_id={userData["oculus_id"]}
-        top_loadout={
-          userData[statChoice]["top_loadout"]
-            ? userData[statChoice]["top_loadout"]
-            : []
-        }
-      />
+      <LeftCenterSection></LeftCenterSection>
+      <LeftCenterSection>
+        <StatChoice
+          currentSelected={statChoice}
+          onClick={(table) => {
+            setStatChoice(table);
+          }}
+        />
+        <UserStats userData={userData} statChoice={statChoice} />
+        <Loadout
+          user_id={userData["oculus_id"]}
+          top_loadout={
+            userData[statChoice]["top_loadout"]
+              ? userData[statChoice]["top_loadout"]
+              : []
+          }
+        />
+      </LeftCenterSection>
     </CenterColumnStyle>
   );
 };
