@@ -241,7 +241,6 @@ function App() {
                   var redirectLink = localStorage.getItem("REDIRECT_URI");
 
                   window.location.href = redirectLink ? redirectLink : "/home";
-                  window.location.reload(false);
                 }}
               />
             );
