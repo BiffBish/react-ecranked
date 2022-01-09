@@ -164,7 +164,7 @@ const AuthorizeButton = ({ userData }) => {
   if (userData.authorization_token == null) {
     return (
       <TopBarLink
-        link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify"
+        link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback%3Fredirect_uri%3DTestestestest&response_type=code&scope=identify"
         text="Login"
         externalLink={true}
         floatRight={true}

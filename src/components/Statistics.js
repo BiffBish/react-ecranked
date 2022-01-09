@@ -376,6 +376,14 @@ const StatChoice = ({ currentSelected, onClick }) => {
           onClick("stats");
         }}
       >
+        Monthly
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={currentSelected === "stats" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("stats");
+        }}
+      >
         All time
       </StatChoiceButton>
     </StatChoiceStyle>
