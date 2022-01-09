@@ -61,9 +61,9 @@ export default function AutoComplete({
     console.log(e.target[0].value);
     onFormSubmit(e.target[0].value);
   };
-  console.log("AutoComplete 276", options);
+  // console.log("AutoComplete 276", options);
   return (
-    <Box onSubmit={handleSubmit}>
+    <Box onSubmit={handleSubmit} style={{ flex: "200px 1" }}>
       <Input
         ref={textInput}
         id="AutoCompleteInputInput"

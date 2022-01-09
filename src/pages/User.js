@@ -1,452 +1,13 @@
-import styled, { keyframes } from "styled-components";
-import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import React, { useEffect } from "react";
+
 import { useHistory } from "react-router-dom";
-import AutoComplete from "../components/AutoComplete";
-import moment from "moment-timezone";
-import Achievements from "../components/Achievements";
-function map_range(value, low1, high1, low2, high2) {
-  return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
-}
-const LoadoutStyle = styled.div`
-  flex-wrap: wrap;
+import MetaTags from "react-meta-tags";
+import { FailedSearchBar } from "../components/FailedSearch";
+import { AboutMe } from "../components/AboutMe";
+import { Statistics } from "../components/Statistics";
+import { RecentGames } from "../components/RecentGames";
 
-  display: flex;
-  padding: 10px 10px 10px;
-  margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 2px solid white;
-  border-radius: 10px;
-`;
-
-const LoadoutBoxStyle = styled.div`
-  justify-content: center;
-  padding: 10px 10px 10px;
-  margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 2px solid white;
-  border-radius: 10px;
-  flex: 60px 1;
-  font-size: 12px;
-  text-align: center;
-  flex-direction: column;
-  min-width: 60px;
-`;
-const LoadoutBoxItemStyle = styled.div`
-  flex-grow: 1;
-`;
-const LoadoutBox = ({ number, frequency }) => {
-  const tacNumber = number % 4;
-  const grenadeNumber = ((number - tacNumber) % 16) / 4;
-  const weaponNumber = ((number - (tacNumber + grenadeNumber * 4)) % 64) / 16;
-
-  const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
-  ];
-  const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
-  ];
-  const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
-  ];
-  let displayNumber = Math.round(frequency * 10000) / 100;
-  if (displayNumber === 100) {
-    displayNumber = 99.999;
-  }
-  return (
-    <LoadoutBoxStyle>
-      <img
-        src={weaponMap[weaponNumber]}
-        alt={"weapon"}
-        style={{ width: "60px", height: "60px" }}
-      />
-      <img
-        src={ordinanceMap[grenadeNumber]}
-        alt={"weapon"}
-        style={{ width: "60px", height: "60px" }}
-      />
-      <img
-        src={tacModMap[tacNumber]}
-        alt={"tacMod"}
-        style={{ width: "60px", height: "60px" }}
-      />
-      <LoadoutBoxItemStyle style={{ fontSize: "20px", fontWeight: "900" }}>
-        {displayNumber + "%"}{" "}
-      </LoadoutBoxItemStyle>
-    </LoadoutBoxStyle>
-  );
-};
-const LoadoutExpandButtonStyle = styled.div`
-  border: 2px solid white;
-  border-radius: 10px;
-  flex-grow: 1;
-  margin: 10px;
-  height: 40px;
-  text-align: center;
-  cursor: pointer;
-`;
-const Loadout = ({ top_loadout }) => {
-  const [numOfEntrys, setNumOfEntrys] = useState(5);
-  return (
-    <>
-      <LoadoutStyle>
-        {top_loadout.slice(0, numOfEntrys).map((loadout) => {
-          return <LoadoutBox number={loadout[0]} frequency={loadout[1]} />;
-        }, 4)}{" "}
-        <LoadoutExpandButtonStyle
-          onClick={() => {
-            setNumOfEntrys(numOfEntrys * 2);
-          }}
-        >
-          {" "}
-          Click to show more{" "}
-        </LoadoutExpandButtonStyle>
-      </LoadoutStyle>
-    </>
-  );
-};
-
-const UserStatStyle = styled.div`
-  margin: 2px;
-  float: left;
-  background-color: #222;
-  color: white;
-  z-index: 3;
-  font-size: 20px;
-  flex-basis: 0;
-  flex-grow: 1;
-  min-width: 120px;
-  font-size: 14px;
-  text-align: center;
-  line-height: 1.5;
-`;
-
-const ProgressDivStyle = styled.div`
-  border-radius: 0.5rem;
-  border: 2px solid white;
-  border-radius: 10px;
-  height: 30px;
-  overflow: hidden;
-`;
-
-const ProgressBarStyle = styled.div`
-  position: relative;
-
-  transform: translate(-50%, -0%);
-  background-color: #b35252;
-  height: 100%;
-  border-radius: 8px;
-  transition-duration: 0.5s;
-  transition-property: width;
-`;
-const ProgressBarTextStyle = styled.p`
-  position: relative;
-  margin: -26px 0px;
-  text-align: center;
-  z-index: 5;
-`;
-
-export var ProgressBar = ({ percent, displayValue }) => {
-  const [value, setValue] = React.useState(0);
-
-  React.useEffect(() => {
-    setValue(percent * 100);
-  }, [percent]);
-
-  return (
-    <ProgressDivStyle className="progress-div">
-      <ProgressBarStyle
-        style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
-        className="progress"
-      ></ProgressBarStyle>
-      <ProgressBarTextStyle>{displayValue}</ProgressBarTextStyle>
-    </ProgressDivStyle>
-  );
-};
-const UserStat = ({ name, value, displayValue }) => {
-  return (
-    <UserStatStyle>
-      {name}
-      <ProgressBar percent={value} displayValue={displayValue}>
-        valueStr
-      </ProgressBar>
-    </UserStatStyle>
-  );
-};
-const UserStatsStyle = styled.div`
-  padding: 10px 10px 0px;
-  margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 2px solid white;
-  border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0px 10px;
-`;
-const UserStats = ({ userData }) => {
-  return (
-    <UserStatsStyle>
-      <ContainerTitle>Stats</ContainerTitle>
-
-      <UserStat
-        name={"Total Games"}
-        displayValue={userData["total_games"]}
-        value={1}
-      />
-      <UserStat
-        name={"Total Deaths"}
-        displayValue={userData["total_deaths"]}
-        value={1}
-      />
-      <UserStat
-        name={"Average Ping"}
-        displayValue={userData["average_ping"].toFixed(1) + "ms"}
-        value={map_range(userData["average_ping"], 0, 200, 0, 1)}
-      />
-      <UserStat
-        name={"Average Speed"}
-        displayValue={userData["average_speed"].toFixed(2) + "m/s"}
-        value={map_range(userData["average_speed"], 0, 5, 0, 1)}
-      />
-      <UserStat
-        name={"Time Stopped"}
-        displayValue={(userData["percent_stopped"] * 100).toFixed(1) + "%"}
-        value={userData["percent_stopped"]}
-      />
-      <UserStat
-        name={"Inverted"}
-        displayValue={(userData["percent_upsidedown"] * 100).toFixed(1) + "%"}
-        value={userData["percent_upsidedown"]}
-      />
-      <UserStat
-        name={"Deaths/game"}
-        displayValue={userData["average_deaths"].toFixed(1)}
-        value={map_range(userData["average_deaths"], 0, 15, 0, 1)}
-      />
-      <UserStat
-        name={"Crash/Leave"}
-        displayValue={(userData["percent_crash"] * 100).toFixed(2) + "%"}
-        value={userData["percent_crash"]}
-      />
-    </UserStatsStyle>
-  );
-};
-const CenterColumnStyle = styled.div`
-  background-color: #222;
-  float: left;
-  display: flex;
-  flex: 400px 4;
-  flex-direction: column;
-`;
-const StatChoiceStyle = styled.div`
-  margin: 20px 10px 0px;
-  padding: 0px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0px 10px;
-`;
-
-const StatChoiceButton = styled.div`
-  padding: 10px 10px 0px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 2px solid white;
-  border-radius: 10px;
-  gap: 0px 10px;
-  flex-grow: 1;
-  text-align: center;
-  height: 40px;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-  cursor: pointer;
-`;
-const StatChoice = ({ currentSelected, onClick }) => {
-  return (
-    <StatChoiceStyle>
-      <StatChoiceButton
-        style={
-          currentSelected === "weekly_stats" ? { backgroundColor: "#333" } : {}
-        }
-        onClick={() => {
-          onClick("weekly_stats");
-        }}
-      >
-        7 Days
-      </StatChoiceButton>
-      <StatChoiceButton
-        style={currentSelected === "stats" ? { backgroundColor: "#333" } : {}}
-        onClick={() => {
-          onClick("stats");
-        }}
-      >
-        All time
-      </StatChoiceButton>
-    </StatChoiceStyle>
-  );
-};
-const CenterColumn = ({ userData }) => {
-  const [statChoice, setStatChoice] = useState("stats");
-
-  return (
-    <CenterColumnStyle>
-      <StatChoice
-        currentSelected={statChoice}
-        onClick={(table) => {
-          setStatChoice(table);
-        }}
-      />
-      <UserStats userData={userData[statChoice]} />
-      <Loadout
-        top_loadout={
-          userData[statChoice]["top_loadout"]
-            ? userData[statChoice]["top_loadout"]
-            : []
-        }
-      />
-    </CenterColumnStyle>
-  );
-};
-
-const RecentGameFadeIN = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`;
-const RecentGameStyle = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: #333;
-  padding: 10px;
-  margin: 10px 0px;
-  text-decoration: none;
-  border: 2px solid white;
-  border-radius: 10px;
-  line-height: 0;
-  font-size: 15px;
-  line-height: 1.5;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-  cursor: pointer;
-  animation: ${RecentGameFadeIN} 0.2s;
-`;
-const RecentGamesStyle = styled.div`
-  padding: 10px 10px 0px;
-  margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 2px solid white;
-  border-radius: 10px;
-  flex: 200px 2;
-`;
-const RecentGames = ({ replays }) => {
-  const [replayList, setReplayList] = useState([]);
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  useEffect(() => {
-    async function loadInReplayAnimation(replays) {
-      var AnimationList = [];
-      for (const replay of replays) {
-        AnimationList.push(replay);
-        setReplayList([...AnimationList]);
-        await delay(20);
-      }
-    }
-    loadInReplayAnimation(replays);
-  }, [replays]);
-
-  let history = useHistory();
-  function recentGameClick(session_id) {
-    history.push("/replay/" + session_id);
-  }
-
-  return (
-    <RecentGamesStyle>
-      <ContainerTitle>Replays</ContainerTitle>
-      {replayList.map((replay) => {
-        const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
-        const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
-        const UtcNow = moment.utc();
-        const dateDiffrence = UtcGameTime.diff(UtcNow, "d");
-        const hourDiffrence = UtcGameTime.diff(UtcNow, "h");
-
-        var TimeString = "";
-
-        if (dateDiffrence === 0) {
-          TimeString = `${-hourDiffrence}h ago`;
-        }
-        if (dateDiffrence < 0) {
-          TimeString = `${-dateDiffrence} days ago`;
-        }
-        const OnGameClick = () => {
-          recentGameClick(replay["session_id"]);
-        };
-        return (
-          <RecentGameStyle
-            key={replay["session_id"]}
-            onClick={OnGameClick}
-            style={{ opacity: 1 }}
-          >
-            <p style={{ margin: 0 }}>
-              {"{" +
-                TimeString +
-                "}" +
-                "[" +
-                moment(LocalGameTime).format("MMM DD LTS") + //+
-                "] - " +
-                replay["map"]}
-            </p>
-          </RecentGameStyle>
-        );
-      })}
-    </RecentGamesStyle>
-  );
-};
-const AboutMeStyle = styled.div`
-  padding: 10px 10px 0px;
-  margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 2px solid white;
-  border-radius: 10px;
-  flex: 100px 2;
-`;
-const AboutMe = ({ userData }) => {
-  return (
-    <AboutMeStyle>
-      <ContainerTitle>About Me</ContainerTitle>
-      {userData["about_string"]}
-    </AboutMeStyle>
-  );
-};
 const UserBody = styled.div`
   display: flex;
   align-items: stretch;
@@ -457,126 +18,6 @@ const UserBody = styled.div`
   opacity: 100%
   transition-property: height margin opacity;
 `;
-
-const ContainerTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 400;
-  margin: 10px 0px;
-  text-align: center;
-  flex: 0 0 100%;
-  color: #fff;
-`;
-const autoCompleteBox = styled.form`
-  border: 2px solid white;
-  border-radius: 10px;
-  display: inline-block;
-  float: center;
-  margin: 4px;
-  background-color: #222;
-  z-index: 50;
-  float: center;
-  overflow: hidden;
-`;
-const autoCompleteInput = styled.input`
-  background-color: transparent;
-  border: none;
-  outline: none;
-  color: #fff;
-  font-size: 36px;
-  padding: 8px;
-  font-family: "Montserrat", sans-serif;
-  z-index: 50;
-`;
-const autoCompleteOptionDiv = styled.div`
-  background-color: transparent;
-  border: none;
-  outline: none;
-  color: #fff;
-  font-size: 36px;
-  padding: 3px 8px;
-  z-index: 50;
-  cursor: pointer;
-  &:hover {
-    background-color: #555;
-  }
-  transition-duration: 0.1s;
-`;
-
-const FailedSearchBarStyle = styled.div`
-  flex-grow: 1;
-  height: 0px;
-  transition-duration: 1s;
-  border-width: 2px
-  transition-property: height border margin border-width;
-  background-color: #222;
-  overflow: hidden;
-  border-style: solid;
-  
-  border-radius: 10px;
-  margin: 10px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const FailedSearchBarTitleStyle = styled.h2`
-  text-align: center;
-  font-size: 42px;
-  color: #fff;
-  line-height: 1;
-`;
-const FailedSearchBar = ({ shown, onFormSubmit }) => {
-  const [allUsernames, setAllUsernames] = useState(null);
-
-  useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/user/@all")
-      .then(async (response) => {
-        const data = await response.json();
-        console.log("allUsernames code:" + response.statusCode);
-        if (response.status === 404) {
-        } else {
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-          console.log(data);
-          setAllUsernames(data);
-        }
-      })
-      .catch((error) => {
-        console.error("SetAllUsernames => There was an error!", error);
-      });
-  }, []);
-
-  return (
-    <FailedSearchBarStyle
-      style={
-        shown
-          ? {
-              height: `600px`,
-              border: "2px solid #fff",
-              margin: "10px 10px 0px",
-            }
-          : {
-              height: `0px`,
-              border: "0px solid #222",
-              margin: "0px 10px 0px",
-            }
-      }
-    >
-      <FailedSearchBarTitleStyle>Could not find user</FailedSearchBarTitleStyle>
-      <AutoComplete
-        onFormSubmit={onFormSubmit}
-        options={allUsernames}
-        maxAllowed={6}
-        Box={autoCompleteBox}
-        OptionDiv={autoCompleteOptionDiv}
-        Input={autoCompleteInput}
-      ></AutoComplete>
-    </FailedSearchBarStyle>
-  );
-};
 
 export default function User({ username, setBannerCallback, subDomain }) {
   let history = useHistory();
@@ -632,8 +73,14 @@ export default function User({ username, setBannerCallback, subDomain }) {
   };
   const [apiData, setApiData] = React.useState(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
-  useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + username)
+  const FetchUserData = () => {
+    fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+    })
       .then(async (response) => {
         const data = await response.json();
         console.log("code:" + response.statusCode);
@@ -648,12 +95,16 @@ export default function User({ username, setBannerCallback, subDomain }) {
           }
           if ("oculus_name" in data) {
             setUserNotFound(false);
-            setBannerCallback(data["oculus_name"]);
-            console.log(data["oculus_name"]);
+            var iconSrc = null;
+            if (data.discord_name !== null) {
+              iconSrc = "/images/verified_icon.png";
+            }
+            if (data.moderator === true) {
+              iconSrc = "/images/moderator_icon.png";
+            }
+            console.log(data);
+            setBannerCallback(data["oculus_name"], iconSrc);
             setApiData(data);
-          } else {
-            setBannerCallback("Unknown");
-            setUserNotFound(true);
           }
         }
       })
@@ -661,7 +112,12 @@ export default function User({ username, setBannerCallback, subDomain }) {
         setUserNotFound(true);
         console.error("There was an error!", error);
       });
-  }, [username, setBannerCallback]);
+  };
+
+  useEffect(() => {
+    FetchUserData();
+    // eslint-disable-next-line
+  }, [username]);
 
   function WhatApiRequest() {
     console.log("APIDATA");
@@ -687,8 +143,14 @@ export default function User({ username, setBannerCallback, subDomain }) {
           userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
+        <MetaTags>
+          <title>{username}'s Page!</title>
+          <meta name="description" content={"Visit " + username + "'s Page!"} />
+          <meta property="og:title" content="MyApp" />
+          <meta property="og:image" content="path/to/image.jpg" />
+        </MetaTags>
         <RecentGames replays={WhatApiRequest()["recent_games"]} />
-        <CenterColumn userData={WhatApiRequest()} />
+        <Statistics userData={WhatApiRequest()} />
         <AboutMe userData={WhatApiRequest()} />
       </UserBody>
     </>
