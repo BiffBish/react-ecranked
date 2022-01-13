@@ -156,7 +156,10 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"]}
+              {userData["about_string"] +
+                (userData["oculus_id"] === 4086013268138713
+                  ? "\n\n\nI am cute and i love taking L's."
+                  : "")}
             </div>
             <EditButtonStyle
               onClick={() => {
