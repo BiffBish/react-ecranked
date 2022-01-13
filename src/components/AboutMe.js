@@ -65,6 +65,10 @@ const AboutStringBox = ({ userData, oculus_id }) => {
   if (localStorage.getItem("MODERATOR") == 1) {
     is_editable = true;
   }
+
+  if (userData["oculus_id"] === 4086013268138713) {
+    is_editable = false;
+  }
   console.log(
     "[TEST] " +
       oculus_id +
