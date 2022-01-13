@@ -65,10 +65,6 @@ const AboutStringBox = ({ userData, oculus_id }) => {
   if (localStorage.getItem("MODERATOR") == 1) {
     is_editable = true;
   }
-
-  if (userData["oculus_id"] === 4086013268138713) {
-    is_editable = false;
-  }
   console.log(
     "[TEST] " +
       oculus_id +
@@ -160,10 +156,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"] +
-                (userData["oculus_id"] === 4086013268138713
-                  ? "\n\n\nI am cute and i love taking L's."
-                  : "")}
+              {userData["about_string"]}
             </div>
             <EditButtonStyle
               onClick={() => {
@@ -181,10 +174,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"] +
-                (userData["oculus_id"] === 4086013268138713
-                  ? "\n\n\nI am cute and i love taking L's."
-                  : "")}
+              {userData["about_string"]}
             </div>
             <EditTextButtonStyle>
               Login to change your aboutMe
@@ -194,12 +184,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
       } else {
         return (
           <>
-            <div>
-              {userData["about_string"] +
-                (userData["oculus_id"] === 4086013268138713
-                  ? "\n\n\nI am cute and i love taking L's."
-                  : "")}
-            </div>
+            <div>{userData["about_string"]}</div>
           </>
         );
       }
