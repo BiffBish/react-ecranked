@@ -174,7 +174,10 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"]}
+              {userData["about_string"] +
+                (userData["oculus_id"] === 4086013268138713
+                  ? "\n\n\nI am a cutie that is taking L's."
+                  : "")}
             </div>
             <EditTextButtonStyle>
               Login to change your aboutMe
