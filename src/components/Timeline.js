@@ -117,7 +117,6 @@ const UserColorList = ({
       ...backgroundColor,
     };
   }
-  //Test
   return (
     <UserColorListStyle>
       {users.map((user, index) => {
