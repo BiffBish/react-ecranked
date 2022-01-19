@@ -1,9 +1,18 @@
+/* eslint-disable */
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import {
+  Magnifier,
+  GlassMagnifier,
+  SideBySideMagnifier,
+  PictureInPictureMagnifier,
+  MOUSE_ACTIVATION,
+  TOUCH_ACTIVATION,
+} from "react-image-magnifiers";
 const Container = styled.div`
   position: relative;
-  padding: 10px 10px 0px;
+  padding: 10px 10px 10px;
   margin: 20px 10px 20px;
   background-color: #222;
   color: white;
@@ -44,22 +53,139 @@ const UserListStyle = styled.div`
   flex-direction: column;
   gap: 10px;
   flex: 100px 1;
+  // margin-top: 30px;
 `;
-const UserList = ({ users }) => {
+
+const UserColor = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  padding: 7px;
+  text-decoration: none;
+  border: 2px solid white;
+  border-radius: 10px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  height: 40.5px;
+  box-sizing: border-box;
+`;
+
+const UserColorListStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 33px;
+`;
+const UserColorList = ({
+  users,
+  animationIndex,
+  currentSelected,
+  onClick,
+  onHover,
+}) => {
+  // console.log("USR LIST", users);
   let history = useHistory();
 
   function userClick(username) {
     history.push("/user/" + username + "/stats");
   }
+  let OrangeTeamStartID = -1;
+  function getUserColorStyle(user) {
+    let BorderColor = "rgb(65, 160, 228)";
+    console.log(user["team"]);
+    switch (user["team"]) {
+      case 0:
+        BorderColor = "rgb(65, 160, 228)";
+        break;
+      case 1:
+        BorderColor = "rgb(230, 167, 50)";
+        break;
+      default:
+        BorderColor = "rgb(255, 255, 255)";
+        break;
+    }
+
+    var backgroundColor = {};
+    if (user["playerid"] == currentSelected) {
+      backgroundColor = { backgroundColor: "#333" };
+    }
+    return {
+      borderColor: BorderColor,
+      ...backgroundColor,
+    };
+  }
   return (
-    <UserListStyle>
-      {users.map((user) => {
+    <UserColorListStyle>
+      {users.map((user, index) => {
+        if (index >= animationIndex) {
+          return null;
+        }
         const onUserClick = () => {
           userClick(user["name"]);
         };
+        if (user["team"] == 1 && OrangeTeamStartID == -1) {
+          OrangeTeamStartID = index;
+        }
+        return (
+          <UserColor
+            key={user["userid"]}
+            onClick={() => {
+              onClick(user["playerid"]);
+            }}
+            onMouseEnter={() => {
+              onHover(user["playerid"]);
+            }}
+            onMouseLeave={() => {
+              onHover(null);
+            }}
+            style={getUserColorStyle(user)}
+          >
+            <div
+              style={{
+                backgroundColor:
+                  user["team"] == 0
+                    ? BlueColors[index]
+                    : OrangeColors[index - OrangeTeamStartID],
+                width: "15px",
+                height: "15px",
+                marginLeft: "auto",
+                borderRadius: "100px",
+                border: "none",
+                overflow: "hidden",
+              }}
+            ></div>
+          </UserColor>
+        );
+      })}
+    </UserColorListStyle>
+  );
+};
+const UserList = ({ users, animationIndex }) => {
+  // console.log("USR LIST", users);
+  let history = useHistory();
+
+  function userClick(username) {
+    history.push("/user/" + username + "/stats");
+  }
+  let OrangeTeamStartID = -1;
+  return (
+    <UserListStyle>
+      {users.map((user, index) => {
+        if (index >= animationIndex) {
+          return null;
+        }
+        const onUserClick = () => {
+          userClick(user["name"]);
+        };
+        if (user["team"] == 1 && OrangeTeamStartID == -1) {
+          OrangeTeamStartID = index;
+        }
         return (
           <User
-            key={user["name"]}
+            key={user["userid"]}
             onClick={onUserClick}
             style={(() => {
               switch (user["team"]) {
@@ -87,10 +213,80 @@ const TimelineSubStyle = styled.div`
 
   flex: 200px 8;
 `;
-const TimelineUserList = ({ users, api_data }) => {
+
+const TimelineHeaderBarMinuteMarkers = styled.div`
+  position: absolute;
+  height: 75%;
+  width: 5px;
+  bottom: 0px;
+  background: #555;
+  border-radius: 10px;
+  border: none;
+`;
+const TimelineHeaderBarMinuteMarkersText = styled.div`
+  position: absolute;
+  height: 100%;
+  bottom: 0px;
+  background: #5550;
+  padding-left: 10px;
+`;
+const TimelineHeaderBarStyle = styled.div`
+  position: relative;
+  background: #333;
+  border-radius: 10px;
+  border: none;
+
+  height: 25px;
+  box-sizing: border-box;
+`;
+
+const TimelineHeaderBar = ({ api_data }) => {
+  // console.log(api_data["match_length"]);
+  var minutePoints = [];
+  for (let index = 0; index < api_data["match_length"]; index += 60) {
+    minutePoints.push(index / api_data["match_length"]);
+  }
+  // console.log("120 ", minutePoints);
+  return (
+    <TimelineHeaderBarStyle>
+      {minutePoints.map((point, index) => {
+        if (index == 0) {
+          return (
+            <TimelineHeaderBarMinuteMarkers
+              style={{
+                left: `${point * 100}%`,
+              }}
+            />
+          );
+        }
+        return (
+          <>
+            <TimelineHeaderBarMinuteMarkers
+              style={{
+                left: `${point * 100}%`,
+              }}
+            />
+            <TimelineHeaderBarMinuteMarkersText
+              style={{
+                left: `${point * 100}%`,
+              }}
+            >
+              {index + " min"}
+            </TimelineHeaderBarMinuteMarkersText>
+          </>
+        );
+      })}
+    </TimelineHeaderBarStyle>
+  );
+};
+
+const TimelineUserList = ({ users, api_data, animationIndex }) => {
+  // console.log(api_data["total_frames"]);
   return (
     <TimelineSubStyle>
-      {users.map((user) => {
+      <TimelineHeaderBar api_data={api_data} />
+      {users.map((user, index) => {
+        if (index >= animationIndex) return null;
         return <TimelineUserItem user={user} api_data={api_data} />;
       })}
     </TimelineSubStyle>
@@ -102,27 +298,28 @@ const TimelineUserItemStyle = styled.div`
   background-color: #222;
   text-decoration: none;
   #border: 2px solid white;
-  border-radius: 10px;
+
   line-height: 0;
   font-size: 15px;
   line-height: 1.5;
 
   cursor: pointer;
   height: 40.5px;
+  // overflow: hidden;
 `;
 const TimeLineItemActiveBar = styled.div`
   background-color: #333;
   width: 100%;
-  height: 10px;
-  border: 1px solid #333;
-  border-radius: 10px;
-  height: 32px;
+  height: 100%;
+  #height: 32px;
   overflow: hidden;
+  border-radius: 10px;
+  border: none;
 `;
 const DeathBar = styled.div`
   position: absolute;
-  top: 30px;
-  background-color: red;
+  top: 34px;
+  background-color: #f44;
   width: 0.5%;
   height: 10px;
   border: 0px solid red;
@@ -148,7 +345,7 @@ const GetDeathPoints = ({ user, api_data }) => {
         // On the last deathPoint
         endFrame = user["startFrame"] + user["stats"]["total_frames"];
       } else {
-        console.log(user["framestamps"]);
+        // console.log(user["framestamps"]);
         endFrame = user["framestamps"]["in_bounds"][index + 1][0];
       }
       startFrame = user["framestamps"]["in_bounds"][index][0];
@@ -170,6 +367,7 @@ const GetDeathPoints = ({ user, api_data }) => {
       );
     }
   }
+  TotalListOfElements.pop();
   return TotalListOfElements.map((element) => {
     return element;
   });
@@ -185,7 +383,7 @@ const LoadoutBarItemStyle = styled.div`
   border: 0px solid red;
   border-radius: 5px;
   height: 3px;
-  height: 26px;
+  height: 28px;
   &:hover {
     background-color: #555;
     color: #000;
@@ -351,9 +549,9 @@ const LoadoutBarItem = ({ width, transformHorisontal, loadoutNumber }) => {
 const LoadoutBar = ({ user, api_data }) => {
   let LoadoutBarItems = [];
   for (let index = 0; index < user["framestamps"]["loadout"].length; index++) {
-    console.debug(user["framestamps"]["loadout"][index][0]);
+    // console.debug(user["framestamps"]["loadout"][index][0]);
     const startFrame = user["framestamps"]["loadout"][index][0];
-    console.debug(startFrame);
+    // console.debug(startFrame);
 
     var endFrame = user["stats"]["total_frames"] + user["startFrame"];
     if (index + 1 < user["framestamps"]["loadout"].length) {
@@ -376,6 +574,7 @@ const LoadoutBar = ({ user, api_data }) => {
     return element;
   });
 };
+
 const TimelineUserItem = ({ user, api_data }) => {
   const startFrame = user["startFrame"];
   const totalFrames = api_data["frames"];
@@ -396,32 +595,219 @@ const TimelineUserItem = ({ user, api_data }) => {
     </TimelineUserItemStyle>
   );
 };
-
-export const Timeline = ({ skimData, users }) => {
-  const [userList, setUserList] = useState([]);
+const OrangeColors = [
+  "#ff0055",
+  "#ff9900",
+  "#fa2e00",
+  "#d4ff00",
+  "#ff0066",
+  "#44ff00",
+];
+const BlueColors = [
+  "#057aff",
+  "#f631ec",
+  "#a530f3",
+  "#2fe4e4",
+  "#7282fd",
+  "#8edea6",
+];
+const StatChoiceStyle = styled.div`
+  padding: 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 10px;
+  width: 100%;
+  box-sizing: border-box;
+`;
+const StatChoiceButton = styled.div`
+  // padding: 10px 10px 0px;
+  padding: auto;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 1px solid white;
+  border-radius: 10px;
+  flex-grow: 1;
+  text-align: center;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  // line-height: 20px;
+  height: 25px;
+  box-sizing: border-box;
+`;
+const StatChoice = ({ currentSelected, onClick }) => {
+  return (
+    <StatChoiceStyle>
+      <StatChoiceButton
+        style={
+          currentSelected === "timeline" ? { backgroundColor: "#333" } : {}
+        }
+        onClick={() => {
+          onClick("timeline");
+        }}
+      >
+        Timeline
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={
+          currentSelected === "snapshot" ? { backgroundColor: "#333" } : {}
+        }
+        onClick={() => {
+          onClick("snapshot");
+        }}
+      >
+        Snapshot
+      </StatChoiceButton>
+    </StatChoiceStyle>
+  );
+};
+const HeatmapSelectionChoice = ({ currentSelected, onClick, onHover }) => {
+  return (
+    <StatChoiceStyle>
+      <StatChoiceButton
+        style={currentSelected === "blue" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("blue");
+        }}
+        onMouseEnter={() => {
+          onHover("blue");
+        }}
+        onMouseLeave={() => {
+          onHover(null);
+        }}
+      >
+        Blue
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={currentSelected === "all" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("all");
+        }}
+        onMouseEnter={() => {
+          onHover("all");
+        }}
+        onMouseLeave={() => {
+          onHover(null);
+        }}
+      >
+        All
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={currentSelected === "orange" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("orange");
+        }}
+        onMouseEnter={() => {
+          onHover("orange");
+        }}
+        onMouseLeave={() => {
+          onHover(null);
+        }}
+      >
+        Orange
+      </StatChoiceButton>
+    </StatChoiceStyle>
+  );
+};
+export const Timeline = ({ skimData }) => {
+  const [animationIndex, setAnimationIndex] = useState(0);
+  const [userList, setUserList] = useState(null);
+  const [animationFinished, setAnimationFinished] = useState(false);
+  const [updatedUsernamesPromises, setUpdatedUsernamesPromises] = useState([]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const [selectedOption, setSelectedOption] = useState("snapshot");
+  const [heatmapSelectedOption, setHeatmapSelectedOption] = useState("all");
+  const [heatmapHoveredOption, setHeatmapHoveredOption] = useState(null);
 
+  //set userList
   useEffect(() => {
-    async function loadInReplayAnimation(replays) {
-      replays.sort((replay1, replay2) => {
-        return replay1.team - replay2.team;
-      });
+    console.log("SkimData 413", skimData);
+    async function startApiCalls() {
+      setUserList(
+        [...skimData["players"]].sort((users1, users2) => {
+          return users1.team - users2.team;
+        })
+      );
+    }
+    if (skimData) startApiCalls();
+  }, [skimData]);
 
-      var AnimationList = [];
-      for (const replay of replays) {
-        AnimationList.push(replay);
-        setUserList([...AnimationList]);
+  //get updates usernames
+  useEffect(() => {
+    async function startApiCalls() {
+      setUpdatedUsernamesPromises(
+        userList.map((user) => {
+          return fetch(
+            "https://ecranked.ddns.net/api/v1/user/" + user["userid"]
+          ).then(async (response) => {
+            const data = await response.json();
+            if (response.status === 404) {
+            } else {
+              if (!response.ok) {
+                // get error message from body or default to response statusText
+                const error = (data && data.message) || response.statusText;
+                return Promise.reject(error);
+              }
+              return data;
+            }
+          });
+        })
+      );
+    }
+    if (userList !== null) startApiCalls();
+  }, [userList]);
+  //start animation
+  useEffect(() => {
+    async function loadInReplayAnimation() {
+      for (const user of userList) {
+        setAnimationIndex((prev) => prev + 1);
         await delay(20);
       }
+      //console.log("Finished Animation", userList);
+      setAnimationFinished(true);
     }
-    loadInReplayAnimation(users);
-  }, [users]);
+    if (userList !== null) loadInReplayAnimation();
+  }, [skimData, userList]);
 
-  if (!users) return null;
+  //update all names
+  useEffect(() => {
+    async function updateAllNames() {
+      //Wait for all API returns
+      var updatedUsernames = await Promise.all(updatedUsernamesPromises);
+      //Update the usernames
+      setUserList((prev) => {
+        return prev
+          .map((element, index) => {
+            return {
+              ...element,
+              name: updatedUsernames[index].oculus_name,
+            };
+          })
+          .sort((users1, users2) => {
+            return users1.team - users2.team;
+          });
+      });
+    }
+    if (animationFinished) {
+      updateAllNames();
+    }
+  }, [updatedUsernamesPromises, animationFinished]);
+
+  if (userList === null) return null;
 
   return (
     <Container>
       <ContainerTitle>
+        <span style={{ float: "left" }}>
+          {skimData["map"].charAt(0).toUpperCase() + skimData["map"].slice(1)}
+        </span>
         Game over time{" "}
         <p
           style={{
@@ -434,9 +820,78 @@ export const Timeline = ({ skimData, users }) => {
           red: deaths
         </p>
       </ContainerTitle>
-      <div style={{ display: "flex" }}>
-        <UserList users={userList} />
-        <TimelineUserList users={userList} api_data={skimData} />
+      <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <StatChoice
+              currentSelected={selectedOption}
+              onClick={setSelectedOption}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <UserColorList
+              users={userList}
+              animationIndex={animationIndex}
+              currentSelected={heatmapSelectedOption}
+              onClick={setHeatmapSelectedOption}
+              onHover={setHeatmapHoveredOption}
+            />
+            <UserList users={userList} animationIndex={animationIndex} />
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: "10px", flexGrow: 1 }}>
+          {selectedOption == "timeline" ? (
+            <TimelineUserList
+              users={userList}
+              animationIndex={animationIndex}
+              api_data={skimData}
+            />
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                flexDirection: "column",
+                flexGrow: 1,
+              }}
+            >
+              <HeatmapSelectionChoice
+                currentSelected={heatmapSelectedOption}
+                onClick={setHeatmapSelectedOption}
+                onHover={setHeatmapHoveredOption}
+              />
+              <div
+                style={{
+                  flexGrow: 1,
+                  border: "1px solid white",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                }}
+              >
+                <SideBySideMagnifier
+                  style={{ flexGrow: 1 }}
+                  imageSrc={`https://ecranked.ddns.net/public/${
+                    skimData["session_id"]
+                  }/heatmap_${
+                    heatmapHoveredOption !== null
+                      ? heatmapHoveredOption
+                      : heatmapSelectedOption
+                  }_Lowres.png`}
+                  largeImageSrc={`https://ecranked.ddns.net/public/${
+                    skimData["session_id"]
+                  }/heatmap_${
+                    heatmapHoveredOption !== null
+                      ? heatmapHoveredOption
+                      : heatmapSelectedOption
+                  }_Highres.png`}
+                  alwaysInPlace={true}
+                  className="input-position"
+                  fillAvailableSpace={true}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </Container>
   );
