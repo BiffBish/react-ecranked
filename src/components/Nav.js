@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import AutoComplete from "./AutoComplete";
 const TopBar = styled.div`
   height: 100%;
-  z-index: 10;
+  z-index: 100;
   background-color: #222;
   margin: 0px;
   padding: 0px;

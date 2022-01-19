@@ -93,10 +93,10 @@ export const Download = ({ session_id }) => {
   return (
     <LeftBar>
       <DownloadContainerStyle
-        onClick={onViewReplayButtonClick}
-        style={{ height: "80px", padding: "0px" }}
+        onClick={onButtonClick}
+        style={isRateLimit ? { height: "100px" } : { height: "80px" }}
       >
-        <ContainerTitle>[Beta] View Replay</ContainerTitle>
+        <ContainerTitle>Download</ContainerTitle>
         <DownloadRatelimitStyle
           style={isRateLimit ? { height: "60px" } : { height: "0px" }}
         >
@@ -104,11 +104,11 @@ export const Download = ({ session_id }) => {
         </DownloadRatelimitStyle>
       </DownloadContainerStyle>
       <DownloadContainerStyle
-        onClick={onButtonClick}
-        style={isRateLimit ? { height: "65px" } : { height: "45px" }}
+        onClick={onViewReplayButtonClick}
+        style={{ height: "45px", padding: "0px" }}
       >
         <ContainerTitle style={{ fontSize: "30px", margin: "0px" }}>
-          Download
+          [Beta] View Replay
         </ContainerTitle>
         <DownloadRatelimitStyle
           style={isRateLimit ? { height: "60px" } : { height: "0px" }}

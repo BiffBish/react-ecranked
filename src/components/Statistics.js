@@ -1,8 +1,7 @@
-/* eslint-disable */
 import styled from "styled-components";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { keyframes } from "styled-components";
+
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -26,7 +25,6 @@ const LoadoutStyle = styled.div`
   border: 1px solid white;
   border-radius: 10px;
 `;
-
 const LoadoutBoxStyle = styled(NavLink)`
   justify-content: center;
   padding: 10px 10px 10px;
@@ -165,196 +163,6 @@ const LoadoutExpandButtonStyle = styled.div`
   text-align: center;
   cursor: pointer;
 `;
-const HeatmapStyle = styled.div`
-  flex-wrap: wrap;
-  display: flex;
-  padding: 10px 10px 10px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 1px solid white;
-  border-radius: 10px;
-  // max-height: 20%;
-`;
-const GrowToFullScreen = (props) => {
-  const childRefrence = useRef(null);
-  const [positionOnScreen, setPositionOnScreen] = useState({});
-  const [onClickZoom, setOnClickZoom] = useState(false);
-  const [onClickStart, setOnClickStartZoom] = useState(false);
-  function delay(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
-
-  useEffect(() => {
-    if (onClickZoom) {
-      delay(1).then(() => setOnClickStartZoom(true));
-    }
-  }, [onClickZoom]);
-  // className="HeatmapUserPageObject"
-  //         onClick={onClick}
-  //         style={
-  //           onClickZoom
-  //             ? {
-  //                 position: "fixed",
-  //                 left: positionOnScreen.left,
-  //                 top: positionOnScreen.top,
-  //                 animationName: { GrowInScreenKeyframes },
-  //                 animationDuration: "2s",
-  //               }
-  //             : {}
-  const GrowInScreenKeyframes = keyframes`
-    from {
-      left:${positionOnScreen.top}px;
-      width:${positionOnScreen.width}%;
-      top:100px;
-      max-height: 0px;
-
-    }
-    to {
-      left:0 ;
-      width: 100%;
-      top:0px;
-      max-height: 300px;
-    }
-  //   `;
-  //
-
-  const onClick = () => {
-    var rect = childRefrence.current.getBoundingClientRect();
-    // example use
-
-    rect.percentWidth = (rect.width / window.innerWidth) * 100;
-    rect.percentHeight = (rect.height / window.innerHeight) * 100;
-    console.log(rect);
-    // console.log(childRefrence.current.className);
-    setOnClickZoom(true);
-    setPositionOnScreen(rect);
-  };
-  let defaultStyle = {
-    position: "fixed",
-    transitionProperty: "height, left, top, width",
-    transitionDuration: "2s",
-    transitionTimingFunction: "ease",
-    zIndex: 100,
-  };
-
-  let MaxStyle = {
-    top: 0,
-    left: 0,
-    height: "100%",
-    width: "100%",
-  };
-
-  let StartStyle = {
-    top: positionOnScreen.top,
-    left: positionOnScreen.left,
-    width: positionOnScreen.width,
-    height: positionOnScreen.height,
-  };
-  return (
-    <>
-      {React.cloneElement(props.children, {
-        onClick: onClick,
-        ref: childRefrence,
-      })}
-      {onClickZoom ? (
-        <div
-          style={{
-            ...defaultStyle,
-            ...(onClickStart ? MaxStyle : StartStyle),
-          }}
-        >
-          {React.cloneElement(props.children, {
-            onClick: onClick,
-            ref: childRefrence,
-            style: {
-              width: "100%",
-              height: "100%",
-              margin: "none",
-              boxSizing: "border-box",
-            },
-          })}
-        </div>
-      ) : null}
-    </>
-  );
-};
-
-const Heatmap = ({ userData }) => {
-  const [selectedHeatmap, setSelectedHeatmap] = useState(2);
-
-  const ImageStyling = [
-    {
-      height: "300px",
-      width: "478px",
-      // transform: "rotate(90deg)",
-    },
-    {
-      height: "300px",
-      // // width: "300px",
-      // transform: "rotate(90deg)",
-    },
-    {
-      height: "300px",
-      width: "1218px",
-      transform: "scaleX(-1)",
-    },
-    {
-      height: "300px",
-      width: "671px",
-      transform: "scaleX(-1)",
-    },
-  ];
-  const ImageNames = ["dyson", "combustion", "fission", "surge"];
-
-  const onClick = () => {};
-
-  if (userData.heatmap_completed === 1) {
-    return (
-      <GrowToFullScreen>
-        <HeatmapStyle>
-          <img
-            style={ImageStyling[0]}
-            src={
-              "https://ecranked.ddns.net/public/" +
-              userData.oculus_id +
-              "/heatmap_" +
-              ImageNames[0] +
-              ".png"
-            }
-          />
-        </HeatmapStyle>
-      </GrowToFullScreen>
-    );
-  } else {
-    return null;
-  }
-
-  // return (
-  //   <>
-  //     <LoadoutStyle>
-  //       {top_loadout.slice(0, numOfEntrys).map((loadout) => {
-  //         return (
-  //           <LoadoutBox
-  //             user_id={user_id}
-  //             number={loadout[0]}
-  //             frequency={loadout[1]}
-  //             key={loadout[0]}
-  //           />
-  //         );
-  //       }, 4)}{" "}
-  //       <LoadoutExpandButtonStyle
-  //         onClick={() => {
-  //           setNumOfEntrys(numOfEntrys * 2);
-  //         }}
-  //       >
-  //         {" "}
-  //         Click to show more{" "}
-  //       </LoadoutExpandButtonStyle>
-  //     </LoadoutStyle>
-  //   </>
-  // );
-};
 const Loadout = ({ user_id, top_loadout }) => {
   const [numOfEntrys, setNumOfEntrys] = useState(5);
   return (
@@ -518,7 +326,6 @@ const CenterColumnStyle = styled.div`
   flex: 400px 4;
   gap: 10px;
 `;
-
 const StatChoiceStyle = styled.div`
   padding: 0px;
   background-color: #222;
@@ -602,7 +409,6 @@ export const Statistics = ({ userData }) => {
           }}
         />
         <UserStats userData={userData} statChoice={statChoice} />
-        <Heatmap userData={userData} />
         <Loadout
           user_id={userData["oculus_id"]}
           top_loadout={
