@@ -487,16 +487,33 @@ const Heatmap = ({ userData }) => {
               {">"}
             </HeatmapButtonStyle>
           </div>
-          {
+          {(() => {
             /* eslint-disable */
-            localStorage.getItem("OCULUS_ID") == userData["oculus_id"] ||
-            localStorage.getItem("MODERATOR") == 1 ? (
-              <HeatmapButtonStyle onClick={onHeatmapRequested}>
-                Update your heatmaps!
-              </HeatmapButtonStyle>
-            ) : null
+            if (localStorage.getItem("MODERATOR") == 1) {
+              return (
+                <HeatmapButtonStyle onClick={onHeatmapRequested}>
+                  Update your heatmaps!
+                </HeatmapButtonStyle>
+              );
+            } else if (
+              localStorage.getItem("OCULUS_ID") == userData["oculus_id"]
+            ) {
+              if (
+                !(
+                  userData["heatmap_render_date"] <
+                  Math.round(Date.now() / 1000) + 60 * 60 * 24 * 3
+                )
+              ) {
+                return (
+                  <HeatmapButtonStyle onClick={onHeatmapRequested}>
+                    Update your heatmaps!
+                  </HeatmapButtonStyle>
+                );
+              }
+            }
+
             /* eslint-enable */
-          }
+          })()}
         </HeatmapStyle>
       </GrowToFullScreen>
     );
