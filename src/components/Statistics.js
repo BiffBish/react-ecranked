@@ -508,6 +508,7 @@ const Heatmap = ({ userData }) => {
                 );
               }
             }
+            return null;
 
             /* eslint-enable */
           })()}
