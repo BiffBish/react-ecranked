@@ -83,7 +83,7 @@ const UserColorList = ({
   let OrangeTeamStartID = -1;
   function getUserColorStyle(user) {
     let BorderColor = "rgb(65, 160, 228)";
-    console.log(user["team"]);
+    // console.log(user["team"]);
     switch (user["team"]) {
       case 0:
         BorderColor = "rgb(65, 160, 228)";
