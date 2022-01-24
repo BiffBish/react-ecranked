@@ -804,6 +804,7 @@ export const Statistics = ({ userData }) => {
           }}
         />
         <UserStats userData={userData} statChoice={statChoice} />
+        <Heatmap userData={userData} />
         <Loadout
           user_id={userData["oculus_id"]}
           top_loadout={
