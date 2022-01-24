@@ -413,7 +413,7 @@ const Heatmap = ({ userData }) => {
               setIsFullscreen((prev) => !prev);
             }}
           >
-            Fullscreen
+            Toggle fullscreen
           </HeatmapButtonStyle>
           <div
             style={{
