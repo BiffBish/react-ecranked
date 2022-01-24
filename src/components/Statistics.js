@@ -498,10 +498,8 @@ const Heatmap = ({ userData }) => {
               localStorage.getItem("OCULUS_ID") == userData["oculus_id"]
             ) {
               if (
-                !(
-                  userData["heatmap_render_date"] <
-                  Math.round(Date.now() / 1000) + 60 * 60 * 24 * 3
-                )
+                userData["heatmap_render_date"] <
+                Math.round(Date.now() / 1000) + 60 * 60 * 24 * 3
               ) {
                 return (
                   <HeatmapButtonStyle onClick={onHeatmapRequested}>
