@@ -1,7 +1,9 @@
+import useResizeAware from "react-resize-aware";
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 
+import { SideBySideMagnifier } from "react-image-magnifiers";
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -163,6 +165,399 @@ const LoadoutExpandButtonStyle = styled.div`
   text-align: center;
   cursor: pointer;
 `;
+const HeatmapStyle = styled.div`
+  // flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 10px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 1px solid white;
+  border-radius: 10px;
+  // max-height: 20%;
+  gap: 10px;
+`;
+const GrowToFullScreen = (props) => {
+  const AnimationTime = 0.5;
+  const childRefrence = useRef(null);
+
+  const [positionOnScreen, setPositionOnScreen] = useState({});
+
+  const [onClickZoom, setOnClickZoom] = useState(false);
+
+  const [onClickStart, setOnClickStart] = useState(false);
+
+  function delay(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+  useEffect(() => {
+    if (onClickZoom) {
+      delay(1).then(() => setOnClickStart(true));
+    }
+  }, [onClickZoom]);
+
+  useEffect(() => {
+    if (!onClickStart) {
+      delay(AnimationTime * 1000).then(() => setOnClickZoom(false));
+    }
+  }, [onClickStart]);
+
+  useEffect(() => {
+    var rect = childRefrence.current.getBoundingClientRect();
+
+    if (props.isFullscreen) {
+      // example use
+
+      rect.percentWidth = (rect.width / window.innerWidth) * 100;
+      rect.percentHeight = (rect.height / window.innerHeight) * 100;
+      console.log(rect);
+      // console.log(childRefrence.current.className);
+
+      setOnClickZoom(true);
+      setPositionOnScreen(rect);
+    } else {
+      // setOnClickZoom(false);
+      // example use
+
+      rect.percentWidth = (rect.width / window.innerWidth) * 100;
+      rect.percentHeight = (rect.height / window.innerHeight) * 100;
+      setPositionOnScreen(rect);
+      setOnClickStart(false);
+    }
+  }, [props.isFullscreen]);
+  let defaultStyle = {
+    position: "fixed",
+    transitionProperty: "height, left, top, width",
+    transitionDuration: `${AnimationTime}s`,
+    transitionTimingFunction: "ease",
+    zIndex: 100,
+  };
+
+  let MaxStyle = {
+    top: 0,
+    left: 0,
+    height: "100%",
+    width: "100%",
+    // opacity: "100%",
+  };
+
+  let StartStyle = {
+    top: positionOnScreen.top,
+    left: positionOnScreen.left,
+    width: positionOnScreen.width,
+    height: positionOnScreen.height,
+    // opacity: "0%",
+  };
+  return (
+    <>
+      {React.cloneElement(props.children, {
+        ref: childRefrence,
+      })}
+      {onClickZoom ? (
+        <div
+          style={{
+            ...defaultStyle,
+            ...(onClickStart ? MaxStyle : StartStyle),
+          }}
+        >
+          {React.cloneElement(props.children, {
+            // ref: childRefrence,
+            style: {
+              width: "100%",
+              height: "100%",
+              margin: "none",
+              boxSizing: "border-box",
+            },
+          })}
+        </div>
+      ) : null}
+    </>
+  );
+};
+const HeatmapButtonStyle = styled.div`
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  flex: 40px 0 0;
+  min-height: 20px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+`;
+const Heatmap = ({ userData }) => {
+  const [selectedHeatmap, setSelectedHeatmap] = useState(2);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  //1394 951
+  const Images = useMemo(
+    () => [
+      {
+        width: 1394,
+        height: 591,
+        name: "combustion",
+      },
+      {
+        width: 874,
+        height: 556,
+        name: "dyson",
+      },
+      {
+        width: 1589,
+        height: 458,
+        name: "fission",
+      },
+      {
+        width: 1641,
+        height: 877,
+        name: "surge",
+      },
+    ],
+    []
+  );
+
+  const [finalImageSize, setFinalImageSize] = useState({
+    width: "10px",
+    height: "10px",
+  });
+  const imageRef = useRef();
+
+  const [resizeListener, sizes] = useResizeAware();
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (imageRef.current === undefined || imageRef.current === null) {
+      return;
+    }
+
+    var targetWidth = Images[selectedHeatmap].width;
+    var targetHeight = Images[selectedHeatmap].height;
+
+    var parentWidth = imageRef.current.getBoundingClientRect().width;
+    var parentHeight = imageRef.current.getBoundingClientRect().height;
+
+    // parentWidth -= parentWidth - prevImageState.width;
+    // parentHeight -= parentHeight - prevImageState.height;
+
+    console.log("update", parentWidth, parentHeight);
+    var finalWidth = targetWidth;
+    var finalHeight = targetHeight;
+    var decreasePercentage = 0;
+    if (finalWidth >= parentWidth) {
+      decreasePercentage = parentWidth / finalWidth;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+    }
+    if (finalHeight >= parentHeight) {
+      decreasePercentage = parentHeight / finalHeight;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+    }
+    console.log("set_update", finalWidth, finalHeight);
+
+    setFinalImageSize({
+      width: finalWidth + "px",
+      height: finalHeight + "px",
+      left: (parentWidth - finalWidth) / 2,
+      top: (parentHeight - finalHeight) / 2,
+    });
+  }, [
+    sizes.width,
+    sizes.height,
+    imageRef,
+    selectedHeatmap,
+    imageLoaded,
+    Images,
+  ]);
+  const onHeatmapRequested = () => {
+    const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
+
+    const requestOptions = {
+      method: "PUT",
+      headers: { Authorization: authToken, "Content-Type": "application/json" },
+      body: "{}",
+    };
+    fetch(
+      "https://ecranked.ddns.net/api/v1/user/" +
+        userData["oculus_id"] +
+        "/request_heatmaps",
+      requestOptions
+    )
+      .then((response) => {
+        if (!response.ok) {
+          alert(
+            "There was an error when requesting your heatmaps. Please contact a moderator."
+          );
+        } else {
+          alert(
+            "Heatmap requested! They can take up to 20 minutes to process. Please wait for the ping on discord. Contact a moderator if your heatmap doesn't load or you dont get a ping within 20 minutes"
+          );
+        }
+      })
+      .then((data) => {});
+  };
+  if (userData.heatmap_completed === 1) {
+    return (
+      <GrowToFullScreen isFullscreen={isFullscreen}>
+        <HeatmapStyle>
+          <HeatmapButtonStyle
+            onClick={() => {
+              setIsFullscreen((prev) => !prev);
+            }}
+          >
+            Toggle fullscreen
+          </HeatmapButtonStyle>
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              flex: "200px 1",
+              height: "100px",
+            }}
+          >
+            <HeatmapButtonStyle
+              onClick={() => {
+                setSelectedHeatmap((prev) => {
+                  setImageLoaded(false);
+                  if (prev === 0) {
+                    return 3;
+                  }
+                  return prev - 1;
+                });
+              }}
+            >
+              {"<"}
+            </HeatmapButtonStyle>
+            <div
+              style={{
+                flex: "0px 8 1",
+                position: "relative",
+              }}
+              ref={imageRef}
+            >
+              {" "}
+              {resizeListener}
+              {/* Your content here. (div sizes are {sizes.width} x {sizes.height}) */}
+              <div
+                style={{
+                  position: "absolute",
+                  // backgroundColor: "red",
+                  ...finalImageSize,
+                }}
+              >
+                <SideBySideMagnifier
+                  style={{
+                    opacity: imageLoaded ? "100%" : "0%",
+                  }}
+                  imageSrc={
+                    "https://ecranked.ddns.net/public/" +
+                    userData.oculus_id +
+                    "/heatmap_" +
+                    Images[selectedHeatmap].name +
+                    "_recent.png"
+                  }
+                  alwaysInPlace={true}
+                  className="input-position"
+                  fillAvailableSpace={true}
+                  onImageLoad={() => {
+                    setImageLoaded(true);
+                  }}
+                />
+              </div>
+            </div>
+            <HeatmapButtonStyle
+              onClick={() => {
+                setSelectedHeatmap((prev) => {
+                  setImageLoaded(false);
+                  if (prev === 3) {
+                    return 0;
+                  }
+                  return prev + 1;
+                });
+              }}
+            >
+              {">"}
+            </HeatmapButtonStyle>
+          </div>
+          {(() => {
+            /* eslint-disable */
+            if (localStorage.getItem("MODERATOR") == 1) {
+              return (
+                <HeatmapButtonStyle onClick={onHeatmapRequested}>
+                  Update your heatmaps!
+                </HeatmapButtonStyle>
+              );
+            } else if (
+              localStorage.getItem("OCULUS_ID") == userData["oculus_id"]
+            ) {
+              if (
+                !(
+                  userData["heatmap_render_date"] <
+                  Math.round(Date.now() / 1000) + 60 * 60 * 24 * 3
+                )
+              ) {
+                return (
+                  <HeatmapButtonStyle onClick={onHeatmapRequested}>
+                    Update your heatmaps!
+                  </HeatmapButtonStyle>
+                );
+              }
+            }
+
+            /* eslint-enable */
+          })()}
+        </HeatmapStyle>
+      </GrowToFullScreen>
+    );
+  } else {
+    /* eslint-disable */
+    if (
+      localStorage.getItem("OCULUS_ID") == userData["oculus_id"] ||
+      localStorage.getItem("MODERATOR") == 1
+    ) {
+      return (
+        <HeatmapButtonStyle onClick={onHeatmapRequested}>
+          Request your heatmaps!
+        </HeatmapButtonStyle>
+      );
+    } else {
+      return null;
+    }
+    /* eslint-enable */
+  }
+
+  // return (
+  //   <>
+  //     <LoadoutStyle>
+  //       {top_loadout.slice(0, numOfEntrys).map((loadout) => {
+  //         return (
+  //           <LoadoutBox
+  //             user_id={user_id}
+  //             number={loadout[0]}
+  //             frequency={loadout[1]}
+  //             key={loadout[0]}
+  //           />
+  //         );
+  //       }, 4)}{" "}
+  //       <LoadoutExpandButtonStyle
+  //         onClick={() => {
+  //           setNumOfEntrys(numOfEntrys * 2);
+  //         }}
+  //       >
+  //         {" "}
+  //         Click to show more{" "}
+  //       </LoadoutExpandButtonStyle>
+  //     </LoadoutStyle>
+  //   </>
+  // );
+};
 const Loadout = ({ user_id, top_loadout }) => {
   const [numOfEntrys, setNumOfEntrys] = useState(5);
   return (
