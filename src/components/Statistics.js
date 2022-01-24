@@ -1,8 +1,9 @@
-/* eslint-disable */
+import useResizeAware from "react-resize-aware";
 import styled from "styled-components";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { NavLink } from "react-router-dom";
-import { keyframes } from "styled-components";
+
+import { SideBySideMagnifier } from "react-image-magnifiers";
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -166,8 +167,9 @@ const LoadoutExpandButtonStyle = styled.div`
   cursor: pointer;
 `;
 const HeatmapStyle = styled.div`
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   display: flex;
+  flex-direction: column;
   padding: 10px 10px 10px;
   background-color: #222;
   color: white;
@@ -175,65 +177,61 @@ const HeatmapStyle = styled.div`
   border: 1px solid white;
   border-radius: 10px;
   // max-height: 20%;
+  gap: 10px;
 `;
 const GrowToFullScreen = (props) => {
+  const AnimationTime = 0.5;
   const childRefrence = useRef(null);
+
   const [positionOnScreen, setPositionOnScreen] = useState({});
+
   const [onClickZoom, setOnClickZoom] = useState(false);
-  const [onClickStart, setOnClickStartZoom] = useState(false);
+
+  const [onClickStart, setOnClickStart] = useState(false);
+
   function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
   useEffect(() => {
     if (onClickZoom) {
-      delay(1).then(() => setOnClickStartZoom(true));
+      delay(1).then(() => setOnClickStart(true));
     }
   }, [onClickZoom]);
-  // className="HeatmapUserPageObject"
-  //         onClick={onClick}
-  //         style={
-  //           onClickZoom
-  //             ? {
-  //                 position: "fixed",
-  //                 left: positionOnScreen.left,
-  //                 top: positionOnScreen.top,
-  //                 animationName: { GrowInScreenKeyframes },
-  //                 animationDuration: "2s",
-  //               }
-  //             : {}
-  const GrowInScreenKeyframes = keyframes`
-    from {
-      left:${positionOnScreen.top}px;
-      width:${positionOnScreen.width}%;
-      top:100px;
-      max-height: 0px;
 
+  useEffect(() => {
+    if (!onClickStart) {
+      delay(AnimationTime * 1000).then(() => setOnClickZoom(false));
     }
-    to {
-      left:0 ;
-      width: 100%;
-      top:0px;
-      max-height: 300px;
-    }
-  //   `;
-  //
+  }, [onClickStart]);
 
-  const onClick = () => {
+  useEffect(() => {
     var rect = childRefrence.current.getBoundingClientRect();
-    // example use
 
-    rect.percentWidth = (rect.width / window.innerWidth) * 100;
-    rect.percentHeight = (rect.height / window.innerHeight) * 100;
-    console.log(rect);
-    // console.log(childRefrence.current.className);
-    setOnClickZoom(true);
-    setPositionOnScreen(rect);
-  };
+    if (props.isFullscreen) {
+      // example use
+
+      rect.percentWidth = (rect.width / window.innerWidth) * 100;
+      rect.percentHeight = (rect.height / window.innerHeight) * 100;
+      console.log(rect);
+      // console.log(childRefrence.current.className);
+
+      setOnClickZoom(true);
+      setPositionOnScreen(rect);
+    } else {
+      // setOnClickZoom(false);
+      // example use
+
+      rect.percentWidth = (rect.width / window.innerWidth) * 100;
+      rect.percentHeight = (rect.height / window.innerHeight) * 100;
+      setPositionOnScreen(rect);
+      setOnClickStart(false);
+    }
+  }, [props.isFullscreen]);
   let defaultStyle = {
     position: "fixed",
     transitionProperty: "height, left, top, width",
-    transitionDuration: "2s",
+    transitionDuration: `${AnimationTime}s`,
     transitionTimingFunction: "ease",
     zIndex: 100,
   };
@@ -243,6 +241,7 @@ const GrowToFullScreen = (props) => {
     left: 0,
     height: "100%",
     width: "100%",
+    // opacity: "100%",
   };
 
   let StartStyle = {
@@ -250,11 +249,11 @@ const GrowToFullScreen = (props) => {
     left: positionOnScreen.left,
     width: positionOnScreen.width,
     height: positionOnScreen.height,
+    // opacity: "0%",
   };
   return (
     <>
       {React.cloneElement(props.children, {
-        onClick: onClick,
         ref: childRefrence,
       })}
       {onClickZoom ? (
@@ -265,8 +264,7 @@ const GrowToFullScreen = (props) => {
           }}
         >
           {React.cloneElement(props.children, {
-            onClick: onClick,
-            ref: childRefrence,
+            // ref: childRefrence,
             style: {
               width: "100%",
               height: "100%",
@@ -279,55 +277,244 @@ const GrowToFullScreen = (props) => {
     </>
   );
 };
-
+const HeatmapButtonStyle = styled.div`
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  flex: 40px 0 0;
+  min-height: 20px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+`;
 const Heatmap = ({ userData }) => {
   const [selectedHeatmap, setSelectedHeatmap] = useState(2);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const ImageStyling = [
-    {
-      height: "300px",
-      width: "478px",
-      // transform: "rotate(90deg)",
-    },
-    {
-      height: "300px",
-      // // width: "300px",
-      // transform: "rotate(90deg)",
-    },
-    {
-      height: "300px",
-      width: "1218px",
-      transform: "scaleX(-1)",
-    },
-    {
-      height: "300px",
-      width: "671px",
-      transform: "scaleX(-1)",
-    },
-  ];
-  const ImageNames = ["dyson", "combustion", "fission", "surge"];
+  //1394 951
+  const Images = useMemo(
+    () => [
+      {
+        width: 1394,
+        height: 591,
+        name: "combustion",
+      },
+      {
+        width: 874,
+        height: 556,
+        name: "dyson",
+      },
+      {
+        width: 1589,
+        height: 458,
+        name: "fission",
+      },
+      {
+        width: 1641,
+        height: 877,
+        name: "surge",
+      },
+    ],
+    []
+  );
 
-  const onClick = () => {};
+  const [finalImageSize, setFinalImageSize] = useState({
+    width: "10px",
+    height: "10px",
+  });
+  const imageRef = useRef();
 
+  const [resizeListener, sizes] = useResizeAware();
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (imageRef.current === undefined || imageRef.current === null) {
+      return;
+    }
+
+    var targetWidth = Images[selectedHeatmap].width;
+    var targetHeight = Images[selectedHeatmap].height;
+
+    var parentWidth = imageRef.current.getBoundingClientRect().width;
+    var parentHeight = imageRef.current.getBoundingClientRect().height;
+
+    // parentWidth -= parentWidth - prevImageState.width;
+    // parentHeight -= parentHeight - prevImageState.height;
+
+    console.log("update", parentWidth, parentHeight);
+    var finalWidth = targetWidth;
+    var finalHeight = targetHeight;
+    var decreasePercentage = 0;
+    if (finalWidth >= parentWidth) {
+      decreasePercentage = parentWidth / finalWidth;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+    }
+    if (finalHeight >= parentHeight) {
+      decreasePercentage = parentHeight / finalHeight;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+    }
+    console.log("set_update", finalWidth, finalHeight);
+
+    setFinalImageSize({
+      width: finalWidth + "px",
+      height: finalHeight + "px",
+      left: (parentWidth - finalWidth) / 2,
+      top: (parentHeight - finalHeight) / 2,
+    });
+  }, [
+    sizes.width,
+    sizes.height,
+    imageRef,
+    selectedHeatmap,
+    imageLoaded,
+    Images,
+  ]);
+  const onHeatmapRequested = () => {
+    const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
+
+    const requestOptions = {
+      method: "PUT",
+      headers: { Authorization: authToken, "Content-Type": "application/json" },
+      body: "{}",
+    };
+    fetch(
+      "https://ecranked.ddns.net/api/v1/user/" +
+        userData["oculus_id"] +
+        "/request_heatmaps",
+      requestOptions
+    )
+      .then((response) => {
+        if (!response.ok) {
+          alert(
+            "There was an error when requesting your heatmaps. Please contact a moderator."
+          );
+        } else {
+          alert(
+            "Heatmap requested! They can take up to 20 minutes to process. Please wait for the ping on discord. Contact a moderator if your heatmap doesn't load or you dont get a ping within 20 minutes"
+          );
+        }
+      })
+      .then((data) => {});
+  };
   if (userData.heatmap_completed === 1) {
     return (
-      <GrowToFullScreen>
+      <GrowToFullScreen isFullscreen={isFullscreen}>
         <HeatmapStyle>
-          <img
-            style={ImageStyling[0]}
-            src={
-              "https://ecranked.ddns.net/public/" +
-              userData.oculus_id +
-              "/heatmap_" +
-              ImageNames[0] +
-              ".png"
-            }
-          />
+          <HeatmapButtonStyle
+            onClick={() => {
+              setIsFullscreen((prev) => !prev);
+            }}
+          >
+            Fullscreen
+          </HeatmapButtonStyle>
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              flex: "200px 1",
+              height: "100px",
+            }}
+          >
+            <HeatmapButtonStyle
+              onClick={() => {
+                setSelectedHeatmap((prev) => {
+                  setImageLoaded(false);
+                  if (prev === 0) {
+                    return 3;
+                  }
+                  return prev - 1;
+                });
+              }}
+            >
+              {"<"}
+            </HeatmapButtonStyle>
+            <div
+              style={{
+                flex: "0px 8 1",
+                position: "relative",
+              }}
+              ref={imageRef}
+            >
+              {" "}
+              {resizeListener}
+              {/* Your content here. (div sizes are {sizes.width} x {sizes.height}) */}
+              <div
+                style={{
+                  position: "absolute",
+                  // backgroundColor: "red",
+                  ...finalImageSize,
+                }}
+              >
+                <SideBySideMagnifier
+                  style={{
+                    opacity: imageLoaded ? "100%" : "0%",
+                  }}
+                  imageSrc={
+                    "https://ecranked.ddns.net/public/" +
+                    userData.oculus_id +
+                    "/heatmap_" +
+                    Images[selectedHeatmap].name +
+                    "_recent.png"
+                  }
+                  alwaysInPlace={true}
+                  className="input-position"
+                  fillAvailableSpace={true}
+                  onImageLoad={() => {
+                    setImageLoaded(true);
+                  }}
+                />
+              </div>
+            </div>
+            <HeatmapButtonStyle
+              onClick={() => {
+                setSelectedHeatmap((prev) => {
+                  setImageLoaded(false);
+                  if (prev === 3) {
+                    return 0;
+                  }
+                  return prev + 1;
+                });
+              }}
+            >
+              {">"}
+            </HeatmapButtonStyle>
+          </div>
+          {
+            /* eslint-disable */
+            localStorage.getItem("OCULUS_ID") == userData["oculus_id"] ||
+            localStorage.getItem("MODERATOR") == 1 ? (
+              <HeatmapButtonStyle onClick={onHeatmapRequested}>
+                Update your heatmaps!
+              </HeatmapButtonStyle>
+            ) : null
+            /* eslint-enable */
+          }
         </HeatmapStyle>
       </GrowToFullScreen>
     );
   } else {
-    return null;
+    /* eslint-disable */
+    if (
+      localStorage.getItem("OCULUS_ID") == userData["oculus_id"] ||
+      localStorage.getItem("MODERATOR") == 1
+    ) {
+      return (
+        <HeatmapButtonStyle onClick={onHeatmapRequested}>
+          Request your heatmaps!
+        </HeatmapButtonStyle>
+      );
+    } else {
+      return null;
+    }
+    /* eslint-enable */
   }
 
   // return (
