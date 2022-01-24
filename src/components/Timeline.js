@@ -1,15 +1,7 @@
-/* eslint-disable */
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Magnifier,
-  GlassMagnifier,
-  SideBySideMagnifier,
-  PictureInPictureMagnifier,
-  MOUSE_ACTIVATION,
-  TOUCH_ACTIVATION,
-} from "react-image-magnifiers";
+import { SideBySideMagnifier } from "react-image-magnifiers";
 const Container = styled.div`
   position: relative;
   padding: 10px 10px 10px;
@@ -87,11 +79,7 @@ const UserColorList = ({
   onHover,
 }) => {
   // console.log("USR LIST", users);
-  let history = useHistory();
 
-  function userClick(username) {
-    history.push("/user/" + username + "/stats");
-  }
   let OrangeTeamStartID = -1;
   function getUserColorStyle(user) {
     let BorderColor = "rgb(65, 160, 228)";
@@ -109,7 +97,7 @@ const UserColorList = ({
     }
 
     var backgroundColor = {};
-    if (user["playerid"] == currentSelected) {
+    if (user["playerid"] === currentSelected) {
       backgroundColor = { backgroundColor: "#333" };
     }
     return {
@@ -123,10 +111,8 @@ const UserColorList = ({
         if (index >= animationIndex) {
           return null;
         }
-        const onUserClick = () => {
-          userClick(user["name"]);
-        };
-        if (user["team"] == 1 && OrangeTeamStartID == -1) {
+
+        if (user["team"] === 1 && OrangeTeamStartID === -1) {
           OrangeTeamStartID = index;
         }
         return (
@@ -146,7 +132,7 @@ const UserColorList = ({
             <div
               style={{
                 backgroundColor:
-                  user["team"] == 0
+                  user["team"] === 0
                     ? BlueColors[index]
                     : OrangeColors[index - OrangeTeamStartID],
                 width: "15px",
@@ -180,7 +166,7 @@ const UserList = ({ users, animationIndex }) => {
         const onUserClick = () => {
           userClick(user["name"]);
         };
-        if (user["team"] == 1 && OrangeTeamStartID == -1) {
+        if (user["team"] === 1 && OrangeTeamStartID === -1) {
           OrangeTeamStartID = index;
         }
         return (
@@ -250,7 +236,7 @@ const TimelineHeaderBar = ({ api_data }) => {
   return (
     <TimelineHeaderBarStyle>
       {minutePoints.map((point, index) => {
-        if (index == 0) {
+        if (index === 0) {
           return (
             <TimelineHeaderBarMinuteMarkers
               style={{
@@ -766,7 +752,7 @@ export const Timeline = ({ skimData }) => {
   //start animation
   useEffect(() => {
     async function loadInReplayAnimation() {
-      for (const user of userList) {
+      for (var i = 0; i < userList.length; i++) {
         setAnimationIndex((prev) => prev + 1);
         await delay(20);
       }
@@ -840,7 +826,7 @@ export const Timeline = ({ skimData }) => {
           </div>
         </div>
         <div style={{ display: "flex", gap: "10px", flexGrow: 1 }}>
-          {selectedOption == "timeline" ? (
+          {selectedOption === "timeline" ? (
             <TimelineUserList
               users={userList}
               animationIndex={animationIndex}
