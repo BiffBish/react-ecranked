@@ -873,7 +873,21 @@ export const Timeline = ({ skimData }) => {
               users={userList}
               animationIndex={animationIndex}
               currentSelected={heatmapSelectedOption}
-              onClick={setHeatmapSelectedOption}
+              onClick={(value) => {
+                if (Array.isArray(heatmapSelectedOption)) {
+                  if (heatmapSelectedOption.includes(value)) {
+                    const index = heatmapSelectedOption.indexOf(value);
+                    if (index > -1) {
+                      heatmapSelectedOption.splice(index, 1); // 2nd parameter means remove one item only
+                    }
+                    setHeatmapSelectedOption(heatmapSelectedOption);
+                  } else {
+                    setHeatmapSelectedOption([...heatmapSelectedOption, value]);
+                  }
+                } else {
+                  setHeatmapSelectedOption([value]);
+                }
+              }}
               onHover={setHeatmapHoveredOption}
             />
             <UserList users={userList} animationIndex={animationIndex} />
@@ -938,31 +952,110 @@ export const Timeline = ({ skimData }) => {
                     <TransformComponent
                       wrapperStyle={{ width: "100%", height: "100%" }}
                     >
-                      <img
-                        alt={""}
-                        onLoad={() => {
-                          setImageLoadedFirstTime(true);
-                          setImageLoaded(true);
-                        }}
-                        ref={imageRef}
-                        style={
-                          heatmapHighres
-                            ? {
-                                transformOrigin: "top left",
-                                transform: "scale(20%)",
-                                // width: "scale(5)",
-                                // transform: "scale(5)",
-                              }
-                            : {}
-                        }
-                        src={`https://ecranked.ddns.net/public/${
-                          skimData["session_id"]
-                        }/heatmap_${
-                          heatmapHoveredOption !== null
-                            ? heatmapHoveredOption
-                            : heatmapSelectedOption
-                        }_${targetHeatmapHighres ? "highres" : "lowres"}.png`}
-                      ></img>
+                      <div style={{ position: "relative" }}>
+                        <img
+                          alt={""}
+                          onLoad={() => {
+                            setImageLoadedFirstTime(true);
+                            setImageLoaded(true);
+                          }}
+                          ref={imageRef}
+                          style={
+                            heatmapHighres
+                              ? {
+                                  transformOrigin: "top left",
+                                  transform: "scale(20%)",
+                                  // width: "scale(5)",
+                                  // transform: "scale(5)",
+                                  position: "absolute",
+                                  top: 0,
+                                  left: 0,
+                                }
+                              : {
+                                  position: "absolute",
+                                  top: 0,
+                                  left: 0,
+                                }
+                          }
+                          src={`https://ecranked.ddns.net/public/${
+                            skimData["map"]
+                          }_minimap_${
+                            targetHeatmapHighres ? "highres" : "lowres"
+                          }.png`}
+                        ></img>
+
+                        {(() => {
+                          if (Array.isArray(heatmapSelectedOption)) {
+                            return heatmapSelectedOption.map((value) => {
+                              return (
+                                <img
+                                  alt={""}
+                                  onLoad={() => {
+                                    setImageLoadedFirstTime(true);
+                                    setImageLoaded(true);
+                                  }}
+                                  style={
+                                    heatmapHighres
+                                      ? {
+                                          transformOrigin: "top left",
+                                          transform: "scale(20%)",
+                                          position: "absolute",
+                                          top: 0,
+                                          left: 0,
+                                          // width: "scale(5)",
+                                          // transform: "scale(5)",
+                                        }
+                                      : {
+                                          position: "absolute",
+                                          top: 0,
+                                          left: 0,
+                                        }
+                                  }
+                                  src={`https://ecranked.ddns.net/public/${
+                                    skimData["session_id"]
+                                  }/heatmap_${value}_${
+                                    targetHeatmapHighres ? "highres" : "lowres"
+                                  }.png`}
+                                ></img>
+                              );
+                            });
+                          } else {
+                            return (
+                              <img
+                                alt={""}
+                                onLoad={() => {
+                                  setImageLoadedFirstTime(true);
+                                  setImageLoaded(true);
+                                }}
+                                style={
+                                  heatmapHighres
+                                    ? {
+                                        transformOrigin: "top left",
+                                        transform: "scale(20%)",
+                                        // width: "scale(5)",
+                                        // transform: "scale(5)",
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                      }
+                                    : {
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                      }
+                                }
+                                src={`https://ecranked.ddns.net/public/${
+                                  skimData["session_id"]
+                                }/heatmap_${
+                                  heatmapHoveredOption ?? heatmapSelectedOption
+                                }_${
+                                  targetHeatmapHighres ? "highres" : "lowres"
+                                }.png`}
+                              />
+                            );
+                          }
+                        })()}
+                      </div>
                     </TransformComponent>
                   </TransformWrapper>
                 </div>
