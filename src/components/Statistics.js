@@ -2,8 +2,10 @@ import useResizeAware from "react-resize-aware";
 import styled from "styled-components";
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { NavLink } from "react-router-dom";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import disableScroll from "disable-scroll";
 
-import { SideBySideMagnifier } from "react-image-magnifiers";
+// import { SideBySideMagnifier } from "react-image-magnifiers";
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -168,6 +170,9 @@ const LoadoutExpandButtonStyle = styled.div`
 const HeatmapStyle = styled.div`
   // flex-wrap: wrap;
   display: flex;
+  width: 100%;
+  height: 100%;
+
   flex-direction: column;
   padding: 10px 10px 10px;
   background-color: #222;
@@ -177,45 +182,76 @@ const HeatmapStyle = styled.div`
   border-radius: 10px;
   // max-height: 20%;
   gap: 10px;
+  box-sizing: border-box;
 `;
+
 const GrowToFullScreen = (props) => {
+  const childRef = useRef(null);
+  const [wantFullscreen, setWantFullscreen] = useState(false);
+  useEffect(() => {
+    console.log("Getting Position of original", childRef);
+  }, [wantFullscreen]);
+
   const AnimationTime = 0.5;
-  const childRefrence = useRef(null);
 
   const [positionOnScreen, setPositionOnScreen] = useState({});
 
-  const [onClickZoom, setOnClickZoom] = useState(false);
+  const [showFullscreenElement, setShowFullscreenElement] = useState(false);
 
-  const [onClickStart, setOnClickStart] = useState(false);
+  const [goFullscreen, setGoFullscreen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  // const [wantFullscreen, setWantFullscreen] = useState(false);
+
+  const [sharedStates, setSharedStates] = useState(props.defaultState);
 
   function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
+  // useEffect(() => {
+  //   if (showFullscreenElement) {
+  //     delay(1).then(() => setGoFullscreen(true));
+  //   }
+  // }, [showFullscreenElement]);
   useEffect(() => {
-    if (onClickZoom) {
-      delay(1).then(() => setOnClickStart(true));
+    console.log("220", childRef);
+  }, [childRef]);
+  useEffect(() => {
+    if (wantFullscreen) {
+      disableScroll.on();
+
+      setShowFullscreenElement(true);
+      setIsAnimating(true);
+      delay(1).then(() => setGoFullscreen(true));
+      delay(1000 * AnimationTime).then(() => setIsAnimating(false));
+    } else {
+      setGoFullscreen(false);
+      setIsAnimating(true);
+
+      delay(1000 * AnimationTime).then(() => {
+        setShowFullscreenElement(false);
+        setIsAnimating(false);
+        disableScroll.off();
+      });
     }
-  }, [onClickZoom]);
+  }, [wantFullscreen]);
 
   useEffect(() => {
-    if (!onClickStart) {
-      delay(AnimationTime * 1000).then(() => setOnClickZoom(false));
+    console.log("Getting Position of original", childRef);
+    if (childRef.current == null) {
+      return;
     }
-  }, [onClickStart]);
+    var rect = childRef.current.getBoundingClientRect();
 
-  useEffect(() => {
-    var rect = childRefrence.current.getBoundingClientRect();
-
-    if (props.isFullscreen) {
+    if (wantFullscreen) {
       // example use
 
       rect.percentWidth = (rect.width / window.innerWidth) * 100;
       rect.percentHeight = (rect.height / window.innerHeight) * 100;
       console.log(rect);
-      // console.log(childRefrence.current.className);
+      // console.log(childReference.current.className);
 
-      setOnClickZoom(true);
+      setShowFullscreenElement(true);
       setPositionOnScreen(rect);
     } else {
       // setOnClickZoom(false);
@@ -224,9 +260,10 @@ const GrowToFullScreen = (props) => {
       rect.percentWidth = (rect.width / window.innerWidth) * 100;
       rect.percentHeight = (rect.height / window.innerHeight) * 100;
       setPositionOnScreen(rect);
-      setOnClickStart(false);
+      setGoFullscreen(false);
     }
-  }, [props.isFullscreen]);
+  }, [wantFullscreen]);
+
   let defaultStyle = {
     position: "fixed",
     transitionProperty: "height, left, top, width",
@@ -250,26 +287,48 @@ const GrowToFullScreen = (props) => {
     height: positionOnScreen.height,
     // opacity: "0%",
   };
+  // return (
+  //   <>
+  //     {React.cloneElement(props.children, {
+  //       ref: childRef,
+  //       // isFullscreenComponent: false,
+  //       setFullscreenState: setWantFullscreen,
+  //       // sharedStates: sharedStates,
+  //       // setSharedStates: setSharedStates,
+  //     })}
+  //   </>
+  // );
   return (
     <>
-      {React.cloneElement(props.children, {
-        ref: childRefrence,
-      })}
-      {onClickZoom ? (
+      <div style={{ width: "100%", height: "100%" }} ref={childRef}>
+        {React.cloneElement(props.children, {
+          isFullscreenComponent: false,
+          setFullscreenState: setWantFullscreen,
+          fullscreenComponentShown: showFullscreenElement,
+          sharedStates: sharedStates,
+          setSharedStates: setSharedStates,
+        })}
+      </div>
+      {showFullscreenElement ? (
         <div
           style={{
             ...defaultStyle,
-            ...(onClickStart ? MaxStyle : StartStyle),
+            ...(goFullscreen ? MaxStyle : StartStyle),
           }}
         >
           {React.cloneElement(props.children, {
-            // ref: childRefrence,
             style: {
               width: "100%",
               height: "100%",
               margin: "none",
               boxSizing: "border-box",
             },
+            setFullscreenState: setWantFullscreen,
+            isFullscreenComponent: true,
+            isAnimating: isAnimating,
+            fullscreenComponentShown: showFullscreenElement,
+            sharedStates: sharedStates,
+            setSharedStates: setSharedStates,
           })}
         </div>
       ) : null}
@@ -292,11 +351,27 @@ const HeatmapButtonStyle = styled.div`
   justify-content: center; /* align horizontal */
   align-items: center; /* align vertical */
 `;
-const Heatmap = ({ userData }) => {
-  const [selectedHeatmap, setSelectedHeatmap] = useState(2);
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  //1394 951
+const Heatmap = ({
+  userData,
+  isFullscreenComponent,
+  setFullscreenState,
+  fullscreenComponentShown,
+  isAnimating,
+  sharedStates,
+  setSharedStates,
+}) => {
+  console.log("327", isFullscreenComponent);
+  // useEffect(() => {
+  //   if (sharedStates.selectedHeatmap === undefined) {
+  //     setSharedStates((prev) => ({
+  //       ...prev,
+  //       sharedStates: 2,
+  //     }));
+  //   }
+  // }, [setSharedStates, sharedStates]);
+
+  //   //1394 951
   const Images = useMemo(
     () => [
       {
@@ -324,24 +399,39 @@ const Heatmap = ({ userData }) => {
   );
 
   const [finalImageSize, setFinalImageSize] = useState({
-    width: "10px",
-    height: "10px",
+    scale: 1,
   });
-  const imageRef = useRef();
 
   const [resizeListener, sizes] = useResizeAware();
-  const [imageLoaded, setImageLoaded] = useState(false);
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+  // const heatmapZoomComponentRef = useRef();
+
+  const imageRef = useRef(null);
+  const fullscreenImageRef = useRef(null);
+  const imageZoomRef = useRef(null);
+  const fullscreenImageZoomRef = useRef(null);
   useEffect(() => {
-    if (imageRef.current === undefined || imageRef.current === null) {
+    // imageRef =
+    // console.log("update", child);
+    // console.log("updateREF", heatmapZoomComponentRef);
+    // console.log("update", fullscreenChild);
+    var image;
+    console.log(fullscreenImageRef);
+    console.log(imageRef);
+    if (fullscreenImageRef.current !== null) {
+      image = fullscreenImageRef.current;
+    } else if (imageRef.current !== null) {
+      image = imageRef.current;
+    } else {
       return;
     }
+    console.log(sharedStates.selectedHeatmap);
+    var targetWidth = Images[sharedStates.selectedHeatmap ?? 2].width;
+    var targetHeight = Images[sharedStates.selectedHeatmap ?? 2].height;
 
-    var targetWidth = Images[selectedHeatmap].width;
-    var targetHeight = Images[selectedHeatmap].height;
-
-    var parentWidth = imageRef.current.getBoundingClientRect().width;
-    var parentHeight = imageRef.current.getBoundingClientRect().height;
+    var parentWidth = image.getBoundingClientRect().width;
+    var parentHeight = image.getBoundingClientRect().height;
 
     // parentWidth -= parentWidth - prevImageState.width;
     // parentHeight -= parentHeight - prevImageState.height;
@@ -350,32 +440,54 @@ const Heatmap = ({ userData }) => {
     var finalWidth = targetWidth;
     var finalHeight = targetHeight;
     var decreasePercentage = 0;
+    var finalScale = 1;
     if (finalWidth >= parentWidth) {
       decreasePercentage = parentWidth / finalWidth;
       finalWidth *= decreasePercentage;
       finalHeight *= decreasePercentage;
+      finalScale *= decreasePercentage;
     }
     if (finalHeight >= parentHeight) {
       decreasePercentage = parentHeight / finalHeight;
       finalWidth *= decreasePercentage;
       finalHeight *= decreasePercentage;
+      finalScale *= decreasePercentage;
     }
-    console.log("set_update", finalWidth, finalHeight);
 
+    // setFinalImageSize({
+    //   width: finalWidth + "px",
+    //   height: finalHeight + "px",
+    //   left: (parentWidth - finalWidth) / 2,
+    //   top: (parentHeight - finalHeight) / 2,
+    // });
+    console.log("finalScale", finalScale);
     setFinalImageSize({
-      width: finalWidth + "px",
-      height: finalHeight + "px",
-      left: (parentWidth - finalWidth) / 2,
-      top: (parentHeight - finalHeight) / 2,
+      scale: finalScale,
     });
+    console.log(fullscreenImageZoomRef);
+    fullscreenImageZoomRef?.current?.centerView?.(finalScale, 0, 0);
+    imageZoomRef?.current?.centerView?.(finalScale, 0, 0);
+    // if (fullscreenResetTransform !== undefined) {
+    //   fullscreenResetTransform(0);
+    // } else if (childResetTransform !== undefined) {
+    //   childResetTransform(0);
+    // }
+    // if (heatmapZoomComponentRef.current !== undefined) {
+    //   heatmapZoomComponentRef.current.resetTransform();
+    // }
   }, [
     sizes.width,
     sizes.height,
-    imageRef,
-    selectedHeatmap,
+    sharedStates,
     imageLoaded,
     Images,
+    fullscreenComponentShown,
   ]);
+  // useEffect(() => {
+  //   console.log("IMAGE LOADED");
+  //   fullscreenImageZoomRef?.current?.centerView?.(0.2, 0, 0);
+  //   imageZoomRef?.current?.centerView?.(0.2, 0, 0);
+  // }, [imageLoaded]);
   const onHeatmapRequested = () => {
     const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
 
@@ -403,117 +515,155 @@ const Heatmap = ({ userData }) => {
       })
       .then((data) => {});
   };
+
   if (userData.heatmap_completed === 1) {
     return (
-      <GrowToFullScreen isFullscreen={isFullscreen}>
-        <HeatmapStyle>
+      <HeatmapStyle>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            flex: "200px 1",
+            height: "100px",
+          }}
+        >
           <HeatmapButtonStyle
             onClick={() => {
-              setIsFullscreen((prev) => !prev);
+              setImageLoaded(false);
+              setSharedStates((prev) => {
+                console.log(prev.selectedHeatmap);
+                var selectedHeatmap = prev.selectedHeatmap ?? 0;
+                if (selectedHeatmap === 0) {
+                  selectedHeatmap = 3;
+                } else {
+                  selectedHeatmap -= 1;
+                }
+                return {
+                  ...prev,
+                  selectedHeatmap: selectedHeatmap,
+                };
+              });
             }}
           >
-            Toggle fullscreen
+            {"<"}
           </HeatmapButtonStyle>
           <div
             style={{
-              display: "flex",
-              width: "100%",
-              flex: "200px 1",
-              height: "100px",
+              flex: "0px 8 1",
+              position: "relative",
             }}
+            ref={isFullscreenComponent ? fullscreenImageRef : imageRef}
           >
-            <HeatmapButtonStyle
-              onClick={() => {
-                setSelectedHeatmap((prev) => {
-                  setImageLoaded(false);
-                  if (prev === 0) {
-                    return 3;
-                  }
-                  return prev - 1;
-                });
-              }}
-            >
-              {"<"}
-            </HeatmapButtonStyle>
+            {" "}
+            {resizeListener}
+            {/* Your content here. (div sizes are {sizes.width} x {sizes.height}) */}
             <div
               style={{
-                flex: "0px 8 1",
-                position: "relative",
+                position: "absolute",
+                // backgroundColor: "red",
+                width: "100%",
+                height: "100%",
               }}
-              ref={imageRef}
             >
-              {" "}
-              {resizeListener}
-              {/* Your content here. (div sizes are {sizes.width} x {sizes.height}) */}
-              <div
-                style={{
-                  position: "absolute",
-                  // backgroundColor: "red",
-                  ...finalImageSize,
+              <TransformWrapper
+                onZoom={(e) => {
+                  if (isFullscreenComponent) {
+                    console.log(e.state);
+                    if (e.state.scale <= finalImageSize.scale)
+                      setFullscreenState(false);
+                  } else {
+                    console.log(e.state.scale);
+                    console.log(finalImageSize.scale);
+                    if (e.state.scale > finalImageSize.scale) {
+                      setFullscreenState(true);
+                    }
+                  }
                 }}
+                initialScale={finalImageSize.scale}
+                minScale={finalImageSize.scale}
+                centerOnInit={true}
+                limitToBounds={false}
+                disabled={isFullscreenComponent ? isAnimating : false}
+                ref={
+                  isFullscreenComponent ? fullscreenImageZoomRef : imageZoomRef
+                }
               >
-                <SideBySideMagnifier
-                  style={{
-                    opacity: imageLoaded ? "100%" : "0%",
+                <TransformComponent
+                  // ref={heatmapZoomComponentRef}
+                  wrapperStyle={{
+                    width: "100%",
+                    height: "100%",
                   }}
-                  imageSrc={
-                    "https://ecranked.ddns.net/public/" +
-                    userData.oculus_id +
-                    "/heatmap_" +
-                    Images[selectedHeatmap].name +
-                    "_recent.png"
-                  }
-                  alwaysInPlace={true}
-                  className="input-position"
-                  fillAvailableSpace={true}
-                  onImageLoad={() => {
-                    setImageLoaded(true);
-                  }}
-                />
-              </div>
+                >
+                  <img
+                    style={{
+                      opacity: imageLoaded ? "100%" : "0%",
+                    }}
+                    src={
+                      "https://ecranked.ddns.net/public/" +
+                      userData.oculus_id +
+                      "/heatmap_" +
+                      Images[sharedStates.selectedHeatmap ?? 2].name +
+                      "_recent.png"
+                    }
+                    alt="test"
+                    onLoad={() => {
+                      setImageLoaded(true);
+                    }}
+                  />
+                </TransformComponent>
+              </TransformWrapper>
             </div>
-            <HeatmapButtonStyle
-              onClick={() => {
-                setSelectedHeatmap((prev) => {
-                  setImageLoaded(false);
-                  if (prev === 3) {
-                    return 0;
-                  }
-                  return prev + 1;
-                });
-              }}
-            >
-              {">"}
-            </HeatmapButtonStyle>
           </div>
-          {(() => {
-            /* eslint-disable */
-            if (localStorage.getItem("MODERATOR") == 1) {
+          <HeatmapButtonStyle
+            onClick={() => {
+              setImageLoaded(false);
+
+              setSharedStates((prev) => {
+                console.log(prev.selectedHeatmap);
+                var selectedHeatmap = prev.selectedHeatmap ?? 0;
+                if (selectedHeatmap === 3) {
+                  selectedHeatmap = 0;
+                } else {
+                  selectedHeatmap += 1;
+                }
+                return {
+                  ...prev,
+                  selectedHeatmap: selectedHeatmap,
+                };
+              });
+            }}
+          >
+            {">"}
+          </HeatmapButtonStyle>
+        </div>
+        {(() => {
+          /* eslint-disable */
+          if (localStorage.getItem("MODERATOR") == 1) {
+            return (
+              <HeatmapButtonStyle onClick={onHeatmapRequested}>
+                Update your heatmaps!
+              </HeatmapButtonStyle>
+            );
+          } else if (
+            localStorage.getItem("OCULUS_ID") == userData["oculus_id"]
+          ) {
+            if (
+              userData["heatmap_render_date"] <
+              Math.round(Date.now() / 1000) + 60 * 60 * 24 * 3
+            ) {
               return (
                 <HeatmapButtonStyle onClick={onHeatmapRequested}>
                   Update your heatmaps!
                 </HeatmapButtonStyle>
               );
-            } else if (
-              localStorage.getItem("OCULUS_ID") == userData["oculus_id"]
-            ) {
-              if (
-                userData["heatmap_render_date"] <
-                Math.round(Date.now() / 1000) + 60 * 60 * 24 * 3
-              ) {
-                return (
-                  <HeatmapButtonStyle onClick={onHeatmapRequested}>
-                    Update your heatmaps!
-                  </HeatmapButtonStyle>
-                );
-              }
             }
-            return null;
+          }
+          return null;
 
-            /* eslint-enable */
-          })()}
-        </HeatmapStyle>
-      </GrowToFullScreen>
+          /* eslint-enable */
+        })()}
+      </HeatmapStyle>
     );
   } else {
     /* eslint-disable */
@@ -531,32 +681,8 @@ const Heatmap = ({ userData }) => {
     }
     /* eslint-enable */
   }
-
-  // return (
-  //   <>
-  //     <LoadoutStyle>
-  //       {top_loadout.slice(0, numOfEntrys).map((loadout) => {
-  //         return (
-  //           <LoadoutBox
-  //             user_id={user_id}
-  //             number={loadout[0]}
-  //             frequency={loadout[1]}
-  //             key={loadout[0]}
-  //           />
-  //         );
-  //       }, 4)}{" "}
-  //       <LoadoutExpandButtonStyle
-  //         onClick={() => {
-  //           setNumOfEntrys(numOfEntrys * 2);
-  //         }}
-  //       >
-  //         {" "}
-  //         Click to show more{" "}
-  //       </LoadoutExpandButtonStyle>
-  //     </LoadoutStyle>
-  //   </>
-  // );
 };
+
 const Loadout = ({ user_id, top_loadout }) => {
   const [numOfEntrys, setNumOfEntrys] = useState(5);
   return (
@@ -803,7 +929,9 @@ export const Statistics = ({ userData }) => {
           }}
         />
         <UserStats userData={userData} statChoice={statChoice} />
-        <Heatmap userData={userData} />
+        <GrowToFullScreen defaultState={{ selectedHeatmap: 0 }}>
+          <Heatmap userData={userData} />
+        </GrowToFullScreen>
         <Loadout
           user_id={userData["oculus_id"]}
           top_loadout={
