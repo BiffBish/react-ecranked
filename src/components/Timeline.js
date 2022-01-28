@@ -120,10 +120,10 @@ const UserColorList = ({
           <UserColor
             key={user["userid"]}
             onClick={() => {
-              onClick(user["playerid"]);
+              onClick(user["userid"]);
             }}
             onMouseEnter={() => {
-              onHover(user["playerid"]);
+              onHover(user["userid"]);
             }}
             onMouseLeave={() => {
               onHover(null);
@@ -583,20 +583,26 @@ const TimelineUserItem = ({ user, api_data }) => {
   );
 };
 const OrangeColors = [
-  "#ff0055",
-  "#ff9900",
-  "#fa2e00",
-  "#d4ff00",
-  "#ff0066",
-  "#44ff00",
+  "#ff0022",
+  "#f7ff0a",
+  "#f56600",
+  "#a3005c",
+  "#ffbc42",
+  "#f9c8d1",
+  "#ffffff",
+  "#ed31b8",
+  "#fface4",
 ];
 const BlueColors = [
-  "#057aff",
-  "#f631ec",
-  "#a530f3",
-  "#2fe4e4",
-  "#7282fd",
-  "#8edea6",
+  "#0932ec",
+  "#36a0fc",
+  "#cf14f5",
+  "#14fff7",
+  "#1c8487",
+  "#12f840",
+  "#0ad2ff",
+  "#810efb",
+  "#3b21c0",
 ];
 const StatChoiceStyle = styled.div`
   padding: 0px;
