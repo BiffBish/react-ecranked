@@ -96,6 +96,33 @@ const LeftSide = ({ username, replays }) => {
   );
 };
 export default function User({ username, setBannerCallback, subDomain }) {
+  const [randomUsernameOverride, setRandomUsernameOverride] =
+    React.useState(null);
+  if (randomUsernameOverride !== null) {
+    username = randomUsernameOverride;
+  }
+  if (username === "random") {
+    setRandomUsernameOverride("random_async");
+    username = "random_async";
+    fetch("https://ecranked.ddns.net/api/v1/user/@all", {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        setRandomUsernameOverride(
+          data[Math.floor(Math.random() * data.length)]
+        );
+      })
+      .catch((error) => {
+        setUserNotFound(true);
+        console.error("There was an error!", error);
+      });
+  }
+
   let history = useHistory();
   const whenSearchSubmit = (text) => {
     console.log(text);
@@ -191,7 +218,14 @@ export default function User({ username, setBannerCallback, subDomain }) {
   };
 
   useEffect(() => {
+    if (username === "random") {
+      return;
+    }
+    if (username === "random_async") {
+      return;
+    }
     FetchUserData();
+
     // eslint-disable-next-line
   }, [username]);
 
