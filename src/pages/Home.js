@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import moment from "moment-timezone";
 import { NavLink } from "react-router-dom";
-
+import Chart from "react-google-charts";
 const RecentGameFadeIN = keyframes`
     from {
       opacity: 0;
@@ -79,6 +79,29 @@ const ContributorLink = styled(NavLink)`
   color: white;
   font-size: 30px;
 `;
+// const histogramData = [["dates"]];
+const chartOptions = {
+  chartArea: { width: "90%", height: "65%" },
+  backgroundColor: { fill: "transparent" },
+  legend: "none",
+  // legend: { position: "none" },
+  bar: { groupWidth: "100%" },
+  hAxis: {
+    textStyle: { color: "#FFF" },
+    baselineColor: "#FFF",
+  },
+  vAxis: {
+    textStyle: { color: "#FFF" },
+    baselineColor: "#FFF",
+  },
+  titleTextStyle: { color: "#FFF" },
+
+  // histogram: {
+  //   bucketSize: 60 * 60 * 24,
+  //   // minValue: -1,
+  //   // maxValue: 1,
+  // },
+};
 const RecentGames = ({ replays }) => {
   const [replayList, setReplayList] = useState([]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -99,11 +122,51 @@ const RecentGames = ({ replays }) => {
   function recentGameClick(session_id) {
     history.push("/replay/" + session_id);
   }
+  const [replayTimestamps, setReplayTimestamps] = useState([]);
+  // const [newUsers, setNewUsers] = useState([]);
 
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
+      .then((response) => response.json())
+      .then((data) => {
+        SortDataToBins(data, setReplayTimestamps, 93);
+      });
+  }, []);
+  // useEffect(() => {
+  //   fetch("https://ecranked.ddns.net/api/v1/user/@joins")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       SortDataToBins(data, setNewUsers, 93);
+  //     });
+  // }, []);
   return (
     <PageContainer>
       <AboutContainer>
         <AboutPage>
+          <ContainerTitle>Graphs</ContainerTitle>
+          <div>
+            <Chart
+              width={"100%"}
+              height={"100%"}
+              chartType="ColumnChart"
+              loader={<div>Loading Chart</div>}
+              data={[["Date", "Games", { role: "style" }], ...replayTimestamps]}
+              options={{ ...chartOptions, title: "Quarterly game review!" }}
+              rootProps={{ "data-testid": "5" }}
+            />
+          </div>
+
+          {/* <Chart
+            width={"600px"}
+            height={"320px"}
+            chartType="ColumnChart"
+            loader={<div>Loading Chart</div>}
+            data={[["Date", "New Users", { role: "style" }], ...newUsers]}
+            options={{ ...chartOptions, title: "Quarterly new user review!" }}
+            rootProps={{ "data-testid": "5" }}
+          /> */}
+        </AboutPage>
+        <AboutPage style={{ minWidth: "500px" }}>
           <ContainerTitle>About Us</ContainerTitle>
           We are a collection of passionate Echo Combat Players who thrive to
           build a strong and close community. We've built numerous bots and
@@ -196,6 +259,53 @@ const RecentGames = ({ replays }) => {
     </PageContainer>
   );
 };
+
+function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
+  var todayDateTime = Math.round(Date.now() / 1000);
+  let newList = [];
+  // const NumOfDays = 93;
+  const cutOffTime = todayDateTime - 60 * 60 * 24 * NumOfDays;
+
+  for (let index = 0; index < NumOfDays; index++) {
+    const dateObject = new Date((cutOffTime + index * 60 * 60 * 24) * 1000);
+
+    const humanDateFormat = dateObject.toLocaleString("en-US", {
+      // weekday: "long",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      // hour: undefined,
+      // minute: undefined,
+      // second: undefined,
+    });
+    if (index === NumOfDays - 1) {
+      newList.push([
+        humanDateFormat,
+        0,
+        "stroke-color: #f00; stroke-opacity: 1; stroke-width: 2; fill-color: #f00; fill-opacity: .1",
+      ]);
+    }
+    newList.push([
+      humanDateFormat,
+      0,
+      "stroke-color: #fff; stroke-opacity: 1; stroke-width: 2; fill-color: #fff; fill-opacity: .1",
+    ]);
+  }
+  // newList.push([currentElement]);
+  data.forEach(function (currentElement) {
+    if (currentElement > cutOffTime) {
+      // console.log(cutOffTime);
+      // console.log(currentElement);
+      var DateTimeN = Math.floor(
+        (currentElement - cutOffTime) / (60 * 60 * 24)
+      );
+      // console.log(DateTimeN);
+      newList[DateTimeN][1] += 1;
+    }
+  });
+  console.log(newList);
+  setReplayTimestamps(newList);
+}
 
 export default function Home({ replays }) {
   return <RecentGames replays={replays} />;
