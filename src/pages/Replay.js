@@ -18,6 +18,9 @@ export default function Replay({ session_id }) {
   const EMPTYREQUEST = null;
   const [apiData, setApiData] = React.useState(null);
   const [replayNotFound, setReplayNotFound] = React.useState(false);
+  if (session_id === "random") {
+    session_id = "@random";
+  }
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/replay/" + session_id)
       .then(async (response) => {
