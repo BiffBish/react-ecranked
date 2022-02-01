@@ -406,6 +406,29 @@ const AboutAvatar = ({ userData, oculus_id }) => {
     );
   }
 };
+function timeDifference(current, previous) {
+  var msPerMinute = 60 * 1000;
+  var msPerHour = msPerMinute * 60;
+  var msPerDay = msPerHour * 24;
+  var msPerMonth = msPerDay * 30;
+  var msPerYear = msPerDay * 365;
+
+  var elapsed = current - previous;
+
+  if (elapsed < msPerMinute) {
+    return Math.round(elapsed / 1000) + " seconds ago";
+  } else if (elapsed < msPerHour) {
+    return Math.round(elapsed / msPerMinute) + " minutes ago";
+  } else if (elapsed < msPerDay) {
+    return Math.round(elapsed / msPerHour) + " hours ago";
+  } else if (elapsed < msPerMonth) {
+    return "approximately " + Math.round(elapsed / msPerDay) + " days ago";
+  } else if (elapsed < msPerYear) {
+    return "approximately " + Math.round(elapsed / msPerMonth) + " months ago";
+  } else {
+    return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
+  }
+}
 export const AboutMe = ({ userData }) => {
   const oculus_id = localStorage.getItem("OCULUS_ID");
   // var iconSrc = null;
@@ -414,9 +437,11 @@ export const AboutMe = ({ userData }) => {
       <div>
         <ContainerTitle>About Me</ContainerTitle>
       </div>
-
       <AboutStringBox userData={userData} oculus_id={oculus_id} />
       <AboutAvatar userData={userData} oculus_id={oculus_id} />
+      <footer>
+        joined {timeDifference(Date.now(), userData.join_date * 1000)}
+      </footer>
     </AboutMeStyle>
   );
 };
