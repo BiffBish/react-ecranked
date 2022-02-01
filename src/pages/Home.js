@@ -124,6 +124,7 @@ const RecentGames = ({ replays }) => {
   }
   const [replayTimestamps, setReplayTimestamps] = useState([]);
   // const [newUsers, setNewUsers] = useState([]);
+  const [replayData, setReplayData] = useState([]);
 
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
@@ -132,8 +133,15 @@ const RecentGames = ({ replays }) => {
         SortDataToBins(data, setReplayTimestamps, 93);
       });
   }, []);
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/api/v1/replay/@all")
+      .then((response) => response.json())
+      .then((data) => {
+        setReplayData(data);
+      });
+  }, []);
   // useEffect(() => {
-  //   fetch("https://ecranked.ddns.net/api/v1/user/@joins")
+  //   fetch("https://ecranked.ddns.net")
   //     .then((response) => response.json())
   //     .then((data) => {
   //       SortDataToBins(data, setNewUsers, 93);
@@ -144,27 +152,41 @@ const RecentGames = ({ replays }) => {
       <AboutContainer>
         <AboutPage>
           <ContainerTitle>Graphs</ContainerTitle>
-          <div>
+          <div style={{ position: "relative", height: "200px" }}>
+            <div
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                top: "0",
+                left: "0",
+              }}
+            >
+              <Chart
+                width={"100%"}
+                height={"100%"}
+                chartType="ColumnChart"
+                loader={<div>Loading Chart</div>}
+                data={[
+                  ["Date", "Games", { role: "style" }],
+                  ...replayTimestamps,
+                ]}
+                options={{ ...chartOptions, title: "Quarterly game review!" }}
+                rootProps={{ "data-testid": "5" }}
+              />
+            </div>
+          </div>
+          {/* <div>
             <Chart
               width={"100%"}
               height={"100%"}
               chartType="ColumnChart"
               loader={<div>Loading Chart</div>}
-              data={[["Date", "Games", { role: "style" }], ...replayTimestamps]}
-              options={{ ...chartOptions, title: "Quarterly game review!" }}
+              data={[["Date", "New Users", { role: "style" }], ...newUsers]}
+              options={{ ...chartOptions, title: "Quarterly new user review!" }}
               rootProps={{ "data-testid": "5" }}
             />
-          </div>
-
-          {/* <Chart
-            width={"600px"}
-            height={"320px"}
-            chartType="ColumnChart"
-            loader={<div>Loading Chart</div>}
-            data={[["Date", "New Users", { role: "style" }], ...newUsers]}
-            options={{ ...chartOptions, title: "Quarterly new user review!" }}
-            rootProps={{ "data-testid": "5" }}
-          /> */}
+          </div> */}
         </AboutPage>
         <AboutPage style={{ minWidth: "500px" }}>
           <ContainerTitle>About Us</ContainerTitle>
@@ -207,10 +229,14 @@ const RecentGames = ({ replays }) => {
         <AboutPage>
           <ContainerTitle>Fun Facts!</ContainerTitle>
           The combat community as a whole has traveled over{" "}
-          {Math.round(((18302.751128 * 3534) / 1000) * 100) / 100} kilometers
-          while playing echo combat! Thats{" "}
-          {Math.round(((18302.751128 * 3534) / 1000 / 40075) * 10) / 10} times
-          around the earth.
+          {Math.round(
+            ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000) * 100
+          ) / 100}{" "}
+          kilometers while playing echo combat! Thats{" "}
+          {Math.round(
+            ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000 / 40075) * 10
+          ) / 10}{" "}
+          times around the earth.
         </AboutPage>
       </AboutContainer>
       <RecentGamesStyle>
@@ -266,7 +292,7 @@ function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
   // const NumOfDays = 93;
   const cutOffTime = todayDateTime - 60 * 60 * 24 * NumOfDays;
 
-  for (let index = 0; index < NumOfDays; index++) {
+  for (let index = 0; index < NumOfDays + 1; index++) {
     const dateObject = new Date((cutOffTime + index * 60 * 60 * 24) * 1000);
 
     const humanDateFormat = dateObject.toLocaleString("en-US", {
