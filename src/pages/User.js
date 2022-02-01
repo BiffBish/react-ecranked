@@ -98,7 +98,10 @@ const LeftSide = ({ username, replays }) => {
 export default function User({ username, setBannerCallback, subDomain }) {
   const [randomUsernameOverride, setRandomUsernameOverride] =
     React.useState(null);
-  if (randomUsernameOverride !== null) {
+  if (
+    randomUsernameOverride !== null &&
+    (username === "random_async" || username === "random")
+  ) {
     username = randomUsernameOverride;
   }
   if (username === "random") {
