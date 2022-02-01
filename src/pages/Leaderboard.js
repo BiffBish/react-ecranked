@@ -244,13 +244,15 @@ export default function Leaderboard({
   setBannerCallback("Loadout Leaderboard");
   const [randomLoadout, setRandomLoadout] = React.useState(null);
 
-  useEffect(() => {
-    if (leaderboardStatistic === "loadout" && subDomain === "random") {
-      var randomLoadoutNumber = Math.round(Math.random() * 64);
-      setRandomLoadout(randomLoadoutNumber);
-      subDomain = randomLoadoutNumber;
-    }
-  }, [leaderboardStatistic, subDomain]);
+  if (
+    leaderboardStatistic === "loadout" &&
+    subDomain === "random" &&
+    randomLoadout === null
+  ) {
+    var randomLoadoutNumber = Math.round(Math.random() * 64);
+    setRandomLoadout(randomLoadoutNumber);
+    subDomain = randomLoadout;
+  }
 
   if (randomLoadout != null) {
     subDomain = randomLoadout;
