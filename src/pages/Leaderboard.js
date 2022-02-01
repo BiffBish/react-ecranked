@@ -246,15 +246,13 @@ export default function Leaderboard({
 
   useEffect(() => {
     if (leaderboardStatistic === "loadout" && subDomain === "random") {
-      setRandomLoadout(Math.round(Math.random() * 64));
+      var randomLoadoutNumber = Math.round(Math.random() * 64);
+      setRandomLoadout(randomLoadoutNumber);
+      subDomain = randomLoadoutNumber;
     }
   }, [leaderboardStatistic, subDomain]);
 
-  if (
-    leaderboardStatistic === "loadout" &&
-    subDomain === "random" &&
-    randomLoadout != null
-  ) {
+  if (randomLoadout != null) {
     subDomain = randomLoadout;
   }
   useEffect(() => {
