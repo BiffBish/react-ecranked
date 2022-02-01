@@ -242,7 +242,21 @@ export default function Leaderboard({
     subDomain = "global";
   }
   setBannerCallback("Loadout Leaderboard");
+  const [randomLoadout, setRandomLoadout] = React.useState(null);
 
+  useEffect(() => {
+    if (leaderboardStatistic === "loadout" && subDomain === "random") {
+      setRandomLoadout(Math.round(Math.random() * 64));
+    }
+  }, [leaderboardStatistic, subDomain]);
+
+  if (
+    leaderboardStatistic === "loadout" &&
+    subDomain === "random" &&
+    randomLoadout != null
+  ) {
+    subDomain = randomLoadout;
+  }
   useEffect(() => {
     fetch(
       "https://ecranked.ddns.net/api/v1/leaderboard/" +
