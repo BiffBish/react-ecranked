@@ -150,7 +150,7 @@ const RecentGames = ({ replays }) => {
   return (
     <PageContainer>
       <AboutContainer>
-        <AboutPage>
+        <AboutPage style={{ minWidth: "500px" }}>
           <ContainerTitle>Graphs</ContainerTitle>
           <div style={{ position: "relative", height: "200px" }}>
             <div
