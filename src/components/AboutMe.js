@@ -440,7 +440,10 @@ export const AboutMe = ({ userData }) => {
       <AboutStringBox userData={userData} oculus_id={oculus_id} />
       <AboutAvatar userData={userData} oculus_id={oculus_id} />
       <footer>
-        joined {timeDifference(Date.now(), userData.join_date * 1000)}
+        Joined{" "}
+        {userData.join_date < 1633061708
+          ? "before ECRanked launched"
+          : timeDifference(Date.now(), userData.join_date * 1000)}
       </footer>
     </AboutMeStyle>
   );

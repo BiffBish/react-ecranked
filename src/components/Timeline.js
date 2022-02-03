@@ -718,17 +718,9 @@ export const Timeline = ({ skimData }) => {
   const [selectedOption, setSelectedOption] = useState("snapshot");
   const [heatmapSelectedOption, setHeatmapSelectedOption] = useState("all");
   const [heatmapHoveredOption, setHeatmapHoveredOption] = useState(null);
-  const [heatmapHighres, setHeatmapHighres] = useState(false);
 
-  const [targetHeatmapHighres, setTargetHeatmapHighres] = useState(false);
-
-  const imageZoomRef = useRef();
-  const imageContainerZoomRef = useRef();
   const imageRef = useRef();
-  const [imageLoadedFirstTime, setImageLoadedFirstTime] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
-  const [smallestZoom, setSmallestZoom] = useState(0);
   //set userList
   useEffect(() => {
     console.log("SkimData 413", skimData);
@@ -742,13 +734,9 @@ export const Timeline = ({ skimData }) => {
     if (skimData) startApiCalls();
   }, [skimData]);
 
-  useEffect(() => {
-    if (imageLoaded) {
-      setHeatmapHighres(targetHeatmapHighres);
-    }
-  }, [imageLoaded, targetHeatmapHighres, setHeatmapHighres]);
   //get updates usernames
   useEffect(() => {
+    console.log(userList);
     async function startApiCalls() {
       setUpdatedUsernamesPromises(
         userList.map((user) => {
@@ -786,6 +774,7 @@ export const Timeline = ({ skimData }) => {
 
   //update all names
   useEffect(() => {
+    console.log("Updating names");
     async function updateAllNames() {
       //Wait for all API returns
       var updatedUsernames = await Promise.all(updatedUsernamesPromises);
@@ -806,45 +795,8 @@ export const Timeline = ({ skimData }) => {
     if (animationFinished) {
       updateAllNames();
     }
-  }, [updatedUsernamesPromises, animationFinished]);
-  useEffect(() => {
-    if (!imageLoadedFirstTime) return;
-    var targetWidth = imageRef.current.offsetWidth;
-    var targetHeight = imageRef.current.offsetHeight;
-
-    var parentWidth = imageContainerZoomRef.current.offsetWidth;
-    var parentHeight = imageContainerZoomRef.current.offsetHeight;
-
-    console.log("targetWidth", targetWidth);
-    console.log("targetHeight", targetHeight);
-    console.log("parentWidth", parentWidth);
-    console.log("parentHeight", parentHeight);
-    var finalWidth = targetWidth;
-    var finalHeight = targetHeight;
-    var decreasePercentage = 0;
-    var finalScale = 1;
-    if (finalWidth >= parentWidth) {
-      decreasePercentage = parentWidth / finalWidth;
-      finalWidth *= decreasePercentage;
-      finalHeight *= decreasePercentage;
-      finalScale *= decreasePercentage;
-    }
-    if (finalHeight >= parentHeight) {
-      decreasePercentage = parentHeight / finalHeight;
-      finalWidth *= decreasePercentage;
-      finalHeight *= decreasePercentage;
-      finalScale *= decreasePercentage;
-    }
-
-    imageZoomRef.current.setTransform(
-      (parentWidth - finalWidth) / 2,
-      (parentHeight - finalHeight) / 2,
-      finalScale,
-      0,
-      0
-    );
-    setSmallestZoom(finalScale);
-  }, [imageLoadedFirstTime]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animationFinished]);
 
   if (userList === null) return null;
 
@@ -920,177 +872,236 @@ export const Timeline = ({ skimData }) => {
                 onClick={setHeatmapSelectedOption}
                 onHover={setHeatmapHoveredOption}
               />
-              <div
-                style={{
-                  flexGrow: 1,
-                  border: "1px solid white",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  position: "relative",
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  ref={imageContainerZoomRef}
-                >
-                  <TransformWrapper
-                    onZoom={(e) => {
-                      // eslint-disable-next-line
-                      if (targetHeatmapHighres != e.state.scale > 2) {
-                        setImageLoaded(false);
-                        setTargetHeatmapHighres(e.state.scale > 2);
-                      }
-                    }}
-                    minScale={smallestZoom}
-                    initialScale={1}
-                    limitToBounds={false}
-                    // centerOnInit={true}
-                    initialPositionX={0}
-                    initialPositionY={0}
-                    ref={imageZoomRef}
-                  >
-                    <TransformComponent
-                      wrapperStyle={{ width: "100%", height: "100%" }}
-                    >
-                      <div style={{ position: "relative" }}>
-                        <img
-                          alt={""}
-                          onLoad={() => {
-                            setImageLoadedFirstTime(true);
-                            setImageLoaded(true);
-                          }}
-                          ref={imageRef}
-                          style={
-                            heatmapHighres
-                              ? {
-                                  transformOrigin: "top left",
-                                  transform: "scale(20%)",
-                                  // width: "scale(5)",
-                                  // transform: "scale(5)",
-                                  position: "absolute",
-                                  top: 0,
-                                  left: 0,
-                                }
-                              : {
-                                  position: "absolute",
-                                  top: 0,
-                                  left: 0,
-                                }
-                          }
-                          src={`https://ecranked.ddns.net/public/${
-                            skimData["map"]
-                          }_minimap_${
-                            targetHeatmapHighres ? "highres" : "lowres"
-                          }.png`}
-                        ></img>
-
-                        {(() => {
-                          if (Array.isArray(heatmapSelectedOption)) {
-                            return heatmapSelectedOption.map((value) => {
-                              return (
-                                <img
-                                  alt={""}
-                                  onLoad={() => {
-                                    setImageLoadedFirstTime(true);
-                                    setImageLoaded(true);
-                                  }}
-                                  style={
-                                    heatmapHighres
-                                      ? {
-                                          transformOrigin: "top left",
-                                          transform: "scale(20%)",
-                                          position: "absolute",
-                                          top: 0,
-                                          left: 0,
-                                          // width: "scale(5)",
-                                          // transform: "scale(5)",
-                                        }
-                                      : {
-                                          position: "absolute",
-                                          top: 0,
-                                          left: 0,
-                                        }
-                                  }
-                                  src={`https://ecranked.ddns.net/public/${
-                                    skimData["session_id"]
-                                  }/heatmap_${value}_${
-                                    targetHeatmapHighres ? "highres" : "lowres"
-                                  }.png`}
-                                ></img>
-                              );
-                            });
-                          } else {
-                            return (
-                              <img
-                                alt={""}
-                                onLoad={() => {
-                                  setImageLoadedFirstTime(true);
-                                  setImageLoaded(true);
-                                }}
-                                style={
-                                  heatmapHighres
-                                    ? {
-                                        transformOrigin: "top left",
-                                        transform: "scale(20%)",
-                                        // width: "scale(5)",
-                                        // transform: "scale(5)",
-                                        position: "absolute",
-                                        top: 0,
-                                        left: 0,
-                                      }
-                                    : {
-                                        position: "absolute",
-                                        top: 0,
-                                        left: 0,
-                                      }
-                                }
-                                src={`https://ecranked.ddns.net/public/${
-                                  skimData["session_id"]
-                                }/heatmap_${
-                                  heatmapHoveredOption ?? heatmapSelectedOption
-                                }_${
-                                  targetHeatmapHighres ? "highres" : "lowres"
-                                }.png`}
-                              />
-                            );
-                          }
-                        })()}
-                      </div>
-                    </TransformComponent>
-                  </TransformWrapper>
-                </div>
-
-                {/* <SideBySideMagnifier
-                  style={{ flexGrow: 1 }}
-                  imageSrc={`https://ecranked.ddns.net/public/${
-                    skimData["session_id"]
-                  }/heatmap_${
-                    heatmapHoveredOption !== null
-                      ? heatmapHoveredOption
-                      : heatmapSelectedOption
-                  }_Lowres.png`}
-                  largeImageSrc={`https://ecranked.ddns.net/public/${
-                    skimData["session_id"]
-                  }/heatmap_${
-                    heatmapHoveredOption !== null
-                      ? heatmapHoveredOption
-                      : heatmapSelectedOption
-                  }_Highres.png`}
-                  alwaysInPlace={true}
-                  className="input-position"
-                  fillAvailableSpace={true}
-                /> */}
-              </div>
+              <Heatmap
+                imageRef={imageRef}
+                skimData={skimData}
+                heatmapSelectedOption={heatmapSelectedOption}
+                heatmapHoveredOption={heatmapHoveredOption}
+              />
             </div>
           )}
         </div>
       </div>
     </Container>
+  );
+};
+const Heatmap = ({
+  imageRef,
+  skimData,
+  heatmapSelectedOption,
+  heatmapHoveredOption,
+}) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const [heatmapHighres, setHeatmapHighres] = useState(false);
+  const [targetHeatmapHighres, setTargetHeatmapHighres] = useState(false);
+
+  const imageZoomRef = useRef();
+  const imageContainerZoomRef = useRef();
+
+  const [imageLoadedFirstTime, setImageLoadedFirstTime] = useState(false);
+  const [backgroundImageLoaded, setBackgroundImageLoaded] = useState(false);
+
+  const [backgroundMapHighres, setBackgroundMapHighres] = useState(false);
+  const [backgroundMapHighresLoaded, setBackgroundMapHighresLoaded] =
+    useState(false);
+
+  const [smallestZoom, setSmallestZoom] = useState(0);
+  useEffect(() => {
+    if (imageLoaded) {
+      setHeatmapHighres(targetHeatmapHighres);
+    }
+  }, [imageLoaded, targetHeatmapHighres, setHeatmapHighres]);
+
+  useEffect(() => {
+    if (backgroundImageLoaded) {
+      setBackgroundMapHighres(targetHeatmapHighres);
+    }
+  }, [backgroundImageLoaded, targetHeatmapHighres, setBackgroundMapHighres]);
+  useEffect(() => {
+    if (!imageLoadedFirstTime) return;
+    var targetWidth = imageRef.current.offsetWidth;
+    var targetHeight = imageRef.current.offsetHeight;
+
+    var parentWidth = imageContainerZoomRef.current.offsetWidth;
+    var parentHeight = imageContainerZoomRef.current.offsetHeight;
+
+    console.log("targetWidth", targetWidth);
+    console.log("targetHeight", targetHeight);
+    console.log("parentWidth", parentWidth);
+    console.log("parentHeight", parentHeight);
+    var finalWidth = targetWidth;
+    var finalHeight = targetHeight;
+    var decreasePercentage = 0;
+    var finalScale = 1;
+    if (finalWidth >= parentWidth) {
+      decreasePercentage = parentWidth / finalWidth;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+      finalScale *= decreasePercentage;
+    }
+    if (finalHeight >= parentHeight) {
+      decreasePercentage = parentHeight / finalHeight;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+      finalScale *= decreasePercentage;
+    }
+
+    imageZoomRef.current.setTransform(
+      (parentWidth - finalWidth) / 2,
+      (parentHeight - finalHeight) / 2,
+      finalScale,
+      0,
+      0
+    );
+    setSmallestZoom(finalScale);
+  }, [imageLoadedFirstTime, imageRef]);
+
+  return (
+    <div
+      style={{
+        flexGrow: 1,
+        border: "1px solid white",
+        borderRadius: "10px",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+        ref={imageContainerZoomRef}
+      >
+        <TransformWrapper
+          onZoom={(e) => {
+            // eslint-disable-next-line
+            if (targetHeatmapHighres != e.state.scale > 2) {
+              setImageLoaded(false);
+              setBackgroundImageLoaded(false);
+              setTargetHeatmapHighres(e.state.scale > 2);
+            }
+          }}
+          minScale={smallestZoom}
+          initialScale={1}
+          limitToBounds={false}
+          // centerOnInit={true}
+          initialPositionX={0}
+          initialPositionY={0}
+          ref={imageZoomRef}
+        >
+          <TransformComponent wrapperStyle={{ width: "100%", height: "100%" }}>
+            <div style={{ position: "relative" }}>
+              <img
+                alt={""}
+                onLoad={() => {
+                  setImageLoadedFirstTime(true);
+                  setBackgroundImageLoaded(true);
+                  if (targetHeatmapHighres) {
+                    setBackgroundMapHighresLoaded(true);
+                  }
+                  console.log("Background Image Loaded");
+                }}
+                ref={imageRef}
+                style={
+                  backgroundMapHighres||backgroundMapHighresLoaded
+                    ? {
+                        transformOrigin: "top left",
+                        transform: "scale(20%)",
+                        // width: "scale(5)",
+                        // transform: "scale(5)",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }
+                    : {
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }
+                }
+                src={`https://ecranked.ddns.net/public/${
+                  skimData["map"]
+                }_minimap_${targetHeatmapHighres ||backgroundMapHighresLoaded? "highres" : "lowres"}.png`}
+              ></img>
+
+              {(() => {
+                if (Array.isArray(heatmapSelectedOption)) {
+                  return heatmapSelectedOption.map((value) => {
+                    return (
+                      <img
+                        alt={""}
+                        onLoad={() => {
+                          setImageLoadedFirstTime(true);
+                          setImageLoaded(true);
+                        }}
+                        style={
+                          heatmapHighres
+                            ? {
+                                transformOrigin: "top left",
+                                transform: "scale(20%)",
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                // width: "scale(5)",
+                                // transform: "scale(5)",
+                              }
+                            : {
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                              }
+                        }
+                        src={`https://ecranked.ddns.net/public/${
+                          skimData["session_id"]
+                        }/heatmap_${value}_${
+                          targetHeatmapHighres ? "highres" : "lowres"
+                        }.png`}
+                      ></img>
+                    );
+                  });
+                } else {
+                  return (
+                    <img
+                      alt={""}
+                      onLoad={() => {
+                        setImageLoadedFirstTime(true);
+                        setImageLoaded(true);
+                      }}
+                      style={
+                        heatmapHighres
+                          ? {
+                              transformOrigin: "top left",
+                              transform: "scale(20%)",
+                              // width: "scale(5)",
+                              // transform: "scale(5)",
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                            }
+                          : {
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                            }
+                      }
+                      src={`https://ecranked.ddns.net/public/${
+                        skimData["session_id"]
+                      }/heatmap_${
+                        heatmapHoveredOption ?? heatmapSelectedOption
+                      }_${targetHeatmapHighres ? "highres" : "lowres"}.png`}
+                    />
+                  );
+                }
+              })()}
+            </div>
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
+    </div>
   );
 };
