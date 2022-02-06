@@ -836,6 +836,11 @@ const UserStats = ({ userData, statChoice }) => {
         displayValue={userData["level"]}
         value={map_range(userData["level"], 0, 50, 0, 1)}
       />
+      <UserStat
+        name={"Hours Played"}
+        displayValue={(userStats["total_seconds"] / (60 * 60)).toFixed(1) + "h"}
+        value={1}
+      />
     </UserStatsStyle>
   );
 };
