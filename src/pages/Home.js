@@ -123,11 +123,11 @@ const RecentGames = ({ replays }) => {
     history.push("/replay/" + session_id);
   }
   const [replayTimestamps, setReplayTimestamps] = useState([]);
-  // const [newUsers, setNewUsers] = useState([]);
+  const [newUsers, setNewUsers] = useState([]);
   const [replayData, setReplayData] = useState([]);
 
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/user/@joins")
+    fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
       .then((response) => response.json())
       .then((data) => {
         SortDataToBins(data, setReplayTimestamps, 93);
@@ -140,13 +140,18 @@ const RecentGames = ({ replays }) => {
         setReplayData(data);
       });
   }, []);
-  // useEffect(() => {
-  //   fetch("https://ecranked.ddns.net")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       SortDataToBins(data, setNewUsers, 93);
-  //     });
-  // }, []);
+  useEffect(() => {
+    if (localStorage.getItem("MODERATOR") === "1") {
+      fetch("https://ecranked.ddns.net/api/v1/user/@joins", {
+        headers: { authorization: localStorage.getItem("AUTHORIZATION_TOKEN") },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          SortDataToBins(data, setNewUsers, 93);
+        })
+        .catch(() => {});
+    }
+  }, []);
   return (
     <PageContainer>
       <AboutContainer>
@@ -176,6 +181,32 @@ const RecentGames = ({ replays }) => {
               />
             </div>
           </div>
+          {localStorage.getItem("MODERATOR") === "1" ? (
+            <div style={{ position: "relative", height: "200px" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  top: "0",
+                  left: "0",
+                }}
+              >
+                <Chart
+                  width={"100%"}
+                  height={"100%"}
+                  chartType="ColumnChart"
+                  loader={<div>Loading Chart</div>}
+                  data={[["Date", "Users", { role: "style" }], ...newUsers]}
+                  options={{
+                    ...chartOptions,
+                    title: "Joins per day! (moderator only)",
+                  }}
+                  rootProps={{ "data-testid": "5" }}
+                />
+              </div>
+            </div>
+          ) : null}
           {/* <div>
             <Chart
               width={"100%"}
