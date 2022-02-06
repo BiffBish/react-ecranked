@@ -291,9 +291,11 @@ function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
   let newList = [];
   // const NumOfDays = 93;
   const cutOffTime = todayDateTime - 60 * 60 * 24 * NumOfDays;
-
+  const Offset = 41092;
   for (let index = 0; index < NumOfDays + 1; index++) {
-    const dateObject = new Date((cutOffTime + index * 60 * 60 * 24) * 1000);
+    const dateObject = new Date(
+      (cutOffTime + index * 60 * 60 * 24 + Offset) * 1000 - 86400000
+    );
 
     const humanDateFormat = dateObject.toLocaleString("en-US", {
       // weekday: "long",
@@ -304,7 +306,8 @@ function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
       // minute: undefined,
       // second: undefined,
     });
-    if (index === NumOfDays - 1) {
+    // const humanDateFormat = cutOffTime + index * 60 * 60 * 24;
+    if (index === NumOfDays) {
       newList.push([
         humanDateFormat,
         0,
@@ -323,7 +326,7 @@ function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
       // console.log(cutOffTime);
       // console.log(currentElement);
       var DateTimeN = Math.floor(
-        (currentElement - cutOffTime) / (60 * 60 * 24)
+        (currentElement - cutOffTime + Offset) / (60 * 60 * 24)
       );
       // console.log(DateTimeN);
       newList[DateTimeN][1] += 1;

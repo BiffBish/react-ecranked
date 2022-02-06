@@ -872,12 +872,14 @@ export const Timeline = ({ skimData }) => {
                 onClick={setHeatmapSelectedOption}
                 onHover={setHeatmapHoveredOption}
               />
-              <Heatmap
-                imageRef={imageRef}
-                skimData={skimData}
-                heatmapSelectedOption={heatmapSelectedOption}
-                heatmapHoveredOption={heatmapHoveredOption}
-              />
+              {animationFinished ? (
+                <Heatmap
+                  imageRef={imageRef}
+                  skimData={skimData}
+                  heatmapSelectedOption={heatmapSelectedOption}
+                  heatmapHoveredOption={heatmapHoveredOption}
+                />
+              ) : null}
             </div>
           )}
         </div>
@@ -901,6 +903,8 @@ const Heatmap = ({
 
   const [imageLoadedFirstTime, setImageLoadedFirstTime] = useState(false);
   const [backgroundImageLoaded, setBackgroundImageLoaded] = useState(false);
+  const [backgroundImageLoadedFirstTime, setBackgroundImageLoadedFirstTime] =
+    useState(false);
 
   const [backgroundMapHighres, setBackgroundMapHighres] = useState(false);
   const [backgroundMapHighresLoaded, setBackgroundMapHighresLoaded] =
@@ -920,6 +924,7 @@ const Heatmap = ({
   }, [backgroundImageLoaded, targetHeatmapHighres, setBackgroundMapHighres]);
   useEffect(() => {
     if (!imageLoadedFirstTime) return;
+    if (!backgroundImageLoadedFirstTime) return;
     var targetWidth = imageRef.current.offsetWidth;
     var targetHeight = imageRef.current.offsetHeight;
 
@@ -955,7 +960,7 @@ const Heatmap = ({
       0
     );
     setSmallestZoom(finalScale);
-  }, [imageLoadedFirstTime, imageRef]);
+  }, [imageLoadedFirstTime, imageRef, backgroundImageLoadedFirstTime]);
 
   return (
     <div
@@ -999,7 +1004,7 @@ const Heatmap = ({
               <img
                 alt={""}
                 onLoad={() => {
-                  setImageLoadedFirstTime(true);
+                  setBackgroundImageLoadedFirstTime(true);
                   setBackgroundImageLoaded(true);
                   if (targetHeatmapHighres) {
                     setBackgroundMapHighresLoaded(true);
@@ -1008,7 +1013,7 @@ const Heatmap = ({
                 }}
                 ref={imageRef}
                 style={
-                  backgroundMapHighres||backgroundMapHighresLoaded
+                  backgroundMapHighres || backgroundMapHighresLoaded
                     ? {
                         transformOrigin: "top left",
                         transform: "scale(20%)",
@@ -1026,7 +1031,11 @@ const Heatmap = ({
                 }
                 src={`https://ecranked.ddns.net/public/${
                   skimData["map"]
-                }_minimap_${targetHeatmapHighres ||backgroundMapHighresLoaded? "highres" : "lowres"}.png`}
+                }_minimap_${
+                  targetHeatmapHighres || backgroundMapHighresLoaded
+                    ? "highres"
+                    : "lowres"
+                }.png`}
               ></img>
 
               {(() => {
