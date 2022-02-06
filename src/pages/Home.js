@@ -127,7 +127,7 @@ const RecentGames = ({ replays }) => {
   const [replayData, setReplayData] = useState([]);
 
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
+    fetch("https://ecranked.ddns.net/api/v1/user/@joins")
       .then((response) => response.json())
       .then((data) => {
         SortDataToBins(data, setReplayTimestamps, 93);
