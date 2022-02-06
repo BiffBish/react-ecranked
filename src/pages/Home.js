@@ -296,16 +296,29 @@ function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
     const dateObject = new Date(
       (cutOffTime + index * 60 * 60 * 24 + Offset) * 1000 - 86400000
     );
+    var humanDateYear = dateObject
+      .toLocaleString("en-US", {
+        // weekday: "long",
+        year: "numeric",
+        // hour: undefined,
+        // minute: undefined,
+        // second: undefined,
+      })
+      .slice(2, 4);
 
-    const humanDateFormat = dateObject.toLocaleString("en-US", {
-      // weekday: "long",
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      // hour: undefined,
-      // minute: undefined,
-      // second: undefined,
-    });
+    var humanDateFormat =
+      dateObject.toLocaleString("en-US", {
+        // weekday: "long",
+        month: "numeric",
+        day: "numeric",
+        // hour: undefined,
+        // minute: undefined,
+        // second: undefined,
+      }) +
+      "/" +
+      humanDateYear;
+
+    // humanDateFormat = humanDateFormat.slice(0, humanDateFormat.length - 2);
     // const humanDateFormat = cutOffTime + index * 60 * 60 * 24;
     if (index === NumOfDays) {
       newList.push([
