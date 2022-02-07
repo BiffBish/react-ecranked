@@ -130,7 +130,7 @@ const RecentGames = ({ replays }) => {
     fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
       .then((response) => response.json())
       .then((data) => {
-        SortDataToBins(data, setReplayTimestamps, 93);
+        SortReplayDataToBins(data, setReplayTimestamps, 93);
       });
   }, []);
   useEffect(() => {
@@ -155,7 +155,7 @@ const RecentGames = ({ replays }) => {
   return (
     <PageContainer>
       <AboutContainer>
-        <AboutPage style={{ minWidth: "500px" }}>
+        <AboutPage style={{ minWidth: "1000px" }}>
           <ContainerTitle>Graphs</ContainerTitle>
           <div style={{ position: "relative", height: "200px" }}>
             <div
@@ -173,10 +173,24 @@ const RecentGames = ({ replays }) => {
                 chartType="ColumnChart"
                 loader={<div>Loading Chart</div>}
                 data={[
-                  ["Date", "Games", { role: "style" }],
+                  [
+                    "Date",
+                    "Combustion Games",
+                    { role: "style" },
+                    "Dyson Games",
+                    { role: "style" },
+                    "Fission Games",
+                    { role: "style" },
+                    "Surge Games",
+                    { role: "style" },
+                  ],
                   ...replayTimestamps,
                 ]}
-                options={{ ...chartOptions, title: "Quarterly game review!" }}
+                options={{
+                  ...chartOptions,
+                  title: "Quarterly game review!",
+                  isStacked: true,
+                }}
                 rootProps={{ "data-testid": "5" }}
               />
             </div>
@@ -202,7 +216,7 @@ const RecentGames = ({ replays }) => {
                     ...chartOptions,
                     title: "Joins per day! (moderator only)",
                   }}
-                  rootProps={{ "data-testid": "5" }}
+                  // rootProps={{ "data-testid": "5" }}
                 />
               </div>
             </div>
@@ -374,6 +388,106 @@ function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
       );
       // console.log(DateTimeN);
       newList[DateTimeN][1] += 1;
+    }
+  });
+  console.log(newList);
+  setReplayTimestamps(newList);
+  // return newList;
+}
+
+function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
+  var todayDateTime = Math.round(Date.now() / 1000);
+  let newList = [];
+  // const NumOfDays = 93;
+  const cutOffTime = todayDateTime - 60 * 60 * 24 * NumOfDays;
+  const Offset = 41092;
+  for (let index = 0; index < NumOfDays + 1; index++) {
+    const dateObject = new Date(
+      (cutOffTime + index * 60 * 60 * 24 + Offset) * 1000 - 86400000
+    );
+    var humanDateYear = dateObject
+      .toLocaleString("en-US", {
+        // weekday: "long",
+        year: "numeric",
+        // hour: undefined,
+        // minute: undefined,
+        // second: undefined,
+      })
+      .slice(2, 4);
+
+    var humanDateFormat =
+      dateObject.toLocaleString("en-US", {
+        // weekday: "long",
+        month: "numeric",
+        day: "numeric",
+        // hour: undefined,
+        // minute: undefined,
+        // second: undefined,
+      }) +
+      "/" +
+      humanDateYear;
+
+    // humanDateFormat = humanDateFormat.slice(0, humanDateFormat.length - 2);
+    // const humanDateFormat = cutOffTime + index * 60 * 60 * 24;
+    if (index === NumOfDays) {
+      newList.push([
+        humanDateFormat,
+        0,
+        "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #0932EC ; fill-opacity: 1",
+        0,
+        "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #F56600; fill-opacity: 1",
+        0,
+        "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #ED31B8 ; fill-opacity: 1",
+        0,
+        "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #12F840 ; fill-opacity: 1",
+      ]);
+    }
+    newList.push([
+      humanDateFormat,
+      0,
+      "stroke-color: #fff; stroke-opacity: 1; stroke-width: 1; fill-color: #0932EC; fill-opacity: 1",
+
+      0,
+      "stroke-color: #fff; stroke-opacity: 1; stroke-width: 1; fill-color: #F56600; fill-opacity: 1",
+
+      0,
+      "stroke-color: #fff; stroke-opacity: 1; stroke-width: 1; fill-color: #ED31B8; fill-opacity: 1",
+
+      0,
+      "stroke-color: #fff; stroke-opacity: 1; stroke-width: 1; fill-color: #12F840; fill-opacity: 1",
+    ]);
+  }
+  // newList.push([currentElement]);
+  var timestamp = 0;
+
+  data.forEach(function (currentElement) {
+    timestamp = currentElement["start_time"];
+
+    if (timestamp > cutOffTime) {
+      // console.log(cutOffTime);
+      // console.log(currentElement);
+      var DateTimeN = Math.floor(
+        (timestamp - cutOffTime + Offset) / (60 * 60 * 24)
+      );
+      var mapPos = 0;
+      switch (currentElement["map"]) {
+        case "combustion":
+          mapPos = 1;
+          break;
+        case "dyson":
+          mapPos = 5;
+          break;
+        case "fission":
+          mapPos = 3;
+          break;
+        case "surge":
+          mapPos = 7;
+          break;
+        default:
+          break;
+      }
+      // console.log(DateTimeN);
+      newList[DateTimeN][mapPos] += 1;
     }
   });
   console.log(newList);
