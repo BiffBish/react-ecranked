@@ -217,7 +217,7 @@ const AchievementSquare = ({ num, data, cb, hn = [] }) => {
   var ref = React.useRef();
   let backGroundColor = "#A44";
 
-  if (data["complete"][num.toString()]) {
+  if (data["value"][num.toString()] > 0.5) {
     if (hn.includes(num)) {
       backGroundColor = "#4A4";
     } else {
@@ -349,11 +349,13 @@ const AchievementPopup = ({
 };
 
 export default function Achievements({ userData }) {
-  let ahData = { complete: userData["test"], locked: {} };
+  let ahData = { values: userData["test"], locked: {} };
 
   let dailyLoadoutData = userData["daily_stats"]["top_loadout"];
 
   collectedAchievementData["total_games"] = 4;
+
+  let totalPercentage = 0;
 
   let dailyItemUsage = {
     pulsar: false,
