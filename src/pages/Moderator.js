@@ -26,6 +26,36 @@ export default function Moderator() {
     <div>
       <Button to={"Moderator/UnapprovedImages"}>Unapproved Images</Button>
       <Button to={"Moderator/UncontactedUsers"}>Uncontacted Users</Button>
+      <Button
+        to={"Moderator"}
+        onClick={() => {
+          fetch("https://ecranked.ddns.net/status", {
+            method: "PUT",
+            headers: {
+              Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ maintenance: true }),
+          });
+        }}
+      >
+        Set Maintenance True
+      </Button>
+      <Button
+        to={"Moderator"}
+        onClick={() => {
+          fetch("https://ecranked.ddns.net/status", {
+            method: "PUT",
+            headers: {
+              Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ maintenance: false }),
+          });
+        }}
+      >
+        Set Maintenance False
+      </Button>
     </div>
   );
 }
