@@ -15,18 +15,12 @@ const ReplayBody = styled.div`
   `;
 
 export default function Replay({ session_id }) {
-  const EMPTYREQUEST = {
-    frames: 9462,
-    start_time: "2021-09-21 23:57:38.43",
-    end_time: "2021-09-22 00:12:27.43",
-    match_length: 888,
-    framerate: 10.655405405405405,
-    map: "dyson",
-    players: [],
-    session_id: session_id,
-  };
+  const EMPTYREQUEST = null;
   const [apiData, setApiData] = React.useState(null);
   const [replayNotFound, setReplayNotFound] = React.useState(false);
+  if (session_id === "random") {
+    session_id = "@random";
+  }
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/replay/" + session_id)
       .then(async (response) => {
@@ -71,10 +65,7 @@ export default function Replay({ session_id }) {
         replayNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
       }
     >
-      <Timeline
-        users={WhatApiRequest()["players"]}
-        skimData={WhatApiRequest()}
-      />
+      <Timeline skimData={WhatApiRequest()} />
       {/* <CenterColumn userData={WhatApiRequest()} /> */}
       <Download session_id={session_id} />
     </ReplayBody>

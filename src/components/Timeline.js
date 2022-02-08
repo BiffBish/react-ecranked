@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 const Container = styled.div`
   position: relative;
-  padding: 10px 10px 0px;
+  padding: 10px 10px 10px;
   margin: 20px 10px 20px;
   background-color: #222;
   color: white;
@@ -44,22 +46,133 @@ const UserListStyle = styled.div`
   flex-direction: column;
   gap: 10px;
   flex: 100px 1;
+  // margin-top: 30px;
 `;
-const UserList = ({ users }) => {
+
+const UserColor = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  padding: 7px;
+  text-decoration: none;
+  border: 2px solid white;
+  border-radius: 10px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  height: 40.5px;
+  box-sizing: border-box;
+`;
+
+const UserColorListStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 33px;
+`;
+const UserColorList = ({
+  users,
+  animationIndex,
+  currentSelected,
+  onClick,
+  onHover,
+}) => {
+  // console.log("USR LIST", users);
+
+  let OrangeTeamStartID = -1;
+  function getUserColorStyle(user) {
+    let BorderColor = "rgb(65, 160, 228)";
+    // console.log(user["team"]);
+    switch (user["team"]) {
+      case 0:
+        BorderColor = "rgb(65, 160, 228)";
+        break;
+      case 1:
+        BorderColor = "rgb(230, 167, 50)";
+        break;
+      default:
+        BorderColor = "rgb(255, 255, 255)";
+        break;
+    }
+
+    var backgroundColor = {};
+    if (user["playerid"] === currentSelected) {
+      backgroundColor = { backgroundColor: "#333" };
+    }
+    return {
+      borderColor: BorderColor,
+      ...backgroundColor,
+    };
+  }
+  return (
+    <UserColorListStyle>
+      {users.map((user, index) => {
+        if (index >= animationIndex) {
+          return null;
+        }
+
+        if (user["team"] === 1 && OrangeTeamStartID === -1) {
+          OrangeTeamStartID = index;
+        }
+        return (
+          <UserColor
+            key={user["userid"]}
+            onClick={() => {
+              onClick(user["userid"]);
+            }}
+            onMouseEnter={() => {
+              onHover(user["userid"]);
+            }}
+            onMouseLeave={() => {
+              onHover(null);
+            }}
+            style={getUserColorStyle(user)}
+          >
+            <div
+              style={{
+                backgroundColor:
+                  user["team"] === 0
+                    ? BlueColors[index]
+                    : OrangeColors[index - OrangeTeamStartID],
+                width: "15px",
+                height: "15px",
+                marginLeft: "auto",
+                borderRadius: "100px",
+                border: "none",
+                overflow: "hidden",
+              }}
+            ></div>
+          </UserColor>
+        );
+      })}
+    </UserColorListStyle>
+  );
+};
+const UserList = ({ users, animationIndex }) => {
+  // console.log("USR LIST", users);
   let history = useHistory();
 
   function userClick(username) {
     history.push("/user/" + username + "/stats");
   }
+  let OrangeTeamStartID = -1;
   return (
     <UserListStyle>
-      {users.map((user) => {
+      {users.map((user, index) => {
+        if (index >= animationIndex) {
+          return null;
+        }
         const onUserClick = () => {
           userClick(user["name"]);
         };
+        if (user["team"] === 1 && OrangeTeamStartID === -1) {
+          OrangeTeamStartID = index;
+        }
         return (
           <User
-            key={user["name"]}
+            key={user["userid"]}
             onClick={onUserClick}
             style={(() => {
               switch (user["team"]) {
@@ -87,10 +200,80 @@ const TimelineSubStyle = styled.div`
 
   flex: 200px 8;
 `;
-const TimelineUserList = ({ users, api_data }) => {
+
+const TimelineHeaderBarMinuteMarkers = styled.div`
+  position: absolute;
+  height: 75%;
+  width: 5px;
+  bottom: 0px;
+  background: #555;
+  border-radius: 10px;
+  border: none;
+`;
+const TimelineHeaderBarMinuteMarkersText = styled.div`
+  position: absolute;
+  height: 100%;
+  bottom: 0px;
+  background: #5550;
+  padding-left: 10px;
+`;
+const TimelineHeaderBarStyle = styled.div`
+  position: relative;
+  background: #333;
+  border-radius: 10px;
+  border: none;
+
+  height: 25px;
+  box-sizing: border-box;
+`;
+
+const TimelineHeaderBar = ({ api_data }) => {
+  // console.log(api_data["match_length"]);
+  var minutePoints = [];
+  for (let index = 0; index < api_data["match_length"]; index += 60) {
+    minutePoints.push(index / api_data["match_length"]);
+  }
+  // console.log("120 ", minutePoints);
+  return (
+    <TimelineHeaderBarStyle>
+      {minutePoints.map((point, index) => {
+        if (index === 0) {
+          return (
+            <TimelineHeaderBarMinuteMarkers
+              style={{
+                left: `${point * 100}%`,
+              }}
+            />
+          );
+        }
+        return (
+          <>
+            <TimelineHeaderBarMinuteMarkers
+              style={{
+                left: `${point * 100}%`,
+              }}
+            />
+            <TimelineHeaderBarMinuteMarkersText
+              style={{
+                left: `${point * 100}%`,
+              }}
+            >
+              {index + " min"}
+            </TimelineHeaderBarMinuteMarkersText>
+          </>
+        );
+      })}
+    </TimelineHeaderBarStyle>
+  );
+};
+
+const TimelineUserList = ({ users, api_data, animationIndex }) => {
+  // console.log(api_data["total_frames"]);
   return (
     <TimelineSubStyle>
-      {users.map((user) => {
+      <TimelineHeaderBar api_data={api_data} />
+      {users.map((user, index) => {
+        if (index >= animationIndex) return null;
         return <TimelineUserItem user={user} api_data={api_data} />;
       })}
     </TimelineSubStyle>
@@ -102,27 +285,28 @@ const TimelineUserItemStyle = styled.div`
   background-color: #222;
   text-decoration: none;
   #border: 2px solid white;
-  border-radius: 10px;
+
   line-height: 0;
   font-size: 15px;
   line-height: 1.5;
 
   cursor: pointer;
   height: 40.5px;
+  // overflow: hidden;
 `;
 const TimeLineItemActiveBar = styled.div`
   background-color: #333;
   width: 100%;
-  height: 10px;
-  border: 1px solid #333;
-  border-radius: 10px;
-  height: 32px;
+  height: 100%;
+  #height: 32px;
   overflow: hidden;
+  border-radius: 10px;
+  border: none;
 `;
 const DeathBar = styled.div`
   position: absolute;
-  top: 30px;
-  background-color: red;
+  top: 34px;
+  background-color: #f44;
   width: 0.5%;
   height: 10px;
   border: 0px solid red;
@@ -148,7 +332,7 @@ const GetDeathPoints = ({ user, api_data }) => {
         // On the last deathPoint
         endFrame = user["startFrame"] + user["stats"]["total_frames"];
       } else {
-        console.log(user["framestamps"]);
+        // console.log(user["framestamps"]);
         endFrame = user["framestamps"]["in_bounds"][index + 1][0];
       }
       startFrame = user["framestamps"]["in_bounds"][index][0];
@@ -170,6 +354,7 @@ const GetDeathPoints = ({ user, api_data }) => {
       );
     }
   }
+  TotalListOfElements.pop();
   return TotalListOfElements.map((element) => {
     return element;
   });
@@ -185,7 +370,7 @@ const LoadoutBarItemStyle = styled.div`
   border: 0px solid red;
   border-radius: 5px;
   height: 3px;
-  height: 26px;
+  height: 28px;
   &:hover {
     background-color: #555;
     color: #000;
@@ -351,9 +536,9 @@ const LoadoutBarItem = ({ width, transformHorisontal, loadoutNumber }) => {
 const LoadoutBar = ({ user, api_data }) => {
   let LoadoutBarItems = [];
   for (let index = 0; index < user["framestamps"]["loadout"].length; index++) {
-    console.debug(user["framestamps"]["loadout"][index][0]);
+    // console.debug(user["framestamps"]["loadout"][index][0]);
     const startFrame = user["framestamps"]["loadout"][index][0];
-    console.debug(startFrame);
+    // console.debug(startFrame);
 
     var endFrame = user["stats"]["total_frames"] + user["startFrame"];
     if (index + 1 < user["framestamps"]["loadout"].length) {
@@ -376,6 +561,7 @@ const LoadoutBar = ({ user, api_data }) => {
     return element;
   });
 };
+
 const TimelineUserItem = ({ user, api_data }) => {
   const startFrame = user["startFrame"];
   const totalFrames = api_data["frames"];
@@ -396,32 +582,230 @@ const TimelineUserItem = ({ user, api_data }) => {
     </TimelineUserItemStyle>
   );
 };
-
-export const Timeline = ({ skimData, users }) => {
-  const [userList, setUserList] = useState([]);
+const OrangeColors = [
+  "#ff0022",
+  "#f7ff0a",
+  "#f56600",
+  "#a3005c",
+  "#ffbc42",
+  "#f9c8d1",
+  "#ffffff",
+  "#ed31b8",
+  "#fface4",
+];
+const BlueColors = [
+  "#0932ec",
+  "#36a0fc",
+  "#cf14f5",
+  "#14fff7",
+  "#1c8487",
+  "#12f840",
+  "#0ad2ff",
+  "#810efb",
+  "#3b21c0",
+];
+const StatChoiceStyle = styled.div`
+  padding: 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 10px;
+  width: 100%;
+  box-sizing: border-box;
+`;
+const StatChoiceButton = styled.div`
+  // padding: 10px 10px 0px;
+  padding: auto;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 1px solid white;
+  border-radius: 10px;
+  flex-grow: 1;
+  text-align: center;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  // line-height: 20px;
+  height: 25px;
+  box-sizing: border-box;
+`;
+const StatChoice = ({ currentSelected, onClick }) => {
+  return (
+    <StatChoiceStyle>
+      <StatChoiceButton
+        style={
+          currentSelected === "timeline" ? { backgroundColor: "#333" } : {}
+        }
+        onClick={() => {
+          onClick("timeline");
+        }}
+      >
+        Timeline
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={
+          currentSelected === "snapshot" ? { backgroundColor: "#333" } : {}
+        }
+        onClick={() => {
+          onClick("snapshot");
+        }}
+      >
+        Snapshot
+      </StatChoiceButton>
+    </StatChoiceStyle>
+  );
+};
+const HeatmapSelectionChoice = ({ currentSelected, onClick, onHover }) => {
+  return (
+    <StatChoiceStyle>
+      <StatChoiceButton
+        style={currentSelected === "blue" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("blue");
+        }}
+        onMouseEnter={() => {
+          onHover("blue");
+        }}
+        onMouseLeave={() => {
+          onHover(null);
+        }}
+      >
+        Blue
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={currentSelected === "all" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("all");
+        }}
+        onMouseEnter={() => {
+          onHover("all");
+        }}
+        onMouseLeave={() => {
+          onHover(null);
+        }}
+      >
+        All
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={currentSelected === "orange" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("orange");
+        }}
+        onMouseEnter={() => {
+          onHover("orange");
+        }}
+        onMouseLeave={() => {
+          onHover(null);
+        }}
+      >
+        Orange
+      </StatChoiceButton>
+    </StatChoiceStyle>
+  );
+};
+export const Timeline = ({ skimData }) => {
+  const [animationIndex, setAnimationIndex] = useState(0);
+  const [userList, setUserList] = useState(null);
+  const [animationFinished, setAnimationFinished] = useState(false);
+  const [updatedUsernamesPromises, setUpdatedUsernamesPromises] = useState([]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const [selectedOption, setSelectedOption] = useState("snapshot");
+  const [heatmapSelectedOption, setHeatmapSelectedOption] = useState("all");
+  const [heatmapHoveredOption, setHeatmapHoveredOption] = useState(null);
 
+  const imageRef = useRef();
+
+  //set userList
   useEffect(() => {
-    async function loadInReplayAnimation(replays) {
-      replays.sort((replay1, replay2) => {
-        return replay1.team - replay2.team;
-      });
+    console.log("SkimData 413", skimData);
+    async function startApiCalls() {
+      setUserList(
+        [...skimData["players"]].sort((users1, users2) => {
+          return users1.team - users2.team;
+        })
+      );
+    }
+    if (skimData) startApiCalls();
+  }, [skimData]);
 
-      var AnimationList = [];
-      for (const replay of replays) {
-        AnimationList.push(replay);
-        setUserList([...AnimationList]);
+  //get updates usernames
+  useEffect(() => {
+    console.log(userList);
+    async function startApiCalls() {
+      setUpdatedUsernamesPromises(
+        userList.map((user) => {
+          return fetch(
+            "https://ecranked.ddns.net/api/v1/user/" + user["userid"]
+          ).then(async (response) => {
+            const data = await response.json();
+            if (response.status === 404) {
+            } else {
+              if (!response.ok) {
+                // get error message from body or default to response statusText
+                const error = (data && data.message) || response.statusText;
+                return Promise.reject(error);
+              }
+              return data;
+            }
+          });
+        })
+      );
+    }
+    if (userList !== null) startApiCalls();
+  }, [userList]);
+  //start animation
+  useEffect(() => {
+    async function loadInReplayAnimation() {
+      for (var i = 0; i < userList.length; i++) {
+        setAnimationIndex((prev) => prev + 1);
         await delay(20);
       }
+      //console.log("Finished Animation", userList);
+      setAnimationFinished(true);
     }
-    loadInReplayAnimation(users);
-  }, [users]);
+    if (userList !== null) loadInReplayAnimation();
+  }, [skimData, userList]);
 
-  if (!users) return null;
+  //update all names
+  useEffect(() => {
+    console.log("Updating names");
+    async function updateAllNames() {
+      //Wait for all API returns
+      var updatedUsernames = await Promise.all(updatedUsernamesPromises);
+      //Update the usernames
+      setUserList((prev) => {
+        return prev
+          .map((element, index) => {
+            return {
+              ...element,
+              name: updatedUsernames[index].oculus_name,
+            };
+          })
+          .sort((users1, users2) => {
+            return users1.team - users2.team;
+          });
+      });
+    }
+    if (animationFinished) {
+      updateAllNames();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animationFinished]);
+
+  if (userList === null) return null;
 
   return (
     <Container>
       <ContainerTitle>
+        <span style={{ float: "left" }}>
+          {skimData["map"].charAt(0).toUpperCase() + skimData["map"].slice(1)}
+        </span>
         Game over time{" "}
         <p
           style={{
@@ -434,10 +818,299 @@ export const Timeline = ({ skimData, users }) => {
           red: deaths
         </p>
       </ContainerTitle>
-      <div style={{ display: "flex" }}>
-        <UserList users={userList} />
-        <TimelineUserList users={userList} api_data={skimData} />
+      <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <StatChoice
+              currentSelected={selectedOption}
+              onClick={setSelectedOption}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <UserColorList
+              users={userList}
+              animationIndex={animationIndex}
+              currentSelected={heatmapSelectedOption}
+              onClick={(value) => {
+                if (Array.isArray(heatmapSelectedOption)) {
+                  if (heatmapSelectedOption.includes(value)) {
+                    const index = heatmapSelectedOption.indexOf(value);
+                    if (index > -1) {
+                      heatmapSelectedOption.splice(index, 1); // 2nd parameter means remove one item only
+                    }
+                    setHeatmapSelectedOption(heatmapSelectedOption);
+                  } else {
+                    setHeatmapSelectedOption([...heatmapSelectedOption, value]);
+                  }
+                } else {
+                  setHeatmapSelectedOption([value]);
+                }
+              }}
+              onHover={setHeatmapHoveredOption}
+            />
+            <UserList users={userList} animationIndex={animationIndex} />
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: "10px", flexGrow: 1 }}>
+          {selectedOption === "timeline" ? (
+            <TimelineUserList
+              users={userList}
+              animationIndex={animationIndex}
+              api_data={skimData}
+            />
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                flexDirection: "column",
+                flexGrow: 1,
+              }}
+            >
+              <HeatmapSelectionChoice
+                currentSelected={heatmapSelectedOption}
+                onClick={setHeatmapSelectedOption}
+                onHover={setHeatmapHoveredOption}
+              />
+              {animationFinished ? (
+                <Heatmap
+                  imageRef={imageRef}
+                  skimData={skimData}
+                  heatmapSelectedOption={heatmapSelectedOption}
+                  heatmapHoveredOption={heatmapHoveredOption}
+                />
+              ) : null}
+            </div>
+          )}
+        </div>
       </div>
     </Container>
+  );
+};
+const Heatmap = ({
+  imageRef,
+  skimData,
+  heatmapSelectedOption,
+  heatmapHoveredOption,
+}) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const [heatmapHighres, setHeatmapHighres] = useState(false);
+  const [targetHeatmapHighres, setTargetHeatmapHighres] = useState(false);
+
+  const imageZoomRef = useRef();
+  const imageContainerZoomRef = useRef();
+
+  const [imageLoadedFirstTime, setImageLoadedFirstTime] = useState(false);
+  const [backgroundImageLoaded, setBackgroundImageLoaded] = useState(false);
+  const [backgroundImageLoadedFirstTime, setBackgroundImageLoadedFirstTime] =
+    useState(false);
+
+  const [backgroundMapHighres, setBackgroundMapHighres] = useState(false);
+  const [backgroundMapHighresLoaded, setBackgroundMapHighresLoaded] =
+    useState(false);
+
+  const [smallestZoom, setSmallestZoom] = useState(0);
+  useEffect(() => {
+    if (imageLoaded) {
+      setHeatmapHighres(targetHeatmapHighres);
+    }
+  }, [imageLoaded, targetHeatmapHighres, setHeatmapHighres]);
+
+  useEffect(() => {
+    if (backgroundImageLoaded) {
+      setBackgroundMapHighres(targetHeatmapHighres);
+    }
+  }, [backgroundImageLoaded, targetHeatmapHighres, setBackgroundMapHighres]);
+  useEffect(() => {
+    if (!imageLoadedFirstTime) return;
+    if (!backgroundImageLoadedFirstTime) return;
+    var targetWidth = imageRef.current.offsetWidth;
+    var targetHeight = imageRef.current.offsetHeight;
+
+    var parentWidth = imageContainerZoomRef.current.offsetWidth;
+    var parentHeight = imageContainerZoomRef.current.offsetHeight;
+
+    console.log("targetWidth", targetWidth);
+    console.log("targetHeight", targetHeight);
+    console.log("parentWidth", parentWidth);
+    console.log("parentHeight", parentHeight);
+    var finalWidth = targetWidth;
+    var finalHeight = targetHeight;
+    var decreasePercentage = 0;
+    var finalScale = 1;
+    if (finalWidth >= parentWidth) {
+      decreasePercentage = parentWidth / finalWidth;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+      finalScale *= decreasePercentage;
+    }
+    if (finalHeight >= parentHeight) {
+      decreasePercentage = parentHeight / finalHeight;
+      finalWidth *= decreasePercentage;
+      finalHeight *= decreasePercentage;
+      finalScale *= decreasePercentage;
+    }
+
+    imageZoomRef.current.setTransform(
+      (parentWidth - finalWidth) / 2,
+      (parentHeight - finalHeight) / 2,
+      finalScale,
+      0,
+      0
+    );
+    setSmallestZoom(finalScale);
+  }, [imageLoadedFirstTime, imageRef, backgroundImageLoadedFirstTime]);
+
+  return (
+    <div
+      style={{
+        flexGrow: 1,
+        border: "1px solid white",
+        borderRadius: "10px",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+        ref={imageContainerZoomRef}
+      >
+        <TransformWrapper
+          onZoom={(e) => {
+            // eslint-disable-next-line
+            if (targetHeatmapHighres != e.state.scale > 2) {
+              setImageLoaded(false);
+              setBackgroundImageLoaded(false);
+              setTargetHeatmapHighres(e.state.scale > 2);
+            }
+          }}
+          minScale={smallestZoom}
+          initialScale={1}
+          limitToBounds={false}
+          // centerOnInit={true}
+          initialPositionX={0}
+          initialPositionY={0}
+          ref={imageZoomRef}
+        >
+          <TransformComponent wrapperStyle={{ width: "100%", height: "100%" }}>
+            <div style={{ position: "relative" }}>
+              <img
+                alt={""}
+                onLoad={() => {
+                  setBackgroundImageLoadedFirstTime(true);
+                  setBackgroundImageLoaded(true);
+                  if (targetHeatmapHighres) {
+                    setBackgroundMapHighresLoaded(true);
+                  }
+                  console.log("Background Image Loaded");
+                }}
+                ref={imageRef}
+                style={
+                  backgroundMapHighres || backgroundMapHighresLoaded
+                    ? {
+                        transformOrigin: "top left",
+                        transform: "scale(20%)",
+                        // width: "scale(5)",
+                        // transform: "scale(5)",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }
+                    : {
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }
+                }
+                src={`https://ecranked.ddns.net/public/${
+                  skimData["map"]
+                }_minimap_${
+                  targetHeatmapHighres || backgroundMapHighresLoaded
+                    ? "highres"
+                    : "lowres"
+                }.png`}
+              ></img>
+
+              {(() => {
+                if (Array.isArray(heatmapSelectedOption)) {
+                  return heatmapSelectedOption.map((value) => {
+                    return (
+                      <img
+                        alt={""}
+                        onLoad={() => {
+                          setImageLoadedFirstTime(true);
+                          setImageLoaded(true);
+                        }}
+                        style={
+                          heatmapHighres
+                            ? {
+                                transformOrigin: "top left",
+                                transform: "scale(20%)",
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                // width: "scale(5)",
+                                // transform: "scale(5)",
+                              }
+                            : {
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                              }
+                        }
+                        src={`https://ecranked.ddns.net/public/${
+                          skimData["session_id"]
+                        }/heatmap_${value}_${
+                          targetHeatmapHighres ? "highres" : "lowres"
+                        }.png`}
+                      ></img>
+                    );
+                  });
+                } else {
+                  return (
+                    <img
+                      alt={""}
+                      onLoad={() => {
+                        setImageLoadedFirstTime(true);
+                        setImageLoaded(true);
+                      }}
+                      style={
+                        heatmapHighres
+                          ? {
+                              transformOrigin: "top left",
+                              transform: "scale(20%)",
+                              // width: "scale(5)",
+                              // transform: "scale(5)",
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                            }
+                          : {
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                            }
+                      }
+                      src={`https://ecranked.ddns.net/public/${
+                        skimData["session_id"]
+                      }/heatmap_${
+                        heatmapHoveredOption ?? heatmapSelectedOption
+                      }_${targetHeatmapHighres ? "highres" : "lowres"}.png`}
+                    />
+                  );
+                }
+              })()}
+            </div>
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
+    </div>
   );
 };

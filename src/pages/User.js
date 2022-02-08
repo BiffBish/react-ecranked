@@ -8,6 +8,7 @@ import { AboutMe } from "../components/AboutMe";
 import { Statistics } from "../components/Statistics";
 import { RecentGames } from "../components/RecentGames";
 import Achievements from "../components/Achievements";
+import UserPubLeaderboard from "../components/UserPubLeaderboard";
 const UserBody = styled.div`
   display: flex;
   align-items: stretch;
@@ -17,9 +18,115 @@ const UserBody = styled.div`
   transition-duration: 1s;
   opacity: 100%
   transition-property: height margin opacity;
+  padding:20px;
+  gap:20px;
 `;
-
+const StatChoiceStyle = styled.div`
+  padding: 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 10px;
+`;
+const StatChoiceButton = styled.div`
+  padding: 10px 10px 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 1px solid white;
+  border-radius: 10px;
+  gap: 0px 10px;
+  flex-grow: 1;
+  text-align: center;
+  height: 20px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  line-height: 20px;
+`;
+const StatChoice = ({ currentSelected, onClick }) => {
+  return (
+    <StatChoiceStyle>
+      <StatChoiceButton
+        style={currentSelected === "replays" ? { backgroundColor: "#333" } : {}}
+        onClick={() => {
+          onClick("replays");
+        }}
+      >
+        Replays
+      </StatChoiceButton>
+      <StatChoiceButton
+        style={
+          currentSelected === "public_games" ? { backgroundColor: "#333" } : {}
+        }
+        onClick={() => {
+          onClick("public_games");
+        }}
+      >
+        Monthly Pub Leaderboard
+      </StatChoiceButton>
+    </StatChoiceStyle>
+  );
+};
+const LeftSideStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 200px 1;
+`;
+const LeftSide = ({ username, replays }) => {
+  console.log("80 REPLAYS", replays);
+  const [selectedOption, setSelectedOption] = React.useState("public_games");
+  return (
+    <LeftSideStyle>
+      <StatChoice
+        currentSelected={selectedOption}
+        onClick={setSelectedOption}
+      ></StatChoice>
+      {selectedOption === "public_games" ? (
+        <UserPubLeaderboard oculus_name={username} />
+      ) : (
+        <RecentGames replays={replays} />
+      )}
+    </LeftSideStyle>
+  );
+};
 export default function User({ username, setBannerCallback, subDomain }) {
+  const [randomUsernameOverride, setRandomUsernameOverride] =
+    React.useState(null);
+  if (
+    randomUsernameOverride !== null &&
+    (username === "random_async" || username === "random")
+  ) {
+    username = randomUsernameOverride;
+  }
+  if (username === "random") {
+    setRandomUsernameOverride("random_async");
+    username = "random_async";
+    fetch("https://ecranked.ddns.net/api/v1/user/@all", {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        setRandomUsernameOverride(
+          data[Math.floor(Math.random() * data.length)]
+        );
+      })
+      .catch((error) => {
+        setUserNotFound(true);
+        console.error("There was an error!", error);
+      });
+  }
+
   let history = useHistory();
   const whenSearchSubmit = (text) => {
     console.log(text);
@@ -115,7 +222,14 @@ export default function User({ username, setBannerCallback, subDomain }) {
   };
 
   useEffect(() => {
+    if (username === "random") {
+      return;
+    }
+    if (username === "random_async") {
+      return;
+    }
     FetchUserData();
+
     // eslint-disable-next-line
   }, [username]);
 
@@ -149,7 +263,10 @@ export default function User({ username, setBannerCallback, subDomain }) {
           <meta property="og:title" content="MyApp" />
           <meta property="og:image" content="path/to/image.jpg" />
         </MetaTags>
-        <RecentGames replays={WhatApiRequest()["recent_games"]} />
+        <LeftSide
+          replays={WhatApiRequest()["recent_games"]}
+          username={username}
+        />
         <Statistics userData={WhatApiRequest()} />
         <AboutMe userData={WhatApiRequest()} />
       </UserBody>

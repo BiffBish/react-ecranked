@@ -57,13 +57,13 @@ function App() {
     confirmed_authorized: false,
     moderator: localStorage.getItem("MODERATOR"),
   });
-
   useEffect(() => {
     if (clientData.authorization_token && !clientData.confirmed_authorized) {
-      fetch("https://ecranked.ddns.net/api/v1/user/@me", {
+      fetch("https://ecranked.ddns.net/status", {
         headers: { Authorization: clientData.authorization_token },
       })
         .then(async (response) => {
+          response.json();
           if (response.status === 200) {
             clientData.confirmed_authorized = true;
           } else {
@@ -89,6 +89,24 @@ function App() {
           console.error("There was an error!", error);
         });
     }
+  }, [clientData]);
+
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/status", {
+      headers: { Authorization: clientData.authorization_token },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (data.maintenance) {
+          if (localStorage.getItem("MODERATOR") !== "1") {
+            alert("The server is down for maintenance. Please visit later");
+            window.location.reload(false);
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   }, [clientData]);
 
   const [apiData, setApiData] = React.useState([]);
@@ -238,8 +256,9 @@ function App() {
               <DiscordOAuthCallback
                 callbackCode={callbackCode}
                 onFinish={() => {
-                  props.history.push("/home");
-                  window.location.reload(false);
+                  var redirectLink = localStorage.getItem("REDIRECT_URI");
+
+                  window.location.href = redirectLink ? redirectLink : "/home";
                 }}
               />
             );
@@ -293,42 +312,45 @@ function App() {
 
 function DiscordOAuthCallback({ callbackCode, onFinish }) {
   const hasFetchedData = useRef(false);
-  useEffect(() => {
-    const getAuthToken = () => {
-      if (!hasFetchedData.current) {
-        hasFetchedData.current = true;
-        console.log("Callback");
-        console.log(callbackCode);
+  const getAuthToken = () => {
+    if (!hasFetchedData.current) {
+      hasFetchedData.current = true;
+      console.log("Callback");
+      console.log(callbackCode);
 
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            access_token: callbackCode,
-          }),
-        };
-        fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data["token"] === undefined) {
-              alert(
-                "Your discord has not been linked yet to ECRanked. Join the discord server from the navigation bar and contact a moderator to link your account."
-              );
-              return;
-            }
-            console.log(data);
-            onFinish();
-            localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
-            localStorage.setItem("OCULUS_ID", data["oculus_id"]);
-            // eslint-disable-next-line
-            if (data["moderator"] == 1) {
-              localStorage.setItem("MODERATOR", data["moderator"]);
-            }
-          });
-      }
-    };
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_token: callbackCode,
+        }),
+      };
+      fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data["token"] === undefined) {
+            alert(
+              "Your discord has not been linked yet to ECRanked. Join the discord server from the navigation bar and contact a moderator to link your account."
+            );
+            return;
+          }
+          console.log(data);
+
+          localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
+          localStorage.setItem("OCULUS_ID", data["oculus_id"]);
+          // eslint-disable-next-line
+          if (data["moderator"] == 1) {
+            localStorage.setItem("MODERATOR", data["moderator"]);
+          }
+          onFinish();
+        });
+    }
+  };
+  useEffect(() => {
     getAuthToken();
-  }, [callbackCode, onFinish]);
+    // eslint-disable-next-line
+  }, []);
+
   return null;
 }
 

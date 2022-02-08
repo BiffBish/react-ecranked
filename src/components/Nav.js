@@ -29,6 +29,22 @@ const TopBarLinksMobile = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const ButtonLink = styled.div`
+  text-align: center;
+  color: #fff;
+  background-color: #222;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 200;
+  float: left;
+  text-decoration: none;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  transition-duration: 0.1s;
+  cursor: pointer;
+`;
 
 const LinkStyle = styled(NavLink)`
   text-align: center;
@@ -163,12 +179,17 @@ const AuthorizeButton = ({ userData }) => {
   // console.log(userData.authorization_token);
   if (userData.authorization_token == null) {
     return (
-      <TopBarLink
-        link="https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify"
-        text="Login"
-        externalLink={true}
-        floatRight={true}
-      />
+      <ButtonLink
+        style={{ float: "right" }}
+        onClick={() => {
+          console.log("TEST");
+          localStorage.setItem("REDIRECT_URI", window.location);
+          window.location.href =
+            "https://discord.com/api/oauth2/authorize?client_id=852660826710999051&redirect_uri=https%3A%2F%2Fecranked.com%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify";
+        }}
+      >
+        Login
+      </ButtonLink>
     );
   } else {
     return <LogoutButton onClick={logout}>Logout</LogoutButton>;
