@@ -89,26 +89,24 @@ function App() {
           console.error("There was an error!", error);
         });
     }
-  }, []);
+  }, [clientData]);
 
   useEffect(() => {
-    if (clientData.authorization_token && !clientData.confirmed_authorized) {
-      fetch("https://ecranked.ddns.net/status", {
-        headers: { Authorization: clientData.authorization_token },
-      })
-        .then(async (response) => {
-          const data = await response.json();
-          if (data.maintenance) {
-            if (localStorage.getItem("MODERATOR") !== "1") {
-              alert("The server is down for maintenance. Please visit later");
-              window.location.reload(false);
-            }
+    fetch("https://ecranked.ddns.net/status", {
+      headers: { Authorization: clientData.authorization_token },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (data.maintenance) {
+          if (localStorage.getItem("MODERATOR") !== "1") {
+            alert("The server is down for maintenance. Please visit later");
+            window.location.reload(false);
           }
-        })
-        .catch((error) => {
-          console.error("There was an error!", error);
-        });
-    }
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   }, [clientData]);
 
   const [apiData, setApiData] = React.useState([]);
