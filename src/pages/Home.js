@@ -103,15 +103,15 @@ const chartOptions = {
   // },
 };
 const RecentGames = ({ replays }) => {
-  const [replayList, setReplayList] = useState([]);
+  const [replayAnimationIndex, setReplayAnimationIndex] = useState(0);
+
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   useEffect(() => {
+    setReplayAnimationIndex(0);
     async function loadInReplayAnimation(replays) {
-      var AnimationList = [];
-      for (const replay of replays) {
-        AnimationList.push(replay);
-        setReplayList([...AnimationList]);
+      for (let index = 0; index < replays.length; index++) {
+        setReplayAnimationIndex((prev) => prev + 1);
         await delay(20);
       }
     }
@@ -154,6 +154,52 @@ const RecentGames = ({ replays }) => {
   }, []);
   return (
     <PageContainer>
+      <RecentGamesStyle>
+        <ContainerTitle>Recent Games</ContainerTitle>
+        {replays.map((replay, index) => {
+          if (index > replayAnimationIndex) {
+            return null;
+          }
+          const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
+          const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
+          const UtcNow = moment.utc();
+          const dateDiff = UtcNow.diff(UtcGameTime, "d");
+          const hourDiff = UtcNow.diff(UtcGameTime, "h");
+          const minuteDiff = UtcNow.diff(UtcGameTime, "m");
+
+          var TimeString = "";
+
+          if (dateDiff > 0) {
+            TimeString = `${dateDiff} days ago`;
+          } else if (hourDiff > 0) {
+            TimeString = `${hourDiff}h ago`;
+          } else if (minuteDiff > 0) {
+            TimeString = `${minuteDiff}m ago`;
+          }
+
+          const OnGameClick = () => {
+            recentGameClick(replay["session_id"]);
+          };
+          return (
+            <RecentGameStyle
+              key={replay["session_id"]}
+              onClick={OnGameClick}
+              style={{ opacity: 1 }}
+            >
+              <p style={{ margin: 0 }}>
+                {"{" +
+                  TimeString +
+                  "}" +
+                  "[" +
+                  moment(LocalGameTime).format("MMM DD LTS") + //+
+                  "] - " +
+                  replay["map"].charAt(0).toUpperCase() +
+                  replay["map"].slice(1)}
+              </p>
+            </RecentGameStyle>
+          );
+        })}
+      </RecentGamesStyle>
       <AboutContainer>
         <AboutPage style={{ minWidth: "1000px" }}>
           <ContainerTitle>Graphs</ContainerTitle>
@@ -183,6 +229,8 @@ const RecentGames = ({ replays }) => {
                     { role: "style" },
                     "Surge Games",
                     { role: "style" },
+                    { label: "Total", type: "number" },
+                    { role: "annotation" },
                   ],
                   ...replayTimestamps,
                 ]}
@@ -190,6 +238,23 @@ const RecentGames = ({ replays }) => {
                   ...chartOptions,
                   title: "Quarterly game review!",
                   isStacked: true,
+                  series: {
+                    4: {
+                      annotations: {
+                        stem: {
+                          color: "transparent",
+                          length: 0,
+                        },
+                        textStyle: {
+                          color: "#fff",
+                          fontSize: 10,
+                        },
+                      },
+                      enableInteractivity: false,
+                      tooltip: "none",
+                      visibleInLegend: false,
+                    },
+                  },
                 }}
                 rootProps={{ "data-testid": "5" }}
               />
@@ -284,49 +349,6 @@ const RecentGames = ({ replays }) => {
           times around the earth.
         </AboutPage>
       </AboutContainer>
-      <RecentGamesStyle>
-        <ContainerTitle>Recent Games</ContainerTitle>
-        {replayList.map((replay) => {
-          const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
-          const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
-          const UtcNow = moment.utc();
-          const dateDiff = UtcNow.diff(UtcGameTime, "d");
-          const hourDiff = UtcNow.diff(UtcGameTime, "h");
-          const minuteDiff = UtcNow.diff(UtcGameTime, "m");
-
-          var TimeString = "";
-
-          if (dateDiff > 0) {
-            TimeString = `${dateDiff} days ago`;
-          } else if (hourDiff > 0) {
-            TimeString = `${hourDiff}h ago`;
-          } else if (minuteDiff > 0) {
-            TimeString = `${minuteDiff}m ago`;
-          }
-
-          const OnGameClick = () => {
-            recentGameClick(replay["session_id"]);
-          };
-          return (
-            <RecentGameStyle
-              key={replay["session_id"]}
-              onClick={OnGameClick}
-              style={{ opacity: 1 }}
-            >
-              <p style={{ margin: 0 }}>
-                {"{" +
-                  TimeString +
-                  "}" +
-                  "[" +
-                  moment(LocalGameTime).format("MMM DD LTS") + //+
-                  "] - " +
-                  replay["map"].charAt(0).toUpperCase() +
-                  replay["map"].slice(1)}
-              </p>
-            </RecentGameStyle>
-          );
-        })}
-      </RecentGamesStyle>
     </PageContainer>
   );
 };
@@ -440,6 +462,8 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
         "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #ED31B8 ; fill-opacity: 1",
         0,
         "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #12F840 ; fill-opacity: 1",
+        0,
+        0,
       ]);
     }
     newList.push([
@@ -455,6 +479,8 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
 
       0,
       "stroke-color: #fff; stroke-opacity: 1; stroke-width: 1; fill-color: #12F840; fill-opacity: 1",
+      0,
+      0,
     ]);
   }
   // newList.push([currentElement]);
@@ -488,6 +514,7 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
       }
       // console.log(DateTimeN);
       newList[DateTimeN][mapPos] += 1;
+      newList[DateTimeN][10] += 1;
     }
   });
   console.log(newList);
