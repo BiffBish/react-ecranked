@@ -57,13 +57,13 @@ function App() {
     confirmed_authorized: false,
     moderator: localStorage.getItem("MODERATOR"),
   });
-
   useEffect(() => {
     if (clientData.authorization_token && !clientData.confirmed_authorized) {
-      fetch("https://ecranked.ddns.net/api/v1/user/@me", {
+      fetch("https://ecranked.ddns.net/status", {
         headers: { Authorization: clientData.authorization_token },
       })
         .then(async (response) => {
+          response.json();
           if (response.status === 200) {
             clientData.confirmed_authorized = true;
           } else {
@@ -83,6 +83,26 @@ function App() {
               moderator: null,
             }));
             window.location.reload(false);
+          }
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (clientData.authorization_token && !clientData.confirmed_authorized) {
+      fetch("https://ecranked.ddns.net/status", {
+        headers: { Authorization: clientData.authorization_token },
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          if (data.maintenance) {
+            if (localStorage.getItem("MODERATOR") !== "1") {
+              alert("The server is down for maintenance. Please visit later");
+              window.location.reload(false);
+            }
           }
         })
         .catch((error) => {
