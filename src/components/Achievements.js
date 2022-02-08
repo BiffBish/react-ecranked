@@ -217,7 +217,7 @@ const AchievementSquare = ({ num, data, cb, hn = [] }) => {
   var ref = React.useRef();
   let backGroundColor = "#A44";
 
-  if (data["value"][num.toString()] > 0.5) {
+  if (data["values"][num.toString()] > 0.5) {
     if (hn.includes(num)) {
       backGroundColor = "#4A4";
     } else {
@@ -356,7 +356,9 @@ export default function Achievements({ userData }) {
   collectedAchievementData["total_games"] = 4;
 
   let totalPercentage = 0;
-
+  for (let index = 0; index < 63; index++) {
+    totalPercentage += ahData.values[index.toString()];
+  }
   let dailyItemUsage = {
     pulsar: false,
     nova: false,
@@ -476,25 +478,18 @@ export default function Achievements({ userData }) {
 
   return (
     <>
-      <div style={{ margin: ` 0px 0px ${AchievementGap}px` }}>
+      <div style={{ margin: ` 0px 0px ${AchievementGap}px`, color: "white" }}>
         {" "}
         <SegmentedProgressBar
-          percent={userData["daily_stats"]["total_games"] / 53}
-          displayValue={`${userData["daily_stats"]["total_games"]}`}
+          percent={totalPercentage / 62}
+          displayValue={`${((totalPercentage / 62) * 100).toFixed(2)}%`}
           segments={[
-            { percentage: 5 / 53, earned: ahData },
-            { percentage: 10 / 53, earned: ahData },
-            { percentage: 15 / 53, earned: ahData },
-            { percentage: 20 / 53, earned: ahData },
-            { percentage: 25 / 53, earned: ahData },
-            { percentage: 30 / 53, earned: ahData },
-            { percentage: 35 / 53, earned: ahData },
-            { percentage: 40 / 53, earned: ahData },
-            { percentage: 45 / 53, earned: ahData },
-            { percentage: 50 / 53, earned: ahData },
+            { percentage: 25 / 100, earned: ahData },
+            { percentage: 50 / 100, earned: ahData },
+            { percentage: 75 / 100, earned: ahData },
           ]}
           updateHoverCallback={setHn}
-          selectedNumbers={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
+          selectedNumbers={[]}
         />
       </div>
 
