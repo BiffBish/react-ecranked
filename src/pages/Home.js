@@ -222,14 +222,6 @@ const RecentGames = ({ replays }) => {
         })}
       </RecentGamesStyle>
       <AboutContainer>
-        <AboutPageButton
-          style={{ minWidth: "500px" }}
-          onClick={() => {
-            history.push("/leaderboard/loadout/random");
-          }}
-        >
-          <ContainerTitle>Click here to get a random Loadout!</ContainerTitle>
-        </AboutPageButton>
         <AboutPage style={{ minWidth: "1000px" }}>
           <ContainerTitle>Graphs</ContainerTitle>
           <div style={{ position: "relative", height: "200px" }}>
@@ -327,6 +319,17 @@ const RecentGames = ({ replays }) => {
             />
           </div> */}
         </AboutPage>
+      </AboutContainer>
+      <AboutContainer>
+        <AboutPageButton
+          style={{ minWidth: "80%" }}
+          onClick={() => {
+            history.push("/leaderboard/loadout/random");
+          }}
+        >
+          <ContainerTitle>Click here to get a random Loadout!</ContainerTitle>
+        </AboutPageButton>
+
         <AboutPage style={{ minWidth: "500px" }}>
           <ContainerTitle>About Us</ContainerTitle>
           We are a collection of passionate Echo Combat Players who thrive to
