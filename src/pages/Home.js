@@ -13,7 +13,6 @@ const RecentGameFadeIN = keyframes`
       opacity: 1;
     }
   `;
-
 const RecentGameStyle = styled.div`
   display: flex;
   align-items: center;
@@ -73,6 +72,28 @@ const AboutPage = styled.div`
   border: 2px solid white;
   border-radius: 10px;
   padding: 20px;
+`;
+const AboutPageButton = styled.div`
+  flex: 100px 2;
+  background-color: #222;
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  background-color: #222;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 200;
+  float: left;
+  text-decoration: none;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  transition-duration: 0.1s;
+  cursor: pointer;
 `;
 const ContributorLink = styled(NavLink)`
   text-decoration: none;
@@ -201,6 +222,14 @@ const RecentGames = ({ replays }) => {
         })}
       </RecentGamesStyle>
       <AboutContainer>
+        <AboutPageButton
+          style={{ minWidth: "500px" }}
+          onClick={() => {
+            history.push("/leaderboard/loadout/random");
+          }}
+        >
+          <ContainerTitle>Click here to get a random Loadout!</ContainerTitle>
+        </AboutPageButton>
         <AboutPage style={{ minWidth: "1000px" }}>
           <ContainerTitle>Graphs</ContainerTitle>
           <div style={{ position: "relative", height: "200px" }}>

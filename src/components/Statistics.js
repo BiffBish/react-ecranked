@@ -798,7 +798,7 @@ const UserStats = ({ userData, statChoice }) => {
       />
       <UserStat
         name={"Total Deaths"}
-        displayValue={userStats["total_deaths"]}
+        displayValue={userStats["deaths"]}
         value={1}
       />
       {/* <UserStat
