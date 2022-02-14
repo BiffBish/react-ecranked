@@ -210,7 +210,11 @@ export default function User({ username, setBannerCallback, subDomain }) {
             }
             console.log(data);
             setBannerCallback(data["oculus_name"], iconSrc);
-            setApiData(data);
+            if (username !== data["oculus_name"]) {
+              history.push("/user/" + data["oculus_name"] + "/stats");
+            } else {
+              setApiData(data);
+            }
           }
         }
       })
