@@ -346,6 +346,35 @@ const AchievementPopup = ({
   );
 };
 
+const StatChoiceStyle = styled.div`
+  padding: 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 10px;
+`;
+const StatChoiceButton = styled.div`
+  padding: 10px 10px 0px;
+  background-color: #222;
+  color: white;
+  float: left;
+  border: 1px solid white;
+  border-radius: 10px;
+  gap: 0px 10px;
+  flex-grow: 1;
+  text-align: center;
+  height: 20px;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  cursor: pointer;
+  line-height: 20px;
+`;
+
 export default function Achievements({ userData }) {
   let ahData = { values: userData["test"], locked: {} };
 
@@ -476,6 +505,9 @@ export default function Achievements({ userData }) {
     setPopupSelectedNumber(selectedNumber);
   };
 
+  const [selectedAchievementType, setSelectedAchievementType] =
+    useState("daily");
+
   return (
     <>
       <AchievementPopup
@@ -501,78 +533,125 @@ export default function Achievements({ userData }) {
         /> */}
         <SegmentedProgressBar AN={63} uHC={setHn} AD={ahData} />
       </div>
+      <StatChoiceStyle>
+        <StatChoiceButton
+          style={
+            popupSelectedNumber === "daily" ? { backgroundColor: "#333" } : {}
+          }
+          onClick={() => {
+            setPopupSelectedNumber("daily");
+          }}
+        >
+          Daily
+        </StatChoiceButton>
+        <StatChoiceButton
+          style={
+            popupSelectedNumber === "weekly" ? { backgroundColor: "#333" } : {}
+          }
+          onClick={() => {
+            setPopupSelectedNumber("weekly");
+          }}
+        >
+          Weekly
+        </StatChoiceButton>
+        <StatChoiceButton
+          style={
+            popupSelectedNumber === "global" ? { backgroundColor: "#333" } : {}
+          }
+          onClick={() => {
+            setPopupSelectedNumber("global");
+          }}
+        >
+          All time
+        </StatChoiceButton>
+      </StatChoiceStyle>
+      {selectedAchievementType === "daily" ? (
+        <AchievementsContainer>
+          <LeftAchievementCollumn>
+            <SegmentedProgressBar AN={21} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={0} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={1} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={2} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={3} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={4} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={5} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={6} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={7} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={8} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={9} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={10} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={11} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={12} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={13} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={14} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={15} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={16} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={17} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={18} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={19} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={20} uHC={setHn} AD={ahData} cb={cb} />
+          </LeftAchievementCollumn>
+        </AchievementsContainer>
+      ) : null}
+      {selectedAchievementType === "weekly" ? (
+        <AchievementsContainer>
+          <LeftAchievementCollumn>
+            <SegmentedProgressBar AN={43} uHC={setHn} AD={ahData} cb={cb} />
 
-      <AchievementsContainer>
-        <LeftAchievementCollumn>
-          <SegmentedProgressBar AN={0} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={1} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={2} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={3} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={4} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={5} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={6} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={7} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={8} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={9} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={10} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={11} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={12} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={13} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={14} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={15} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={16} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={17} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={18} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={19} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={20} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={21} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={22} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={23} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={24} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={25} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={26} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={27} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={28} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={29} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={30} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={31} uHC={setHn} AD={ahData} cb={cb} />
-        </LeftAchievementCollumn>
+            <SegmentedProgressBar AN={22} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={23} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={24} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={25} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={26} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={27} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={28} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={29} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={30} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={31} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={43} uHC={setHn} AD={ahData} cb={cb} />
 
-        <RightAchievementCollumn>
-          <SegmentedProgressBar AN={32} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={33} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={34} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={35} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={36} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={37} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={38} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={39} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={40} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={41} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={42} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={43} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={44} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={45} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={46} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={47} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={48} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={49} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={50} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={51} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={52} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={53} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={54} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={55} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={56} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={57} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={58} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={59} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={60} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={61} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={62} uHC={setHn} AD={ahData} cb={cb} />
-          <SegmentedProgressBar AN={63} uHC={setHn} AD={ahData} cb={cb} />
-        </RightAchievementCollumn>
-      </AchievementsContainer>
+            <SegmentedProgressBar AN={32} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={33} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={34} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={35} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={36} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={37} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={38} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={39} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={40} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={41} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={42} uHC={setHn} AD={ahData} cb={cb} />
+          </LeftAchievementCollumn>
+
+          {/* <RightAchievementCollumn></RightAchievementCollumn> */}
+        </AchievementsContainer>
+      ) : null}
+      {selectedAchievementType === "global" ? (
+        <AchievementsContainer>
+          <LeftAchievementCollumn>
+            <SegmentedProgressBar AN={62} uHC={setHn} AD={ahData} cb={cb} />
+
+            <SegmentedProgressBar AN={44} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={45} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={46} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={47} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={48} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={49} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={50} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={51} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={52} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={53} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={54} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={55} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={56} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={57} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={58} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={59} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={60} uHC={setHn} AD={ahData} cb={cb} />
+            <SegmentedProgressBar AN={61} uHC={setHn} AD={ahData} cb={cb} />
+          </LeftAchievementCollumn>
+        </AchievementsContainer>
+      ) : null}
     </>
   );
 }
