@@ -4,6 +4,8 @@ import styled, { keyframes } from "styled-components";
 import moment from "moment-timezone";
 import { NavLink } from "react-router-dom";
 import Chart from "react-google-charts";
+var funFacts = require("../components/FunFacts.json");
+
 const RecentGameFadeIN = keyframes`
     from {
       opacity: 0;
@@ -125,6 +127,9 @@ const chartOptions = {
 };
 const RecentGames = ({ replays }) => {
   const [replayAnimationIndex, setReplayAnimationIndex] = useState(0);
+  const [funFactIndex, setFunFactIndex] = useState(
+    Math.floor(Math.random() * funFacts.length)
+  );
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -369,8 +374,9 @@ const RecentGames = ({ replays }) => {
           <br />
         </AboutPage>
         <AboutPage>
-          <ContainerTitle>Fun Facts!</ContainerTitle>
-          The combat community as a whole has traveled over{" "}
+          <ContainerTitle>Fun Fact!</ContainerTitle>
+          {funFacts[funFactIndex]}
+          {/* The combat community as a whole has traveled over{" "}
           {Math.round(
             ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000) * 100
           ) / 100}{" "}
@@ -378,7 +384,7 @@ const RecentGames = ({ replays }) => {
           {Math.round(
             ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000 / 40075) * 10
           ) / 10}{" "}
-          times around the earth.
+          times around the earth. */}
         </AboutPage>
       </AboutContainer>
     </PageContainer>
