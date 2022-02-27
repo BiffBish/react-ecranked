@@ -331,6 +331,16 @@ const RecentGames = ({ replays }) => {
         <AboutPageButton
           style={{ minWidth: "80%" }}
           onClick={() => {
+            history.push("/teams");
+          }}
+        >
+          <ContainerTitle>
+            Click here to visit the new teams page!
+          </ContainerTitle>
+        </AboutPageButton>
+        <AboutPageButton
+          style={{ minWidth: "80%" }}
+          onClick={() => {
             history.push("/leaderboard/loadout/random");
           }}
         >

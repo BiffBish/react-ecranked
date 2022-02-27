@@ -217,6 +217,12 @@ export default function Team({ name: teamname, setBannerCallback, subDomain }) {
   console.log("teamNotFound", teamNotFound);
   return (
     <>
+      {" "}
+      <p style={{ color: "white", fontSize: "15px" }}>
+        {" "}
+        This page is in early beta. There may be issues and the layout might
+        change. you cannot kick users yet so be careful who you accept
+      </p>
       <FailedSearchBar shown={teamNotFound} onFormSubmit={whenSearchSubmit} />
       <TeamBody
         style={
@@ -236,7 +242,7 @@ export default function Team({ name: teamname, setBannerCallback, subDomain }) {
         /> */}
         {/* <Statistics teamData={WhatApiRequest()} /> */}
         <AboutTeam teamData={WhatApiRequest()} />
-        <UserTeamList userList={WhatApiRequest().users} />
+        <UserTeamList teamData={WhatApiRequest()} />
         {/* </div> */}
       </TeamBody>
     </>

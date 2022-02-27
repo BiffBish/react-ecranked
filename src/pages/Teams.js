@@ -99,11 +99,43 @@ const NotClickableButton = styled.div`
   height: 30px;
   width: 200px;
 `;
+const AboutPageButton = styled.div`
+  margin: 20px auto;
+  width: 80%;
+  // flex: 100px 2;
+  background-color: #222;
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  background-color: #222;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 200;
+  // float: left;
+  text-decoration: none;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  transition-duration: 0.1s;
+  cursor: pointer;
+`;
 const BodyContainer = styled.div`
   margin: auto;
   width: 80%;
   min-width: 400px;
   display: flex;
+`;
+const ContainerTitle = styled.h2`
+  font-size: 36px;
+  font-weight: 400;
+  margin: 10px 0px;
+  text-align: center;
+  flex: 0 0 100%;
+  color: #fff;
 `;
 export default function Teams() {
   let history = useHistory();
@@ -200,58 +232,76 @@ export default function Teams() {
       });
   }, []);
   return (
-    <BodyContainer>
-      <ApproveImagesContainer>
-        <h1>Team list!</h1>
-        <AllUsersContainer>
-          {teamList.slice(0, 200).map((teamname) => {
-            return (
-              <UserContainer>
-                {/* <Button
+    <>
+      <p style={{ color: "white", fontSize: "15px" }}>
+        {" "}
+        This page is in early beta. There may be issues and the layout might
+        change. Currently you cannot undo your request to join so be careful.
+      </p>
+
+      <AboutPageButton
+        style={{ minWidth: "80%" }}
+        onClick={() => {
+          history.push("/maketeam");
+        }}
+      >
+        <ContainerTitle>Click here to make your own team!</ContainerTitle>
+      </AboutPageButton>
+      <BodyContainer>
+        <ApproveImagesContainer>
+          <h1>Team list!</h1>
+          <AllUsersContainer>
+            {teamList.slice(0, 200).map((teamname) => {
+              return (
+                <UserContainer>
+                  {/* <Button
                   onClick={() => {
                     navigator.clipboard.writeText(user.oculus_name);
                   }}
                 >
                   Copy
                 </Button> */}
-                <UserLink to={"/team/" + teamname + "/overview"}>
-                  {" "}
-                  {teamname}
-                </UserLink>
-                <Button
-                  onClickCapture={() => {
-                    // RemoveUser(user.oculus_name);
-                    const requestOptions = {
-                      method: "POST",
-                      headers: {
-                        Authorization: localStorage.getItem(
-                          "AUTHORIZATION_TOKEN"
-                        ),
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({}),
-                    };
+                  <UserLink to={"/team/" + teamname + "/overview"}>
+                    {" "}
+                    {teamname}
+                  </UserLink>
+                  {canJoin ? (
+                    <Button
+                      onClickCapture={() => {
+                        // RemoveUser(user.oculus_name);
+                        const requestOptions = {
+                          method: "POST",
+                          headers: {
+                            Authorization: localStorage.getItem(
+                              "AUTHORIZATION_TOKEN"
+                            ),
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({}),
+                        };
 
-                    fetch(
-                      "https://ecranked.ddns.net/api/v1/team/" +
-                        teamname +
-                        "/request_join",
-                      requestOptions
-                    )
-                      .then((response) => response.json())
-                      .then((data) => {
-                        console.log(data);
-                        window.location.reload(false);
-                      });
-                  }}
-                >
-                  Request to join
-                </Button>
-              </UserContainer>
-            );
-          })}
-        </AllUsersContainer>
-      </ApproveImagesContainer>
-    </BodyContainer>
+                        fetch(
+                          "https://ecranked.ddns.net/api/v1/team/" +
+                            teamname +
+                            "/request_join",
+                          requestOptions
+                        )
+                          .then((response) => response.json())
+                          .then((data) => {
+                            console.log(data);
+                            window.location.reload(false);
+                          });
+                      }}
+                    >
+                      Request to join
+                    </Button>
+                  ) : null}
+                </UserContainer>
+              );
+            })}
+          </AllUsersContainer>
+        </ApproveImagesContainer>
+      </BodyContainer>
+    </>
   );
 }

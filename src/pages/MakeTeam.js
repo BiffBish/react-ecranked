@@ -261,8 +261,8 @@ export default function MakeTeam({ setBannerCallback, subDomain }) {
   const [descriptionText, setDescriptionText] = useState("");
 
   const onClickSubmit = () => {
-    if (titleText.length > 30) {
-      alert("The title cannot be longer then 30 characters");
+    if (titleText.length > 20) {
+      alert("The title cannot be longer then 20 characters");
       return;
     }
 
@@ -300,9 +300,16 @@ export default function MakeTeam({ setBannerCallback, subDomain }) {
   // console.log("teamNotFound", teamNotFound);
   return (
     <>
+      {" "}
+      <p style={{ color: "white", fontSize: "15px" }}>
+        {" "}
+        This page is in early beta. There may be issues and the layout might
+        change. Currently your not able to change your teams name or description
+        after creation.
+      </p>
       {/* <TeamBody style={{ height: "0px", margin: "0px", opacity: "0%" }}> */}
       <MakeTeamBoxStyle>
-        <p style={{ color: "white" }}>Team name:</p>
+        <p style={{ color: "white" }}>Team name: (5-20 characters)</p>
         <textarea
           style={{
             backgroundColor: "transparent",
@@ -342,16 +349,14 @@ export default function MakeTeam({ setBannerCallback, subDomain }) {
           onChange={(e) => setDescriptionText(e.target.value)}
           // onBlur={updateIsEdit}
         />
-        <EditButtonStyle onClick={onClickSubmit}>Save</EditButtonStyle>
+        <EditButtonStyle onClick={onClickSubmit}>Create Team!</EditButtonStyle>
       </MakeTeamBoxStyle>
-
       <MetaTags>
         <title>Create a team!</title>
         {/* <meta name="description" content={"Visit " + teamname + "'s Page!"} />
           <meta property="og:title" content="MyApp" />
           <meta property="og:image" content="path/to/image.jpg" /> */}
       </MetaTags>
-
       {/* </TeamBody> */}
     </>
   );
