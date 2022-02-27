@@ -218,7 +218,8 @@ export default function Nav({ clientData }) {
   }, []);
   let history = useHistory();
 
-  const [allUsernames, setAllUsernames] = useState(null);
+  const [allUsernames, setAllUsernames] = useState([]);
+  const [allTeams, setAllTeams] = useState([]);
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/user/@all")
       .then(async (response) => {
@@ -239,9 +240,34 @@ export default function Nav({ clientData }) {
         console.error("SetAllUsernames => There was an error!", error);
       });
   }, []);
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/api/v1/team/@all")
+      .then(async (response) => {
+        const data = await response.json();
+        console.log("allUsernames code:" + response.statusCode);
+        if (response.status === 404) {
+        } else {
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          console.log(data);
+          setAllTeams(data);
+        }
+      })
+      .catch((error) => {
+        console.error("SetAllUsernames => There was an error!", error);
+      });
+  }, []);
   const whenSearchSubmit = (text) => {
     console.log(text);
-    history.push("/user/" + text + "/stats");
+
+    if (allTeams.includes(text)) {
+      history.push("/team/" + text + "/overview");
+    } else {
+      history.push("/user/" + text + "/stats");
+    }
     //Change url without reloading: /user/{text}/stats
   };
   const [navigationPopupOut, setNavigationPopupOut] = useState(false);
@@ -268,7 +294,7 @@ export default function Nav({ clientData }) {
           )}
           <AuthorizeButton userData={clientData} />
           <AutoComplete
-            options={allUsernames}
+            options={allUsernames.concat(allTeams)}
             onFormSubmit={whenSearchSubmit}
             Box={autoCompleteBox}
             OptionDiv={autoCompleteOptionDiv}
@@ -285,7 +311,7 @@ export default function Nav({ clientData }) {
           <div style={{ display: "flex" }}>
             <TopBarLink link="/" text="Home" />
             <AutoComplete
-              options={allUsernames}
+              options={allUsernames.concat(allTeams)}
               onFormSubmit={whenSearchSubmit}
               Box={autoCompleteBox}
               OptionDiv={autoCompleteOptionDiv}
