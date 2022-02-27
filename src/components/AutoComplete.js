@@ -57,9 +57,22 @@ export default function AutoComplete({
     onFormSubmit(text);
   };
   const handleSubmit = (e) => {
+    // textInput.current.value = text;
+    // textInput.current.blur();
     e.preventDefault();
-    console.log(e.target[0].value);
-    onFormSubmit(e.target[0].value);
+    // console.log(e.target[0].value);
+    if (currentText && currentText.length > 0) {
+      for (let index = 0; index < options.length; index++) {
+        const option = options[index];
+        if (option.toLowerCase().startsWith(currentText.toLowerCase())) {
+          textInput.current.value = option;
+          textInput.current.blur();
+          onFormSubmit(option);
+
+          return;
+        }
+      }
+    }
   };
   // console.log("AutoComplete 276", options);
   return (

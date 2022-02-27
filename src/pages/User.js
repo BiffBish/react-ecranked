@@ -19,7 +19,7 @@ const UserBody = styled.div`
   opacity: 100%
   transition-property: height margin opacity;
   padding:20px;
-  gap:20px;
+  gap:40px;
 `;
 const StatChoiceStyle = styled.div`
   padding: 0px;
@@ -249,14 +249,14 @@ export default function User({ username, setBannerCallback, subDomain }) {
   console.log("userNotFound", userNotFound);
   return (
     <>
-      <Achievements userData={WhatApiRequest()} />
-
       <FailedSearchBar shown={userNotFound} onFormSubmit={whenSearchSubmit} />
       <UserBody
         style={
           userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
+        <Achievements userData={WhatApiRequest()} />
+        {/* <div> */}
         <MetaTags>
           <title>{username}'s Page!</title>
           <meta name="description" content={"Visit " + username + "'s Page!"} />
@@ -269,6 +269,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
         />
         <Statistics userData={WhatApiRequest()} />
         <AboutMe userData={WhatApiRequest()} />
+        {/* </div> */}
       </UserBody>
     </>
   );

@@ -1,155 +1,18 @@
 import { height } from "@mui/system";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { AchievementHeaderButton } from "./achievements/AchievementHeaderButton";
+import { AchievementLoadoutStats } from "./achievements/AchievementLoadoutStats";
+import { SegmentedProgressBar } from "./SegmentedProgressBar";
 var achievementFormatingData = require("./AchievementData.json");
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
 var collectedAchievementData = {};
-const AchievementSize = 40;
+export const AchievementSize = 40;
 const AchievementGap = 5;
 
-const ProgressDivStyle = styled.div`
-  position: relative;
-
-  border-radius: 0.5rem;
-  border: 1px solid white;
-  border-radius: 10px;
-  height: 7px;
-  overflow: hidden;
-`;
-
-const ProgressBarStyle = styled.div`
-  position: relative;
-
-  transform: translate(-50%, -0%);
-  background-color: #b35252;
-  height: 100%;
-  border-radius: 8px;
-  transition-duration: 3s;
-  transition-property: width;
-`;
-const ProgressBarTextStyle = styled.p`
-  position: relative;
-  margin: -${AchievementSize - 4}px 4px;
-  text-align: left;
-
-  z-index: 5;
-`;
-
-export var ProgressBar = ({ percent, displayValue }) => {
-  const [value, setValue] = React.useState(0);
-
-  React.useEffect(() => {
-    setValue(percent * 100);
-  }, [percent]);
-
-  return (
-    <ProgressDivStyle className="progress-div">
-      <ProgressBarStyle
-        style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
-        className="progress"
-      ></ProgressBarStyle>
-      <ProgressBarTextStyle>{displayValue}</ProgressBarTextStyle>
-    </ProgressDivStyle>
-  );
-};
-
-const SegmentOfProgressBar = styled.div`
-  width: 2px;
-  position: absolute;
-  z-index: 10;
-  height: 10px;
-  opacity: 100%;
-  background-color: white;
-  top: 0px;
-`;
-
-const SegmentedProgressBarContainerStyle = styled.div`
-  height: ${AchievementSize}px;
-
-  display: flex;
-  flex-direction: column;
-  line-height: 16px;
-  flex-grow: 1;
-  transition-property: background-color;
-  transition-duration: 0.2f;
-  flex-basis: 0;
-`;
-export var SegmentedProgressBar = ({
-  AN: AchievementNumber,
-  AD: AchievementData,
-  uHC: updateHoverCallback = () => {},
-  height = AchievementSize - 4,
-  cb = () => {},
-}) => {
-  const [value, setValue] = React.useState(0);
-  const barRef = useRef();
-  const fullRef = useRef();
-
-  const [backgroundHighlighted, setBackgroundHighlighted] =
-    React.useState(false);
-  React.useEffect(() => {
-    setValue(AchievementData.values[AchievementNumber.toString()] * 100);
-  }, [AchievementData, AchievementNumber]);
-  function getWidth() {
-    if (barRef.current === undefined) {
-      return 1;
-    }
-    return barRef.current.getBoundingClientRect().width;
-  }
-  return (
-    <SegmentedProgressBarContainerStyle
-      style={
-        backgroundHighlighted
-          ? {
-              backgroundColor: "#fff4",
-            }
-          : {
-              backgroundColor: "#fff0",
-            }
-      }
-      onMouseEnter={() => {
-        updateHoverCallback(AchievementNumber);
-        setBackgroundHighlighted(true);
-        cb(fullRef, AchievementNumber);
-      }}
-      onMouseLeave={() => {
-        updateHoverCallback([]);
-        setBackgroundHighlighted(false);
-      }}
-      ref={fullRef}
-    >
-      {/* {AchievementNumber} */}
-      {achievementFormatingData[AchievementNumber.toString()].Title}
-      <ProgressDivStyle
-        className="progress-div"
-        style={{ height: "7px" }}
-        ref={barRef}
-      >
-        <ProgressBarStyle
-          style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
-          className="progress"
-        ></ProgressBarStyle>
-        <ProgressBarTextStyle></ProgressBarTextStyle>
-        {/* {segments.map((segment) => {
-          return (
-            <SegmentOfProgressBar
-              style={{
-                backgroundColor: segment.earned ? `green` : `white`,
-                transform: `translate(${
-                  segment.percentage * 100 * 0.5 * getWidth()
-                }%, 0%)`,
-              }}
-            />
-          );
-        })} */}
-      </ProgressDivStyle>
-    </SegmentedProgressBarContainerStyle>
-  );
-};
-
-const AchievementsContainer = styled.div`
+export const AchievementsContainer = styled.div`
   font-size:15px;
   width: 100%;
   height: 1500px;
@@ -175,7 +38,7 @@ const CenterAchievementCollumn = styled.div`
   gap: ${AchievementGap}px ${AchievementGap}px; /* row-gap column gap */
   align-content: flex-start;
 `;
-const LeftAchievementCollumn = styled.div`
+export const LeftAchievementCollumn = styled.div`
   display: flex;
   flex: 200px 2;
   background-color: transparent;
@@ -300,6 +163,7 @@ const AchievementPopup = ({
   achievementData,
 }) => {
   let SelectedAchievement = achievementFormatingData[selectedNumber.toString()];
+  if (SelectedAchievement == null) return null;
   let SelectedAchievementDataName = SelectedAchievement.progressDataName;
   let NumberEarned = null;
   if (SelectedAchievementDataName != undefined) {
@@ -356,27 +220,76 @@ const StatChoiceStyle = styled.div`
   flex-wrap: wrap;
   gap: 0px 10px;
 `;
-const StatChoiceButton = styled.div`
-  padding: 10px 10px 0px;
+
+const AchievementHeaderStyle = styled.div`
+  height: 40px;
+  display: flex;
+  gap: 20px;
+`;
+const AchievementStyle = styled.div`
+  // padding: 0px 0px 0px;
   background-color: #222;
   color: white;
   float: left;
   border: 1px solid white;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  // flex-wrap: wrap;
   gap: 0px 10px;
-  flex-grow: 1;
-  text-align: center;
-  height: 20px;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-  cursor: pointer;
-  line-height: 20px;
+  width: 100%;
+  transition-property: padding;
+  transition-duration: 0.5;
+  overflow: hidden;
 `;
 
+// const ProgressDivStyle = styled.div`
+//   position: relative;
+
+//   border-radius: 0.5rem;
+//   border: 1px solid white;
+//   border-radius: 10px;
+//   height: 7px;
+//   overflow: hidden;
+// `;
+// const ProgressBarStyle = styled.div`
+//   position: relative;
+
+//   transform: translate(-50%, -0%);
+//   background-color: #b35252;
+//   height: 100%;
+//   border-radius: 8px;
+//   transition-duration: 3s;
+//   transition-property: width;
+// `;
+// const ProgressBarTextStyle = styled.p`
+//   position: relative;
+//   margin: -${AchievementSize - 4}px 4px;
+//   text-align: left;
+
+//   z-index: 5;
+// `;
+
+// export var ProgressBar = ({ percent, displayValue }) => {
+//   const [value, setValue] = React.useState(0);
+
+//   React.useEffect(() => {
+//     setValue(percent * 100);
+//   }, [percent]);
+
+//   return (
+//     <ProgressDivStyle className="progress-div">
+//       <ProgressBarStyle
+//         style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
+//         className="progress"
+//       ></ProgressBarStyle>
+//       <ProgressBarTextStyle>{displayValue}</ProgressBarTextStyle>
+//     </ProgressDivStyle>
+//   );
+// };
+
 export default function Achievements({ userData }) {
-  let ahData = { values: userData["test"], locked: {} };
+  let achievementData = { values: userData["test"], locked: {} };
 
   let dailyLoadoutData = userData["daily_stats"]["top_loadout"];
 
@@ -384,9 +297,9 @@ export default function Achievements({ userData }) {
 
   let totalPercentage = 0;
   for (let index = 0; index < 63; index++) {
-    totalPercentage += ahData.values[index.toString()];
+    totalPercentage += achievementData.values[index.toString()];
   }
-  ahData.values["63"] = totalPercentage / 64;
+  achievementData.values["63"] = totalPercentage / 64;
   let dailyItemUsage = {
     pulsar: false,
     nova: false,
@@ -410,76 +323,76 @@ export default function Achievements({ userData }) {
       let itemID = parseInt(element[0]);
       switch (itemID >>> 4) {
         case 0:
-          ahData["locked"]["16"] = true;
-          ahData["locked"]["17"] = true;
-          ahData["locked"]["18"] = true;
-          ahData["locked"]["19"] = true;
+          achievementData["locked"]["16"] = true;
+          achievementData["locked"]["17"] = true;
+          achievementData["locked"]["18"] = true;
+          achievementData["locked"]["19"] = true;
 
-          ahData["locked"]["11"] = true;
-          ahData["locked"]["12"] = true;
-          ahData["locked"]["13"] = true;
-          ahData["locked"]["14"] = true;
+          achievementData["locked"]["11"] = true;
+          achievementData["locked"]["12"] = true;
+          achievementData["locked"]["13"] = true;
+          achievementData["locked"]["14"] = true;
 
-          ahData["locked"]["21"] = true;
-          ahData["locked"]["22"] = true;
-          ahData["locked"]["23"] = true;
-          ahData["locked"]["24"] = true;
-          ahData["locked"]["11"] = true;
+          achievementData["locked"]["21"] = true;
+          achievementData["locked"]["22"] = true;
+          achievementData["locked"]["23"] = true;
+          achievementData["locked"]["24"] = true;
+          achievementData["locked"]["11"] = true;
           dailyItemUsage["pulsar"] = true;
 
           break;
         case 1:
-          ahData["locked"]["16"] = true;
-          ahData["locked"]["17"] = true;
-          ahData["locked"]["18"] = true;
-          ahData["locked"]["19"] = true;
+          achievementData["locked"]["16"] = true;
+          achievementData["locked"]["17"] = true;
+          achievementData["locked"]["18"] = true;
+          achievementData["locked"]["19"] = true;
 
-          ahData["locked"]["11"] = true;
-          ahData["locked"]["12"] = true;
-          ahData["locked"]["13"] = true;
-          ahData["locked"]["14"] = true;
+          achievementData["locked"]["11"] = true;
+          achievementData["locked"]["12"] = true;
+          achievementData["locked"]["13"] = true;
+          achievementData["locked"]["14"] = true;
 
-          ahData["locked"]["21"] = true;
-          ahData["locked"]["22"] = true;
-          ahData["locked"]["23"] = true;
-          ahData["locked"]["24"] = true;
+          achievementData["locked"]["21"] = true;
+          achievementData["locked"]["22"] = true;
+          achievementData["locked"]["23"] = true;
+          achievementData["locked"]["24"] = true;
           dailyItemUsage["nova"] = true;
 
           break;
         case 2:
-          ahData["locked"]["6"] = true;
-          ahData["locked"]["7"] = true;
-          ahData["locked"]["8"] = true;
-          ahData["locked"]["9"] = true;
+          achievementData["locked"]["6"] = true;
+          achievementData["locked"]["7"] = true;
+          achievementData["locked"]["8"] = true;
+          achievementData["locked"]["9"] = true;
 
-          ahData["locked"]["11"] = true;
-          ahData["locked"]["12"] = true;
-          ahData["locked"]["13"] = true;
-          ahData["locked"]["14"] = true;
+          achievementData["locked"]["11"] = true;
+          achievementData["locked"]["12"] = true;
+          achievementData["locked"]["13"] = true;
+          achievementData["locked"]["14"] = true;
 
-          ahData["locked"]["21"] = true;
-          ahData["locked"]["22"] = true;
-          ahData["locked"]["23"] = true;
-          ahData["locked"]["24"] = true;
+          achievementData["locked"]["21"] = true;
+          achievementData["locked"]["22"] = true;
+          achievementData["locked"]["23"] = true;
+          achievementData["locked"]["24"] = true;
 
           dailyItemUsage["comet"] = true;
 
           break;
         case 3:
-          ahData["locked"]["6"] = true;
-          ahData["locked"]["7"] = true;
-          ahData["locked"]["8"] = true;
-          ahData["locked"]["9"] = true;
+          achievementData["locked"]["6"] = true;
+          achievementData["locked"]["7"] = true;
+          achievementData["locked"]["8"] = true;
+          achievementData["locked"]["9"] = true;
 
-          ahData["locked"]["16"] = true;
-          ahData["locked"]["17"] = true;
-          ahData["locked"]["18"] = true;
-          ahData["locked"]["19"] = true;
+          achievementData["locked"]["16"] = true;
+          achievementData["locked"]["17"] = true;
+          achievementData["locked"]["18"] = true;
+          achievementData["locked"]["19"] = true;
 
-          ahData["locked"]["11"] = true;
-          ahData["locked"]["12"] = true;
-          ahData["locked"]["13"] = true;
-          ahData["locked"]["14"] = true;
+          achievementData["locked"]["11"] = true;
+          achievementData["locked"]["12"] = true;
+          achievementData["locked"]["13"] = true;
+          achievementData["locked"]["14"] = true;
           dailyItemUsage["meteor"] = true;
           break;
         default:
@@ -495,6 +408,8 @@ export default function Achievements({ userData }) {
   const [popupVisibility, setPopupVisibility] = useState(true);
   const [popupSelectedNumber, setPopupSelectedNumber] = useState(0);
 
+  const [fullView, setFullView] = useState(false);
+
   var cb = (ref, selectedNumber) => {
     console.log(ref);
     setPopupPosition({
@@ -508,17 +423,59 @@ export default function Achievements({ userData }) {
   const [selectedAchievementType, setSelectedAchievementType] =
     useState("daily");
 
+  var dailyTotal = 0;
+  for (let index = 5; index < 22; index++) {
+    dailyTotal += achievementData.values[index];
+  }
+  dailyTotal /= 17;
+
+  var weeklyTotal = 0;
+  for (let index = 22; index < 44; index++) {
+    weeklyTotal += achievementData.values[index];
+  }
+  weeklyTotal /= 14;
+
+  var alltimeTotal = 0;
+  for (let index = 44; index < 63; index++) {
+    alltimeTotal += achievementData.values[index];
+  }
+  alltimeTotal /= 19;
+
+  const SegmentedAchievementProgressBar = ({ AN: AchievementNumber }) => {
+    return (
+      <SegmentedProgressBar
+        Title={achievementFormatingData[AchievementNumber.toString()].Title}
+        Percentage={achievementData.values[AchievementNumber.toString()] * 100}
+      />
+    );
+  };
+
   return (
-    <>
+    <AchievementStyle
+      style={{
+        height: fullView ? 2000 : 50,
+        ...(fullView
+          ? { padding: "10px 20px 20px", gap: "20px" }
+          : { padding: "0px", gap: "0px" }),
+        transitionProperty: "padding,height,gap",
+        transitionDuration: "0.5s",
+      }}
+    >
+      <div>{/* <div className="container-title">Challenges</div> */}</div>
       <AchievementPopup
         topPosition={popupPosition.top}
         leftPosition={popupPosition.left}
         visible={popupVisibility}
         visibilityCallback={setPopupVisibility}
         selectedNumber={popupSelectedNumber}
-        achievementData={ahData}
+        achievementData={achievementData}
       />
-      <div style={{ margin: ` 0px 0px ${AchievementGap}px`, color: "white" }}>
+      <div
+        style={{ color: "white", cursor: "pointer" }}
+        onClick={() => {
+          setFullView(!fullView);
+        }}
+      >
         {" "}
         {/* <SegmentedProgressBar
           percent={totalPercentage / 62}
@@ -531,127 +488,98 @@ export default function Achievements({ userData }) {
           updateHoverCallback={setHn}
           selectedNumbers={[]}
         /> */}
-        <SegmentedProgressBar AN={63} uHC={setHn} AD={ahData} />
+        <SegmentedProgressBar
+          Percentage={achievementData.values["63"]}
+          Title={""}
+          Height={"50px"}
+          EnableBorder={fullView}
+        />
       </div>
-      <StatChoiceStyle>
-        <StatChoiceButton
-          style={
-            popupSelectedNumber === "daily" ? { backgroundColor: "#333" } : {}
-          }
-          onClick={() => {
-            setPopupSelectedNumber("daily");
-          }}
-        >
-          Daily
-        </StatChoiceButton>
-        <StatChoiceButton
-          style={
-            popupSelectedNumber === "weekly" ? { backgroundColor: "#333" } : {}
-          }
-          onClick={() => {
-            setPopupSelectedNumber("weekly");
-          }}
-        >
-          Weekly
-        </StatChoiceButton>
-        <StatChoiceButton
-          style={
-            popupSelectedNumber === "global" ? { backgroundColor: "#333" } : {}
-          }
-          onClick={() => {
-            setPopupSelectedNumber("global");
-          }}
-        >
-          All time
-        </StatChoiceButton>
-      </StatChoiceStyle>
-      {selectedAchievementType === "daily" ? (
-        <AchievementsContainer>
-          <LeftAchievementCollumn>
-            <SegmentedProgressBar AN={21} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={0} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={1} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={2} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={3} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={4} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={5} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={6} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={7} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={8} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={9} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={10} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={11} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={12} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={13} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={14} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={15} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={16} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={17} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={18} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={19} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={20} uHC={setHn} AD={ahData} cb={cb} />
-          </LeftAchievementCollumn>
-        </AchievementsContainer>
-      ) : null}
-      {selectedAchievementType === "weekly" ? (
-        <AchievementsContainer>
-          <LeftAchievementCollumn>
-            <SegmentedProgressBar AN={43} uHC={setHn} AD={ahData} cb={cb} />
+      <AchievementHeaderStyle>
+        <AchievementHeaderButton
+          selectedAchievementType={selectedAchievementType}
+          setSelectedAchievementType={setSelectedAchievementType}
+          name={"daily"}
+          displayName={"Daily"}
+          progress={dailyTotal}
+        />
+        <AchievementHeaderButton
+          selectedAchievementType={selectedAchievementType}
+          setSelectedAchievementType={setSelectedAchievementType}
+          name={"weekly"}
+          displayName={"Weekly"}
+          progress={weeklyTotal}
+        />
+        <AchievementHeaderButton
+          selectedAchievementType={selectedAchievementType}
+          setSelectedAchievementType={setSelectedAchievementType}
+          name={"global"}
+          displayName={"All time"}
+          progress={alltimeTotal}
+        />
+      </AchievementHeaderStyle>
+      <AchievementLoadoutStats
+        selectedAchievementType={selectedAchievementType}
+        ahData={achievementData}
+      />
+      {selectedAchievementType === "daily"
+        ? // <AchievementsContainer>
+          //   <LeftAchievementCollumn>
+          //     <SegmentedAchievementProgressBar AN={5} />
+          //     <SegmentedAchievementProgressBar AN={6} />
+          //     <SegmentedAchievementProgressBar AN={7} />
+          //     <SegmentedAchievementProgressBar AN={8} />
+          //     <SegmentedAchievementProgressBar AN={9} />
+          //     <SegmentedAchievementProgressBar AN={10} />
+          //     <SegmentedAchievementProgressBar AN={11} />
+          //     <SegmentedAchievementProgressBar AN={12} />
+          //     <SegmentedAchievementProgressBar AN={13} />
+          //     <SegmentedAchievementProgressBar AN={14} />
+          //     <SegmentedAchievementProgressBar AN={15} />
+          //     <SegmentedAchievementProgressBar AN={16} />
+          //   </LeftAchievementCollumn>
+          // </AchievementsContainer>
+          null
+        : null}
+      {selectedAchievementType === "weekly"
+        ? // <AchievementsContainer>
+          //   <LeftAchievementCollumn>
+          //     <SegmentedAchievementProgressBar AN={22} />
+          //     <SegmentedAchievementProgressBar AN={23} />
+          //     <SegmentedAchievementProgressBar AN={24} />
+          //     <SegmentedAchievementProgressBar AN={25} />
+          //     <SegmentedAchievementProgressBar AN={26} />
+          //     <SegmentedAchievementProgressBar AN={27} />
+          //     <SegmentedAchievementProgressBar AN={28} />
+          //     <SegmentedAchievementProgressBar AN={29} />
+          //     <SegmentedAchievementProgressBar AN={30} />
+          //     <SegmentedAchievementProgressBar AN={31} />
+          //     <SegmentedAchievementProgressBar AN={43} />
+          //   </LeftAchievementCollumn>
 
-            <SegmentedProgressBar AN={22} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={23} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={24} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={25} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={26} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={27} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={28} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={29} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={30} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={31} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={43} uHC={setHn} AD={ahData} cb={cb} />
-
-            <SegmentedProgressBar AN={32} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={33} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={34} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={35} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={36} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={37} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={38} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={39} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={40} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={41} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={42} uHC={setHn} AD={ahData} cb={cb} />
-          </LeftAchievementCollumn>
-
-          {/* <RightAchievementCollumn></RightAchievementCollumn> */}
-        </AchievementsContainer>
-      ) : null}
-      {selectedAchievementType === "global" ? (
-        <AchievementsContainer>
-          <LeftAchievementCollumn>
-            <SegmentedProgressBar AN={62} uHC={setHn} AD={ahData} cb={cb} />
-
-            <SegmentedProgressBar AN={44} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={45} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={46} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={47} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={48} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={49} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={50} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={51} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={52} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={53} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={54} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={55} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={56} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={57} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={58} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={59} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={60} uHC={setHn} AD={ahData} cb={cb} />
-            <SegmentedProgressBar AN={61} uHC={setHn} AD={ahData} cb={cb} />
-          </LeftAchievementCollumn>
-        </AchievementsContainer>
-      ) : null}
-    </>
+          //   {/* <RightAchievementCollumn></RightAchievementCollumn> */}
+          // </AchievementsContainer>
+          null
+        : null}
+      {selectedAchievementType === "global"
+        ? // <AchievementsContainer>
+          //   <LeftAchievementCollumn>
+          //     <SegmentedAchievementProgressBar AN={44} />
+          //     <SegmentedAchievementProgressBar AN={45} />
+          //     <SegmentedAchievementProgressBar AN={46} />
+          //     <SegmentedAchievementProgressBar AN={47} />
+          //     <SegmentedAchievementProgressBar AN={48} />
+          //     <SegmentedAchievementProgressBar AN={49} />
+          //     <SegmentedAchievementProgressBar AN={50} />
+          //     <SegmentedAchievementProgressBar AN={51} />
+          //     <SegmentedAchievementProgressBar AN={52} />
+          //     <SegmentedAchievementProgressBar AN={53} />
+          //     <SegmentedAchievementProgressBar AN={54} />
+          //     <SegmentedAchievementProgressBar AN={55} />
+          //   </LeftAchievementCollumn>
+          // </AchievementsContainer>
+          null
+        : null}
+    </AchievementStyle>
   );
 }

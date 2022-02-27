@@ -17,6 +17,15 @@
   background-color: #555;
   color: #000;
 }
+.container-title {
+  font-size: 36px;
+  font-weight: 400;
+  margin: 10px 0px;
+  text-align: center;
+  flex: 0 0 100%;
+  color: #fff;
+  flex-grow: 0;
+}
 
 @keyframes FadeIn {
   0% {
