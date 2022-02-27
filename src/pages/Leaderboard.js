@@ -33,7 +33,7 @@ const LeaderboardListStyle = styled.div`
   padding: 10px;
   // margin: 10px 0px;
   text-decoration: none;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   line-height: 0;
   font-size: 15px;
@@ -52,7 +52,7 @@ const LeaderboardListsStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 200px 2;
 `;
@@ -75,7 +75,7 @@ const ContainerTitle = styled.div`
 //   background-color: #222;
 //   color: white;
 //   float: left;
-//   border: 1px solid white;
+//   border: 1px solid rgb(70, 70, 70);
 //   border-radius: 10px;
 // `;
 
@@ -86,7 +86,7 @@ const LoadoutBoxStyle = styled(NavLink)`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 60px 1;
   font-size: 11px;

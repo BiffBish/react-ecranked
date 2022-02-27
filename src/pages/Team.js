@@ -38,7 +38,7 @@ const StatChoiceButton = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   gap: 0px 10px;
   flex-grow: 1;

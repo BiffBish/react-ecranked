@@ -24,7 +24,7 @@ const RecentGameStyle = styled.div`
   padding: 10px;
   margin: 10px 0px;
   text-decoration: none;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   line-height: 0;
   font-size: 15px;
@@ -42,7 +42,7 @@ const RecentGamesStyle = styled.div`
   margin: auto;
   background-color: #222;
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   width: 50%;
   flex: 300px 2;
@@ -73,7 +73,7 @@ const AboutPage = styled.div`
   flex: 100px 2;
   background-color: #222;
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   padding: 20px;
 `;
@@ -81,7 +81,7 @@ const AboutPageButton = styled.div`
   flex: 100px 2;
   background-color: #222;
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   padding: 20px;
   text-align: center;

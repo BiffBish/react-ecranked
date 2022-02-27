@@ -38,7 +38,7 @@ const StatChoiceButton = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   gap: 0px 10px;
   flex-grow: 1;
@@ -104,7 +104,7 @@ const EditButtonStyle = styled.div`
   color: #aaa;
   font-size: 15px;
   cursor: pointer;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   background-color: #222;
 
@@ -261,13 +261,13 @@ export default function MakeTeam({ setBannerCallback, subDomain }) {
   const [descriptionText, setDescriptionText] = useState("");
 
   const onClickSubmit = () => {
-    if (titleText.length > 20) {
-      alert("The title cannot be longer then 20 characters");
+    if (titleText.length > 25) {
+      alert("The title cannot be longer then 25 characters");
       return;
     }
 
-    if (titleText.length < 5) {
-      alert("The title cannot be shorter then 5 characters");
+    if (titleText.length < 3) {
+      alert("The title cannot be shorter then 3 characters");
       return;
     }
 

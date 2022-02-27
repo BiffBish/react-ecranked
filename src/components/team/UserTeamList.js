@@ -31,7 +31,7 @@ const RecentGameStyle = styled.div`
   padding: 10px;
   margin: 10px 0px;
   text-decoration: none;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   line-height: 0;
   font-size: 15px;
@@ -51,7 +51,7 @@ const RecentGameStyleGrow = styled.div`
   padding: 10px;
   margin: 10px 0px;
   text-decoration: none;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   line-height: 0;
   font-size: 15px;
@@ -69,7 +69,7 @@ const RecentGamesStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 200px 2;
   display: flex;

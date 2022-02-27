@@ -135,7 +135,7 @@ const TopBarLink = ({ link, text, externalLink, floatRight }) => {
 };
 
 const autoCompleteBox = styled.form`
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   display: inline-block;
   float: right;

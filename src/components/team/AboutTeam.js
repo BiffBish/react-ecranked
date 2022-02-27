@@ -17,7 +17,7 @@ const AboutMeStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 200px 2;
   display: flex;
@@ -34,7 +34,7 @@ const EditButtonsStyle = styled.div`
   padding: 10px;
   display: flex;
   justify-content: space-between;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   background-color: #222;
   flex-wrap: wrap;
@@ -45,7 +45,7 @@ const EditButtonStyle = styled.div`
   color: #aaa;
   font-size: 15px;
   cursor: pointer;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   background-color: #222;
 
@@ -198,7 +198,7 @@ const AvatarStyle = styled.img`
   width: 100%;
   height: auto;
   min-width: 0;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   overflow: hidden;
 `;
@@ -208,7 +208,7 @@ const SubmitButton = styled.button`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   cursor: pointer;
   font-size: 15px;

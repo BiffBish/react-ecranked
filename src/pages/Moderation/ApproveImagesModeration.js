@@ -6,7 +6,7 @@ const EditButtonsStyle = styled.div`
   padding: 10px;
   display: flex;
   justify-content: space-between;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   background-color: #222;
   flex-wrap: wrap;
@@ -17,7 +17,7 @@ const EditButtonStyle = styled.div`
   color: #aaa;
   font-size: 15px;
   cursor: pointer;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   background-color: #222;
 
@@ -78,7 +78,7 @@ const AvatarStyle = styled.img`
   width: 100%;
   height: auto;
   min-width: 0;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   overflow: hidden;
 `;
@@ -101,7 +101,7 @@ const AvatarContainer = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 100px 2;
   display: flex;
@@ -119,13 +119,13 @@ const AllAvatarContainer = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
 `;
 const ApproveImagesContainer = styled.div`
   color: white;
   float: center;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
 `;
 const UserLink = styled(NavLink)`
