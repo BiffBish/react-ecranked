@@ -126,6 +126,74 @@ export const UserTeamList = ({ teamData }) => {
   function recentGameClick(session_id) {
     history.push("/user/" + session_id + "/stats");
   }
+  if (requestedList !== undefined) {
+    return (
+      <>
+        <RecentGamesStyle>
+          <ContainerTitle>Members</ContainerTitle>
+          {userList.slice(0, usersAnimationID).map((replay) => {
+            const OnGameClick = () => {
+              recentGameClick(replay.oculus_name);
+            };
+            return (
+              <RecentGameStyle
+                key={replay["oculus_id"]}
+                onClick={OnGameClick}
+                style={{ opacity: 1 }}
+              >
+                <p style={{ margin: 0 }}>{replay.oculus_name}</p>
+              </RecentGameStyle>
+            );
+          })}
+          <ContainerTitle>Users requesting to join</ContainerTitle>
+          {requestedList.slice(0, requestedAnimationID).map((user) => {
+            const OnGameClick = () => {
+              recentGameClick(replay.oculus_name);
+            };
+            return (
+              <UserContainer>
+                <RecentGameStyleGrow
+                  to={"/user/" + user.oculus_name + "/stats"}
+                >
+                  {" "}
+                  {user.oculus_name}
+                </RecentGameStyleGrow>
+                <RecentGameStyle
+                  onClickCapture={() => {
+                    // RemoveUser(user.oculus_name);
+                    const requestOptions = {
+                      method: "POST",
+                      headers: {
+                        Authorization: localStorage.getItem(
+                          "AUTHORIZATION_TOKEN"
+                        ),
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ user_id: user.oculus_id }),
+                    };
+
+                    fetch(
+                      "https://ecranked.ddns.net/api/v1/team/" +
+                        teamData.name +
+                        "/accept_join",
+                      requestOptions
+                    )
+                      .then((response) => response.json())
+                      .then((data) => {
+                        console.log(data);
+                        window.location.reload(false);
+                      });
+                  }}
+                >
+                  Accept Request
+                </RecentGameStyle>
+              </UserContainer>
+            );
+          })}
+        </RecentGamesStyle>
+      </>
+    );
+  }
   return (
     <>
       <RecentGamesStyle>
@@ -142,49 +210,6 @@ export const UserTeamList = ({ teamData }) => {
             >
               <p style={{ margin: 0 }}>{replay.oculus_name}</p>
             </RecentGameStyle>
-          );
-        })}
-        <ContainerTitle>Requesting to join</ContainerTitle>
-        {requestedList.slice(0, requestedAnimationID).map((user) => {
-          const OnGameClick = () => {
-            recentGameClick(replay.oculus_name);
-          };
-          return (
-            <UserContainer>
-              <RecentGameStyleGrow to={"/user/" + user.oculus_name + "/stats"}>
-                {" "}
-                {user.oculus_name}
-              </RecentGameStyleGrow>
-              <RecentGameStyle
-                onClickCapture={() => {
-                  // RemoveUser(user.oculus_name);
-                  const requestOptions = {
-                    method: "POST",
-                    headers: {
-                      Authorization: localStorage.getItem(
-                        "AUTHORIZATION_TOKEN"
-                      ),
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ user_id: user.oculus_id }),
-                  };
-
-                  fetch(
-                    "https://ecranked.ddns.net/api/v1/team/" +
-                      teamData.name +
-                      "/accept_join",
-                    requestOptions
-                  )
-                    .then((response) => response.json())
-                    .then((data) => {
-                      console.log(data);
-                      window.location.reload(false);
-                    });
-                }}
-              >
-                Accept Request
-              </RecentGameStyle>
-            </UserContainer>
           );
         })}
       </RecentGamesStyle>
