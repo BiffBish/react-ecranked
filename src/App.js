@@ -22,6 +22,8 @@ import Leaderboard from "./pages/Leaderboard";
 import UncontactedUsersModeration from "./pages/Moderation/UncontactedModeration";
 import MakeTeam from "./pages/MakeTeam";
 import Teams from "./pages/Teams";
+
+import Component from "./pages/Testing";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -231,7 +233,7 @@ function App() {
             console.log("User");
             return (
               <Team
-                name={props.match.params.name}
+                teamname={props.match.params.name}
                 setBannerCallback={setBannerTextCallback}
                 subDomain={props.match.params.subDomain}
               />
@@ -336,6 +338,12 @@ function App() {
             setBannerHeight(100);
             setBannerText("Moderation");
             return <UncontactedUsersModeration />;
+          }}
+        />
+        <Route
+          path={"/Testing"}
+          render={() => {
+            return <Component />;
           }}
         />
         <Route

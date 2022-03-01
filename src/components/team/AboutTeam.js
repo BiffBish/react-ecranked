@@ -126,13 +126,14 @@ const AboutStringBox = ({ userData, oculus_id }) => {
           onBlur={updateIsEdit}
         />
         <EditButtonsStyle>
-          <EditButtonStyle
+          <div
+            className="padded rounded button"
             onClick={() => {
               setEditing(false);
             }}
           >
             Discard
-          </EditButtonStyle>
+          </div>
 
           <EditButtonStyle onClick={onClickSubmit}>Save</EditButtonStyle>
         </EditButtonsStyle>
@@ -434,6 +435,7 @@ function timeDifference(current, previous) {
 export const AboutTeam = ({ teamData }) => {
   const oculus_id = localStorage.getItem("OCULUS_ID");
   // var iconSrc = null;
+
   return (
     <AboutMeStyle>
       <div>

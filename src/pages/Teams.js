@@ -6,148 +6,21 @@ import { NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 
-// const Button = styled(NavLink)`
-//   display: flex;
-//   align-items: center;
-//   background-color: #333;
-//   padding: 10px;
-//   margin: 10px 0px;
-//   text-decoration: none;
-//   border: 1px solid rgb(70, 70, 70);
-//   border-radius: 10px;
-//   line-height: 0;
-//   font-size: 15px;
-//   line-height: 1.5;
-//   &:hover {
-//     background-color: #555;
-//     color: #000;
-//   }
-//   cursor: pointer;
-//   color: white;
-// `;
-
-const UserContainer = styled.div`
-  background-color: #222;
-  color: white;
-  float: left;
-  flex: 20px 2;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: stretch;
-  // height: 20px;
-  height: 52px;
-`;
-const AllUsersContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px 10px 0px;
-  margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  // border: 1px solid rgb(70, 70, 70);
-  // border-radius: 10px;
-  flex-direction: column;
-  margin: auto;
-  width: 98%;
-`;
-const ApproveImagesContainer = styled.div`
-  color: white;
-  float: center;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 10px;
-  flex-grow: 1;
-`;
-const UserLink = styled(NavLink)`
-  text-decoration: none;
-  color: white;
-  font-size: 20px;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 10px;
-  height: 30px;
-  flex: 50px 1;
-  padding: 10px;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-`;
-const Button = styled.div`
-  text-decoration: none;
-  color: white;
-  font-size: 20px;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 10px;
-  flex: 200px 0;
-  cursor: pointer;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-  padding: 10px;
-  height: 30px;
-`;
-const NotClickableButton = styled.div`
-  text-decoration: none;
-  color: white;
-  font-size: 15px;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 10px;
-  padding: 10px;
-  height: 30px;
-  width: 200px;
-`;
-const AboutPageButton = styled.div`
-  margin: 20px auto;
-  width: 80%;
-  // flex: 100px 2;
-  background-color: #222;
-  color: white;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  color: #fff;
-  background-color: #222;
-  padding: 12px 24px;
-  font-size: 18px;
-  font-weight: 200;
-  // float: left;
-  text-decoration: none;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-  transition-duration: 0.1s;
-  cursor: pointer;
-`;
 const BodyContainer = styled.div`
   margin: auto;
   width: 80%;
-  min-width: 400px;
-  display: flex;
 `;
-const ContainerTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 400;
-  margin: 10px 0px;
-  text-align: center;
-  flex: 0 0 100%;
-  color: #fff;
-`;
+
 export default function Teams() {
   let history = useHistory();
 
-  let [canJoin, setCanJoin] = useState(false);
-  let [canCreate, setCanCreate] = useState(false);
+  let [canJoin, setCanJoin] = useState(true);
 
   useEffect(() => {
     if (localStorage.getItem("OCULUS_ID") === null) {
       // alert("Please log in before attempting to create a team");
       // history.push("/");
-      // return;
+      return;
     }
     fetch(
       "https://ecranked.ddns.net/api/v1/user/" +
@@ -184,7 +57,7 @@ export default function Teams() {
       })
       .catch((error) => {
         alert(
-          "There was an error. Please contact a moderator immediately. #EPMT167"
+          "There was an error. Please contact a moderator immediately. #EPMT60"
         );
         console.error("There was an error!", error);
         return;
@@ -195,7 +68,7 @@ export default function Teams() {
     if (localStorage.getItem("OCULUS_ID") === null) {
       // alert("Please log in before attempting to create a team");
       // history.push("/");
-      // return;
+      //return;
     }
     fetch("https://ecranked.ddns.net/api/v1/team/@all", {
       method: "GET",
@@ -238,35 +111,32 @@ export default function Teams() {
         This page is in early beta. There may be issues and the layout might
         change. Currently you cannot undo your request to join so be careful.
       </p>
-
-      <AboutPageButton
-        style={{ minWidth: "80%" }}
-        onClick={() => {
-          history.push("/maketeam");
-        }}
-      >
-        <ContainerTitle>Click here to make your own team!</ContainerTitle>
-      </AboutPageButton>
       <BodyContainer>
-        <ApproveImagesContainer>
-          <h1>Team list!</h1>
-          <AllUsersContainer>
-            {teamList.slice(0, 200).map((teamname) => {
+        <div className="padded list">
+          <div className="rounded padded list">
+            <h1>Team list!</h1>
+            <div
+              className="rounded button"
+              onClick={() => {
+                history.push("/maketeam");
+              }}
+            >
+              <h1>Make your own team!</h1>
+            </div>
+            {teamList.slice(0, 200).map((teamName) => {
               return (
-                <UserContainer>
-                  {/* <Button
-                  onClick={() => {
-                    navigator.clipboard.writeText(user.oculus_name);
-                  }}
-                >
-                  Copy
-                </Button> */}
-                  <UserLink to={"/team/" + teamname + "/overview"}>
+                <div className="button-container">
+                  <NavLink
+                    className={"button rounded grow"}
+                    to={"/team/" + teamName + "/overview"}
+                  >
                     {" "}
-                    {teamname}
-                  </UserLink>
+                    {teamName}
+                  </NavLink>
+
                   {canJoin ? (
-                    <Button
+                    <div
+                      className="rounded button"
                       onClickCapture={() => {
                         // RemoveUser(user.oculus_name);
                         const requestOptions = {
@@ -282,7 +152,7 @@ export default function Teams() {
 
                         fetch(
                           "https://ecranked.ddns.net/api/v1/team/" +
-                            teamname +
+                            teamName +
                             "/request_join",
                           requestOptions
                         )
@@ -294,13 +164,13 @@ export default function Teams() {
                       }}
                     >
                       Request to join
-                    </Button>
+                    </div>
                   ) : null}
-                </UserContainer>
+                </div>
               );
             })}
-          </AllUsersContainer>
-        </ApproveImagesContainer>
+          </div>
+        </div>
       </BodyContainer>
     </>
   );
