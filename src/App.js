@@ -10,6 +10,8 @@ import ApproveImagesModeration from "./pages/Moderation/ApproveImagesModeration"
 import Moderator from "./pages/Moderator";
 import Nav from "./components/Nav";
 
+import Team from "./pages/Team";
+
 import AnimateHeight from "react-animate-height";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Changelog from "./pages/Changelog";
@@ -18,6 +20,10 @@ import Changelog from "./pages/Changelog";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Leaderboard from "./pages/Leaderboard";
 import UncontactedUsersModeration from "./pages/Moderation/UncontactedModeration";
+import MakeTeam from "./pages/MakeTeam";
+import Teams from "./pages/Teams";
+
+import Component from "./pages/Testing";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -59,7 +65,7 @@ function App() {
   });
   useEffect(() => {
     if (clientData.authorization_token && !clientData.confirmed_authorized) {
-      fetch("https://ecranked.ddns.net/status", {
+      fetch("https://ecranked.ddns.net/api/v1/user/@me", {
         headers: { Authorization: clientData.authorization_token },
       })
         .then(async (response) => {
@@ -217,6 +223,44 @@ function App() {
           }}
         />
         <Route
+          path={`/team/:name/:subDomain`}
+          render={(props) => {
+            setBannerHeight(100);
+            const setBannerTextCallback = (username, iconSRC) => {
+              console.log(username);
+              setBannerText(username, iconSRC);
+            };
+            console.log("User");
+            return (
+              <Team
+                teamname={props.match.params.name}
+                setBannerCallback={setBannerTextCallback}
+                subDomain={props.match.params.subDomain}
+              />
+            );
+          }}
+        />
+        <Route
+          path={`/maketeam`}
+          render={(props) => {
+            setBannerHeight(100);
+            setBannerText("Make a team!");
+
+            console.log("User");
+            return <MakeTeam />;
+          }}
+        />
+        <Route
+          path={"/teams"}
+          render={(props) => {
+            setBannerHeight(100);
+            setBannerText("Teams");
+
+            console.log("Teams");
+            return <Teams />;
+          }}
+        />
+        <Route
           path={`/leaderboard/:leaderboardStatistic/:subDomain`}
           render={(props) => {
             setBannerHeight(100);
@@ -294,6 +338,12 @@ function App() {
             setBannerHeight(100);
             setBannerText("Moderation");
             return <UncontactedUsersModeration />;
+          }}
+        />
+        <Route
+          path={"/Testing"}
+          render={() => {
+            return <Component />;
           }}
         />
         <Route

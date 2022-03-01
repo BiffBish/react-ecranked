@@ -1,9 +1,13 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import moment from "moment-timezone";
 import { NavLink } from "react-router-dom";
 import Chart from "react-google-charts";
+var funFacts = require("../components/FunFacts.json");
+
 const RecentGameFadeIN = keyframes`
     from {
       opacity: 0;
@@ -13,7 +17,6 @@ const RecentGameFadeIN = keyframes`
       opacity: 1;
     }
   `;
-
 const RecentGameStyle = styled.div`
   display: flex;
   align-items: center;
@@ -21,7 +24,7 @@ const RecentGameStyle = styled.div`
   padding: 10px;
   margin: 10px 0px;
   text-decoration: none;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   line-height: 0;
   font-size: 15px;
@@ -39,7 +42,7 @@ const RecentGamesStyle = styled.div`
   margin: auto;
   background-color: #222;
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   width: 50%;
   flex: 300px 2;
@@ -70,9 +73,32 @@ const AboutPage = styled.div`
   flex: 100px 2;
   background-color: #222;
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   padding: 20px;
+`;
+
+const AboutPageButton = styled.div`
+  flex: 100px 2;
+  background-color: #222;
+  color: white;
+  border: 1px solid rgb(70, 70, 70);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  background-color: #222;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 200;
+  float: left;
+  text-decoration: none;
+  &:hover {
+    background-color: #555;
+    color: #000;
+  }
+  transition-duration: 0.1s;
+  cursor: pointer;
 `;
 const ContributorLink = styled(NavLink)`
   text-decoration: none;
@@ -102,234 +128,7 @@ const chartOptions = {
   //   // maxValue: 1,
   // },
 };
-const RecentGames = ({ replays }) => {
-  const [replayList, setReplayList] = useState([]);
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  useEffect(() => {
-    async function loadInReplayAnimation(replays) {
-      var AnimationList = [];
-      for (const replay of replays) {
-        AnimationList.push(replay);
-        setReplayList([...AnimationList]);
-        await delay(20);
-      }
-    }
-    loadInReplayAnimation(replays);
-  }, [replays]);
-
-  let history = useHistory();
-  function recentGameClick(session_id) {
-    history.push("/replay/" + session_id);
-  }
-  const [replayTimestamps, setReplayTimestamps] = useState([]);
-  const [newUsers, setNewUsers] = useState([]);
-  const [replayData, setReplayData] = useState([]);
-
-  useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
-      .then((response) => response.json())
-      .then((data) => {
-        SortReplayDataToBins(data, setReplayTimestamps, 93);
-      });
-  }, []);
-  useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/replay/@all")
-      .then((response) => response.json())
-      .then((data) => {
-        setReplayData(data);
-      });
-  }, []);
-  useEffect(() => {
-    if (localStorage.getItem("MODERATOR") === "1") {
-      fetch("https://ecranked.ddns.net/api/v1/user/@joins", {
-        headers: { authorization: localStorage.getItem("AUTHORIZATION_TOKEN") },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          SortDataToBins(data, setNewUsers, 93);
-        })
-        .catch(() => {});
-    }
-  }, []);
-  return (
-    <PageContainer>
-      <AboutContainer>
-        <AboutPage style={{ minWidth: "1000px" }}>
-          <ContainerTitle>Graphs</ContainerTitle>
-          <div style={{ position: "relative", height: "200px" }}>
-            <div
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                top: "0",
-                left: "0",
-              }}
-            >
-              <Chart
-                width={"100%"}
-                height={"100%"}
-                chartType="ColumnChart"
-                loader={<div>Loading Chart</div>}
-                data={[
-                  [
-                    "Date",
-                    "Combustion Games",
-                    { role: "style" },
-                    "Dyson Games",
-                    { role: "style" },
-                    "Fission Games",
-                    { role: "style" },
-                    "Surge Games",
-                    { role: "style" },
-                  ],
-                  ...replayTimestamps,
-                ]}
-                options={{
-                  ...chartOptions,
-                  title: "Quarterly game review!",
-                  isStacked: true,
-                }}
-                rootProps={{ "data-testid": "5" }}
-              />
-            </div>
-          </div>
-          {localStorage.getItem("MODERATOR") === "1" ? (
-            <div style={{ position: "relative", height: "200px" }}>
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  top: "0",
-                  left: "0",
-                }}
-              >
-                <Chart
-                  width={"100%"}
-                  height={"100%"}
-                  chartType="ColumnChart"
-                  loader={<div>Loading Chart</div>}
-                  data={[["Date", "Users", { role: "style" }], ...newUsers]}
-                  options={{
-                    ...chartOptions,
-                    title: "Joins per day! (moderator only)",
-                  }}
-                  // rootProps={{ "data-testid": "5" }}
-                />
-              </div>
-            </div>
-          ) : null}
-          {/* <div>
-            <Chart
-              width={"100%"}
-              height={"100%"}
-              chartType="ColumnChart"
-              loader={<div>Loading Chart</div>}
-              data={[["Date", "New Users", { role: "style" }], ...newUsers]}
-              options={{ ...chartOptions, title: "Quarterly new user review!" }}
-              rootProps={{ "data-testid": "5" }}
-            />
-          </div> */}
-        </AboutPage>
-        <AboutPage style={{ minWidth: "500px" }}>
-          <ContainerTitle>About Us</ContainerTitle>
-          We are a collection of passionate Echo Combat Players who thrive to
-          build a strong and close community. We've built numerous bots and
-          tools to assist both our casual and competitive players to both have
-          fun, but also learn and build upon their playstyle.
-          <br />
-          <br />
-          ECRanked is a piece of software that gathers RAW data through the Echo
-          Combat API. We then collate and simplify this data into more readable
-          data used for player statistics (& more coming soon) for our Echo
-          Combat community.
-          <br />
-          <br />
-          If you've played Echo Combat. Feel free to search for your Oculus
-          Username above to learn more. Pew pew!
-        </AboutPage>
-        <AboutPage style={{ fontSize: "20px", fontWeight: "100" }}>
-          <ContainerTitle>Collaborators</ContainerTitle>
-          <ContributorLink to={"/user/BiffBish/stats"}>
-            BiffBish
-          </ContributorLink>
-          - Head creator
-          <br />
-          <ContributorLink to={"/user/rev2600/stats"}>rev2600</ContributorLink>
-          - Contributor
-          <br />
-          <ContributorLink to={"/user/Vibinator/stats"}>
-            Vibinator
-          </ContributorLink>
-          - Hosting and Support
-          <br />
-          <ContributorLink to={"/user/codasleuth/stats"}>
-            codasleuth
-          </ContributorLink>
-          - Moderator and Creative control
-          <br />
-        </AboutPage>
-        <AboutPage>
-          <ContainerTitle>Fun Facts!</ContainerTitle>
-          The combat community as a whole has traveled over{" "}
-          {Math.round(
-            ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000) * 100
-          ) / 100}{" "}
-          kilometers while playing echo combat! Thats{" "}
-          {Math.round(
-            ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000 / 40075) * 10
-          ) / 10}{" "}
-          times around the earth.
-        </AboutPage>
-      </AboutContainer>
-      <RecentGamesStyle>
-        <ContainerTitle>Recent Games</ContainerTitle>
-        {replayList.map((replay) => {
-          const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
-          const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
-          const UtcNow = moment.utc();
-          const dateDiff = UtcNow.diff(UtcGameTime, "d");
-          const hourDiff = UtcNow.diff(UtcGameTime, "h");
-          const minuteDiff = UtcNow.diff(UtcGameTime, "m");
-
-          var TimeString = "";
-
-          if (dateDiff > 0) {
-            TimeString = `${dateDiff} days ago`;
-          } else if (hourDiff > 0) {
-            TimeString = `${hourDiff}h ago`;
-          } else if (minuteDiff > 0) {
-            TimeString = `${minuteDiff}m ago`;
-          }
-
-          const OnGameClick = () => {
-            recentGameClick(replay["session_id"]);
-          };
-          return (
-            <RecentGameStyle
-              key={replay["session_id"]}
-              onClick={OnGameClick}
-              style={{ opacity: 1 }}
-            >
-              <p style={{ margin: 0 }}>
-                {"{" +
-                  TimeString +
-                  "}" +
-                  "[" +
-                  moment(LocalGameTime).format("MMM DD LTS") + //+
-                  "] - " +
-                  replay["map"].charAt(0).toUpperCase() +
-                  replay["map"].slice(1)}
-              </p>
-            </RecentGameStyle>
-          );
-        })}
-      </RecentGamesStyle>
-    </PageContainer>
-  );
-};
+const RecentGames = ({ replays }) => {};
 
 function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
   var todayDateTime = Math.round(Date.now() / 1000);
@@ -440,6 +239,8 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
         "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #ED31B8 ; fill-opacity: 1",
         0,
         "stroke-color: #f00; stroke-opacity: 1; stroke-width: 1; fill-color: #12F840 ; fill-opacity: 1",
+        0,
+        0,
       ]);
     }
     newList.push([
@@ -455,6 +256,8 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
 
       0,
       "stroke-color: #fff; stroke-opacity: 1; stroke-width: 1; fill-color: #12F840; fill-opacity: 1",
+      0,
+      0,
     ]);
   }
   // newList.push([currentElement]);
@@ -488,6 +291,7 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
       }
       // console.log(DateTimeN);
       newList[DateTimeN][mapPos] += 1;
+      newList[DateTimeN][10] += 1;
     }
   });
   console.log(newList);
@@ -495,5 +299,301 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
 }
 
 export default function Home({ replays }) {
-  return <RecentGames replays={replays} />;
+  const [replayAnimationIndex, setReplayAnimationIndex] = useState(0);
+  const [funFactIndex, setFunFactIndex] = useState(
+    Math.floor(Math.random() * funFacts.length)
+  );
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  useEffect(() => {
+    setReplayAnimationIndex(0);
+    async function loadInReplayAnimation(replays) {
+      for (let index = 0; index < replays.length; index++) {
+        setReplayAnimationIndex((prev) => prev + 1);
+        await delay(20);
+      }
+    }
+    loadInReplayAnimation(replays);
+  }, [replays]);
+
+  let history = useHistory();
+  function recentGameClick(session_id) {
+    history.push("/replay/" + session_id);
+  }
+  const [replayTimestamps, setReplayTimestamps] = useState([]);
+  const [newUsers, setNewUsers] = useState([]);
+  const [replayData, setReplayData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
+      .then((response) => response.json())
+      .then((data) => {
+        SortReplayDataToBins(data, setReplayTimestamps, 93);
+      });
+  }, []);
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/api/v1/replay/@all")
+      .then((response) => response.json())
+      .then((data) => {
+        setReplayData(data);
+      });
+  }, []);
+  useEffect(() => {
+    if (localStorage.getItem("MODERATOR") === "1") {
+      fetch("https://ecranked.ddns.net/api/v1/user/@joins", {
+        headers: { authorization: localStorage.getItem("AUTHORIZATION_TOKEN") },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          SortDataToBins(data, setNewUsers, 93);
+        })
+        .catch(() => {});
+    }
+  }, []);
+  return (
+    <>
+      <div className="list padded">
+        {/*External Links */}
+        <div className="list grow">
+          <div
+            className="padded rounded button"
+            // style={{ minWidth: "80%" }}
+            onClick={() => {
+              history.push("/teams");
+            }}
+          >
+            <h1>Click here to visit the new teams page!</h1>
+          </div>
+          <div
+            className="padded rounded button"
+            // style={{ minWidth: "80%" }}
+            onClick={() => {
+              history.push("/leaderboard/loadout/random");
+            }}
+          >
+            <h1>Click here to get a random Loadout!</h1>
+          </div>
+        </div>
+
+        <AboutContainer>
+          <AboutPage style={{ minWidth: "1000px" }}>
+            <ContainerTitle>Graphs</ContainerTitle>
+            <div style={{ position: "relative", height: "200px" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  top: "0",
+                  left: "0",
+                }}
+              >
+                <Chart
+                  width={"100%"}
+                  height={"100%"}
+                  chartType="ColumnChart"
+                  loader={<div>Loading Chart</div>}
+                  data={[
+                    [
+                      "Date",
+                      "Combustion Games",
+                      { role: "style" },
+                      "Dyson Games",
+                      { role: "style" },
+                      "Fission Games",
+                      { role: "style" },
+                      "Surge Games",
+                      { role: "style" },
+                      { label: "Total", type: "number" },
+                      { role: "annotation" },
+                    ],
+                    ...replayTimestamps,
+                  ]}
+                  options={{
+                    ...chartOptions,
+                    title: "Quarterly game review!",
+                    isStacked: true,
+                    series: {
+                      4: {
+                        annotations: {
+                          stem: {
+                            color: "transparent",
+                            length: 0,
+                          },
+                          textStyle: {
+                            color: "#fff",
+                            fontSize: 10,
+                          },
+                        },
+                        enableInteractivity: false,
+                        tooltip: "none",
+                        visibleInLegend: false,
+                      },
+                    },
+                  }}
+                  rootProps={{ "data-testid": "5" }}
+                />
+              </div>
+            </div>
+            {localStorage.getItem("MODERATOR") === "1" ? (
+              <div style={{ position: "relative", height: "200px" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    top: "0",
+                    left: "0",
+                  }}
+                >
+                  <Chart
+                    width={"100%"}
+                    height={"100%"}
+                    chartType="ColumnChart"
+                    loader={<div>Loading Chart</div>}
+                    data={[["Date", "Users", { role: "style" }], ...newUsers]}
+                    options={{
+                      ...chartOptions,
+                      title: "Joins per day! (moderator only)",
+                    }}
+                    // rootProps={{ "data-testid": "5" }}
+                  />
+                </div>
+              </div>
+            ) : null}
+            {/* <div>
+            <Chart
+              width={"100%"}
+              height={"100%"}
+              chartType="ColumnChart"
+              loader={<div>Loading Chart</div>}
+              data={[["Date", "New Users", { role: "style" }], ...newUsers]}
+              options={{ ...chartOptions, title: "Quarterly new user review!" }}
+              rootProps={{ "data-testid": "5" }}
+            />
+          </div> */}
+          </AboutPage>
+        </AboutContainer>
+
+        <div className="horizontal-container wrap">
+          {/* <ContainerTitle>Click here to get a random Loadout!</ContainerTitle> */}
+          {/* </AboutPageButton> */}
+
+          {/* About Us */}
+          <div className="rounded padded" style={{ flex: "2 100px" }}>
+            <ContainerTitle>About Us</ContainerTitle>
+            <p>
+              We are a collection of passionate Echo Combat Players who thrive
+              to build a strong and close community. We've built numerous bots
+              and tools to assist both our casual and competitive players to
+              both have fun, but also learn and build upon their playstyle.
+              <br />
+              <br />
+              ECRanked is a piece of software that gathers RAW data through the
+              Echo Combat API. We then collate and simplify this data into more
+              readable data used for player statistics (& more coming soon) for
+              our Echo Combat community.
+              <br />
+              <br />
+              If you've played Echo Combat. Feel free to search for your Oculus
+              Username above to learn more. Pew pew!
+            </p>
+          </div>
+
+          {/* Collaborators */}
+          <div
+            className="rounded padded"
+            style={{ fontSize: "20px", fontWeight: "100" }}
+          >
+            <h2>Collaborators</h2>
+            <p>
+              <ContributorLink to={"/user/BiffBish/stats"}>
+                BiffBish
+              </ContributorLink>
+              - Head creator
+              <br />
+              <ContributorLink to={"/user/rev2600/stats"}>
+                rev2600
+              </ContributorLink>
+              - Contributor
+              <br />
+              <ContributorLink to={"/user/Vibinator/stats"}>
+                Vibinator
+              </ContributorLink>
+              - Hosting and Support
+              <br />
+              <ContributorLink to={"/user/codasleuth/stats"}>
+                codasleuth
+              </ContributorLink>
+              - Moderator and Creative control
+              <br />
+            </p>
+          </div>
+
+          {/* Fun Fact!*/}
+          <AboutPage>
+            <ContainerTitle>Fun Fact!</ContainerTitle>
+            {funFacts[funFactIndex]}
+            {/* The combat community as a whole has traveled over{" "}
+          {Math.round(
+            ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000) * 100
+          ) / 100}{" "}
+          kilometers while playing echo combat! Thats{" "}
+          {Math.round(
+            ((18302.751128 * (replayData?.[0]?.total ?? 0)) / 1000 / 40075) * 10
+          ) / 10}{" "}
+          times around the earth. */}
+          </AboutPage>
+        </div>
+
+        <RecentGamesStyle>
+          <ContainerTitle>Recent Games</ContainerTitle>
+          {replays.map((replay, index) => {
+            if (index > replayAnimationIndex) {
+              return null;
+            }
+            const LocalGameTime = moment.unix(replay["start_time"]); // Assumes seconds.  Defaults to local time
+            const UtcGameTime = moment.unix(replay["start_time"]).utc(); // Must be separate object b/c utc() just sets a flag
+            const UtcNow = moment.utc();
+            const dateDiff = UtcNow.diff(UtcGameTime, "d");
+            const hourDiff = UtcNow.diff(UtcGameTime, "h");
+            const minuteDiff = UtcNow.diff(UtcGameTime, "m");
+
+            var TimeString = "";
+
+            if (dateDiff > 0) {
+              TimeString = `${dateDiff} days ago`;
+            } else if (hourDiff > 0) {
+              TimeString = `${hourDiff}h ago`;
+            } else if (minuteDiff > 0) {
+              TimeString = `${minuteDiff}m ago`;
+            }
+
+            const OnGameClick = () => {
+              recentGameClick(replay["session_id"]);
+            };
+            return (
+              <RecentGameStyle
+                key={replay["session_id"]}
+                onClick={OnGameClick}
+                style={{ opacity: 1 }}
+              >
+                <p style={{ margin: 0 }}>
+                  {"{" +
+                    TimeString +
+                    "}" +
+                    "[" +
+                    moment(LocalGameTime).format("MMM DD LTS") + //+
+                    "] - " +
+                    replay["map"].charAt(0).toUpperCase() +
+                    replay["map"].slice(1)}
+                </p>
+              </RecentGameStyle>
+            );
+          })}
+        </RecentGamesStyle>
+      </div>
+    </>
+  );
 }

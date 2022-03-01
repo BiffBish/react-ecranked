@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import styled from "styled-components";
 import React, { useState } from "react";
 const ContainerTitle = styled.div`
@@ -54,17 +56,17 @@ const EditButtonStyle = styled.div`
 `;
 const AboutStringBox = ({ userData, oculus_id }) => {
   var is_editable = false;
-  if (oculus_id == null) {
-    is_editable = false;
-  }
-  // eslint-disable-next-line
-  if (oculus_id == parseInt(userData["oculus_id"])) {
-    is_editable = true;
-  }
-  // eslint-disable-next-line
-  if (localStorage.getItem("MODERATOR") == 1) {
-    is_editable = true;
-  }
+  // if (oculus_id == null) {
+  //   is_editable = false;
+  // }
+  // // eslint-disable-next-line
+  // if (oculus_id == parseInt(userData["oculus_id"])) {
+  //   is_editable = true;
+  // }
+  // // eslint-disable-next-line
+  // if (localStorage.getItem("MODERATOR") == 1) {
+  //   is_editable = true;
+  // }
   console.log(
     "[TEST] " +
       oculus_id +
@@ -74,7 +76,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
       is_editable
   );
   const updateIsEdit = (e, value = "null") => {};
-  const [currentText, setCurrentText] = useState(userData["about_string"]);
+  const [currentText, setCurrentText] = useState(userData["description"]);
   const [editing, setEditing] = useState(false);
 
   const onClickSubmit = () => {
@@ -87,9 +89,9 @@ const AboutStringBox = ({ userData, oculus_id }) => {
     const requestOptions = {
       method: "PUT",
       headers: { Authorization: authToken, "Content-Type": "application/json" },
-      body: JSON.stringify({ about_string: currentText }),
+      body: JSON.stringify({ description: currentText }),
     };
-    console.log({ about_string: currentText });
+    console.log({ description: currentText });
 
     fetch(
       "https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"],
@@ -124,13 +126,14 @@ const AboutStringBox = ({ userData, oculus_id }) => {
           onBlur={updateIsEdit}
         />
         <EditButtonsStyle>
-          <EditButtonStyle
+          <div
+            className="padded rounded button"
             onClick={() => {
               setEditing(false);
             }}
           >
             Discard
-          </EditButtonStyle>
+          </div>
 
           <EditButtonStyle onClick={onClickSubmit}>Save</EditButtonStyle>
         </EditButtonsStyle>
@@ -138,13 +141,13 @@ const AboutStringBox = ({ userData, oculus_id }) => {
     );
   } else {
     if (is_editable) {
-      if (userData["about_string"] == null) {
+      if (userData["description"] == null) {
         return (
           <>
             <EditButtonStyle
               style={{ color: "white" }}
               onClick={() => {
-                setCurrentText(userData["about_string"]);
+                setCurrentText(userData["description"]);
                 setEditing(true);
               }}
             >
@@ -156,11 +159,11 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"]}
+              {userData["description"]}
             </div>
             <EditButtonStyle
               onClick={() => {
-                setCurrentText(userData["about_string"]);
+                setCurrentText(userData["description"]);
                 setEditing(true);
               }}
             >
@@ -170,24 +173,24 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         );
       }
     } else {
-      if (oculus_id == null) {
-        return (
-          <>
-            <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"]}
-            </div>
-            <EditTextButtonStyle>
-              Login to change your aboutMe
-            </EditTextButtonStyle>
-          </>
-        );
-      } else {
-        return (
-          <>
-            <div>{userData["about_string"]}</div>
-          </>
-        );
-      }
+      // if (oculus_id == null) {
+      //   return (
+      //     <>
+      //       <div style={{ whiteSpace: "pre-wrap" }}>
+      //         {userData["description"]}
+      //       </div>
+      //       <EditTextButtonStyle>
+      //         This team doesn't have description set.
+      //       </EditTextButtonStyle>
+      //     </>
+      //   );
+      // } else {
+      return (
+        <>
+          <div>{userData["description"]}</div>
+        </>
+      );
+      // }
     }
   }
 };
@@ -429,21 +432,22 @@ function timeDifference(current, previous) {
     return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
   }
 }
-export const AboutMe = ({ userData }) => {
+export const AboutTeam = ({ teamData }) => {
   const oculus_id = localStorage.getItem("OCULUS_ID");
   // var iconSrc = null;
+
   return (
     <AboutMeStyle>
       <div>
-        <ContainerTitle>About Me</ContainerTitle>
+        <ContainerTitle>About Us</ContainerTitle>
       </div>
-      <AboutStringBox userData={userData} oculus_id={oculus_id} />
-      <AboutAvatar userData={userData} oculus_id={oculus_id} />
+      <AboutStringBox userData={teamData} oculus_id={oculus_id} />
+      {/* <AboutAvatar userData={teamData} oculus_id={oculus_id} /> */}
       <footer>
         Joined{" "}
-        {userData.join_date < 1633061708
+        {teamData.join_date < 1633061708
           ? "before ECRanked launched"
-          : timeDifference(Date.now(), userData.join_date * 1000)}
+          : timeDifference(Date.now(), teamData.join_date * 1000)}
       </footer>
     </AboutMeStyle>
   );

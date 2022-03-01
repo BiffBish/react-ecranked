@@ -26,7 +26,7 @@ const LoadoutStyle = styled.div`
   background-color: #282828;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
 `;
 const LoadoutBoxStyle = styled(NavLink)`
@@ -36,7 +36,7 @@ const LoadoutBoxStyle = styled(NavLink)`
   background-color: #282828;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 60px 1;
   font-size: 11px;
@@ -159,7 +159,7 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
   );
 };
 const LoadoutExpandButtonStyle = styled.div`
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex-grow: 1;
   margin: 10px;
@@ -178,7 +178,7 @@ const HeatmapStyle = styled.div`
   background-color: #282828;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   // max-height: 20%;
   gap: 10px;
@@ -337,7 +337,7 @@ const GrowToFullScreen = (props) => {
 };
 const HeatmapButtonStyle = styled.div`
   color: white;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 40px 0 0;
   min-height: 20px;
@@ -726,7 +726,7 @@ const UserStatStyle = styled.div`
 `;
 const ProgressDivStyle = styled.div`
   border-radius: 0.5rem;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   height: 30px;
   overflow: hidden;
@@ -779,7 +779,7 @@ const UserStatsStyle = styled.div`
   background-color: #282828;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -798,7 +798,7 @@ const UserStats = ({ userData, statChoice }) => {
       />
       <UserStat
         name={"Total Deaths"}
-        displayValue={userStats["total_deaths"]}
+        displayValue={userStats["deaths"]}
         value={1}
       />
       {/* <UserStat
@@ -866,7 +866,7 @@ const StatChoiceButton = styled.div`
   background-color: #282828;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   gap: 0px 10px;
   flex-grow: 1;

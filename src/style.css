@@ -1,19 +1,90 @@
-.rounded-clickable-button {
+.rounded {
+  border: 1px solid rgb(70, 70, 70);
+  border-radius: 10px;
+}
+.padded {
+  padding: 20px;
+}
+.grow {
+  flex-grow: 1;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+p {
+  color: white;
+  padding: 0px;
+  margin: 0px;
+}
+div {
+  color: white;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: 400;
+  margin: 10px 0px;
+  text-align: center;
+  flex: 0 0 100%;
+  color: #fff;
+}
+
+.button-container {
+  background-color: #222;
+  color: white;
+  float: left;
+  /* flex: 20px 2; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: stretch;
+}
+.horizontal-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.button {
   display: flex;
   align-items: center;
   background-color: #333;
   padding: 10px;
-  margin: 10px 0px;
+  /* margin: 10px 0px; */
   text-decoration: none;
-  border: 1px solid white;
-  border-radius: 10px;
+  color: white;
   line-height: 0;
   font-size: 15px;
   line-height: 1.5;
   cursor: pointer;
   animation: FadeIn 0.2s;
 }
-:hover {
+.button h1 {
+  font-size: 36px;
+  font-weight: 400;
+  margin: 10px 0px;
+  text-align: center;
+  flex: 0 0 100%;
+  color: #fff;
+  text-align: center;
+}
+
+/* .list .button {
+  flex-grow: 1;
+} */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+}
+.list h1 {
+  text-align: center;
+  color: white;
+}
+
+.button:hover {
   background-color: #555;
   color: #000;
 }

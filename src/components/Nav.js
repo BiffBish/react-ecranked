@@ -135,7 +135,7 @@ const TopBarLink = ({ link, text, externalLink, floatRight }) => {
 };
 
 const autoCompleteBox = styled.form`
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   display: inline-block;
   float: right;
@@ -264,7 +264,7 @@ export default function Nav({ clientData }) {
     console.log(text);
 
     if (allTeams.includes(text)) {
-      history.push("/team/" + text);
+      history.push("/team/" + text + "/overview");
     } else {
       history.push("/user/" + text + "/stats");
     }

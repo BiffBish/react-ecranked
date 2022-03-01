@@ -10,7 +10,7 @@ const Container = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 200px 12;
 `;
@@ -29,7 +29,7 @@ const User = styled.div`
   background-color: #333;
   padding: 7px;
   text-decoration: none;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   line-height: 0;
   font-size: 15px;
@@ -55,7 +55,7 @@ const UserColor = styled.div`
   background-color: #333;
   padding: 7px;
   text-decoration: none;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   &:hover {
     background-color: #555;
@@ -284,7 +284,7 @@ const TimelineUserItemStyle = styled.div`
   align-items: center;
   background-color: #222;
   text-decoration: none;
-  #border: 2px solid white;
+  #border: 1px solid rgb(70, 70, 70);
 
   line-height: 0;
   font-size: 15px;
@@ -622,7 +622,7 @@ const StatChoiceButton = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex-grow: 1;
   text-align: center;
@@ -966,7 +966,7 @@ const Heatmap = ({
     <div
       style={{
         flexGrow: 1,
-        border: "1px solid white",
+        border: "1px solid rgb(70, 70, 70)",
         borderRadius: "10px",
         overflow: "hidden",
         position: "relative",

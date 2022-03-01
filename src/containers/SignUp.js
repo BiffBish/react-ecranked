@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 const MainStyle = styled.div`
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex-grow: 1;
   margin: 10px;
@@ -20,7 +20,7 @@ const MainStyle = styled.div`
 `;
 const LabelStyle = styled.label`
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   margin: 10px;
   height: 80px;
@@ -36,7 +36,7 @@ const TextBoxStyle = styled.input`
   font-size: 20px;
   background: transparent;
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   margin: 10px;
 `;
@@ -46,7 +46,7 @@ const TextBoxStyleSubmit = styled.input`
   font-size: 20px;
   background: transparent;
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   margin: 10px;
   cursor: pointer;

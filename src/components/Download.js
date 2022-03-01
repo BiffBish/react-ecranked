@@ -28,7 +28,7 @@ const DownloadContainerStyle = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 2px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   cursor: pointer;
   flex-grow: 0;

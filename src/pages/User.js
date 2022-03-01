@@ -36,7 +36,7 @@ const StatChoiceButton = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   gap: 0px 10px;
   flex-grow: 1;
@@ -178,7 +178,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
     },
     test: {},
   };
-  const [apiData, setApiData] = React.useState(null);
+  const [apiData, setApiData] = React.useState(EMPTYREQUEST);
   const [userNotFound, setUserNotFound] = React.useState(false);
   const FetchUserData = () => {
     fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
@@ -211,7 +211,11 @@ export default function User({ username, setBannerCallback, subDomain }) {
             }
             console.log(data);
             setBannerCallback(data["oculus_name"], iconSrc);
-            setApiData(data);
+            if (username !== data["oculus_name"]) {
+              history.push("/user/" + data["oculus_name"] + "/stats");
+            } else {
+              setApiData(data);
+            }
           }
         }
       })
@@ -233,18 +237,18 @@ export default function User({ username, setBannerCallback, subDomain }) {
     // eslint-disable-next-line
   }, [username]);
 
-  function WhatApiRequest() {
-    console.log("APIDATA");
+  // function WhatApiRequest() {
+  //   console.log("APIDATA");
 
-    if (userNotFound) {
-      return EMPTYREQUEST;
-    }
-    if (apiData) {
-      return apiData;
-    }
+  //   if (userNotFound) {
+  //     return EMPTYREQUEST;
+  //   }
+  //   if (apiData) {
+  //     return apiData;
+  //   }
 
-    return EMPTYREQUEST;
-  }
+  //   return EMPTYREQUEST;
+  // }
 
   console.log("userNotFound", userNotFound);
   return (
@@ -255,7 +259,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
           userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
-        <Achievements userData={WhatApiRequest()} />
+        <Achievements userData={apiData} />
         {/* <div> */}
         <MetaTags>
           <title>{username}'s Page!</title>
@@ -263,13 +267,11 @@ export default function User({ username, setBannerCallback, subDomain }) {
           <meta property="og:title" content="MyApp" />
           <meta property="og:image" content="path/to/image.jpg" />
         </MetaTags>
-        <LeftSide
-          replays={WhatApiRequest()["recent_games"]}
-          username={username}
-        />
-        <Statistics userData={WhatApiRequest()} />
-        <AboutMe userData={WhatApiRequest()} />
-        {/* </div> */}
+
+        <LeftSide replays={apiData["recent_games"]} username={username} />
+        <Statistics userData={apiData} />
+
+        <AboutMe userData={apiData} />
       </UserBody>
     </>
   );

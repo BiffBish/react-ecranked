@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import AutoComplete from "./AutoComplete";
 
 const autoCompleteBox = styled.form`
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   display: inline-block;
   float: center;

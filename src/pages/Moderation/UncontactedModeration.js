@@ -46,7 +46,7 @@ const AllUsersContainer = styled.div`
   background-color: #222;
   color: white;
   float: left;
-  // border: 1px solid white;
+  // border: 1px solid rgb(70, 70, 70);
   // border-radius: 10px;
   flex-direction: column;
   margin: auto;
@@ -55,7 +55,7 @@ const AllUsersContainer = styled.div`
 const ApproveImagesContainer = styled.div`
   color: white;
   float: center;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex-grow: 1;
 `;
@@ -63,7 +63,7 @@ const UserLink = styled(NavLink)`
   text-decoration: none;
   color: white;
   font-size: 20px;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   height: 30px;
   flex: 50px 1;
@@ -73,7 +73,7 @@ const Button = styled.div`
   text-decoration: none;
   color: white;
   font-size: 20px;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   flex: 50px 0;
   cursor: pointer;
@@ -88,7 +88,7 @@ const NotClickableButton = styled.div`
   text-decoration: none;
   color: white;
   font-size: 15px;
-  border: 1px solid white;
+  border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   padding: 10px;
   height: 30px;
