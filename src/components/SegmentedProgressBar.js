@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useRef } from "react";
 import styled from "styled-components";
 var achievementFormatingData = require("./AchievementData.json");
