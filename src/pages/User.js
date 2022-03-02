@@ -18,7 +18,7 @@ const UserBody = styled.div`
   opacity: 100%
   transition-property: height margin opacity;
   padding:20px;
-  gap:20px;
+  gap:40px;
 `;
 const StatChoiceStyle = styled.div`
   padding: 0px;

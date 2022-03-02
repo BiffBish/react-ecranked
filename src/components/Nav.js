@@ -275,7 +275,7 @@ export default function Nav({ clientData }) {
     return (
       <TopBar>
         <TopBarLinksDesktop>
-          <TopBarLink link="/" text="Home" />
+          <TopBarLink link="/home" text="Home" />
           <TopBarLink
             link="https://ecranked.ddns.net/docs"
             text="API"
@@ -287,6 +287,7 @@ export default function Nav({ clientData }) {
             externalLink={true}
           />
           <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
+          <TopBarLink link="/Changelog" text="Changelog" />
           {clientData.moderator ? (
             <TopBarLink link="/Moderator" text="Moderator" />
           ) : (
@@ -329,7 +330,7 @@ export default function Nav({ clientData }) {
           </div>
           {navigationPopupOut ? (
             <>
-              <TopBarLink link="/" text="Home" />
+              <TopBarLink link="/home" text="Home" />
               <TopBarLink
                 link="https://ecranked.ddns.net"
                 text="API"
@@ -337,6 +338,8 @@ export default function Nav({ clientData }) {
               />
 
               <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
+              <TopBarLink link="/Changelog" text="Changelog" />
+
               {clientData.moderator ? (
                 <TopBarLink
                   link="/Moderator/UnapprovedImages"

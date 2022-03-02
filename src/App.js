@@ -1,6 +1,6 @@
 // import React, {useState , useRef, useEffect} from 'react'
 import React, { useEffect, useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import Replay from "./pages/Replay";
@@ -57,6 +57,7 @@ const UserIcon = styled.img`
   margin: 20px;
 `;
 function App() {
+  // const history = React.useHistory();
   const [clientData, setClientData] = React.useState({
     oculus_id: localStorage.getItem("OCULUS_ID"),
     authorization_token: localStorage.getItem("AUTHORIZATION_TOKEN"),
@@ -193,7 +194,9 @@ function App() {
             )}
           </div>
         </Banner>
-
+        <Route exact path={["/"]}>
+          <Redirect to="/home" />
+        </Route>
         <Route
           exact
           path={["/home", "/"]}
@@ -320,7 +323,7 @@ function App() {
           path={`/Changelog`}
           render={() => {
             setBannerHeight(100);
-            setBannerText("Terms Of Service");
+            setBannerText("Changelog");
             return <Changelog />;
           }}
         />
