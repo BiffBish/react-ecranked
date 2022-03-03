@@ -113,6 +113,7 @@ function App() {
       })
       .catch((error) => {
         console.error("There was an error!", error);
+        alert("The server unresponsive. Please visit later");
       });
   }, [clientData]);
 
