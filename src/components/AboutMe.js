@@ -329,7 +329,7 @@ const AvatarControls = ({ moderator, userData, oculus_id }) => {
         <> </>
       )}
       <div>
-        {userData["avatar_pending"] ? (
+        {avatar && userData["avatar_pending"] ? (
           <>
             <AvatarGuideText>
               Your picture is currently pending approval by a moderator. It is
