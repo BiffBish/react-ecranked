@@ -329,6 +329,18 @@ const AvatarControls = ({ moderator, userData, oculus_id }) => {
         <> </>
       )}
       <div>
+        {avatar && userData["avatar_pending"] ? (
+          <>
+            <AvatarGuideText>
+              Your picture is currently pending approval by a moderator. It is
+              currently not public and cannot be seen by anyone else. Please
+              contact a moderator if the image is pending for an extended period
+              of time.
+            </AvatarGuideText>
+          </>
+        ) : (
+          <></>
+        )}
         {ownPage && !avatar ? (
           <>
             <AvatarGuideText>
