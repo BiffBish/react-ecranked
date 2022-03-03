@@ -329,7 +329,7 @@ const AvatarControls = ({ moderator, userData, oculus_id }) => {
         <> </>
       )}
       <div>
-        {avatar && userData["avatar_pending"] ? (
+        {userData["avatar_pending"] ? (
           <>
             <AvatarGuideText>
               Your picture is currently pending approval by a moderator. It is
@@ -352,6 +352,19 @@ const AvatarControls = ({ moderator, userData, oculus_id }) => {
               <br />
               <br /> The image wont be displayed on your page until its been
               approved by moderator.
+            </AvatarGuideText>
+            <div>
+              <FileUploadButton userData={userData} />
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        {ownPage && avatar ? (
+          <>
+            <AvatarGuideText>
+              Replace your chassis picture with a new one. the new image will
+              still be pending until a moderator approves of it
             </AvatarGuideText>
             <div>
               <FileUploadButton userData={userData} />
