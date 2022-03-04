@@ -7,7 +7,85 @@ import moment from "moment-timezone";
 import { NavLink } from "react-router-dom";
 import Chart from "react-google-charts";
 var funFacts = require("../components/FunFacts.json");
+class Timer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      seconds: parseInt(props.startTimeInSeconds, 10) || 0,
+    };
+  }
 
+  tick() {
+    this.setState((state) => ({
+      seconds: state.seconds + 1,
+    }));
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+  MModeTimer() {
+    // CountdownTarget = 1647365400;
+
+    var currentTime = new Date().getTime() / 1000;
+    var timeRemaining = 1647365400 - currentTime;
+    var minute = 60;
+    var hour = 60 * 60;
+    var day = 60 * 60 * 24;
+    var dayFloor = Math.floor(timeRemaining / day);
+    var hourFloor = Math.floor((timeRemaining - dayFloor * day) / hour);
+    var minuteFloor = Math.floor(
+      (timeRemaining - dayFloor * day - hourFloor * hour) / minute
+    );
+    var secondFloor = Math.floor(
+      timeRemaining - dayFloor * day - hourFloor * hour - minuteFloor * minute
+    );
+    var countdownCompleted = "Completed";
+
+    if (secondFloor <= 0 && minuteFloor <= 0) {
+      // window.location.reload(true);
+      // clearInterval(MModeTimer);
+      // document.getElementById("haha").innerHTML = countdownCompleted;
+    } else {
+      if (1647365400 > currentTime) {
+        return (
+          dayFloor +
+          " Days " +
+          hourFloor +
+          " Hours " +
+          minuteFloor +
+          " Minutes " +
+          secondFloor +
+          " Seconds "
+        );
+      }
+    }
+  }
+  formatTime(secs) {
+    let hours = Math.floor(secs / 3600);
+    let minutes = Math.floor(secs / 60) % 60;
+    let seconds = secs % 60;
+    return [hours, minutes, seconds]
+      .map((v) => ("" + v).padStart(2, "0"))
+      .filter((v, i) => v !== "00" || i > 0)
+      .join(":");
+  }
+
+  render() {
+    return (
+      <div
+        className="rounded"
+        style={{ textAlign: "center", height: "64px", padding: "auto" }}
+      >
+        <h3>{this.MModeTimer()}</h3>
+      </div>
+    );
+  }
+}
 const RecentGameFadeIN = keyframes`
     from {
       opacity: 0;
@@ -351,11 +429,15 @@ export default function Home({ replays }) {
         .catch(() => {});
     }
   }, []);
+
   return (
     <>
+      {/* {MModeTimer(CountdownTarget)} */}
       <div className="list padded">
         {/*External Links */}
         <div className="list grow">
+          <Timer />
+
           <div
             className="padded rounded button"
             // style={{ minWidth: "80%" }}

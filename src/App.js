@@ -1,5 +1,5 @@
 // import React, {useState , useRef, useEffect} from 'react'
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
@@ -156,8 +156,33 @@ function App() {
     }
     return [];
   }
+
   let history = useHistory();
   console.log(history);
+  const Hint = useMemo(() => {
+    var RandomHints = [
+      "...Are you ready?",
+      "...Let's gooo!!!",
+      "...Do you have what it takes?",
+      "...Are you ready?",
+      "...Let's gooo!!!",
+      "...Do you have what it takes?",
+      "...Something big is coming",
+      "...Exclusive to Echo Combat",
+      "...The first of its kind for Echo VR",
+      "...Do you have what it takes?",
+      "...UwU",
+      "...It is time",
+      "...Not Echo Pass!",
+      "...Get ready",
+      "...For love of the community!",
+      "...For love of the game!",
+      "...Launch day!",
+      "...Pew pew pew! like never before!",
+      "...Years in the making",
+    ];
+    return RandomHints[Math.floor(Math.random() * RandomHints.length)];
+  }, []);
 
   var BannerIconTitle = "";
   if (BannerIconSrc === "/images/moderator_icon.png") {
@@ -166,10 +191,18 @@ function App() {
   if (BannerIconSrc === "/images/verified_icon.png") {
     BannerIconTitle = "Verified User";
   }
+
   return (
     <Router>
       <Nav clientData={clientData} style={{ height: "10px" }} />
       <PageBody>
+        <header style={{ fontSize: "30px", textAlign: "center" }}>
+          <p>
+            3/15/2022...
+            {/* {MModeTimer(CountdownTarget)} */}
+            {Hint}
+          </p>
+        </header>
         <Banner
           id="example-panel"
           duration={500}
