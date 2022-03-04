@@ -47,7 +47,7 @@ const AutoCompleteMatches = (
   maxAllowed,
   OptionDiv
 ) => {
-  var currentShowed = 0;
+  // var currentShowed = 0;
 
   // // Change the pattern
   // const pattern = "Silver"
