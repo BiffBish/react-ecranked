@@ -17,8 +17,8 @@ const AutoCompleteText = ({ result, OptionDiv, onClickOption }) => {
     const matchStart = match[0];
     const matchEnd = match[1];
     matches.push([result.item.slice(lastValue, matchStart), false]);
-    matches.push([result.item.slice(matchStart, matchEnd), true]);
-    lastValue = matchEnd;
+    matches.push([result.item.slice(matchStart, matchEnd + 1), true]);
+    lastValue = matchEnd + 1;
   }
   matches.push([result.item.slice(lastValue, result.item.length), false]);
 
