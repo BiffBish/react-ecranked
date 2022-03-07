@@ -51,7 +51,7 @@ export default function Teams() {
           }
           if (data.team_id === null && data.requested_team_id === null) {
             setCanJoin(true);
-            setCanCreate(true);
+            // setCanCreate(true);
           }
         }
       })
