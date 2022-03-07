@@ -112,7 +112,7 @@ const ProgressBarStyle = styled.div`
   height: 100%;
   border-radius: 8px;
   transition-duration: 3s;
-  transition-property: width;
+  transition-property: width, background-color;
 `;
 const ProgressBarTextStyle = styled.p`
   position: relative;
