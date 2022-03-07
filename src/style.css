@@ -1,9 +1,11 @@
 .rounded {
   border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
+  overflow: hidden;
 }
 .padded {
   padding: 20px;
+  box-sizing: border-box;
 }
 .grow {
   flex-grow: 1;
@@ -25,10 +27,24 @@ h2 {
   font-weight: 400;
   margin: 10px 0px;
   text-align: center;
-  flex: 0 0 100%;
+  /* flex: 0 0 100%; */
   color: #fff;
 }
-
+.daily-background {
+  background: #b35252;
+}
+.season-background {
+  background: #52a1b3;
+}
+.weekly-background {
+  background: #7ebd7e;
+}
+.community-background {
+  background: #a9b352;
+}
+.light-background {
+  background: #282828;
+}
 .button-container {
   background-color: #222;
   color: white;
@@ -73,15 +89,23 @@ h2 {
   flex-grow: 1;
 } */
 
+.container h1 {
+  text-align: center;
+  color: white;
+}
 .list {
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: stretch;
 }
-.list h1 {
+.list h2 {
+  font-size: 36px;
+  font-weight: 400;
+  margin: 10px 0px;
   text-align: center;
-  color: white;
+  /* flex: 0 0 100%; */
+  color: #fff;
 }
 
 .button:hover {
