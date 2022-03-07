@@ -65,14 +65,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
   if (localStorage.getItem("MODERATOR") == 1) {
     is_editable = true;
   }
-  console.log(
-    "[TEST] " +
-      oculus_id +
-      "   " +
-      parseInt(userData["oculus_id"]) +
-      "    " +
-      is_editable
-  );
+
   const updateIsEdit = (e, value = "null") => {};
   const [currentText, setCurrentText] = useState(userData["about_string"]);
   const [editing, setEditing] = useState(false);
@@ -89,7 +82,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
       headers: { Authorization: authToken, "Content-Type": "application/json" },
       body: JSON.stringify({ about_string: currentText }),
     };
-    console.log({ about_string: currentText });
+    //Unusual is not a cutie
 
     fetch(
       "https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"],

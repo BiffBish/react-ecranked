@@ -610,6 +610,11 @@ export default function Home({ replays }) {
               </ContributorLink>
               - Moderator and Creative control
               <br />
+              <ContributorLink to={"/user/Unusual_Danger/stats"}>
+                Unusual_Danger
+              </ContributorLink>
+              - Learning Developer
+              <br />
             </p>
           </div>
 

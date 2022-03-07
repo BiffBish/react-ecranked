@@ -2,6 +2,31 @@
 
 import styled from "styled-components";
 import React, { useState } from "react";
+
+function timeDifference(current, previous) {
+  var msPerMinute = 60 * 1000;
+  var msPerHour = msPerMinute * 60;
+  var msPerDay = msPerHour * 24;
+  var msPerMonth = msPerDay * 30;
+  var msPerYear = msPerDay * 365;
+
+  var elapsed = current - previous;
+
+  if (elapsed < msPerMinute) {
+    return Math.round(elapsed / 1000) + " seconds ago";
+  } else if (elapsed < msPerHour) {
+    return Math.round(elapsed / msPerMinute) + " minutes ago";
+  } else if (elapsed < msPerDay) {
+    return Math.round(elapsed / msPerHour) + " hours ago";
+  } else if (elapsed < msPerMonth) {
+    return "approximately " + Math.round(elapsed / msPerDay) + " days ago";
+  } else if (elapsed < msPerYear) {
+    return "approximately " + Math.round(elapsed / msPerMonth) + " months ago";
+  } else {
+    return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
+  }
+}
+
 const ContainerTitle = styled.div`
   font-size: 36px;
   font-weight: 400;
@@ -54,29 +79,29 @@ const EditButtonStyle = styled.div`
     color: #000;
   }
 `;
-const AboutStringBox = ({ userData, oculus_id }) => {
+const AboutStringBox = ({ teamData, oculus_id }) => {
   var is_editable = false;
-  // if (oculus_id == null) {
-  //   is_editable = false;
-  // }
-  // // eslint-disable-next-line
-  // if (oculus_id == parseInt(userData["oculus_id"])) {
-  //   is_editable = true;
-  // }
-  // // eslint-disable-next-line
-  // if (localStorage.getItem("MODERATOR") == 1) {
-  //   is_editable = true;
-  // }
+  if (oculus_id == null) {
+    is_editable = false;
+  }
+  // eslint-disable-next-line
+  if (oculus_id == parseInt(teamData["admin_id"])) {
+    is_editable = true;
+  }
+  // eslint-disable-next-line
+  if (localStorage.getItem("MODERATOR") == 1) {
+    is_editable = true;
+  }
   console.log(
     "[TEST] " +
       oculus_id +
       "   " +
-      parseInt(userData["oculus_id"]) +
+      parseInt(teamData["admin_id"]) +
       "    " +
       is_editable
   );
   const updateIsEdit = (e, value = "null") => {};
-  const [currentText, setCurrentText] = useState(userData["description"]);
+  const [currentText, setCurrentText] = useState(teamData["description"]);
   const [editing, setEditing] = useState(false);
 
   const onClickSubmit = () => {
@@ -94,7 +119,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
     console.log({ description: currentText });
 
     fetch(
-      "https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"],
+      "https://ecranked.ddns.net/api/v1/team/" + teamData["id"],
       requestOptions
     )
       .then((response) => response.json())
@@ -141,13 +166,13 @@ const AboutStringBox = ({ userData, oculus_id }) => {
     );
   } else {
     if (is_editable) {
-      if (userData["description"] == null) {
+      if (teamData["description"] == null) {
         return (
           <>
             <EditButtonStyle
               style={{ color: "white" }}
               onClick={() => {
-                setCurrentText(userData["description"]);
+                setCurrentText(teamData["description"]);
                 setEditing(true);
               }}
             >
@@ -159,11 +184,11 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["description"]}
+              {teamData["description"]}
             </div>
             <EditButtonStyle
               onClick={() => {
-                setCurrentText(userData["description"]);
+                setCurrentText(teamData["description"]);
                 setEditing(true);
               }}
             >
@@ -187,7 +212,7 @@ const AboutStringBox = ({ userData, oculus_id }) => {
       // } else {
       return (
         <>
-          <div>{userData["description"]}</div>
+          <div>{teamData["description"]}</div>
         </>
       );
       // }
@@ -409,39 +434,45 @@ const AboutAvatar = ({ userData, oculus_id }) => {
     );
   }
 };
-function timeDifference(current, previous) {
-  var msPerMinute = 60 * 1000;
-  var msPerHour = msPerMinute * 60;
-  var msPerDay = msPerHour * 24;
-  var msPerMonth = msPerDay * 30;
-  var msPerYear = msPerDay * 365;
 
-  var elapsed = current - previous;
+const TeamName = ({allowEdit, requestedName}) => {
 
-  if (elapsed < msPerMinute) {
-    return Math.round(elapsed / 1000) + " seconds ago";
-  } else if (elapsed < msPerHour) {
-    return Math.round(elapsed / msPerMinute) + " minutes ago";
-  } else if (elapsed < msPerDay) {
-    return Math.round(elapsed / msPerHour) + " hours ago";
-  } else if (elapsed < msPerMonth) {
-    return "approximately " + Math.round(elapsed / msPerDay) + " days ago";
-  } else if (elapsed < msPerYear) {
-    return "approximately " + Math.round(elapsed / msPerMonth) + " months ago";
-  } else {
-    return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
-  }
+  // if (!allowEdit){
+
+    return( 
+      <div className="padded rounded button">Request team name change</div>
+    )
+  // }
+
 }
+
+
 export const AboutTeam = ({ teamData }) => {
   const oculus_id = localStorage.getItem("OCULUS_ID");
-  // var iconSrc = null;
+  var allowEdit = false;
+  if (oculus_id == null) {
+    allowEdit = false;
+  }
+  // eslint-disable-next-line
+  if (oculus_id == parseInt(teamData["admin_id"])) {
+    allowEdit = true;
+  }
+  // eslint-disable-next-line
+  if (localStorage.getItem("MODERATOR") == 1) {
+    allowEdit = true;
+  }  
+
+  //allowEdit
 
   return (
     <AboutMeStyle>
+
+  
+
       <div>
         <ContainerTitle>About Us</ContainerTitle>
       </div>
-      <AboutStringBox userData={teamData} oculus_id={oculus_id} />
+      <AboutStringBox teamData={teamData} oculus_id={oculus_id} />
       {/* <AboutAvatar userData={teamData} oculus_id={oculus_id} /> */}
       <footer>
         Joined{" "}
@@ -449,6 +480,7 @@ export const AboutTeam = ({ teamData }) => {
           ? "before ECRanked launched"
           : timeDifference(Date.now(), teamData.join_date * 1000)}
       </footer>
+      <TeamName />
     </AboutMeStyle>
   );
 };
