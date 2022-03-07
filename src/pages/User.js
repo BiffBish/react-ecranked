@@ -208,6 +208,10 @@ export default function User({ username, setBannerCallback, subDomain }) {
             if (data.moderator === true) {
               iconSrc = "/images/moderator_icon.png";
             }
+            if (data.oculus_name === "Unusual_Danger") {
+              iconSrc = "/images/capture_point_crown_green.png";
+            }
+
             console.log(data);
             setBannerCallback(data["oculus_name"], iconSrc);
             if (username !== data["oculus_name"]) {

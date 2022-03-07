@@ -191,7 +191,9 @@ function App() {
   if (BannerIconSrc === "/images/verified_icon.png") {
     BannerIconTitle = "Verified User";
   }
-
+  if (BannerIconSrc === "/images/capture_point_crown_green.png") {
+    BannerIconTitle = "Certified Cutie";
+  }
   return (
     <Router>
       <Nav clientData={clientData} style={{ height: "10px" }} />
