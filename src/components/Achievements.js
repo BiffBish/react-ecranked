@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { AchievementHeaderButton } from "./achievements/AchievementHeaderButton";
 import { AchievementLoadoutStats } from "./achievements/AchievementLoadoutStats";
+import { MasterAchievementBar } from "./MasterAchievementBar";
 import { SegmentedProgressBar } from "./SegmentedProgressBar";
 var achievementFormatingData = require("./AchievementData.json");
 function map_range(value, low1, high1, low2, high2) {
@@ -141,6 +142,8 @@ const AchievementDoubleRow = styled.div`
 `;
 
 const AchievementPopupStyle = styled.div`
+  box-sizing: border-box;
+
   position: absolute;
   color: white;
   padding: 10px;
@@ -148,8 +151,8 @@ const AchievementPopupStyle = styled.div`
   background-color: #222;
   color: white;
   // float: left;
-  border: 1px solid white;
-  border-radius: 10px;
+  // border: 1px solid white;
+  // border-radius: 10px;
   // display: flex;
   // flex-wrap: wrap;
   // gap: 0px 10px;
@@ -159,11 +162,15 @@ const AchievementPopupStyle = styled.div`
 const AchievementPopup = ({
   topPosition,
   leftPosition,
+  width,
+  height,
   visible,
   visibilityCallback,
   selectedNumber,
   achievementData,
 }) => {
+  let displayedValue = achievementData.values[selectedNumber.toString()];
+
   let SelectedAchievement = achievementFormatingData[selectedNumber.toString()];
   if (SelectedAchievement == null) return null;
   let SelectedAchievementDataName = SelectedAchievement.progressDataName;
@@ -188,21 +195,79 @@ const AchievementPopup = ({
     uncompletedStatement = uncompletedStatement.replace("%c", NumberEarned);
     uncompletedStatement = uncompletedStatement.replace("%m", MaxNumber);
   }
+
+  let CurrentStepNumber = SelectedAchievement.length - 1;
+  for (let index = 0; index < SelectedAchievement.length; index++) {
+    const element = SelectedAchievement[index];
+    if (element.Percent > displayedValue) {
+      CurrentStepNumber = index;
+      break;
+    }
+  }
+
   return (
     <AchievementPopupStyle
+      className="rounded"
       onMouseLeave={() => {
         visibilityCallback(false);
       }}
       style={{
         top: topPosition,
         left: leftPosition,
+        // height: height,
+        width: width,
         visibility: visible ? "visible" : "hidden",
       }}
     >
-      <div style={{ fontSize: 20 }}>{SelectedAchievement.Title}</div>
-      <div style={{ fontSize: 10, padding: "0px 0px 10px" }}>
-        {SelectedAchievement.Description}
-      </div>
+      {SelectedAchievement.map((element, index) => {
+        let scalePercent = 50;
+        if (CurrentStepNumber == index) scalePercent = 100;
+        if (CurrentStepNumber == index + 1) scalePercent = 70;
+        if (CurrentStepNumber == index - 1) scalePercent = 70;
+        // if (CurrentStepNumber == index + 2) scalePercent = 60;
+        // if (CurrentStepNumber == index - 2) scalePercent = 60;
+        return (
+          <div
+            className="horizontal-container"
+            style={{
+              transform: "scale(" + scalePercent + "%)",
+              transformOrigin: "left",
+              height: scalePercent / 2 + "px",
+            }}
+          >
+            <img
+              src={
+                "/images/" +
+                (element.Percent <= displayedValue
+                  ? "neon_green_checkmark"
+                  : "lock_clear_no_square") +
+                ".png"
+              }
+              alt="iconImage"
+              style={{ height: "40px", width: "40px" }}
+            />
+            {/* <div
+              className="rounded"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor:
+                  element.Percent <= displayedValue ? "green" : "red",
+              }}
+            >
+              
+              </div> */}
+
+            <div>
+              <div style={{ fontSize: 20 }}>{element.Title}</div>
+              <div style={{ fontSize: 10, padding: "0px 0px 10px" }}>
+                {element.Description}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
       <div style={{ fontSize: 10 }}>{uncompletedStatement}</div>
 
       {/* <div style={{}}>
@@ -301,7 +366,7 @@ export default function Achievements({ userData }) {
   for (let index = 0; index < 63; index++) {
     totalPercentage += achievementData.values[index.toString()];
   }
-  achievementData.values["63"] = totalPercentage / 64;
+
   let dailyItemUsage = {
     pulsar: false,
     nova: false,
@@ -407,53 +472,61 @@ export default function Achievements({ userData }) {
   const [hn, setHn] = useState([]);
 
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+  const [popupSize, setPopupSize] = useState({ width: 0, height: 0 });
   const [popupVisibility, setPopupVisibility] = useState(true);
   const [popupSelectedNumber, setPopupSelectedNumber] = useState(0);
 
   const [fullView, setFullView] = useState(false);
 
-  var cb = (ref, selectedNumber) => {
+  var cb = (ref, selectedNumber, showPopup = true) => {
     console.log(ref);
     setPopupPosition({
       top: ref.current.offsetTop + ref.current.offsetHeight,
       left: ref.current.offsetLeft,
     });
-    setPopupVisibility(true);
+
+    setPopupSize({
+      width: ref.current.offsetWidth,
+      height: ref.current.offsetHeight,
+    });
+    setPopupVisibility(showPopup);
     setPopupSelectedNumber(selectedNumber);
   };
 
   const [selectedAchievementType, setSelectedAchievementType] =
     useState("daily");
+  // achievementData.values["1"] = userData["team_id"] ? 1 : 0;
+  // achievementData.values["2"] = userData["discord_name"] !== null ? 1 : 0;
+  // achievementData.values["3"] = userData["about_string"] ? 1 : 0;
+  // achievementData.values["4"] = userData["avatar"] ? 1 : 0;
+
+  var communityTotal = 0;
+  for (let index = 1; index <= 4; index++) {
+    communityTotal += achievementData.values[index];
+  }
+  communityTotal /= 4;
 
   var dailyTotal = 0;
-  for (let index = 5; index < 22; index++) {
+  for (let index = 5; index <= 29; index++) {
     dailyTotal += achievementData.values[index];
   }
-  dailyTotal /= 17;
+  dailyTotal /= 25;
 
   var weeklyTotal = 0;
-  for (let index = 22; index < 44; index++) {
+  for (let index = 30; index <= 54; index++) {
     weeklyTotal += achievementData.values[index];
   }
-  weeklyTotal /= 14;
+  weeklyTotal /= 25;
 
   var alltimeTotal = 0;
-  for (let index = 44; index < 63; index++) {
+  for (let index = 54; index <= 79; index++) {
     alltimeTotal += achievementData.values[index];
   }
-  alltimeTotal /= 19;
-
-  const SegmentedAchievementProgressBar = ({ AN: AchievementNumber }) => {
-    return (
-      <SegmentedProgressBar
-        Title={achievementFormatingData[AchievementNumber.toString()].Title}
-        Percentage={achievementData.values[AchievementNumber.toString()] * 100}
-      />
-    );
-  };
+  alltimeTotal /= 25;
 
   return (
-    <AchievementStyle
+    <div
+      className="padded rounded list"
       style={{
         height: fullView ? 2000 : 50,
         ...(fullView
@@ -467,6 +540,8 @@ export default function Achievements({ userData }) {
       <AchievementPopup
         topPosition={popupPosition.top}
         leftPosition={popupPosition.left}
+        width={popupSize.width}
+        height={popupSize.height}
         visible={popupVisibility}
         visibilityCallback={setPopupVisibility}
         selectedNumber={popupSelectedNumber}
@@ -490,98 +565,86 @@ export default function Achievements({ userData }) {
           updateHoverCallback={setHn}
           selectedNumbers={[]}
         /> */}
-        <SegmentedProgressBar
-          Percentage={achievementData.values["63"]}
-          Title={""}
-          Height={"50px"}
-          EnableBorder={fullView}
+        <div
+          className="horizontal-container"
+          style={{
+            gap: fullView ? "" : "0px",
+          }}
+        >
+          <MasterAchievementBar
+            CommunityPercent={(communityTotal * 5) / 80}
+            DailyPercent={(dailyTotal * 25) / 80}
+            WeeklyPercent={(weeklyTotal * 25) / 80}
+            SeasonPercent={(alltimeTotal * 25) / 80}
+            // Percentage={achievementData.values["63"]}
+            Title={""}
+            Height={"50px"}
+            EnableBorder={fullView}
+          />
+
+          <h3
+            style={{
+              margin: fullView ? "auto 10px" : "auto 0px",
+              width: fullView ? "90px" : "0px",
+              flexBasis: 0,
+              transitionProperty: "margin,width",
+              transitionDuration: "0.5s",
+            }}
+          >
+            {/* {Math.round(
+              (communityTotal * 5 +
+                dailyTotal * 25 +
+                weeklyTotal * 25 +
+                alltimeTotal * 25) /
+                0.008
+            ) /
+              100 +
+              "%"} */}
+          </h3>
+        </div>
+      </div>
+      <div className="list" style={{ width: "70%", margin: "0 auto" }}>
+        <div className="horizontal-container">
+          <AchievementHeaderButton
+            selectedAchievementType={selectedAchievementType}
+            setSelectedAchievementType={setSelectedAchievementType}
+            name={"community"}
+            displayName={"Community"}
+            progress={communityTotal}
+            progressClass={"community-background"}
+          />
+          <AchievementHeaderButton
+            selectedAchievementType={selectedAchievementType}
+            setSelectedAchievementType={setSelectedAchievementType}
+            name={"daily"}
+            displayName={"Daily"}
+            progress={dailyTotal}
+            progressClass={"daily-background"}
+          />
+          <AchievementHeaderButton
+            selectedAchievementType={selectedAchievementType}
+            setSelectedAchievementType={setSelectedAchievementType}
+            name={"weekly"}
+            displayName={"Weekly"}
+            progress={weeklyTotal}
+            progressClass={"weekly-background"}
+          />
+          <AchievementHeaderButton
+            selectedAchievementType={selectedAchievementType}
+            setSelectedAchievementType={setSelectedAchievementType}
+            name={"global"}
+            displayName={"Season"}
+            progress={alltimeTotal}
+            progressClass={"season-background"}
+          />
+        </div>
+        <AchievementLoadoutStats
+          userData={userData}
+          selectedAchievementType={selectedAchievementType}
+          achievementData={achievementData}
+          cb={cb}
         />
       </div>
-      <AchievementHeaderStyle>
-        <AchievementHeaderButton
-          selectedAchievementType={selectedAchievementType}
-          setSelectedAchievementType={setSelectedAchievementType}
-          name={"daily"}
-          displayName={"Daily"}
-          progress={dailyTotal}
-        />
-        <AchievementHeaderButton
-          selectedAchievementType={selectedAchievementType}
-          setSelectedAchievementType={setSelectedAchievementType}
-          name={"weekly"}
-          displayName={"Weekly"}
-          progress={weeklyTotal}
-        />
-        <AchievementHeaderButton
-          selectedAchievementType={selectedAchievementType}
-          setSelectedAchievementType={setSelectedAchievementType}
-          name={"global"}
-          displayName={"All time"}
-          progress={alltimeTotal}
-        />
-      </AchievementHeaderStyle>
-      <AchievementLoadoutStats
-        selectedAchievementType={selectedAchievementType}
-        ahData={achievementData}
-      />
-      {selectedAchievementType === "daily"
-        ? // <AchievementsContainer>
-          //   <LeftAchievementCollumn>
-          //     <SegmentedAchievementProgressBar AN={5} />
-          //     <SegmentedAchievementProgressBar AN={6} />
-          //     <SegmentedAchievementProgressBar AN={7} />
-          //     <SegmentedAchievementProgressBar AN={8} />
-          //     <SegmentedAchievementProgressBar AN={9} />
-          //     <SegmentedAchievementProgressBar AN={10} />
-          //     <SegmentedAchievementProgressBar AN={11} />
-          //     <SegmentedAchievementProgressBar AN={12} />
-          //     <SegmentedAchievementProgressBar AN={13} />
-          //     <SegmentedAchievementProgressBar AN={14} />
-          //     <SegmentedAchievementProgressBar AN={15} />
-          //     <SegmentedAchievementProgressBar AN={16} />
-          //   </LeftAchievementCollumn>
-          // </AchievementsContainer>
-          null
-        : null}
-      {selectedAchievementType === "weekly"
-        ? // <AchievementsContainer>
-          //   <LeftAchievementCollumn>
-          //     <SegmentedAchievementProgressBar AN={22} />
-          //     <SegmentedAchievementProgressBar AN={23} />
-          //     <SegmentedAchievementProgressBar AN={24} />
-          //     <SegmentedAchievementProgressBar AN={25} />
-          //     <SegmentedAchievementProgressBar AN={26} />
-          //     <SegmentedAchievementProgressBar AN={27} />
-          //     <SegmentedAchievementProgressBar AN={28} />
-          //     <SegmentedAchievementProgressBar AN={29} />
-          //     <SegmentedAchievementProgressBar AN={30} />
-          //     <SegmentedAchievementProgressBar AN={31} />
-          //     <SegmentedAchievementProgressBar AN={43} />
-          //   </LeftAchievementCollumn>
-
-          //   {/* <RightAchievementCollumn></RightAchievementCollumn> */}
-          // </AchievementsContainer>
-          null
-        : null}
-      {selectedAchievementType === "global"
-        ? // <AchievementsContainer>
-          //   <LeftAchievementCollumn>
-          //     <SegmentedAchievementProgressBar AN={44} />
-          //     <SegmentedAchievementProgressBar AN={45} />
-          //     <SegmentedAchievementProgressBar AN={46} />
-          //     <SegmentedAchievementProgressBar AN={47} />
-          //     <SegmentedAchievementProgressBar AN={48} />
-          //     <SegmentedAchievementProgressBar AN={49} />
-          //     <SegmentedAchievementProgressBar AN={50} />
-          //     <SegmentedAchievementProgressBar AN={51} />
-          //     <SegmentedAchievementProgressBar AN={52} />
-          //     <SegmentedAchievementProgressBar AN={53} />
-          //     <SegmentedAchievementProgressBar AN={54} />
-          //     <SegmentedAchievementProgressBar AN={55} />
-          //   </LeftAchievementCollumn>
-          // </AchievementsContainer>
-          null
-        : null}
-    </AchievementStyle>
+    </div>
   );
 }

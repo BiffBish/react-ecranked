@@ -8,25 +8,33 @@ function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
 const AchievementSize = 40;
-export const SegmentedProgressBar = ({
-  Percentage = 0,
+export const MasterAchievementBar = ({
   Title,
   Height = AchievementSize - 4,
   EnableBorder = true,
-  SecondaryPercentage = 0.0,
-  ProgressBarClass,
+  DailyPercent = 0.25,
+  WeeklyPercent = 0.25,
+  SeasonPercent = 0.25,
+  CommunityPercent = 0.25,
 }) => {
-  const [value, setValue] = React.useState(0);
+  const [communityValue, setCommunityValue] = React.useState(0);
+  const [dailyValue, setDailyValue] = React.useState(0);
+  const [weeklyValue, setWeeklyValue] = React.useState(0);
+  const [seasonValue, setSeasonValue] = React.useState(0);
+
   const [secondaryValue, setSecondaryValue] = React.useState(0);
   const barRef = useRef();
   const fullRef = useRef();
 
   const [backgroundHighlighted, setBackgroundHighlighted] =
     React.useState(false);
+
   React.useEffect(() => {
-    setValue(Percentage * 100);
-    setSecondaryValue(SecondaryPercentage * 100);
-  }, [Percentage]);
+    setCommunityValue(CommunityPercent * 100);
+    setDailyValue(DailyPercent * 100);
+    setWeeklyValue(WeeklyPercent * 100);
+    setSeasonValue(SeasonPercent * 100);
+  }, [CommunityPercent, DailyPercent, WeeklyPercent, SeasonPercent]);
 
   function getWidth() {
     if (barRef.current === undefined) {
@@ -37,6 +45,7 @@ export const SegmentedProgressBar = ({
 
   return (
     <SegmentedProgressBarContainerStyle
+      className="grow"
       style={
         backgroundHighlighted
           ? {
@@ -66,20 +75,48 @@ export const SegmentedProgressBar = ({
       >
         <ProgressBarStyle
           style={{
-            width: `${map_range(secondaryValue, 0, 100, 0, 200)}%`,
-            backgroundColor: "#333",
+            width: `${map_range(
+              communityValue + dailyValue + weeklyValue + seasonValue,
+              0,
+              100,
+              0,
+              200
+            )}%`,
+            transform: `translate(-50%, -0%)`,
           }}
-          className="progress"
-          color=""
-        ></ProgressBarStyle>
+          className="progress season-background"
+        />
         <ProgressBarStyle
           style={{
-            width: `${map_range(value, 0, 100, 0, 200)}%`,
+            width: `${map_range(
+              communityValue + dailyValue + weeklyValue,
+              0,
+              100,
+              0,
+              200
+            )}%`,
             transform: `translate(-50%, -100%)`,
           }}
-          className={"progress " + ProgressBarClass}
-        ></ProgressBarStyle>
-        <ProgressBarTextStyle></ProgressBarTextStyle>
+          className="progress weekly-background"
+          color=""
+        />
+        <ProgressBarStyle
+          style={{
+            width: `${map_range(communityValue + dailyValue, 0, 100, 0, 200)}%`,
+            transform: `translate(-50%, -200%)`,
+          }}
+          className="progress daily-background"
+          color=""
+        />
+        <ProgressBarStyle
+          style={{
+            width: `${map_range(communityValue, 0, 100, 0, 200)}%`,
+            transform: `translate(-50%, -300%)`,
+          }}
+          className="progress community-background"
+          color=""
+        />
+
         {/* {segments.map((segment) => {
               return (
                 <SegmentOfProgressBar
@@ -114,11 +151,11 @@ const ProgressBarStyle = styled.div`
   transition-duration: 3s;
   transition-property: width;
 `;
-const ProgressBarTextStyle = styled.p`
-  position: relative;
+const ProgressBarTextStyle = styled.h3`
+  position: absolute;
   margin: -${AchievementSize - 4}px 4px;
   text-align: left;
-
+  top: 100%;
   z-index: 5;
 `;
 
@@ -150,7 +187,7 @@ const SegmentOfProgressBar = styled.div`
 `;
 const SegmentedProgressBarContainerStyle = styled.div`
   // height: ${AchievementSize}px;
-
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   line-height: 16px;

@@ -7,21 +7,25 @@ export const AchievementHeaderButton = ({
   name,
   displayName,
   progress,
+  progressClass,
 }) => {
   return (
     <AchievementHeaderButtonStyle
-      style={
-        selectedAchievementType === name
+      className="grow rounded"
+      style={{
+        width: "0px",
+        ...(selectedAchievementType === name
           ? {
               backgroundColor: "#333",
             }
-          : {}
-      }
+          : {}),
+      }}
       onClick={() => {
         setSelectedAchievementType(name);
       }}
     >
       <ProgressBarStyle
+        className={progressClass}
         style={{
           width: progress * 100 + "%",
         }}
@@ -38,27 +42,25 @@ export const AchievementHeaderButton = ({
 };
 
 const ProgressBarStyle = styled.div`
-  background: red;
+  // background: #b35252;
   position: relative;
   height: 100%;
 `;
-const TextStyle = styled.div`
+const TextStyle = styled.h3`
   position: relative;
   height: 100%;
-  transform: translate(0, -100%);
+  transform: translate(0, -240%);
 `;
 const AchievementHeaderButtonStyle = styled.div`
-  height: 40px;
+  // height: 80px;
   // padding: 10px 10px 0px;
   background-color: #222;
   color: white;
   float: left;
-  border: 1px solid white;
-  border-radius: 10px;
   gap: 0px 10px;
   flex-grow: 1;
   text-align: center;
-  height: 20px;
+  height: 40px;
   &:hover {
     background-color: #555;
     color: #000;

@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import React, { useRef, useState } from "react";
+import { matchPath } from "react-router-dom";
 
 import styled from "styled-components";
 import { AchievementsContainer, LeftAchievementCollumn } from "../Achievements";
@@ -70,155 +71,414 @@ const ProgressBarTextStyle = styled.p`
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
+const SegmentedLProgressBar = ({
+  achievementData,
+  AchNum,
+  icon = "comet",
+  pubRequirement = 20,
+  totalGames = 0,
+  type,
+  cb = () => {},
+  locked = false,
+}) => {
+  const fullRef = useRef();
+
+  if (achievementData == null) {
+    return null;
+  }
+  //   const [value, setValue] = React.useState(0);
+
+  //   const [backgroundHighlighted, setBackgroundHighlighted] =
+  //     React.useState(false);
+  //   React.useEffect(() => {
+  //     setValue(AchievementData.values[AchievementNumber.toString()] * 100);
+  //   }, [AchievementData, AchievementNumber]);
+  //   function getWidth() {
+  //     if (barRef.current === undefined) {
+  //       return 1;
+  //     }
+  //     return barRef.current.getBoundingClientRect().width;
+  //   }
+  let SelectedAchievement = achievementFormatingData[AchNum.toString()];
+  let displayedValue = achievementData.values[AchNum.toString()];
+  let CurrentStepNumber = -1;
+
+  let DisplayedTitle = "Completed!";
+  for (let index = 0; index < SelectedAchievement.length; index++) {
+    const element = SelectedAchievement[index];
+    if (element.Percent > displayedValue) {
+      CurrentStepNumber = index;
+      DisplayedTitle = element.Title;
+      break;
+    }
+  }
+  return (
+    <div style={{ display: "flex", opacity: locked ? 0.5 : 1 }} ref={fullRef}>
+      <img
+        src={"/images/" + icon + ".png"}
+        alt="iconImage"
+        style={{ height: "38px", width: "38px" }}
+      />
+      <div
+        style={{ flexGrow: 1 }}
+        onMouseEnter={() => {
+          // updateHoverCallback(AchievementNumber);
+          // setBackgroundHighlighted(true);
+          cb(fullRef, AchNum, true);
+        }}
+        onMouseLeave={() => {
+          cb(fullRef, AchNum, false);
+
+          // updateHoverCallback([]);
+          // setBackgroundHighlighted(false);
+        }}
+      >
+        <SegmentedProgressBar
+          Title={DisplayedTitle}
+          // Title={achievementData.values[AchievementNumber.toString()]}
+          Percentage={achievementData.values[AchNum.toString()]}
+          SecondaryPercentage={Math.min(totalGames / pubRequirement, 1)}
+          // Percentage={0.5}
+          Height={20}
+          ProgressBarClass={type + "-background"}
+        />
+      </div>
+    </div>
+
+    // <SegmentedProgressBarContainerStyle
+    //   style={
+    //     backgroundHighlighted
+    //       ? {
+    //           backgroundColor: "#fff4",
+    //         }
+    //       : {
+    //           backgroundColor: "#fff0",
+    //         }
+    //   }
+
+    //   ref={fullRef}
+    // >
+    //   {/* {AchievementNumber} */}
+    //   {}
+    //   <ProgressDivStyle
+    //     className="progress-div"
+    //     style={{ height: "20px" }}
+    //     ref={barRef}
+    //   >
+    //     <ProgressBarStyle
+    //       style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
+    //       className="progress"
+    //     ></ProgressBarStyle>
+    //     <ProgressBarTextStyle></ProgressBarTextStyle>
+    //     {/* {segments.map((segment) => {
+    //       return (
+    //         <SegmentOfProgressBar
+    //           style={{
+    //             backgroundColor: segment.earned ? `green` : `white`,
+    //             transform: `translate(${
+    //               segment.percentage * 100 * 0.5 * getWidth()
+    //             }%, 0%)`,
+    //           }}
+    //         />
+    //       );
+    //     })} */}
+    //   </ProgressDivStyle>
+    // </SegmentedProgressBarContainerStyle>
+  );
+};
 
 export const AchievementLoadoutStats = ({
+  userData,
   selectedAchievementType = "daily",
-  ahData: achievementData,
+  achievementData,
   cb = () => {},
   setHn = () => {},
 }) => {
-  const SegmentedLoadoutProgressBar = ({ AchNum, icon = "comet" }) => {
-    //   const [value, setValue] = React.useState(0);
-    //   const barRef = useRef();
-    //   const fullRef = useRef();
+  if (achievementData == null || userData == null) {
+    return null;
+  }
+  let achievementItems = [
+    [5, "pulsar", 0],
+    [6, "nova", 0],
+    [7, "comet", 0],
+    [8, "meteor", 0],
+    [9, "detonator", 0],
+    [10, "stun_field", 0],
+    [11, "arc_mine", 0],
+    [12, "instant_repair", 0],
+    [13, "repair_matrix", 0],
+    [14, "threat_scanner", 0],
+    [15, "energy_barrier", 0],
+    [16, "phaseshift", 0],
+    [17, "loadout", 0],
+    [18, "deaths", 0],
+    [19, "capture_point", 0],
+    [20, "payload", 0],
+    [21, "team_proximity", 0],
+    [22, "enemy_proximity", 0],
+    [23, "speed", 0],
+    [24, "inverted", 0],
+    [25, "dyson", 0],
+    [26, "combustion", 0],
+    [27, "fission", 0],
+    [28, "surge", 0],
+  ];
 
-    //   const [backgroundHighlighted, setBackgroundHighlighted] =
-    //     React.useState(false);
-    //   React.useEffect(() => {
-    //     setValue(AchievementData.values[AchievementNumber.toString()] * 100);
-    //   }, [AchievementData, AchievementNumber]);
-    //   function getWidth() {
-    //     if (barRef.current === undefined) {
-    //       return 1;
-    //     }
-    //     return barRef.current.getBoundingClientRect().width;
-    //   }
+  let lockedAchievemetns = [];
+
+  userData.daily_stats.top_loadout.forEach((element) => {});
+
+  // let lockedAchievemetns = useMemo(getLockedStuff());
+  if (selectedAchievementType === "daily") {
     return (
-      <div style={{ display: "flex" }}>
-        <img
-          src={"/images/" + icon + ".png"}
-          alt="iconImage"
-          style={{ height: "50px", width: "50px" }}
+      <div className="list rounded padded light-background">
+        <SegmentedLProgressBar
+          AchNum={29}
+          icon={"pubs"}
+          achievementData={achievementData}
+          cb={cb}
+          type={"daily"}
         />
-        <div style={{ flexGrow: 1 }}>
-          <SegmentedProgressBar
-            Title={achievementFormatingData[AchNum.toString()].Title}
-            // Title={achievementData.values[AchievementNumber.toString()]}
-            Percentage={achievementData.values[AchNum.toString()]}
-            // Percentage={0.5}
-          />
+        <div className="container">
+          <div className="horizontal-container">
+            <div className="list grow">
+              {achievementItems.slice(0, 12).map((element) => {
+                return (
+                  <SegmentedLProgressBar
+                    AchNum={element[0]}
+                    icon={element[1]}
+                    type={"daily"}
+                    cb={cb}
+                    achievementData={achievementData}
+                  />
+                );
+              })}
+            </div>
+            <div className="list grow">
+              {achievementItems.slice(12, 24).map((element) => {
+                return (
+                  <SegmentedLProgressBar
+                    AchNum={element[0]}
+                    icon={element[1]}
+                    type={"daily"}
+                    cb={cb}
+                    achievementData={achievementData}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
-
-      // <SegmentedProgressBarContainerStyle
-      //   style={
-      //     backgroundHighlighted
-      //       ? {
-      //           backgroundColor: "#fff4",
-      //         }
-      //       : {
-      //           backgroundColor: "#fff0",
-      //         }
-      //   }
-      //   onMouseEnter={() => {
-      //     updateHoverCallback(AchievementNumber);
-      //     setBackgroundHighlighted(true);
-      //     cb(fullRef, AchievementNumber);
-      //   }}
-      //   onMouseLeave={() => {
-      //     updateHoverCallback([]);
-      //     setBackgroundHighlighted(false);
-      //   }}
-      //   ref={fullRef}
-      // >
-      //   {/* {AchievementNumber} */}
-      //   {}
-      //   <ProgressDivStyle
-      //     className="progress-div"
-      //     style={{ height: "20px" }}
-      //     ref={barRef}
-      //   >
-      //     <ProgressBarStyle
-      //       style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
-      //       className="progress"
-      //     ></ProgressBarStyle>
-      //     <ProgressBarTextStyle></ProgressBarTextStyle>
-      //     {/* {segments.map((segment) => {
-      //       return (
-      //         <SegmentOfProgressBar
-      //           style={{
-      //             backgroundColor: segment.earned ? `green` : `white`,
-      //             transform: `translate(${
-      //               segment.percentage * 100 * 0.5 * getWidth()
-      //             }%, 0%)`,
-      //           }}
-      //         />
-      //       );
-      //     })} */}
-      //   </ProgressDivStyle>
-      // </SegmentedProgressBarContainerStyle>
     );
-  };
+  }
+  if (selectedAchievementType === "weekly") {
+    return (
+      <div className="list rounded padded light-background">
+        <SegmentedLProgressBar
+          AchNum={29 + 25}
+          icon={"pubs"}
+          achievementData={achievementData}
+          cb={cb}
+          type={"weekly"}
+        />
+        <div className="container">
+          <div className="horizontal-container">
+            <div className="list grow">
+              {achievementItems.slice(0, 12).map((element) => {
+                return (
+                  <SegmentedLProgressBar
+                    AchNum={element[0] + 25}
+                    icon={element[1]}
+                    type={"weekly"}
+                    cb={cb}
+                    achievementData={achievementData}
+                  />
+                );
+              })}
+            </div>
+            <div className="list grow">
+              {achievementItems.slice(12, 24).map((element) => {
+                return (
+                  <SegmentedLProgressBar
+                    AchNum={element[0] + 25}
+                    icon={element[1]}
+                    type={"weekly"}
+                    cb={cb}
+                    achievementData={achievementData}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (selectedAchievementType === "global") {
+    return (
+      <div className="list rounded padded light-background">
+        <SegmentedLProgressBar
+          AchNum={79}
+          icon={"pubs"}
+          achievementData={achievementData}
+          cb={cb}
+          type={"season"}
+        />
+        <div className="container">
+          <div className="horizontal-container">
+            <div className="list grow">
+              {achievementItems.slice(0, 12).map((element) => {
+                return (
+                  <SegmentedLProgressBar
+                    AchNum={element[0] + 50}
+                    icon={element[1]}
+                    type={"season"}
+                    cb={cb}
+                    achievementData={achievementData}
+                  />
+                );
+              })}
+            </div>
+            <div className="list grow">
+              {achievementItems.slice(12, 24).map((element) => {
+                return (
+                  <SegmentedLProgressBar
+                    AchNum={element[0] + 50}
+                    icon={element[1]}
+                    type={"season"}
+                    cb={cb}
+                    achievementData={achievementData}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+  // return (
+  //   <div className="list rounded padded light-background">
+  //     {/* <h2>Challenges</h2> */}
+  //     {selectedAchievementType === "weekly" ? (
+  //       <>
+  //         <SegmentedLProgressBar AchNum={54} icon={"pubs"} />
 
-  return (
-    <ContainerStyle>
-      <ContainerTitle>Achievement Loadout Stats</ContainerTitle>
-      {selectedAchievementType === "daily" ? (
-        <AchievementsContainer>
-          <LeftAchievementCollumn>
-            <SegmentedLoadoutProgressBar AchNum={5} icon={"pulsar"} />
-            <SegmentedLoadoutProgressBar AchNum={6} icon={"nova"} />
-            <SegmentedLoadoutProgressBar AchNum={7} icon={"comet"} />
-            <SegmentedLoadoutProgressBar AchNum={8} icon={"meteor"} />
-            <SegmentedLoadoutProgressBar AchNum={9} icon={"detonator"} />
-            <SegmentedLoadoutProgressBar AchNum={10} icon={"stun_field"} />
-            <SegmentedLoadoutProgressBar AchNum={11} icon={"arcmine"} />
-            <SegmentedLoadoutProgressBar AchNum={12} icon={"instant_repair"} />
-            <SegmentedLoadoutProgressBar AchNum={13} icon={"repair_matrix"} />
-            <SegmentedLoadoutProgressBar AchNum={14} icon={"threat_scanner"} />
-            <SegmentedLoadoutProgressBar AchNum={15} icon={"energy_barrier"} />
-            <SegmentedLoadoutProgressBar AchNum={16} icon={"phaseshift"} />
-          </LeftAchievementCollumn>
-        </AchievementsContainer>
-      ) : null}
-      {selectedAchievementType === "weekly" ? (
-        <AchievementsContainer>
-          <LeftAchievementCollumn>
-            <SegmentedLoadoutProgressBar AchNum={22} icon={"pulsar"} />
-            <SegmentedLoadoutProgressBar AchNum={23} icon={"nova"} />
-            <SegmentedLoadoutProgressBar AchNum={24} icon={"comet"} />
-            <SegmentedLoadoutProgressBar AchNum={25} icon={"meteor"} />
-            <SegmentedLoadoutProgressBar AchNum={26} icon={"detonator"} />
-            <SegmentedLoadoutProgressBar AchNum={27} icon={"stun_field"} />
-            <SegmentedLoadoutProgressBar AchNum={28} icon={"arcmine"} />
-            <SegmentedLoadoutProgressBar AchNum={29} icon={"instant_repair"} />
-            <SegmentedLoadoutProgressBar AchNum={30} icon={"repair_matrix"} />
-            <SegmentedLoadoutProgressBar AchNum={31} icon={"threat_scanner"} />
-            <SegmentedLoadoutProgressBar AchNum={32} icon={"energy_barrier"} />
-            <SegmentedLoadoutProgressBar AchNum={33} icon={"phaseshift"} />
-          </LeftAchievementCollumn>
+  //         <div className="horizontal-container">
+  //           <div className="list grow">
+  //             <SegmentedLProgressBar AchNum={30} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={31} icon={"nova"} />
+  //             <SegmentedLProgressBar AchNum={32} icon={"comet"} />
+  //             <SegmentedLProgressBar AchNum={33} icon={"meteor"} />
+  //             <SegmentedLProgressBar AchNum={34} icon={"detonator"} />
+  //             <SegmentedLProgressBar AchNum={35} icon={"stun_field"} />
+  //             <SegmentedLProgressBar AchNum={36} icon={"arcmine"} />
+  //             <SegmentedLProgressBar AchNum={37} icon={"instant_repair"} />
+  //             <SegmentedLProgressBar AchNum={38} icon={"repair_matrix"} />
+  //             <SegmentedLProgressBar AchNum={39} icon={"threat_scanner"} />
+  //             <SegmentedLProgressBar AchNum={40} icon={"energy_barrier"} />
+  //             <SegmentedLProgressBar AchNum={41} icon={"phaseshift"} />
+  //           </div>
+  //           <div className="list grow">
+  //             <SegmentedLProgressBar AchNum={42} icon={"pulsar"} />
+  //             <SegmentedLProgressBar
+  //               AchNum={43}
+  //               icon={"pulsar"}
+  //               pubRequirement={25}
+  //               totalGames={userData["weekly_stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar AchNum={44} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={45} icon={"pulsar"} />
+  //             <SegmentedLProgressBar
+  //               AchNum={46}
+  //               icon={"pulsar"}
+  //               pubRequirement={25}
+  //               totalGames={userData["weekly_stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar
+  //               AchNum={47}
+  //               icon={"pulsar"}
+  //               pubRequirement={25}
+  //               totalGames={userData["weekly_stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar
+  //               AchNum={48}
+  //               icon={"pulsar"}
+  //               pubRequirement={25}
+  //               totalGames={userData["weekly_stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar
+  //               AchNum={49}
+  //               icon={"pulsar"}
+  //               pubRequirement={25}
+  //               totalGames={userData["weekly_stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar AchNum={50} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={51} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={52} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={53} icon={"pulsar"} />
+  //           </div>
+  //         </div>
+  //       </>
+  //     ) : null}
+  //     {selectedAchievementType === "global" ? (
+  //       <>
+  //         <SegmentedLProgressBar AchNum={79} icon={"pubs"} />
 
-          {/* <RightAchievementCollumn></RightAchievementCollumn> */}
-        </AchievementsContainer>
-      ) : null}
-      {selectedAchievementType === "global" ? (
-        <AchievementsContainer>
-          <LeftAchievementCollumn>
-            <SegmentedLoadoutProgressBar AchNum={44} icon={"pulsar"} />
-            <SegmentedLoadoutProgressBar AchNum={45} icon={"nova"} />
-            <SegmentedLoadoutProgressBar AchNum={46} icon={"comet"} />
-            <SegmentedLoadoutProgressBar AchNum={47} icon={"meteor"} />
-            <SegmentedLoadoutProgressBar AchNum={48} icon={"detonator"} />
-            <SegmentedLoadoutProgressBar AchNum={49} icon={"stun_field"} />
-            <SegmentedLoadoutProgressBar AchNum={50} icon={"arcmine"} />
-            <SegmentedLoadoutProgressBar AchNum={51} icon={"instant_repair"} />
-            <SegmentedLoadoutProgressBar AchNum={52} icon={"repair_matrix"} />
-            <SegmentedLoadoutProgressBar AchNum={53} icon={"threat_scanner"} />
-            <SegmentedLoadoutProgressBar AchNum={54} icon={"energy_barrier"} />
-            <SegmentedLoadoutProgressBar AchNum={55} icon={"phaseshift"} />
-          </LeftAchievementCollumn>
-        </AchievementsContainer>
-      ) : null}
-    </ContainerStyle>
-  );
+  //         <div className="horizontal-container">
+  //           <div className="list grow">
+  //             <SegmentedLProgressBar AchNum={55} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={56} icon={"nova"} />
+  //             <SegmentedLProgressBar AchNum={57} icon={"comet"} />
+  //             <SegmentedLProgressBar AchNum={58} icon={"meteor"} />
+  //             <SegmentedLProgressBar AchNum={59} icon={"detonator"} />
+  //             <SegmentedLProgressBar AchNum={60} icon={"stun_field"} />
+  //             <SegmentedLProgressBar AchNum={61} icon={"arcmine"} />
+  //             <SegmentedLProgressBar AchNum={62} icon={"instant_repair"} />
+  //             <SegmentedLProgressBar AchNum={63} icon={"repair_matrix"} />
+  //             <SegmentedLProgressBar AchNum={64} icon={"threat_scanner"} />
+  //             <SegmentedLProgressBar AchNum={65} icon={"energy_barrier"} />
+  //             <SegmentedLProgressBar AchNum={66} icon={"phaseshift"} />
+  //           </div>
+  //           <div className="list grow">
+  //             <SegmentedLProgressBar AchNum={67} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={68} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={69} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={70} icon={"pulsar"} />
+  //             <SegmentedLProgressBar
+  //               AchNum={71}
+  //               icon={"pulsar"}
+  //               pubRequirement={50}
+  //               totalGames={userData["stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar
+  //               AchNum={72}
+  //               icon={"pulsar"}
+  //               pubRequirement={50}
+  //               totalGames={userData["stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar
+  //               AchNum={73}
+  //               icon={"pulsar"}
+  //               pubRequirement={50}
+  //               totalGames={userData["stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar
+  //               AchNum={74}
+  //               icon={"pulsar"}
+  //               pubRequirement={50}
+  //               totalGames={userData["stats"]["total_games"]}
+  //             />
+  //             <SegmentedLProgressBar AchNum={75} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={76} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={77} icon={"pulsar"} />
+  //             <SegmentedLProgressBar AchNum={78} icon={"pulsar"} />
+  //           </div>
+  //         </div>
+  //       </>
+  //     ) : null}
+  //   </div>
+  // );
 };

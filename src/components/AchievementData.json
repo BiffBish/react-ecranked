@@ -1,249 +1,3230 @@
 {
-  "0": { "Title": "Bootup Initiated", "Description": "Buy/Own Echo Combat" },
-  "1": {
-    "Title": "Beep Boop",
-    "Description": "Player in Echo Games Discord Server"
-  },
-  "2": {
-    "Title": "One of Us",
-    "Description": "Player in Combat Lounge Discord Server"
-  },
-  "3": {
-    "Title": "Calibration Complete",
-    "Description": "Player bio listed on ecranked.com"
-  },
-  "4": {
-    "Title": "Got That Chassis Drip",
-    "Description": "Player chassis picture listed on ecranked.com"
-  },
-  "5": {
-    "Title": "Pew Pew!",
-    "Description": "Use only pulsar for 15+ games in 24 hours"
-  },
-  "6": {
-    "Title": "Spray ‘n Pray",
-    "Description": "Use only nova for 15+ games in 24 hours"
-  },
-  "7": {
-    "Title": "Yeah I Snipe, Do You Snipe?",
-    "Description": "Use only comet for 15+ games in 24 hours"
-  },
-  "8": {
-    "Title": "Fear The Splash",
-    "Description": "Use only meteor for 15  games in 24 hours"
-  },
-  "9": {
-    "Title": "Purple Disc of Doom",
-    "Description": "Use only detonator for 15+ games in 24 hours"
-  },
-  "10": {
-    "Title": "Swat the Bot",
-    "Description": "Use only stun field for 15+ games in 24 hours"
-  },
-  "11": {
-    "Title": "Wow, Shocking",
-    "Description": "Use only arc mine for 15+ games in 24 hours"
-  },
-  "12": {
-    "Title": "Surprise!  Not Dead!",
-    "Description": "Use only instant repair for 15+ games in 24 hours"
-  },
-  "13": {
-    "Title": "Pop Heals",
-    "Description": "Use only repair matrix for 15+ games in 24 hours"
-  },
-  "14": {
-    "Title": "You Know I Can See You",
-    "Description": "Use only threat scanner for 15+ games in 24 hours"
-  },
-  "15": {
-    "Title": "Take Cover!",
-    "Description": "Use only energy barrier for 15+ games in 24 hours"
-  },
-  "16": {
-    "Title": "Shadow Man",
-    "Description": "Use only phase shift for 15+ games in 24 hours"
-  },
-  "17": {
-    "Title": "Locked ‘n Loaded",
-    "Description": "Use all weapons once or more in 24 hours"
-  },
-  "18": {
-    "Title": "Cookies ‘n Biscuits",
-    "Description": "Use all ordnance once or more in 24 hours"
-  },
-  "19": {
-    "Title": "Tactical Advantage",
-    "Description": "Use all tac-mods once or more in 24 hours"
-  },
-  "20": {
-    "Title": "Nice",
-    "Description": "Use all equipables once or more in 24 hours (same game?)"
-  },
-  "21": {
-    "Title": "Queue Up!",
-    "Description": "Play 30+ Combat pubs in one day"
-  },
-  "22": {
-    "Title": "There's No Time Like Pew Time",
-    "Description": "Use only pulsar for 20+ games (in 1 week) (reseting stat)"
-  },
-  "23": {
-    "Title": "I Call Shotgun!",
-    "Description": "Use only nova for 20+ games (in 1 week) (reseting stat)"
-  },
-  "24": {
-    "Title": "Paranoid Android",
-    "Description": "Use only comet for 20+ games (in 1 week) (reseting stat)"
-  },
-  "25": {
-    "Title": "Careful Where You Point That Thing",
-    "Description": "Use only meteor for 20 games (in 1 week) (reseting stat)"
-  },
-  "26": {
-    "Title": "",
-    "Description": "Use only detonator for 20+ games (in 1 week) (reseting stat)"
-  },
-  "27": {
-    "Title": "",
-    "Description": "Use only stun field for 20+ games (in 1 week) (reseting stat)"
-  },
-  "28": {
-    "Title": "",
-    "Description": "Use only arc mine for 20+ games (in 1 week) (reseting stat)"
-  },
-  "29": {
-    "Title": "",
-    "Description": "Use only instant repair for 20+ games (in 1 week) (reseting stat)"
-  },
-  "30": {
-    "Title": "",
-    "Description": "Use only repair matrix for 20+ games (in 1 week) (reseting stat)"
-  },
-  "31": {
-    "Title": "",
-    "Description": "Use only threat scanner for 20+ games (in 1 week) (reseting stat)"
-  },
-  "32": {
-    "Title": "",
-    "Description": "Use only energy barrier for 20+ games (in 1 week) (reseting stat)"
-  },
-  "33": {
-    "Title": "",
-    "Description": "Use only phase shift for 20+ games (in 1 week) (reseting stat)"
-  },
-  "34": {
-    "Title": "Comfort Zone",
-    "Description": "Use only one loadout for 25+ consecutive games in 1 week"
-  },
-  "35": {
-    "Title": "Deathwish",
-    "Description": "Average less than 3 deaths per game"
-  },
-  "36": {
-    "Title": "Combat Imminent",
-    "Description": "Play 25+ Capture Point games in one week (reseting stat)"
-  },
-  "37": {
-    "Title": "It’s Not a Swan!",
-    "Description": "Play 25+ Payload games in one week (reseting stat)"
-  },
-  "38": {
-    "Title": "Get It Together",
-    "Description": "Proximity to teammate 50% or more 50 games per week"
-  },
-  "39": {
-    "Title": "Engage the Enemy",
-    "Description": "Proximity to enemy 2% or more"
-  },
-  "40": { "Title": "Boost Action", "Description": "Hit top speed of 35m/s" },
-  "41": {
-    "Title": "Don’t Float!",
-    "Description": "Average speed over 4.5m/s in one week (50 game minimum)"
-  },
-  "42": { "Title": "Bottoms Up", "Description": "Play inverted for 50%" },
-  "43": {
-    "Title": "Queue Up!",
-    "Description": "Play 50+ Combat pubs in one week"
-  },
-  "44": {
-    "Title": "Point 'N Pew",
-    "Description": "Use pulsar for 100+ games (cumulative)"
-  },
-  "45": {
-    "Title": "Pellet Party!",
-    "Description": "Use nova for 100+ games (cumulative)"
-  },
-  "46": {
-    "Title": "Crack Shot Robot",
-    "Description": "Use comet for 100+ games (cumulative)"
-  },
-  "47": {
-    "Title": "Meatball Gun Bonanza",
-    "Description": "Use meteor for 100+ games (cumulative)"
-  },
-  "48": {
-    "Title": "Warning: May Be Fatal if Swallowed",
-    "Description": "Use detonator for 100+ games (cumulative)"
-  },
-  "49": {
-    "Title": "The Immobilize Surprise",
-    "Description": "Use stun field for 100+ games (cumulative)"
-  },
-  "50": {
-    "Title": "Hit 'Em with the Zapper!",
-    "Description": "Use arc mine for 100+ games (cumulative)"
-  },
-  "51": {
-    "Title": "As Good As New",
-    "Description": "Use instant repair for 100+ games (cumulative)"
-  },
-  "52": {
-    "Title": "Built to Last",
-    "Description": "Use repair matrix for 100+ games (cumulative)"
-  },
-  "53": {
-    "Title": "Hide 'n Seek 'n Shoot",
-    "Description": "Use threat scanner for 100+ games (cumulative)"
-  },
-  "54": {
-    "Title": "Check Out My Cool Screen Saver",
-    "Description": "Use energy barrier for 100+ games (cumulative)"
-  },
-  "55": {
-    "Title": "Ghost in the Machine",
-    "Description": "Use phase shift for 100+ games (cumulative)"
-  },
-  "56": {
-    "Title": "Don't Cry About Campers",
-    "Description": "Play 50+ games of Dyson (cumulative)"
-  },
-  "57": {
-    "Title": "Crash 'n Burn",
-    "Description": "Play 50+ games of Combustion (cumulative)"
-  },
-  "58": {
-    "Title": "Payload Accelerated!",
-    "Description": "Play 50+ games of Fission (cumulative)"
-  },
-  "59": {
-    "Title": "Payload Contested!",
-    "Description": "Play 50+ games of Surge (cumulative)"
-  },
-  "60": {
-    "Title": "Take One for the Team",
-    "Description": "Die 1000+ times (cumulative)"
-  },
-  "61": {
-    "Title": "Fully Functional",
-    "Description": "Use all 64 loadout combinations (cumulative)"
-  },
-  "62": {
-    "Title": "King/Queen of Pubs",
-    "Description": "Play 550+ Combat pubs (cumulative)"
-  },
-  "63": {
-    "Title": "Pro Flamingo",
-    "Description": "Complete all 62 Echo Combat pub achievements"
-  }
+  "5": [
+    {
+      "CID": "5",
+      "Title": "Pew Pew!",
+      "Description": "Use only pulsar 1+ games (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "5",
+      "Title": "Pew Pew Pew!",
+      "Description": "Use only pulsar 5+ games (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "5",
+      "Title": "Pulsar Main",
+      "Description": "Use only pulsar 10+ games (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "5",
+      "Title": "One with the Pulsar",
+      "Description": "Use only pulsar 15+ games in a row (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Pulsar"
+    }
+  ],
+  "6": [
+    {
+      "CID": "6",
+      "Title": "Spray \u2018n Pray",
+      "Description": "Use only nova 1+ games (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "6",
+      "Title": "Nova Cone Is My Friend",
+      "Description": "Use only nova 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "6",
+      "Title": "Nova Main",
+      "Description": "Use only nova 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "6",
+      "Title": "One with the Nova",
+      "Description": "Use only nova 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Nova"
+    }
+  ],
+  "7": [
+    {
+      "CID": "7",
+      "Title": "Yeah I Snipe, Do You Snipe?",
+      "Description": "Use only comet 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "7",
+      "Title": "Snippity Snipe",
+      "Description": "Use only comet 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "7",
+      "Title": "Comet Main",
+      "Description": "Use only comet 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "7",
+      "Title": "One with the Comet",
+      "Description": "Use only comet 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Comet"
+    }
+  ],
+  "8": [
+    {
+      "CID": "8",
+      "Title": "Fear The Splash",
+      "Description": "Use only meteor 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "8",
+      "Title": "Rocket Man",
+      "Description": "Use only meteor 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "8",
+      "Title": "Meteor Main",
+      "Description": "Use only meteor 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "8",
+      "Title": "One with the Meteor",
+      "Description": "Use only meteor 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Meteor"
+    }
+  ],
+  "9": [
+    {
+      "CID": "9",
+      "Title": "Purple Disc of Doom",
+      "Description": "Use only detonator 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "9",
+      "Title": "Shake 'n Bake",
+      "Description": "Use only detonator 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "9",
+      "Title": "Big Bada Boom",
+      "Description": "Use only detonator 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "9",
+      "Title": "Yeet and Delete",
+      "Description": "Use only detonator 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Detonator"
+    }
+  ],
+  "10": [
+    {
+      "CID": "10",
+      "Title": "Swat the Bot",
+      "Description": "Use only stun field 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "10",
+      "Title": "Calculated Precision",
+      "Description": "Use only stun field 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "10",
+      "Title": "You Look Stunning",
+      "Description": "Use only stun field 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "10",
+      "Title": "Ride the Lightning",
+      "Description": "Use only stun field 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Stun Field"
+    }
+  ],
+  "11": [
+    {
+      "CID": "11",
+      "Title": "Wow, Shocking",
+      "Description": "Use only arc mine 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "11",
+      "Title": "Botnet Surprise!",
+      "Description": "Use only arc mine 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "11",
+      "Title": "An Electrifying Personality",
+      "Description": "Use only arc mine 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "11",
+      "Title": "Paralyzer",
+      "Description": "Use only arc mine 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Arc Mine"
+    }
+  ],
+  "12": [
+    {
+      "CID": "12",
+      "Title": "Surprise!  Not Dead!",
+      "Description": "Use only instant repair 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "12",
+      "Title": "Survival Instinct",
+      "Description": "Use only instant repair 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "12",
+      "Title": "Deus Ex Machina",
+      "Description": "Use only instant repair 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "12",
+      "Title": "RAD_DavidN Heal Us w/5th Map ",
+      "Description": "Use only instant repair 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Instant Repair"
+    }
+  ],
+  "13": [
+    {
+      "CID": "13",
+      "Title": "Pop Heals",
+      "Description": "Use only repair matrix 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "13",
+      "Title": "How Am I Still Alive?",
+      "Description": "Use only repair matrix 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "13",
+      "Title": "Staying Power",
+      "Description": "Use only repair matrix 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "13",
+      "Title": "Damage Control",
+      "Description": "Use only repair matrix 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    }
+  ],
+  "14": [
+    {
+      "CID": "14",
+      "Title": "You Know I Can See You",
+      "Description": "Use only threat scanner 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "14",
+      "Title": "Robot Radar",
+      "Description": "Use only threat scanner 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "14",
+      "Title": "Hunter Killer",
+      "Description": "Use only threat scanner 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "14",
+      "Title": "Search and Destroy",
+      "Description": "Use only threat scanner 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    }
+  ],
+  "15": [
+    {
+      "CID": "15",
+      "Title": "Take Cover!",
+      "Description": "Use only energy barrier 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "15",
+      "Title": "In My Safe Space",
+      "Description": "Use only energy barrier 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "15",
+      "Title": "Cybernetic Security Blanket",
+      "Description": "Use only energy barrier 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "15",
+      "Title": "n00b Protector 9000",
+      "Description": "Use only energy barrier 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    }
+  ],
+  "16": [
+    {
+      "CID": "16",
+      "Title": "Shadow Bot",
+      "Description": "Use only phase shift 1+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "16",
+      "Title": "Spectre Cloak",
+      "Description": "Use only phase shift 5+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "16",
+      "Title": "Phantom Skin",
+      "Description": "Use only phase shift 10+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "16",
+      "Title": "Wraith",
+      "Description": "Use only phase shift 15+ games in 24 hours",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Phase Shift"
+    }
+  ],
+  "17": [
+    {
+      "CID": "17",
+      "Title": "Versatile Bot",
+      "Description": "Use all equipables once or more in 24 hours (same game?)",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Equip all/24 hour"
+    }
+  ],
+  "18": [
+    {
+      "CID": "18",
+      "Title": "What Is Your Major Malfunction?!",
+      "Description": "Have only 6 deaths in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "18",
+      "Title": "I'm Having Technical Difficulties",
+      "Description": "Have only 5 deaths in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0.3333333333",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "18",
+      "Title": "More Lives Than a Nexus 6",
+      "Description": "Have only 4 deaths in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0.6666666667",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "18",
+      "Title": "My Other Chassis Is a Toaster",
+      "Description": "Have only 3 deaths in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "1",
+      "Extra": "check #'s",
+      "Type": "Death"
+    }
+  ],
+  "19": [
+    {
+      "CID": "19",
+      "Title": "Capture the Point",
+      "Description": "Play 2+ Capture Point games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0",
+      "Extra": "Total in 1 day",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "19",
+      "Title": "Point Stolen",
+      "Description": "Play 4+ Capture Point games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "Total in 1 day",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "19",
+      "Title": "Point Contested",
+      "Description": "Play 6+ Capture Point games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "Total in 1 day",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "19",
+      "Title": "Point Captured",
+      "Description": "Play 8+ Capture Point games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "Total in 1 day",
+      "Type": "Capture Point"
+    }
+  ],
+  "20": [
+    {
+      "CID": "20",
+      "Title": "Deliver the Payload",
+      "Description": "Play 2+ Payload games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0",
+      "Extra": "Total in 1 day",
+      "Type": "Payload"
+    },
+    {
+      "CID": "20",
+      "Title": "Payload Mobilized",
+      "Description": "Play 4+ Payload games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "Total in 1 day",
+      "Type": "Payload"
+    },
+    {
+      "CID": "20",
+      "Title": "Payload Accelerated!",
+      "Description": "Play 6+ Payload games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "Total in 1 day",
+      "Type": "Payload"
+    },
+    {
+      "CID": "20",
+      "Title": "Checkpoint Reached",
+      "Description": "Play 8+ Payload games in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "Total in 1 day",
+      "Type": "Payload"
+    }
+  ],
+  "21": [
+    {
+      "CID": "21",
+      "Title": "Comrades in Arms",
+      "Description": "Proximity to teammate 20% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "0",
+      "Extra": "check %'s",
+      "Type": "Team Proximity"
+    },
+    {
+      "CID": "21",
+      "Title": "Echo Units Unite!",
+      "Description": "Proximity to teammate 30% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "0.3333333333",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "21",
+      "Title": "We Win These",
+      "Description": "Proximity to teammate 40% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "0.6666666667",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "21",
+      "Title": "Full Team Salvo",
+      "Description": "Proximity to teammate 50% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    }
+  ],
+  "22": [
+    {
+      "CID": "22",
+      "Title": "Engage the Enemy",
+      "Description": "Proximity to enemy 0.5% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "0",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "22",
+      "Title": "Stomping Grounds",
+      "Description": "Proximity to enemy 1.0% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "0.3333333333",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "22",
+      "Title": "Heyyy, Let's Be Friends...Pew Pew Pew!",
+      "Description": "Proximity to enemy 1.5% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "0.6666666667",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "22",
+      "Title": "Can We Talk About This?",
+      "Description": "Proximity to enemy 2.0% or more",
+      "Timeframe": "In 1 game",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    }
+  ],
+  "23": [
+    {
+      "CID": "23",
+      "Title": "Boost Action",
+      "Description": "Hit top speed of 20m/s in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "23",
+      "Title": "Regrabby Grabby Grabs",
+      "Description": "Hit top speed of 25m/s in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0.3333333333",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "23",
+      "Title": "Terminal Velocity",
+      "Description": "Hit top speed of 30m/s in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0.6666666667",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "23",
+      "Title": "Super Ultra Hyper Turbo",
+      "Description": "Hit top speed of 35m/s in 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    }
+  ],
+  "24": [
+    {
+      "CID": "24",
+      "Title": "Bottoms Up",
+      "Description": "Play inverted for 5% of 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "24",
+      "Title": "Just Hangin' Out",
+      "Description": "Play inverted for 10% of 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0.3333333333",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "24",
+      "Title": "Inverse Engineering",
+      "Description": "Play inverted for 25% of 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "0.6666666667",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "24",
+      "Title": "I\u2019m Bat Bot",
+      "Description": "Play inverted for 50% of 1 game",
+      "Timeframe": "In 1 game",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    }
+  ],
+  "25": [
+    {
+      "CID": "25",
+      "Title": "Junction!",
+      "Description": "Play 1+ games of Dyson (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "25",
+      "Title": "Full Squad Tunnel Attack!",
+      "Description": "Play 2+ games of Dyson (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "25",
+      "Title": "Camper's Delight",
+      "Description": "Play 3+ games of Dyson (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "25",
+      "Title": "Constant Contesting",
+      "Description": "Play 4+ games of Dyson (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Dyson"
+    }
+  ],
+  "26": [
+    {
+      "CID": "26",
+      "Title": "Burn Center",
+      "Description": "Play 1+ games of Combustion (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "26",
+      "Title": "Some Like It Hot",
+      "Description": "Play 2+ games of Combustion (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "26",
+      "Title": "Heatwave",
+      "Description": "Play 3+ games of Combustion (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "26",
+      "Title": "Blast Furnace",
+      "Description": "Play 4+ games of Combustion (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Combustion"
+    }
+  ],
+  "27": [
+    {
+      "CID": "27",
+      "Title": "Radioactive Decay",
+      "Description": "Play 1+ games of Fission (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "27",
+      "Title": "Atom Smasher",
+      "Description": "Play 2+ games of Fission (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "27",
+      "Title": "Nucleonics",
+      "Description": "Play 3+ games of Fission (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "27",
+      "Title": "Technetium-99",
+      "Description": "Play 4+ games of Fission (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Fission"
+    }
+  ],
+  "28": [
+    {
+      "CID": "28",
+      "Title": "The Flamingo Rides Again",
+      "Description": "Play 1+ games of Surge (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "28",
+      "Title": "Songbird",
+      "Description": "Play 2+ games of Surge (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "28",
+      "Title": "Bird of Paradise",
+      "Description": "Play 3+ games of Surge (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "28",
+      "Title": "Bird of Prey",
+      "Description": "Play 4+ games of Surge (in 24 hours)",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Surge"
+    }
+  ],
+  "29": [
+    {
+      "CID": "29",
+      "Title": "Queue Up!",
+      "Description": "Play 1+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.02857142857",
+      "Extra": "",
+      "Type": "Pub Count 1"
+    },
+    {
+      "CID": "29",
+      "Title": "Skirmish Warmup",
+      "Description": "Play 2+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.05714285714",
+      "Extra": "",
+      "Type": "Pub Count 2"
+    },
+    {
+      "CID": "29",
+      "Title": "Is This Like Ender's Game?",
+      "Description": "Play 3+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.08571428571",
+      "Extra": "",
+      "Type": "Pub Count 3"
+    },
+    {
+      "CID": "29",
+      "Title": "Cyber Robotics 101",
+      "Description": "Play 4+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.1142857143",
+      "Extra": "",
+      "Type": "Pub Count 4"
+    },
+    {
+      "CID": "29",
+      "Title": "Let\u2019s Gooo!",
+      "Description": "Play 5+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.1428571429",
+      "Extra": "",
+      "Type": "Pub Count 5"
+    },
+    {
+      "CID": "29",
+      "Title": "I, Robot",
+      "Description": "Play 6+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.1714285714",
+      "Extra": "",
+      "Type": "Pub Count 6"
+    },
+    {
+      "CID": "29",
+      "Title": "You All in a Party?",
+      "Description": "Play 7+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.2",
+      "Extra": "",
+      "Type": "Pub Count 7"
+    },
+    {
+      "CID": "29",
+      "Title": "Just Your Average Battle Bot",
+      "Description": "Play 8+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.2285714286",
+      "Extra": "",
+      "Type": "Pub Count 8"
+    },
+    {
+      "CID": "29",
+      "Title": "Pwn or Be Pwned",
+      "Description": "Play 9+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.2571428571",
+      "Extra": "",
+      "Type": "Pub Count 9"
+    },
+    {
+      "CID": "29",
+      "Title": "Pub Stomper",
+      "Description": "Play 10+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.2857142857",
+      "Extra": "",
+      "Type": "Pub Count 10"
+    },
+    {
+      "CID": "29",
+      "Title": "Ultra Mega Assault Drone",
+      "Description": "Play 11+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3142857143",
+      "Extra": "",
+      "Type": "Pub Count 11"
+    },
+    {
+      "CID": "29",
+      "Title": "Metal Maniac",
+      "Description": "Play 12+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3428571429",
+      "Extra": "",
+      "Type": "Pub Count 12"
+    },
+    {
+      "CID": "29",
+      "Title": "It Is I, Bringer of the Pew!",
+      "Description": "Play 13+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.3714285714",
+      "Extra": "",
+      "Type": "Pub Count 13"
+    },
+    {
+      "CID": "29",
+      "Title": "Pub Pandemonium",
+      "Description": "Play 14+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.4",
+      "Extra": "",
+      "Type": "Pub Count 14"
+    },
+    {
+      "CID": "29",
+      "Title": "I Don\u2019t Get Skipped",
+      "Description": "Play 15+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.4285714286",
+      "Extra": "",
+      "Type": "Pub Count 15"
+    },
+    {
+      "CID": "29",
+      "Title": "Instant Queue!",
+      "Description": "Play 20+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.5714285714",
+      "Extra": "",
+      "Type": "Pub Count 16"
+    },
+    {
+      "CID": "29",
+      "Title": "I Dream of Combat Updates",
+      "Description": "Play 25+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.7142857143",
+      "Extra": "",
+      "Type": "Pub Count 17"
+    },
+    {
+      "CID": "29",
+      "Title": "I Heart Echo Combat",
+      "Description": "Play 30+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "0.8571428571",
+      "Extra": "",
+      "Type": "Pub Count 18"
+    },
+    {
+      "CID": "29",
+      "Title": "Combat on Quest When?",
+      "Description": "Play 35+ Combat pubs in one day",
+      "Timeframe": "In 24 hours",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Pub Count 19"
+    }
+  ],
+  "30": [
+    {
+      "CID": "30",
+      "Title": "There's No Time Like Pew Time",
+      "Description": "Use only pulsar 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "30",
+      "Title": "Shoot 'n Juke",
+      "Description": "Use only pulsar 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "30",
+      "Title": "My Trusty Particle Beam Accelerator",
+      "Description": "Use only pulsar 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "30",
+      "Title": "Set Phasers to Kill!",
+      "Description": "Use only pulsar 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Pulsar"
+    }
+  ],
+  "31": [
+    {
+      "CID": "31",
+      "Title": "I Call Shotgun!",
+      "Description": "Use only nova 5+ games in a row (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "31",
+      "Title": "Standard Issue Faceblaster 5000",
+      "Description": "Use only nova 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "31",
+      "Title": "Frontline Crab Assault!",
+      "Description": "Use only nova 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "31",
+      "Title": "Eat My Nova!",
+      "Description": "Use only nova 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Nova"
+    }
+  ],
+  "32": [
+    {
+      "CID": "32",
+      "Title": "Paranoid Android",
+      "Description": "Use only comet 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "32",
+      "Title": "Sentinel",
+      "Description": "Use only comet 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "32",
+      "Title": "It's All in the Wrist",
+      "Description": "Use only comet 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "32",
+      "Title": "Silicon Assassin",
+      "Description": "Use only comet  20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Comet"
+    }
+  ],
+  "33": [
+    {
+      "CID": "33",
+      "Title": "Careful Where You Point That Thing",
+      "Description": "Use only meteor 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "33",
+      "Title": "Happy Explosive Projectile Time",
+      "Description": "Use only meteor 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "33",
+      "Title": "Meteor Spam FTW",
+      "Description": "Use only meteor 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "33",
+      "Title": "I Came to Drop Bombs",
+      "Description": "Use only meteor 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Meteor"
+    }
+  ],
+  "34": [
+    {
+      "CID": "34",
+      "Title": "Bomb Squad",
+      "Description": "Use only detonator 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "34",
+      "Title": "Here, Hold This for a Sec",
+      "Description": "Use only detonator 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "34",
+      "Title": "Damage Patrol",
+      "Description": "Use only detonator 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "34",
+      "Title": "Throws Better Than an Arena Disc",
+      "Description": "Use only detonator 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Detonator"
+    }
+  ],
+  "35": [
+    {
+      "CID": "35",
+      "Title": "Stinger",
+      "Description": "Use only stun field 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "35",
+      "Title": "Sparks Flying",
+      "Description": "Use only stun field 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "35",
+      "Title": "Force-Fed Zap Attack!",
+      "Description": "Use only stun field 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "35",
+      "Title": "Don't Taze Me Bro Bot",
+      "Description": "Use only stun field 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Stun Field"
+    }
+  ],
+  "36": [
+    {
+      "CID": "36",
+      "Title": "That'll Give You a Jolt",
+      "Description": "Use only arc mine 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "36",
+      "Title": "Synaptic Short Circuit",
+      "Description": "Use only arc mine 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "36",
+      "Title": "Digital Storm",
+      "Description": "Use only arc mine 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "36",
+      "Title": "Electroshock Therapy",
+      "Description": "Use only arc mine 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Arc Mine"
+    }
+  ],
+  "37": [
+    {
+      "CID": "37",
+      "Title": "Hardware Repair ",
+      "Description": "Use only instant repair 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "37",
+      "Title": "Digital Defragment",
+      "Description": "Use only instant repair 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "37",
+      "Title": "The High-Tech Glow Up",
+      "Description": "Use only instant repair 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "37",
+      "Title": "Fully Juiced",
+      "Description": "Use only instant repair 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Instant Repair"
+    }
+  ],
+  "38": [
+    {
+      "CID": "38",
+      "Title": "Technical Difficulties, Please Stand By",
+      "Description": "Use only repair matrix 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "38",
+      "Title": "System Reboot",
+      "Description": "Use only repair matrix 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "38",
+      "Title": "Want to Live!  ",
+      "Description": "Use only repair matrix 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "38",
+      "Title": "Built to Last",
+      "Description": "Use only repair matrix  20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    }
+  ],
+  "39": [
+    {
+      "CID": "39",
+      "Title": "Scanner Deployed",
+      "Description": "Use only threat scanner 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "39",
+      "Title": "Tracking System Engaged",
+      "Description": "Use only threat scanner 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "39",
+      "Title": "Perimeter Alert!",
+      "Description": "Use only threat scanner 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "39",
+      "Title": "X-Ray Vision Implant Upgrade",
+      "Description": "Use only threat scanner 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    }
+  ],
+  "40": [
+    {
+      "CID": "40",
+      "Title": "Divert Power to Shields!",
+      "Description": "Use only energy barrier 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "40",
+      "Title": "Personal Pew Pew Pew! Deflector",
+      "Description": "Use only energy barrier 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "40",
+      "Title": "Portable Anti-Eliminator Separator",
+      "Description": "Use only energy barrier 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "40",
+      "Title": "Check Out My Cool Screensaver",
+      "Description": "Use only energy barrier 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    }
+  ],
+  "41": [
+    {
+      "CID": "41",
+      "Title": "Escape Device",
+      "Description": "Use only phase shift 5+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.06666666667",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "41",
+      "Title": "Covert Operations",
+      "Description": "Use only phase shift 10+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.3333333333",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "41",
+      "Title": "Stealth Mode",
+      "Description": "Use only phase shift 15+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.6666666667",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "41",
+      "Title": "Ghost in the Shell",
+      "Description": "Use only phase shift 20+ games (in 1 week)",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Phase Shift"
+    }
+  ],
+  "42": [
+    {
+      "CID": "42",
+      "Title": "Comfort Zone",
+      "Description": "Use only one loadout 1+ consecutive games in 1 week",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.04",
+      "Extra": "",
+      "Type": "Special"
+    },
+    {
+      "CID": "42",
+      "Title": "Repeat Offender",
+      "Description": "Use only one loadout 5+ consecutive games in 1 week",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.2",
+      "Extra": "",
+      "Type": "Special"
+    },
+    {
+      "CID": "42",
+      "Title": "Stuck in My Android Ways",
+      "Description": "Use only one loadout 10+ consecutive games in 1 week",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "0.4",
+      "Extra": "",
+      "Type": "Special"
+    },
+    {
+      "CID": "42",
+      "Title": "Gearhead",
+      "Description": "Use only one loadout 25+ consecutive games in 1 week",
+      "Timeframe": "Consecutive games in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Special"
+    }
+  ],
+  "43": [
+    {
+      "CID": "43",
+      "Title": "Deathwish",
+      "Description": "Average less than 6 deaths per game",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "0",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "43",
+      "Title": "About as Useful as a Shield",
+      "Description": "Average less than 5 deaths per game",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "0.3333333333",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "43",
+      "Title": "Armored Core",
+      "Description": "Average less than 4 deaths per game",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "0.6666666667",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "43",
+      "Title": "Pew Pew Proof",
+      "Description": "Average less than 3 deaths per game",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "1",
+      "Extra": "check #'s",
+      "Type": "Death"
+    }
+  ],
+  "44": [
+    {
+      "CID": "44",
+      "Title": "Combat Imminent",
+      "Description": "Play 5+ Capture Point games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.1",
+      "Extra": "",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "44",
+      "Title": "Live Fire",
+      "Description": "Play 10+ Capture Point games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.2",
+      "Extra": "",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "44",
+      "Title": "Contest, Die, Respawn, Repeat.",
+      "Description": "Play 25+ Capture Point games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "44",
+      "Title": "I'd Rather Be on Kronos II",
+      "Description": "Play 50+ Capture Point games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Capture Point"
+    }
+  ],
+  "45": [
+    {
+      "CID": "45",
+      "Title": "It\u2019s Not a Swan!",
+      "Description": "Play 5+ Payload games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.1",
+      "Extra": "",
+      "Type": "Payload"
+    },
+    {
+      "CID": "45",
+      "Title": "Operation Flamingo",
+      "Description": "Play 10+ Payload games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.2",
+      "Extra": "",
+      "Type": "Payload"
+    },
+    {
+      "CID": "45",
+      "Title": "Flamingo Xing",
+      "Description": "Play 25+ Payload games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Payload"
+    },
+    {
+      "CID": "45",
+      "Title": "Sakura\u2019s Dancing Flamingo",
+      "Description": "Play 50+ Payload games in one week",
+      "Timeframe": "Total in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Payload"
+    }
+  ],
+  "46": [
+    {
+      "CID": "46",
+      "Title": "Get It Together",
+      "Description": "Proximity to teammate 20% or more",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "0.25",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "46",
+      "Title": "Teamwork Makes the Dreamwork",
+      "Description": "Proximity to teammate 30% or more",
+      "Timeframe": "",
+      "Percent": "0.50",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "46",
+      "Title": "The Friend Zone",
+      "Description": "Proximity to teammate 40% or more",
+      "Timeframe": "",
+      "Percent": "0.75",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "46",
+      "Title": "Tech Support w/RAD_Natalie ",
+      "Description": "Proximity to teammate 50% or more",
+      "Timeframe": "",
+      "Percent": "1.00",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    }
+  ],
+  "47": [
+    {
+      "CID": "47",
+      "Title": "Fraternizing with the Enemy",
+      "Description": "Proximity to enemy 0.5% or more",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "0.25",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "47",
+      "Title": "Know Your Opponent",
+      "Description": "Proximity to enemy 1.0% or more",
+      "Timeframe": "",
+      "Percent": "0.5",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "47",
+      "Title": "Behind Enemy Lines",
+      "Description": "Proximity to enemy 1.5% or more",
+      "Timeframe": "",
+      "Percent": "0.75",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "47",
+      "Title": "Hug Your Frenemy",
+      "Description": "Proximity to enemy 2.0% or more",
+      "Timeframe": "",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    }
+  ],
+  "48": [
+    {
+      "CID": "48",
+      "Title": "Don\u2019t Float!",
+      "Description": "Average speed over 3.0m/s in one week",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "0.25",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "48",
+      "Title": "Overclocked",
+      "Description": "Average speed over 3.5m/s in one week ",
+      "Timeframe": "",
+      "Percent": "0.5",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "48",
+      "Title": "I Am Speed!",
+      "Description": "Average speed over 4.0m/s in one week",
+      "Timeframe": "",
+      "Percent": "0.75",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "48",
+      "Title": "The Wings of RAD_Wyvern",
+      "Description": "Average speed over 4.5m/s in one week",
+      "Timeframe": "",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    }
+  ],
+  "49": [
+    {
+      "CID": "49",
+      "Title": "\ua4edo\u0287\u0287o\u026fs \u2229d",
+      "Description": "Play inverted for 1%",
+      "Timeframe": "(1 week average, 25 game minimum)  50?",
+      "Percent": "0.06666666667",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "49",
+      "Title": "\u017fns\u0287 H\u0250u\u0183\u1d09u, On\u0287",
+      "Description": "Play inverted for 5%",
+      "Timeframe": "",
+      "Percent": "0.3333333333",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "49",
+      "Title": "Iu\u028c\u01dd\u0279s\u01dd \u018eu\u0183\u1d09u\u01dd\u01dd\u0279\u1d09u\u0183",
+      "Description": "Play inverted for 10%",
+      "Timeframe": "",
+      "Percent": "0.6666666667",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "49",
+      "Title": "I\u2019\u026f \ua4ed\u0250\u0287 \ua4edo\u0287",
+      "Description": "Play inverted for 15%",
+      "Timeframe": "",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    }
+  ],
+  "50": [
+    {
+      "CID": "50",
+      "Title": "Silicon Valley",
+      "Description": "Play 5+ games of Dyson (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.625",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "50",
+      "Title": "Predictable Backpad Regrabs",
+      "Description": "Play 6+ games of Dyson (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "50",
+      "Title": "Dyson Spawn Times are Trash",
+      "Description": "Play 7+ games of Dyson (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.875",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "50",
+      "Title": "Frame-Drop Hell",
+      "Description": "Play 8+ games of Dyson (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Dyson"
+    }
+  ],
+  "51": [
+    {
+      "CID": "51",
+      "Title": "Is It Warm in Here or Is It Just the Pew Pew Pew?",
+      "Description": "Play 5+ games of Combustion (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.625",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "51",
+      "Title": "If You Can't Take the Heat Get out of the Point!",
+      "Description": "Play 6+ games of Combustion (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "51",
+      "Title": "I Love the Smell of Melting Chassis in the Morning",
+      "Description": "Play 7+ games of Combustion (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.875",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "51",
+      "Title": "I've Got a Fever, and the Only Prescription Is Pew Pew Pew!",
+      "Description": "Play 8+ games of Combustion (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Combustion"
+    }
+  ],
+  "52": [
+    {
+      "CID": "52",
+      "Title": "Phoenicopteriformes",
+      "Description": "Play 5+ games of Fission (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.625",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "52",
+      "Title": "Phoenicopteridae",
+      "Description": "Play 6+ games of Fission (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "52",
+      "Title": "Phoenicopterus roseus",
+      "Description": "Play 7+ games of Fission (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.875",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "52",
+      "Title": "Phoeniconaias minor",
+      "Description": "Play 8+ games of Fission (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Fission"
+    }
+  ],
+  "53": [
+    {
+      "CID": "53",
+      "Title": "Phoenicopterus chilensis",
+      "Description": "Play 5+ games of Surge (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.625",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "53",
+      "Title": "Phoenicoparrus jamesi",
+      "Description": "Play 6+ games of Surge (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "53",
+      "Title": "Phoenicoparrus andinus",
+      "Description": "Play 7+ games of Surge (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "0.875",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "53",
+      "Title": "Phoenicopterus ruber",
+      "Description": "Play 8+ games of Surge (in one week)",
+      "Timeframe": "Total in 1 week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Surge"
+    }
+  ],
+  "54": [
+    {
+      "CID": "54",
+      "Title": "Get On! There\u2019s Games!",
+      "Description": "Play 1+ Combat pubs in one week",
+      "Timeframe": "Play 1+ Combat pubs in one week",
+      "Percent": "0.01",
+      "Extra": "",
+      "Type": "Pub Count 1"
+    },
+    {
+      "CID": "54",
+      "Title": "gg's",
+      "Description": "Play 2+ Combat pubs in one week",
+      "Timeframe": "Play 2+ Combat pubs in one week",
+      "Percent": "0.02",
+      "Extra": "",
+      "Type": "Pub Count 2"
+    },
+    {
+      "CID": "54",
+      "Title": "These Hands Are Deadly",
+      "Description": "Play 3+ Combat pubs in one week",
+      "Timeframe": "Play 3+ Combat pubs in one week",
+      "Percent": "0.03",
+      "Extra": "",
+      "Type": "Pub Count 3"
+    },
+    {
+      "CID": "54",
+      "Title": "Eat Hot Pew Pew Pew!",
+      "Description": "Play 4+ Combat pubs in one week",
+      "Timeframe": "Play 4+ Combat pubs in one week",
+      "Percent": "0.04",
+      "Extra": "",
+      "Type": "Pub Count 4"
+    },
+    {
+      "CID": "54",
+      "Title": "Combat, Baby, Combat",
+      "Description": "Play 5+ Combat pubs in one week",
+      "Timeframe": "Play 5+ Combat pubs in one week",
+      "Percent": "0.05",
+      "Extra": "",
+      "Type": "Pub Count 5"
+    },
+    {
+      "CID": "54",
+      "Title": "Maybe I'll Turn Pro",
+      "Description": "Play 6+ Combat pubs in one week",
+      "Timeframe": "Play 6+ Combat pubs in one week",
+      "Percent": "0.06",
+      "Extra": "",
+      "Type": "Pub Count 6"
+    },
+    {
+      "CID": "54",
+      "Title": "Watch Me Carry",
+      "Description": "Play 7+ Combat pubs in one week",
+      "Timeframe": "Play 7+ Combat pubs in one week",
+      "Percent": "0.07",
+      "Extra": "",
+      "Type": "Pub Count 7"
+    },
+    {
+      "CID": "54",
+      "Title": "Combat Pubarama",
+      "Description": "Play 8+ Combat pubs in one week",
+      "Timeframe": "Play 8+ Combat pubs in one week",
+      "Percent": "0.08",
+      "Extra": "",
+      "Type": "Pub Count 8"
+    },
+    {
+      "CID": "54",
+      "Title": "Laserbeams 'n Robot Dreams",
+      "Description": "Play 9+ Combat pubs in one week",
+      "Timeframe": "Play 9+ Combat pubs in one week",
+      "Percent": "0.09",
+      "Extra": "",
+      "Type": "Pub Count 9"
+    },
+    {
+      "CID": "54",
+      "Title": "In a Combat State of Mind",
+      "Description": "Play 10+ Combat pubs in one week",
+      "Timeframe": "Play 10+ Combat pubs in one week",
+      "Percent": "0.1",
+      "Extra": "",
+      "Type": "Pub Count 10"
+    },
+    {
+      "CID": "54",
+      "Title": "Cold Steel, Warm Guns",
+      "Description": "Play 15+ Combat pubs in one week",
+      "Timeframe": "Play 15+ Combat pubs in one week",
+      "Percent": "0.15",
+      "Extra": "",
+      "Type": "Pub Count 11"
+    },
+    {
+      "CID": "54",
+      "Title": "Killswitch Engaged",
+      "Description": "Play 20+ Combat pubs in one week",
+      "Timeframe": "Play 20+ Combat pubs in one week",
+      "Percent": "0.2",
+      "Extra": "",
+      "Type": "Pub Count 12"
+    },
+    {
+      "CID": "54",
+      "Title": "On a Warpath",
+      "Description": "Play 25+ Combat pubs in one week",
+      "Timeframe": "Play 25+ Combat pubs in one week",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Pub Count 13"
+    },
+    {
+      "CID": "54",
+      "Title": "Destroy All Robots!",
+      "Description": "Play 30+ Combat pubs in one week",
+      "Timeframe": "Play 30+ Combat pubs in one week",
+      "Percent": "0.3",
+      "Extra": "",
+      "Type": "Pub Count 14"
+    },
+    {
+      "CID": "54",
+      "Title": "Arena?  What's That?",
+      "Description": "Play 35+ Combat pubs in one week",
+      "Timeframe": "Play 35+ Combat pubs in one week",
+      "Percent": "0.35",
+      "Extra": "",
+      "Type": "Pub Count 15"
+    },
+    {
+      "CID": "54",
+      "Title": "Combat Connoisseur",
+      "Description": "Play 40+ Combat pubs in one week",
+      "Timeframe": "Play 40+ Combat pubs in one week",
+      "Percent": "0.4",
+      "Extra": "",
+      "Type": "Pub Count 16"
+    },
+    {
+      "CID": "54",
+      "Title": "Combat Junkie",
+      "Description": "Play 45+ Combat pubs in one week",
+      "Timeframe": "Play 45+ Combat pubs in one week",
+      "Percent": "0.45",
+      "Extra": "",
+      "Type": "Pub Count 17"
+    },
+    {
+      "CID": "54",
+      "Title": "Combat Is Life",
+      "Description": "Play 50+ Combat pubs in one week",
+      "Timeframe": "Play 50+ Combat pubs in one week",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Pub Count 18"
+    },
+    {
+      "CID": "54",
+      "Title": "Who Do I Have to Pew Pew Pew to Get a Combat Update Around Here?",
+      "Description": "Play 100+ Combat pubs in one week",
+      "Timeframe": "Play 100+ Combat pubs in one week",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Pub Count 19"
+    }
+  ],
+  "55": [
+    {
+      "CID": "55",
+      "Title": "Point 'N Pew",
+      "Description": "Use pulsar 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "55",
+      "Title": "Blast 'Em!",
+      "Description": "Use pulsar 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "55",
+      "Title": "Pulsar Meta!",
+      "Description": "Use pulsar 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Pulsar"
+    },
+    {
+      "CID": "55",
+      "Title": "My Other Pulsar Is a Pulsar",
+      "Description": "Use pulsar 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Pulsar"
+    }
+  ],
+  "56": [
+    {
+      "CID": "56",
+      "Title": "Pellet Party!",
+      "Description": "Use nova 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "56",
+      "Title": "Hand Cannon Crab Dancing ",
+      "Description": "Use nova 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "56",
+      "Title": "Nova Meta!",
+      "Description": "Use nova 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Nova"
+    },
+    {
+      "CID": "56",
+      "Title": "Blaster Master",
+      "Description": "Use nova 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Nova"
+    }
+  ],
+  "57": [
+    {
+      "CID": "57",
+      "Title": "Crack Shot Robot",
+      "Description": "Use comet 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "57",
+      "Title": "Dialed In",
+      "Description": "Use comet 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "57",
+      "Title": "Comet Meta!",
+      "Description": "Use comet 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Comet"
+    },
+    {
+      "CID": "57",
+      "Title": "Aimbot?  What aimbot?!",
+      "Description": "Use comet 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Comet"
+    }
+  ],
+  "58": [
+    {
+      "CID": "58",
+      "Title": "Meatball Gun Bonanza",
+      "Description": "Use meteor 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "58",
+      "Title": "Suppression in Zero-G",
+      "Description": "Use meteor 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "58",
+      "Title": "Meteor Meta!",
+      "Description": "Use meteor 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Meteor"
+    },
+    {
+      "CID": "58",
+      "Title": "Don't Sweat the Technique",
+      "Description": "Use meteor 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Meteor"
+    }
+  ],
+  "59": [
+    {
+      "CID": "59",
+      "Title": "Go Ahead, Have a Blast",
+      "Description": "Use detonator 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "59",
+      "Title": "Git Gud Scrub!",
+      "Description": "Use detonator 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "59",
+      "Title": "Warning: May Be Fatal if Swallowed",
+      "Description": "Use detonator 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Detonator"
+    },
+    {
+      "CID": "59",
+      "Title": "Dyn-o-mite!",
+      "Description": "Use detonator 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Detonator"
+    }
+  ],
+  "60": [
+    {
+      "CID": "60",
+      "Title": "Shock and Awe",
+      "Description": "Use stun field 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "60",
+      "Title": "Scrambled Circuits",
+      "Description": "Use stun field 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "60",
+      "Title": "That Tingling Sensation",
+      "Description": "Use stun field 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Stun Field"
+    },
+    {
+      "CID": "60",
+      "Title": "Do Robots Dream of Stun Fields?",
+      "Description": "Use stun field 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Stun Field"
+    }
+  ],
+  "61": [
+    {
+      "CID": "61",
+      "Title": "Feed The Zapper",
+      "Description": "Use arc mine 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "61",
+      "Title": "It's Electric!  Boogie Woogie Woogie",
+      "Description": "Use arc mine 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "61",
+      "Title": "Arc Attack!",
+      "Description": "Use arc mine 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Arc Mine"
+    },
+    {
+      "CID": "61",
+      "Title": "Don't Forget Your Faraday Cage",
+      "Description": "Use arc mine 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Arc Mine"
+    }
+  ],
+  "62": [
+    {
+      "CID": "62",
+      "Title": "Batteries Not Included",
+      "Description": "Use instant repair 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "62",
+      "Title": "Next-Gen Regen",
+      "Description": "Use instant repair 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "62",
+      "Title": "As Good As New",
+      "Description": "Use instant repair 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Instant Repair"
+    },
+    {
+      "CID": "62",
+      "Title": "Plug 'n Play",
+      "Description": "Use instant repair 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Instant Repair"
+    }
+  ],
+  "63": [
+    {
+      "CID": "63",
+      "Title": "Failsafe Protocol Initiated",
+      "Description": "Use repair matrix 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "63",
+      "Title": "System Failure Recovery Mode",
+      "Description": "Use repair matrix 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "63",
+      "Title": "Reconstructing Database",
+      "Description": "Use repair matrix 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    },
+    {
+      "CID": "63",
+      "Title": "Recovering Core Memory",
+      "Description": "Use  repair matrix 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Repair Matriix"
+    }
+  ],
+  "64": [
+    {
+      "CID": "64",
+      "Title": "Echo Location Sensors Activated",
+      "Description": "Use threat scanner 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "64",
+      "Title": "Enemy XYZ Confirmed",
+      "Description": "Use threat scanner 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "64",
+      "Title": "Hide 'n Seek 'n Pew!",
+      "Description": "Use threat scanner 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    },
+    {
+      "CID": "64",
+      "Title": "Enhance",
+      "Description": "Use threat scanner 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Threat Scanner"
+    }
+  ],
+  "65": [
+    {
+      "CID": "65",
+      "Title": "Deploy Countermeasures  ",
+      "Description": "Use energy barrier 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "65",
+      "Title": "A False Sense of Security",
+      "Description": "Use energy barrier 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "65",
+      "Title": "Is It Safe to Come out Yet?",
+      "Description": "Use energy barrier 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    },
+    {
+      "CID": "65",
+      "Title": "Who Even Uses Shield This Much?!",
+      "Description": "Use energy barrier 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Energy Barrier"
+    }
+  ],
+  "66": [
+    {
+      "CID": "66",
+      "Title": "Silent Running",
+      "Description": "Use phase shift 25+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "66",
+      "Title": "Shadow of My Former Self",
+      "Description": "Use phase shift 50+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "66",
+      "Title": "Designation: Decoy Bot",
+      "Description": "Use phase shift 75+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Phase Shift"
+    },
+    {
+      "CID": "66",
+      "Title": "I'm a Distraction",
+      "Description": "Use phase shift 100+ games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Phase Shift"
+    }
+  ],
+  "67": [
+    {
+      "CID": "67",
+      "Title": "Fully Functional",
+      "Description": "Use 8+ different loadout combinations (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.125",
+      "Extra": "",
+      "Type": "Loadout"
+    },
+    {
+      "CID": "67",
+      "Title": "Echo One of All Trades",
+      "Description": "Use 16+ different loadout combinations (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Loadout"
+    },
+    {
+      "CID": "67",
+      "Title": "Protean Bot",
+      "Description": "Use 32+ different loadout combinations (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Loadout"
+    },
+    {
+      "CID": "67",
+      "Title": "5th Loadout when? \"Soon\u2122\"",
+      "Description": "Use all 64 loadout combinations (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Loadout"
+    }
+  ],
+  "68": [
+    {
+      "CID": "68",
+      "Title": "Blame It on the Tracking",
+      "Description": "Die 250+ times (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "68",
+      "Title": "Battle Scarred",
+      "Description": "Die 500+ times (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "68",
+      "Title": "Spare Parts",
+      "Description": "Die 750+ times (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "check #'s",
+      "Type": "Death"
+    },
+    {
+      "CID": "68",
+      "Title": "Pixel Party!",
+      "Description": "Die 1000+ times (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "check #'s",
+      "Type": "Death"
+    }
+  ],
+  "69": [
+    {
+      "CID": "69",
+      "Title": "Point Unlocked",
+      "Description": "Play 5+ Capture Point games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.1",
+      "Extra": "",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "69",
+      "Title": "This is MY Point",
+      "Description": "Play 10+ Capture Point games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.2",
+      "Extra": "",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "69",
+      "Title": "Coming in Clutch",
+      "Description": "Play 25+ Capture Point games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Capture Point"
+    },
+    {
+      "CID": "69",
+      "Title": "King of the Hill",
+      "Description": "Play 50+ Capture Point games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Capture Point"
+    }
+  ],
+  "70": [
+    {
+      "CID": "70",
+      "Title": "Stop the Payload",
+      "Description": "Play 5+ Payload games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.1",
+      "Extra": "",
+      "Type": "Payload"
+    },
+    {
+      "CID": "70",
+      "Title": "Payload Contested!",
+      "Description": "Play 10+ Payload games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.2",
+      "Extra": "",
+      "Type": "Payload"
+    },
+    {
+      "CID": "70",
+      "Title": "Payload Returning",
+      "Description": "Play 25+ Payload games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Payload"
+    },
+    {
+      "CID": "70",
+      "Title": "Feed the Flamingo",
+      "Description": "Play 50+ Payload games (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Payload"
+    }
+  ],
+  "71": [
+    {
+      "CID": "71",
+      "Title": "Machine Learning",
+      "Description": "Proximity to teammate 5% or more (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "71",
+      "Title": "Moving as a Unit",
+      "Description": "Proximity to teammate 10% or more (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "71",
+      "Title": "Robot Alliance",
+      "Description": "Proximity to teammate 15% or more (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    },
+    {
+      "CID": "71",
+      "Title": "Robot Wrecking Squad",
+      "Description": "Proximity to teammate 20% or more (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Team Proximity "
+    }
+  ],
+  "72": [
+    {
+      "CID": "72",
+      "Title": "Don't Point That Thing at Me",
+      "Description": "Proximity to enemy 0.5% or more",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "72",
+      "Title": "I Too Like to Live Dangerously",
+      "Description": "Proximity to enemy 1.0% or more",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "72",
+      "Title": "Keep Your Robot Friends Close and Your Enemy Robots Closer",
+      "Description": "Proximity to enemy 1.5% or more",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    },
+    {
+      "CID": "72",
+      "Title": "Roboticide",
+      "Description": "Proximity to enemy 2.0% or more",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Enemy Proximity "
+    }
+  ],
+  "73": [
+    {
+      "CID": "73",
+      "Title": "Always on the Go",
+      "Description": "Average speed over 2.0m/s (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5714285714",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "73",
+      "Title": "Fast Times at Robot High",
+      "Description": "Average speed over 2.5m/s (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.7142857143",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "73",
+      "Title": "Bot Be Nimble, Bot Be Quick",
+      "Description": "Average speed over 3.0m/s (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.8571428571",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    },
+    {
+      "CID": "73",
+      "Title": "Cyberkinetic Enhancements",
+      "Description": "Average speed over 3.5m/s (season average)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Speed"
+    }
+  ],
+  "74": [
+    {
+      "CID": "74",
+      "Title": "pU smottoB",
+      "Description": "Play inverted for 1%",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "74",
+      "Title": "tuO \u2019nignaH tsuJ",
+      "Description": "Play inverted for 2%",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "74",
+      "Title": "gnireenignE esrevnI",
+      "Description": "Play inverted for 3%",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    },
+    {
+      "CID": "74",
+      "Title": "toB taB m\u2019I",
+      "Description": "Play inverted for 4%",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "check %'s",
+      "Type": "Inverted"
+    }
+  ],
+  "75": [
+    {
+      "CID": "75",
+      "Title": "Don't Cry About Campers",
+      "Description": "Play 10+ games of Dyson (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "75",
+      "Title": "Dyson Again?",
+      "Description": "Play 20+ games of Dyson (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "75",
+      "Title": "War of Attrition",
+      "Description": "Play 30+ games of Dyson (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Dyson"
+    },
+    {
+      "CID": "75",
+      "Title": "Brute Force Attack",
+      "Description": "Play 40+ games of Dyson (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Dyson"
+    }
+  ],
+  "76": [
+    {
+      "CID": "76",
+      "Title": "Crash 'n Burn",
+      "Description": "Play 10+ games of Combustion (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "76",
+      "Title": "Up in Flames",
+      "Description": "Play 20+ games of Combustion (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "76",
+      "Title": "Android Incinerator",
+      "Description": "Play 30+ games of Combustion (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Combustion"
+    },
+    {
+      "CID": "76",
+      "Title": "Molten Mechanical Mayhem",
+      "Description": "Play 40+ games of Combustion (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Combustion"
+    }
+  ],
+  "77": [
+    {
+      "CID": "77",
+      "Title": "Pretty in Pink",
+      "Description": "Play 10+ games of Fission (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "77",
+      "Title": "Flamingo Feeding Frenzy",
+      "Description": "Play 20+ games of Fission (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "77",
+      "Title": "Payload Protector",
+      "Description": "Play 30+ games of Fission (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Fission"
+    },
+    {
+      "CID": "77",
+      "Title": "George and I Go Way Back",
+      "Description": "Play 40+ games of Fission (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Fission"
+    }
+  ],
+  "78": [
+    {
+      "CID": "78",
+      "Title": "Pink Is the New Black",
+      "Description": "Play 10+ games of Surge (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.25",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "78",
+      "Title": "Flamingo Firebath",
+      "Description": "Play 20+ games of Surge (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "78",
+      "Title": "Payload Predator",
+      "Description": "Play 30+ games of Surge (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.75",
+      "Extra": "",
+      "Type": "Surge"
+    },
+    {
+      "CID": "78",
+      "Title": "Good ol' George",
+      "Description": "Play 40+ games of Surge (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Surge"
+    }
+  ],
+  "79": [
+    {
+      "CID": "79",
+      "Title": "Deimos Defense Manufacturing Consultant ",
+      "Description": "Play 10+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.01818181818",
+      "Extra": "",
+      "Type": "Pub Count 1"
+    },
+    {
+      "CID": "79",
+      "Title": "Fujin Armory Supplier",
+      "Description": "Play 20+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.03636363636",
+      "Extra": "",
+      "Type": "Pub Count 2"
+    },
+    {
+      "CID": "79",
+      "Title": "Horus Orbital Arms Dealer",
+      "Description": "Play 30+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.05454545455",
+      "Extra": "",
+      "Type": "Pub Count 3"
+    },
+    {
+      "CID": "79",
+      "Title": "Krayton Arms Distributor",
+      "Description": "Play 40+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.07272727273",
+      "Extra": "",
+      "Type": "Pub Count 4"
+    },
+    {
+      "CID": "79",
+      "Title": "Makka Defense Systems Analyst",
+      "Description": "Play 50+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.09090909091",
+      "Extra": "",
+      "Type": "Pub Count 5"
+    },
+    {
+      "CID": "79",
+      "Title": "I Aced the Turing Test",
+      "Description": "Play 60+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.1090909091",
+      "Extra": "",
+      "Type": "Pub Count 6"
+    },
+    {
+      "CID": "79",
+      "Title": "Prototype Unit",
+      "Description": "Play 70+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.1272727273",
+      "Extra": "",
+      "Type": "Pub Count 7"
+    },
+    {
+      "CID": "79",
+      "Title": "Programmed to Destroy",
+      "Description": "Play 80+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.1454545455",
+      "Extra": "",
+      "Type": "Pub Count 8"
+    },
+    {
+      "CID": "79",
+      "Title": "Circuit Breaker",
+      "Description": "Play 90+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.1636363636",
+      "Extra": "",
+      "Type": "Pub Count 9"
+    },
+    {
+      "CID": "79",
+      "Title": "More Robot Than Robot",
+      "Description": "Play 100+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.1818181818",
+      "Extra": "",
+      "Type": "Pub Count 10"
+    },
+    {
+      "CID": "79",
+      "Title": "Certified Series 10",
+      "Description": "Play 150+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.2727272727",
+      "Extra": "",
+      "Type": "Pub Count 11"
+    },
+    {
+      "CID": "79",
+      "Title": "War Machine",
+      "Description": "Play 200+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.3636363636",
+      "Extra": "",
+      "Type": "Pub Count 12"
+    },
+    {
+      "CID": "79",
+      "Title": "Battle Angel",
+      "Description": "Play 250+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.4545454545",
+      "Extra": "",
+      "Type": "Pub Count 13"
+    },
+    {
+      "CID": "79",
+      "Title": "Engine of Destruction",
+      "Description": "Play 300+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.5454545455",
+      "Extra": "",
+      "Type": "Pub Count 14"
+    },
+    {
+      "CID": "79",
+      "Title": "Robot Evolution",
+      "Description": "Play 350+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.6363636364",
+      "Extra": "",
+      "Type": "Pub Count 15"
+    },
+    {
+      "CID": "79",
+      "Title": "Atlas Intelligence",
+      "Description": "Play 400+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.7272727273",
+      "Extra": "",
+      "Type": "Pub Count 16"
+    },
+    {
+      "CID": "79",
+      "Title": "Sentient Machine",
+      "Description": "Play 450+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.8181818182",
+      "Extra": "",
+      "Type": "Pub Count 17"
+    },
+    {
+      "CID": "79",
+      "Title": "Combat LAN When?",
+      "Description": "Play 500+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "0.9090909091",
+      "Extra": "",
+      "Type": "Pub Count 18"
+    },
+    {
+      "CID": "79",
+      "Title": "King/Queen of Pubs",
+      "Description": "Play 550+ Combat pubs (cumulative)",
+      "Timeframe": "Cumulative",
+      "Percent": "1",
+      "Extra": "",
+      "Type": "Pub Count 19"
+    }
+  ]
 }
