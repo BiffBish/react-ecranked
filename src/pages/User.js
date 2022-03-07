@@ -9,18 +9,19 @@ import { Statistics } from "../components/Statistics";
 import { RecentGames } from "../components/RecentGames";
 import Achievements from "../components/Achievements";
 import UserPubLeaderboard from "../components/UserPubLeaderboard";
-const UserBody = styled.div`
-  display: flex;
-  align-items: stretch;
-  flex-wrap: wrap;
-  height: 100%;
-  overflow: hidden;
-  transition-duration: 1s;
-  opacity: 100%
-  transition-property: height margin opacity;
-  padding:20px;
-  gap:40px;
-`;
+// const UserBody = styled.div`
+//   display: flex;
+//   align-items: stretch;
+//   flex-wrap: wrap;
+//   height: 100%;
+//   overflow: hidden;
+//   transition-duration: 1s;
+//   opacity: 100%
+//   transition-property: height margin opacity;
+//   padding:20px;
+//   gap:40px;
+// `;
+
 const StatChoiceStyle = styled.div`
   padding: 0px;
   background-color: #222;
@@ -209,6 +210,9 @@ export default function User({ username, setBannerCallback, subDomain }) {
             if (data.moderator === true) {
               iconSrc = "/images/moderator_icon.png";
             }
+            if (data.oculus_name === "BiffBish") {
+              iconSrc = "/images/happy_cubesat.png";
+            }
             console.log(data);
             setBannerCallback(data["oculus_name"], iconSrc);
             if (username !== data["oculus_name"]) {
@@ -254,7 +258,9 @@ export default function User({ username, setBannerCallback, subDomain }) {
   return (
     <>
       <FailedSearchBar shown={userNotFound} onFormSubmit={whenSearchSubmit} />
-      <UserBody
+
+      <div
+        className="list padded"
         style={
           userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
@@ -267,12 +273,13 @@ export default function User({ username, setBannerCallback, subDomain }) {
           <meta property="og:title" content="MyApp" />
           <meta property="og:image" content="path/to/image.jpg" />
         </MetaTags>
+        <div className="horizontal-container">
+          <LeftSide replays={apiData["recent_games"]} username={username} />
+          <Statistics userData={apiData} />
 
-        <LeftSide replays={apiData["recent_games"]} username={username} />
-        <Statistics userData={apiData} />
-
-        <AboutMe userData={apiData} />
-      </UserBody>
+          <AboutMe userData={apiData} />
+        </div>
+      </div>
     </>
   );
 }
