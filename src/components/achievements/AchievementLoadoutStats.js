@@ -9,65 +9,152 @@ import { SegmentedProgressBar } from "../SegmentedProgressBar";
 
 var achievementFormatingData = require("../AchievementData.json");
 
-const ContainerStyle = styled.div`
-  padding: 10px 10px 10px;
+const AchievementPopupStyle = styled.div`
+  box-sizing: border-box;
+
+  // position: absolute;
+  color: white;
+  padding: 10px;
+  // margin: 20px 10px 20px;
   background-color: #222;
   color: white;
-  float: left;
-  border: 1px solid white;
-  border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0px 10px;
-`;
-const ContainerTitle = styled.div`
-  font-size: 36px;
-  font-weight: 400;
-  margin: 10px 0px;
-  text-align: center;
-  flex: 0 0 100%;
-  color: #fff;
-  flex-grow: 0;
+
+  z-index: 10;
 `;
 
-const SegmentedProgressBarContainerStyle = styled.div`
-  height: ${40}px;
+const AchievementPopup = ({
+  width,
+  visible,
+  // visibilityCallback,
+  selectedNumber,
+  achievementData,
+  lockedAchievements,
+  locked,
+}) => {
+  // visible = true;
+  let displayedValue = achievementData.values[selectedNumber.toString()];
 
-  display: flex;
-  flex-direction: column;
-  line-height: 16px;
-  // flex-grow: 1;
-  transition-property: background-color;
-  transition-duration: 0.2f;
-  flex-basis: 0;
-`;
-const ProgressDivStyle = styled.div`
-  position: relative;
+  let SelectedAchievement = achievementFormatingData[selectedNumber.toString()];
+  if (SelectedAchievement == null) return null;
+  let SelectedAchievementDataName = SelectedAchievement.progressDataName;
+  let NumberEarned = null;
+  if (SelectedAchievementDataName != undefined) {
+    NumberEarned = collectedAchievementData[SelectedAchievementDataName];
+  }
 
-  border-radius: 0.5rem;
-  border: 1px solid white;
-  border-radius: 10px;
-  height: 7px;
-  overflow: hidden;
-`;
+  let MaxNumber = SelectedAchievement.progressTotal;
 
-const ProgressBarStyle = styled.div`
-  position: relative;
+  const PopupProgressBar = () => {
+    if (achievementData.values[selectedNumber.toString()] != null) {
+      return <SegmentedProgressBar AN={selectedNumber} AD={achievementData} />;
+    } else {
+      return <></>;
+    }
+  };
 
-  transform: translate(-50%, -0%);
-  background-color: #b35252;
-  height: 100%;
-  border-radius: 8px;
-  transition-duration: 3s;
-  transition-property: width;
-`;
-const ProgressBarTextStyle = styled.p`
-  position: relative;
-  margin: -${35 - 4}px 4px;
-  text-align: left;
+  let uncompletedStatement = SelectedAchievement.uncompletedInfo;
 
-  z-index: 5;
-`;
+  if (NumberEarned != null) {
+    uncompletedStatement = uncompletedStatement.replace("%c", NumberEarned);
+    uncompletedStatement = uncompletedStatement.replace("%m", MaxNumber);
+  }
+
+  let CurrentStepNumber = SelectedAchievement.length - 1;
+  for (let index = 0; index < SelectedAchievement.length; index++) {
+    const element = SelectedAchievement[index];
+    if (element.Percent > displayedValue) {
+      CurrentStepNumber = index;
+      break;
+    }
+  }
+  // if (visible) {
+  // }
+  // debugger;
+  // setTimeout(function () {}, 500);
+
+  return (
+    <AchievementPopupStyle
+      className="rounded horizontal-container"
+      onMouseLeave={() => {
+        // visibilityCallback(false);
+      }}
+      style={{
+        position: "relative",
+        // top: 0,
+        // left: 0,
+        // top: 0,
+        // height: height,
+        width: 500,
+        // opacity: visible ? "100%" : "0%",
+        display: visible ? "block" : "none",
+        // transitionDuration: ".0s",
+        // transitionProperty: "opacity",
+        zIndex: 1000,
+      }}
+    >
+      <div className="list">
+        {SelectedAchievement.map((element, index) => {
+          let scalePercent = 50;
+          if (CurrentStepNumber == index) scalePercent = 100;
+          if (CurrentStepNumber == index + 1) scalePercent = 70;
+          if (CurrentStepNumber == index - 1) scalePercent = 70;
+          // if (CurrentStepNumber == index + 2) scalePercent = 60;
+          // if (CurrentStepNumber == index - 2) scalePercent = 60;
+          return (
+            <>
+              <div
+                className="horizontal-container"
+                style={{
+                  transform: "scale(" + scalePercent + "%)",
+                  transformOrigin: "left",
+                  height: scalePercent / 2 + "px",
+                }}
+              >
+                <img
+                  src={
+                    "/images/" +
+                    (element.Percent <= displayedValue
+                      ? "neon_green_checkmark"
+                      : locked
+                      ? "neon_red_x"
+                      : "lock_clear_no_square") +
+                    ".png"
+                  }
+                  alt="iconImage"
+                  style={{ height: "40px", width: "40px" }}
+                />
+                {/* <div
+              className="rounded"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor:
+                  element.Percent <= displayedValue ? "green" : "red",
+              }}
+            >
+              
+              </div> */}
+
+                <div>
+                  <div style={{ fontSize: 20 }}>{element.Title}</div>
+                  <div style={{ fontSize: 10, padding: "0px 0px 10px" }}>
+                    {element.Description}
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        })}
+        {/* <div style={{}}>
+        <PopupProgressBar />{" "}
+      </div> */}
+      </div>
+      Achievement Failed
+      {/* <div style={{ fontSize: 10 }}>{uncompletedStatement}</div> */}
+    </AchievementPopupStyle>
+  );
+};
+
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -102,6 +189,7 @@ const SegmentedLProgressBar = ({
   let SelectedAchievement = achievementFormatingData[AchNum.toString()];
   let displayedValue = achievementData.values[AchNum.toString()];
   let CurrentStepNumber = -1;
+  const [visible, setVisible] = useState(false);
 
   let DisplayedTitle = "Completed!";
   for (let index = 0; index < SelectedAchievement.length; index++) {
@@ -113,40 +201,65 @@ const SegmentedLProgressBar = ({
     }
   }
   return (
-    <div style={{ display: "flex", opacity: locked ? 0.5 : 1 }} ref={fullRef}>
-      <img
-        src={"/images/" + icon + ".png"}
-        alt="iconImage"
-        style={{ height: "38px", width: "38px" }}
-      />
+    <div
+      style={{
+        height: "30px",
+        overflow: "visible",
+        flexBasis: 0,
+      }}
+    >
       <div
-        style={{ flexGrow: 1 }}
-        onMouseEnter={() => {
-          // updateHoverCallback(AchievementNumber);
-          // setBackgroundHighlighted(true);
-          cb(fullRef, AchNum, true);
+        style={{
+          display: "flex",
+          opacity: locked ? 0.5 : 1,
+          position: "relative",
+          height: "30px",
         }}
-        onMouseLeave={() => {
-          cb(fullRef, AchNum, false);
-
-          // updateHoverCallback([]);
-          // setBackgroundHighlighted(false);
-        }}
+        ref={fullRef}
       >
-        <SegmentedProgressBar
-          Title={DisplayedTitle}
-          // Title={achievementData.values[AchievementNumber.toString()]}
-          Percentage={achievementData.values[AchNum.toString()]}
-          SecondaryPercentage={Math.min(totalGames / pubRequirement, 1)}
-          // Percentage={0.5}
-          Height={20}
-          ProgressBarClass={type + "-background"}
+        <img
+          src={"/images/" + icon + ".png"}
+          alt="iconImage"
+          style={{ height: "28px", width: "28px" }}
         />
+        <div
+          style={{ flexGrow: 1 }}
+          onMouseEnter={() => {
+            // updateHoverCallback(AchievementNumber);
+            // setBackgroundHighlighted(true);
+            setVisible(true);
+            cb(fullRef, AchNum, true);
+          }}
+          onMouseLeave={() => {
+            cb(fullRef, AchNum, false);
+            setVisible(false);
+
+            // updateHoverCallback([]);
+            // setBackgroundHighlighted(false);
+          }}
+        >
+          <SegmentedProgressBar
+            Title={DisplayedTitle}
+            // Title={achievementData.values[AchievementNumber.toString()]}
+            Percentage={achievementData.values[AchNum.toString()]}
+            SecondaryPercentage={Math.min(totalGames / pubRequirement, 1)}
+            // Percentage={0.5}
+            Height={15}
+            ProgressBarClass={type + "-background"}
+          />
+        </div>
       </div>
+      <AchievementPopup
+        width={100}
+        visible={visible}
+        selectedNumber={AchNum}
+        achievementData={achievementData}
+        locked={locked}
+      />
     </div>
 
     // <SegmentedProgressBarContainerStyle
-    //   style={
+    //   style={S
     //     backgroundHighlighted
     //       ? {
     //           backgroundColor: "#fff4",
@@ -193,6 +306,7 @@ export const AchievementLoadoutStats = ({
   achievementData,
   cb = () => {},
   setHn = () => {},
+  lockedAchievements = [],
 }) => {
   if (achievementData == null || userData == null) {
     return null;
@@ -224,9 +338,7 @@ export const AchievementLoadoutStats = ({
     [28, "surge", 0],
   ];
 
-  let lockedAchievemetns = [];
-
-  userData.daily_stats.top_loadout.forEach((element) => {});
+  console.log(lockedAchievements);
 
   // let lockedAchievemetns = useMemo(getLockedStuff());
   if (selectedAchievementType === "daily") {
@@ -250,6 +362,8 @@ export const AchievementLoadoutStats = ({
                     type={"daily"}
                     cb={cb}
                     achievementData={achievementData}
+                    locked={lockedAchievements[element[0]] === true}
+                    // locked={true}
                   />
                 );
               })}

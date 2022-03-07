@@ -32,15 +32,6 @@ export const AchievementsContainer = styled.div`
   margin: auto;
 
 `;
-
-const CenterAchievementCollumn = styled.div`
-  display: flex;
-  width: ${AchievementSize * 5 + AchievementGap * 4}px;
-  background-color: transparent;
-  flex-wrap: wrap;
-  gap: ${AchievementGap}px ${AchievementGap}px; /* row-gap column gap */
-  align-content: flex-start;
-`;
 export const LeftAchievementCollumn = styled.div`
   display: flex;
   flex: 200px 2;
@@ -50,38 +41,6 @@ export const LeftAchievementCollumn = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
 `;
-const RightAchievementCollumn = styled.div`
-  display: flex;
-  flex: 200px 2;
-  background-color: transparent;
-  margin: 0px 0px 0px ${AchievementGap}px;
-  gap: ${AchievementGap}px 0px;
-  flex-wrap: wrap;
-  flex-direction: column;
-`;
-const AchievementSquareStyle = styled.div`
-  background-color: transparent;
-  border: 1px solid white;
-  border-radius: 10px;
-  width: ${AchievementSize - 2}px;
-  height: ${AchievementSize - 2}px;
-  flex: none;
-  padding: 0px;
-  text-align: center;
-  transition-property: background-color;
-
-  transition-duration: 0.1s;
-  cursor: pointer;
-`;
-const AchievementWideStyle = styled.div`
-  background-color: yellow;
-  border: 1px solid white;
-  border-radius: 10px;
-  width: ${AchievementSize * 5 + AchievementGap * 4 - 4}px;
-  height: ${AchievementSize - 4}px;
-  flex: none;
-`;
-
 // const AchievementSquare = ({ num, data, cb, hn = [] }) => {
 //   var ref = React.useRef();
 //   let backGroundColor = "#A44";
@@ -130,16 +89,6 @@ const AchievementWideStyle = styled.div`
 //     </AchievementWideStyle>
 //   );
 // };
-const AchievementSingleRow = styled.div`
-  width: 100%;
-  height: ${AchievementSize}px;
-  display: flex;
-`;
-const AchievementDoubleRow = styled.div`
-  height: ${AchievementSize * 2 + AchievementGap}px;
-  display: flex;
-  align-items: center;
-`;
 
 const AchievementPopupStyle = styled.div`
   box-sizing: border-box;
@@ -150,164 +99,8 @@ const AchievementPopupStyle = styled.div`
   // margin: 20px 10px 20px;
   background-color: #222;
   color: white;
-  // float: left;
-  // border: 1px solid white;
-  // border-radius: 10px;
-  // display: flex;
-  // flex-wrap: wrap;
-  // gap: 0px 10px;
+
   z-index: 10;
-`;
-
-const AchievementPopup = ({
-  topPosition,
-  leftPosition,
-  width,
-  height,
-  visible,
-  visibilityCallback,
-  selectedNumber,
-  achievementData,
-}) => {
-  let displayedValue = achievementData.values[selectedNumber.toString()];
-
-  let SelectedAchievement = achievementFormatingData[selectedNumber.toString()];
-  if (SelectedAchievement == null) return null;
-  let SelectedAchievementDataName = SelectedAchievement.progressDataName;
-  let NumberEarned = null;
-  if (SelectedAchievementDataName != undefined) {
-    NumberEarned = collectedAchievementData[SelectedAchievementDataName];
-  }
-
-  let MaxNumber = SelectedAchievement.progressTotal;
-
-  const PopupProgressBar = () => {
-    if (achievementData.values[selectedNumber.toString()] != null) {
-      return <SegmentedProgressBar AN={selectedNumber} AD={achievementData} />;
-    } else {
-      return <></>;
-    }
-  };
-
-  let uncompletedStatement = SelectedAchievement.uncompletedInfo;
-
-  if (NumberEarned != null) {
-    uncompletedStatement = uncompletedStatement.replace("%c", NumberEarned);
-    uncompletedStatement = uncompletedStatement.replace("%m", MaxNumber);
-  }
-
-  let CurrentStepNumber = SelectedAchievement.length - 1;
-  for (let index = 0; index < SelectedAchievement.length; index++) {
-    const element = SelectedAchievement[index];
-    if (element.Percent > displayedValue) {
-      CurrentStepNumber = index;
-      break;
-    }
-  }
-
-  return (
-    <AchievementPopupStyle
-      className="rounded"
-      onMouseLeave={() => {
-        visibilityCallback(false);
-      }}
-      style={{
-        top: topPosition,
-        left: leftPosition,
-        // height: height,
-        width: width,
-        visibility: visible ? "visible" : "hidden",
-      }}
-    >
-      {SelectedAchievement.map((element, index) => {
-        let scalePercent = 50;
-        if (CurrentStepNumber == index) scalePercent = 100;
-        if (CurrentStepNumber == index + 1) scalePercent = 70;
-        if (CurrentStepNumber == index - 1) scalePercent = 70;
-        // if (CurrentStepNumber == index + 2) scalePercent = 60;
-        // if (CurrentStepNumber == index - 2) scalePercent = 60;
-        return (
-          <div
-            className="horizontal-container"
-            style={{
-              transform: "scale(" + scalePercent + "%)",
-              transformOrigin: "left",
-              height: scalePercent / 2 + "px",
-            }}
-          >
-            <img
-              src={
-                "/images/" +
-                (element.Percent <= displayedValue
-                  ? "neon_green_checkmark"
-                  : "lock_clear_no_square") +
-                ".png"
-              }
-              alt="iconImage"
-              style={{ height: "40px", width: "40px" }}
-            />
-            {/* <div
-              className="rounded"
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor:
-                  element.Percent <= displayedValue ? "green" : "red",
-              }}
-            >
-              
-              </div> */}
-
-            <div>
-              <div style={{ fontSize: 20 }}>{element.Title}</div>
-              <div style={{ fontSize: 10, padding: "0px 0px 10px" }}>
-                {element.Description}
-              </div>
-            </div>
-          </div>
-        );
-      })}
-
-      <div style={{ fontSize: 10 }}>{uncompletedStatement}</div>
-
-      {/* <div style={{}}>
-        <PopupProgressBar />{" "}
-      </div> */}
-    </AchievementPopupStyle>
-  );
-};
-
-const StatChoiceStyle = styled.div`
-  padding: 0px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0px 10px;
-`;
-
-const AchievementHeaderStyle = styled.div`
-  height: 40px;
-  display: flex;
-  gap: 20px;
-`;
-const AchievementStyle = styled.div`
-  // padding: 0px 0px 0px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 1px solid white;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  // flex-wrap: wrap;
-  gap: 0px 10px;
-  width: 100%;
-  transition-property: padding;
-  transition-duration: 0.5;
-  overflow: hidden;
 `;
 
 // const ProgressDivStyle = styled.div`
@@ -381,94 +174,33 @@ export default function Achievements({ userData }) {
     arcmine: false,
     instant: false,
   };
-  if (dailyLoadoutData != undefined) {
-    for (let index = 0; index < dailyLoadoutData.length; index++) {
-      const element = dailyLoadoutData[index];
-      if (element[1] == 0) {
-        continue;
-      }
-      let itemID = parseInt(element[0]);
-      switch (itemID >>> 4) {
-        case 0:
-          achievementData["locked"]["16"] = true;
-          achievementData["locked"]["17"] = true;
-          achievementData["locked"]["18"] = true;
-          achievementData["locked"]["19"] = true;
 
-          achievementData["locked"]["11"] = true;
-          achievementData["locked"]["12"] = true;
-          achievementData["locked"]["13"] = true;
-          achievementData["locked"]["14"] = true;
+  let lockedAchievements = [];
 
-          achievementData["locked"]["21"] = true;
-          achievementData["locked"]["22"] = true;
-          achievementData["locked"]["23"] = true;
-          achievementData["locked"]["24"] = true;
-          achievementData["locked"]["11"] = true;
-          dailyItemUsage["pulsar"] = true;
+  userData.daily_stats.top_loadout.every((element) => {
+    if (element[1] == 0) return false;
+    let loadoutNumber = parseInt(element[0]);
+    console.log(loadoutNumber.toString(2));
+    console.log(((loadoutNumber >> 2) & 3).toString(2));
+    // console.log((loadoutNumber & 3).toString(2));
 
-          break;
-        case 1:
-          achievementData["locked"]["16"] = true;
-          achievementData["locked"]["17"] = true;
-          achievementData["locked"]["18"] = true;
-          achievementData["locked"]["19"] = true;
+    if (!(loadoutNumber >> 4 == 0)) lockedAchievements[5] = true;
+    if (!(loadoutNumber >> 4 == 1)) lockedAchievements[6] = true;
+    if (!(loadoutNumber >> 4 == 2)) lockedAchievements[7] = true;
+    if (!(loadoutNumber >> 4 == 3)) lockedAchievements[8] = true;
 
-          achievementData["locked"]["11"] = true;
-          achievementData["locked"]["12"] = true;
-          achievementData["locked"]["13"] = true;
-          achievementData["locked"]["14"] = true;
+    if (!(((loadoutNumber >> 2) & 3) == 0)) lockedAchievements[9] = true;
+    if (!(((loadoutNumber >> 2) & 3) == 1)) lockedAchievements[10] = true;
+    if (!(((loadoutNumber >> 2) & 3) == 2)) lockedAchievements[11] = true;
+    if (!(((loadoutNumber >> 2) & 3) == 3)) lockedAchievements[12] = true;
 
-          achievementData["locked"]["21"] = true;
-          achievementData["locked"]["22"] = true;
-          achievementData["locked"]["23"] = true;
-          achievementData["locked"]["24"] = true;
-          dailyItemUsage["nova"] = true;
+    if (!((loadoutNumber & 3) == 0)) lockedAchievements[13] = true;
+    if (!((loadoutNumber & 3) == 1)) lockedAchievements[14] = true;
+    if (!((loadoutNumber & 3) == 2)) lockedAchievements[15] = true;
+    if (!((loadoutNumber & 3) == 3)) lockedAchievements[16] = true;
+    return true;
+  });
 
-          break;
-        case 2:
-          achievementData["locked"]["6"] = true;
-          achievementData["locked"]["7"] = true;
-          achievementData["locked"]["8"] = true;
-          achievementData["locked"]["9"] = true;
-
-          achievementData["locked"]["11"] = true;
-          achievementData["locked"]["12"] = true;
-          achievementData["locked"]["13"] = true;
-          achievementData["locked"]["14"] = true;
-
-          achievementData["locked"]["21"] = true;
-          achievementData["locked"]["22"] = true;
-          achievementData["locked"]["23"] = true;
-          achievementData["locked"]["24"] = true;
-
-          dailyItemUsage["comet"] = true;
-
-          break;
-        case 3:
-          achievementData["locked"]["6"] = true;
-          achievementData["locked"]["7"] = true;
-          achievementData["locked"]["8"] = true;
-          achievementData["locked"]["9"] = true;
-
-          achievementData["locked"]["16"] = true;
-          achievementData["locked"]["17"] = true;
-          achievementData["locked"]["18"] = true;
-          achievementData["locked"]["19"] = true;
-
-          achievementData["locked"]["11"] = true;
-          achievementData["locked"]["12"] = true;
-          achievementData["locked"]["13"] = true;
-          achievementData["locked"]["14"] = true;
-          dailyItemUsage["meteor"] = true;
-          break;
-        default:
-          break;
-      }
-      if (itemID >>> 4 == 0) {
-      }
-    }
-  }
   const [hn, setHn] = useState([]);
 
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
@@ -537,7 +269,7 @@ export default function Achievements({ userData }) {
       }}
     >
       <div>{/* <div className="container-title">Challenges</div> */}</div>
-      <AchievementPopup
+      {/* <AchievementPopup
         topPosition={popupPosition.top}
         leftPosition={popupPosition.left}
         width={popupSize.width}
@@ -546,7 +278,8 @@ export default function Achievements({ userData }) {
         visibilityCallback={setPopupVisibility}
         selectedNumber={popupSelectedNumber}
         achievementData={achievementData}
-      />
+        lockedAchievements={lockedAchievements}
+      /> */}
       <div
         style={{ color: "white", cursor: "pointer" }}
         onClick={() => {
@@ -643,6 +376,7 @@ export default function Achievements({ userData }) {
           selectedAchievementType={selectedAchievementType}
           achievementData={achievementData}
           cb={cb}
+          lockedAchievements={lockedAchievements}
         />
       </div>
     </div>

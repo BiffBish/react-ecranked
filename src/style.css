@@ -9,6 +9,7 @@
 }
 .grow {
   flex-grow: 1;
+  flex-basis: 0;
 }
 .wrap {
   flex-wrap: wrap;
