@@ -111,7 +111,7 @@ const ProgressBarStyle = styled.div`
   // background-color: #b35252;
   height: 100%;
   border-radius: 8px;
-  transition-duration: 3s;
+  transition-duration: 3s, 0.5s;
   transition-property: width, background-color;
 `;
 const ProgressBarTextStyle = styled.p`
