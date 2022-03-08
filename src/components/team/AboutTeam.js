@@ -106,6 +106,7 @@ const AboutStringBox = ({ teamData, oculus_id }) => {
 
   const onClickSubmit = () => {
     if (currentText.length > 200) {
+      alert("Too long please keep it under 200 characters");
       return;
     }
 
@@ -435,17 +436,12 @@ const AboutAvatar = ({ userData, oculus_id }) => {
   }
 };
 
-const TeamName = ({allowEdit, requestedName}) => {
-
+const TeamName = ({ allowEdit, requestedName }) => {
   // if (!allowEdit){
 
-    return( 
-      <div className="padded rounded button">Request team name change</div>
-    )
+  return <div className="padded rounded button">Request team name change</div>;
   // }
-
-}
-
+};
 
 export const AboutTeam = ({ teamData }) => {
   const oculus_id = localStorage.getItem("OCULUS_ID");
@@ -460,15 +456,12 @@ export const AboutTeam = ({ teamData }) => {
   // eslint-disable-next-line
   if (localStorage.getItem("MODERATOR") == 1) {
     allowEdit = true;
-  }  
+  }
 
   //allowEdit
 
   return (
     <AboutMeStyle>
-
-  
-
       <div>
         <ContainerTitle>About Us</ContainerTitle>
       </div>
