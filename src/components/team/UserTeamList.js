@@ -4,6 +4,7 @@ import styled, { keyframes } from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
+import UserButton from "../UserButton";
 const ContainerTitle = styled.div`
   font-size: 36px;
   font-weight: 400;
@@ -130,8 +131,11 @@ export const UserTeamList = ({ teamData }) => {
     return (
       <>
         <RecentGamesStyle>
+          <ContainerTitle>Leader</ContainerTitle>
+          <UserButton oculus_id={teamData.admin_id} />
           <ContainerTitle>Members</ContainerTitle>
           {userList.slice(0, usersAnimationID).map((replay) => {
+            if (replay.oculus_id == teamData.admin_id) return null;
             const OnGameClick = () => {
               recentGameClick(replay.oculus_name);
             };
