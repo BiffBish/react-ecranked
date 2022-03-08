@@ -1,42 +1,96 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
+import Fuse from "fuse.js";
+import { exception } from "sjcl";
 const AutoCompleteBoxSub = styled.div`
   display: flex;
   flex-direction: column;
   transition-duration: 0.5s;
   // transition-property: max-height;
 `;
-function AutoCompleteMatches(
-  options,
+
+const AutoCompleteText = ({ result, OptionDiv, onClickOption }) => {
+  let matches = [];
+  let lastValue = 0;
+  console.log(result);
+  for (let index = 0; index < result.matches[0].indices.length; index++) {
+    const match = result.matches[0].indices[index];
+    const matchStart = match[0];
+    const matchEnd = match[1];
+    matches.push([result.item.slice(lastValue, matchStart), false]);
+    matches.push([result.item.slice(matchStart, matchEnd + 1), true]);
+    lastValue = matchEnd + 1;
+  }
+  matches.push([result.item.slice(lastValue, result.item.length), false]);
+
+  return (
+    <OptionDiv onClick={() => onClickOption(result.item)}>
+      {/* {result.item} */}
+      {matches.map((string) => {
+        if (string[1]) {
+          return string[0];
+        }
+        return <span style={{ color: "#999" }}>{string[0]}</span>;
+      })}
+
+      {/* {result.item.substr(0, currentText.length)}
+      <span style={{ color: "#999" }}>
+        {option.substr(currentText.length, option.length)}
+      </span> */}
+    </OptionDiv>
+  );
+};
+
+const AutoCompleteMatches = (
+  usernameList,
   currentText,
   onClickOption,
   maxAllowed,
   OptionDiv
-) {
-  var currentShowed = 0;
-  if (options) {
-    return options.map((option) => {
-      if (currentText && currentText.length > 0) {
-        if (option.toLowerCase().startsWith(currentText.toLowerCase())) {
-          currentShowed++;
-          if (currentShowed > maxAllowed) return null;
-          return (
-            <OptionDiv onClick={() => onClickOption(option)}>
-              {option.substr(0, currentText.length)}
-              <span style={{ color: "#999" }}>
-                {option.substr(currentText.length, option.length)}
-              </span>
-            </OptionDiv>
-          );
-        }
-      }
-      return null;
+) => {
+  // try {
+  if (!currentText || currentText.length < 3) {
+    return null;
+  }
+  // var currentShowed = 0;
+
+  // // Change the pattern
+  // const pattern = "Silver"
+
+  if (usernameList && currentText !== undefined) {
+    console.log(usernameList);
+    // usernameList = usernameList.slice(2911, 2914);
+
+    const fuse = new Fuse(usernameList, {
+      threshold: 0.5,
+      keys: [],
+      includeMatches: true,
+    });
+    let results = fuse.search(currentText);
+
+    return results.slice(0, 15).map((result) => {
+      // if (currentText && currentText.length > 0) {
+      //   if (option.toLowerCase().startsWith(currentText.toLowerCase())) {
+      //     currentShowed++;
+      //     if (currentShowed > maxAllowed) return null;
+      return (
+        <AutoCompleteText
+          result={result}
+          OptionDiv={OptionDiv}
+          onClickOption={onClickOption}
+        />
+      );
+      // }
+      // }
+      // return null;
     });
   } else {
     return null;
   }
-}
+  // } catch {
+  //   return null;
+  // }
+};
 
 export default function AutoComplete({
   options,
