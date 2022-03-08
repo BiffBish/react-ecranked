@@ -123,17 +123,47 @@ export default function Teams() {
             >
               <h1>Make your own team!</h1>
             </div>
-            {teamList.slice(0, 200).map((teamName) => {
+            {teamList.slice(0, 200).map((teamData) => {
               return (
                 <div className="button-container">
                   <NavLink
                     className={"button rounded grow"}
-                    to={"/team/" + teamName + "/overview"}
+                    to={"/team/" + teamData.name + "/overview"}
                   >
                     {" "}
-                    {teamName}
+                    {teamData.name}
                   </NavLink>
+                  <div
+                    className="rounded button"
+                    // onClickCapture={() => {
+                    //   // RemoveUser(user.oculus_name);
+                    //   const requestOptions = {
+                    //     method: "POST",
+                    //     headers: {
+                    //       Authorization: localStorage.getItem(
+                    //         "AUTHORIZATION_TOKEN"
+                    //       ),
+                    //       "Content-Type": "application/json",
+                    //     },
+                    //     body: JSON.stringify({}),
+                    //   };
 
+                    //   fetch(
+                    //     "https://ecranked.ddns.net/api/v1/team/" +
+                    //       teamData.name +
+                    //       "/request_join",
+                    //     requestOptions
+                    //   )
+                    //     .then((response) => response.json())
+                    //     .then((data) => {
+                    //       console.log(data);
+                    //       window.location.reload(false);
+                    //     });
+                    // }}
+                  >
+                    {"Members: "}
+                    {teamData.member_count}{" "}
+                  </div>
                   {canJoin ? (
                     <div
                       className="rounded button"
@@ -152,7 +182,7 @@ export default function Teams() {
 
                         fetch(
                           "https://ecranked.ddns.net/api/v1/team/" +
-                            teamName +
+                            teamData.name +
                             "/request_join",
                           requestOptions
                         )

@@ -180,6 +180,21 @@ function App() {
       "...Launch day!",
       "...Pew pew pew! like never before!",
       "...Years in the making",
+      "...Push yourself to the limit",
+      "...Fight your way to the top",
+      "...Who will win?",
+      "...The path to pro begins here...",
+      "...Hype!!!",
+      "...Save the date!",
+      "...Let nothing stand in your way",
+      "...Ready the Payload!",
+      "...Soar into action!",
+      "...Fly free in zero-g",
+      "...Blue squad, ready",
+      "...Orange squad, ready",
+      "...Unleash your arsenal",
+      "...Make magnificent mayhem!",
+      "...Join the battle!",
     ];
     return RandomHints[Math.floor(Math.random() * RandomHints.length)];
   }, []);
