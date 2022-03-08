@@ -134,7 +134,7 @@ export default function Teams() {
                     {teamData.name}
                   </NavLink>
                   <div
-                    className="rounded button"
+                    className="rounded text-container"
                     // onClickCapture={() => {
                     //   // RemoveUser(user.oculus_name);
                     //   const requestOptions = {

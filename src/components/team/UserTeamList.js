@@ -189,7 +189,36 @@ export const UserTeamList = ({ teamData }) => {
                       });
                   }}
                 >
-                  Accept Request
+                  Accept
+                </RecentGameStyle>
+                <RecentGameStyle
+                  onClickCapture={() => {
+                    // RemoveUser(user.oculus_name);
+                    const requestOptions = {
+                      method: "POST",
+                      headers: {
+                        Authorization: localStorage.getItem(
+                          "AUTHORIZATION_TOKEN"
+                        ),
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ user_id: user.oculus_id }),
+                    };
+
+                    fetch(
+                      "https://ecranked.ddns.net/api/v1/team/" +
+                        teamData.name +
+                        "/deny_join",
+                      requestOptions
+                    )
+                      .then((response) => response.json())
+                      .then((data) => {
+                        console.log(data);
+                        window.location.reload(false);
+                      });
+                  }}
+                >
+                  Deny
                 </RecentGameStyle>
               </UserContainer>
             );
