@@ -253,7 +253,7 @@ export default function Nav({ clientData }) {
             return Promise.reject(error);
           }
           console.log(data);
-          setAllTeams(data);
+          setAllTeams(data.map((element) => element.name));
         }
       })
       .catch((error) => {

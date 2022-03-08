@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Fuse from "fuse.js";
+import { exception } from "sjcl";
 const AutoCompleteBoxSub = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,19 +42,26 @@ const AutoCompleteText = ({ result, OptionDiv, onClickOption }) => {
 };
 
 const AutoCompleteMatches = (
-  options,
+  usernameList,
   currentText,
   onClickOption,
   maxAllowed,
   OptionDiv
 ) => {
+  // try {
+  if (!currentText || currentText.length < 3) {
+    return null;
+  }
   // var currentShowed = 0;
 
   // // Change the pattern
   // const pattern = "Silver"
 
-  if (options && currentText !== undefined) {
-    const fuse = new Fuse(options, {
+  if (usernameList && currentText !== undefined) {
+    console.log(usernameList);
+    // usernameList = usernameList.slice(2911, 2914);
+
+    const fuse = new Fuse(usernameList, {
       threshold: 0.5,
       keys: [],
       includeMatches: true,
@@ -79,6 +87,9 @@ const AutoCompleteMatches = (
   } else {
     return null;
   }
+  // } catch {
+  //   return null;
+  // }
 };
 
 export default function AutoComplete({
