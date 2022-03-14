@@ -1,6 +1,5 @@
 // import React, {useState , useRef, useEffect} from 'react'
-import React, { useEffect, useState, useRef, useMemo } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import Nav from "./components/Nav";
@@ -8,7 +7,7 @@ import Nav from "./components/Nav";
 import AnimateHeight from "react-animate-height";
 
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -102,87 +101,9 @@ function App() {
       });
   }, [clientData]);
 
-  const [apiData, setApiData] = React.useState([]);
-  const [BannerHeight, setBannerHeight] = useState(400);
-  const [BannerText, setBannerTextCallback] = useState("ECRanked");
-  const [BannerIconSrc, setBannerIconSrc] = useState(null);
-
-  const setBannerText = (Text, IconSrc) => {
-    console.log(Text, IconSrc);
-    setBannerTextCallback(Text);
-    setBannerIconSrc(IconSrc);
-  };
-  useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/replay/@recent")
-      .then(async (response) => {
-        const data = await response.json();
-        console.log("code:" + response.statusCode);
-        if (response.status === 404) {
-          console.error("No recent games found!");
-        } else {
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-          setApiData(data);
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  }, []);
-
-  function WhatApiRequest() {
-    console.log("APIDATA");
-    console.log(apiData);
-    if (apiData) {
-      return apiData;
-    }
-    return [];
-  }
-
-  let history = useHistory();
-  console.log(history);
-  const Hint = useMemo(() => {
-    var RandomHints = [
-      "...Are you ready?",
-      "...Let's gooo!!!",
-      "...Do you have what it takes?",
-      "...Are you ready?",
-      "...Let's gooo!!!",
-      "...Do you have what it takes?",
-      "...Something big is coming",
-      "...Exclusive to Echo Combat",
-      "...The first of its kind for Echo VR",
-      "...Do you have what it takes?",
-      "...UwU",
-      "...It is time",
-      "...Not Echo Pass!",
-      "...Get ready",
-      "...For love of the community!",
-      "...For love of the game!",
-      "...Launch day!",
-      "...Pew pew pew! like never before!",
-      "...Years in the making",
-      "...Push yourself to the limit",
-      "...Fight your way to the top",
-      "...Who will win?",
-      "...The path to pro begins here...",
-      "...Hype!!!",
-      "...Save the date!",
-      "...Let nothing stand in your way",
-      "...Ready the Payload!",
-      "...Soar into action!",
-      "...Fly free in zero-g",
-      "...Blue squad, ready",
-      "...Orange squad, ready",
-      "...Unleash your arsenal",
-      "...Make magnificent mayhem!",
-      "...Join the battle!",
-    ];
-    return RandomHints[Math.floor(Math.random() * RandomHints.length)];
-  }, []);
+  const BannerHeight = 400;
+  const BannerText = "ECRanked";
+  const BannerIconSrc = null;
 
   var BannerIconTitle = "";
   if (BannerIconSrc === "/images/moderator_icon.png") {
@@ -232,50 +153,6 @@ function App() {
       </PageBody>
     </Router>
   );
-}
-
-function DiscordOAuthCallback({ callbackCode, onFinish }) {
-  const hasFetchedData = useRef(false);
-  const getAuthToken = () => {
-    if (!hasFetchedData.current) {
-      hasFetchedData.current = true;
-      console.log("Callback");
-      console.log(callbackCode);
-
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_token: callbackCode,
-        }),
-      };
-      fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data["token"] === undefined) {
-            alert(
-              "Your discord has not been linked yet to ECRanked. Join the discord server from the navigation bar and contact a moderator to link your account."
-            );
-            return;
-          }
-          console.log(data);
-
-          localStorage.setItem("AUTHORIZATION_TOKEN", data["token"]);
-          localStorage.setItem("OCULUS_ID", data["oculus_id"]);
-          // eslint-disable-next-line
-          if (data["moderator"] == 1) {
-            localStorage.setItem("MODERATOR", data["moderator"]);
-          }
-          onFinish();
-        });
-    }
-  };
-  useEffect(() => {
-    getAuthToken();
-    // eslint-disable-next-line
-  }, []);
-
-  return null;
 }
 
 // const Home = () => {
