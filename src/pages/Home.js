@@ -436,8 +436,16 @@ export default function Home({ replays }) {
       <div className="list padded">
         {/*External Links */}
         <div className="list grow">
-          <Timer />
-
+          {/* <Timer /> */}
+          <div
+            className="padded rounded button"
+            // style={{ minWidth: "80%" }}
+            onClick={() => {
+              history.push("/leaderboard/challenges");
+            }}
+          >
+            <h1>Flamingo Challenges!</h1>
+          </div>
           <div
             className="padded rounded button"
             // style={{ minWidth: "80%" }}
@@ -446,15 +454,6 @@ export default function Home({ replays }) {
             }}
           >
             <h1>Click here to visit the new teams page!</h1>
-          </div>
-          <div
-            className="padded rounded button"
-            // style={{ minWidth: "80%" }}
-            onClick={() => {
-              history.push("/leaderboard/loadout/random");
-            }}
-          >
-            <h1>Click here to get a random Loadout!</h1>
           </div>
         </div>
 

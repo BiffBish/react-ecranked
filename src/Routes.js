@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
@@ -184,45 +184,6 @@ function Routes() {
 
   let history = useHistory();
   console.log(history);
-  const Hint = useMemo(() => {
-    var RandomHints = [
-      "...Are you ready?",
-      "...Let's gooo!!!",
-      "...Do you have what it takes?",
-      "...Are you ready?",
-      "...Let's gooo!!!",
-      "...Do you have what it takes?",
-      "...Something big is coming",
-      "...Exclusive to Echo Combat",
-      "...The first of its kind for Echo VR",
-      "...Do you have what it takes?",
-      "...UwU",
-      "...It is time",
-      "...Not Echo Pass!",
-      "...Get ready",
-      "...For love of the community!",
-      "...For love of the game!",
-      "...Launch day!",
-      "...Pew pew pew! like never before!",
-      "...Years in the making",
-      "...Push yourself to the limit",
-      "...Fight your way to the top",
-      "...Who will win?",
-      "...The path to pro begins here...",
-      "...Hype!!!",
-      "...Save the date!",
-      "...Let nothing stand in your way",
-      "...Ready the Payload!",
-      "...Soar into action!",
-      "...Fly free in zero-g",
-      "...Blue squad, ready",
-      "...Orange squad, ready",
-      "...Unleash your arsenal",
-      "...Make magnificent mayhem!",
-      "...Join the battle!",
-    ];
-    return RandomHints[Math.floor(Math.random() * RandomHints.length)];
-  }, []);
 
   var BannerIconTitle = "";
   if (BannerIconSrc === "/images/moderator_icon.png") {
@@ -239,13 +200,6 @@ function Routes() {
       <ApiCallHelper />
       <Nav style={{ height: "10px" }} />
       <PageBody>
-        <header style={{ fontSize: "30px", textAlign: "center" }}>
-          <p>
-            3/15/2022...
-            {/* {MModeTimer(CountdownTarget)} */}
-            {Hint}
-          </p>
-        </header>
         <Banner
           id="example-panel"
           duration={500}
