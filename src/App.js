@@ -146,7 +146,7 @@ function App() {
         </Banner>
         <div style={{ padding: "100px" }}>
           <div className="rounded padded">
-            <h2>ECRANKED.COM HAS BEEN TAKEN DOWN TEMPORARLY</h2>
+            <h2>ECRANKED.COM HAS BEEN TAKEN DOWN TEMPORARLY FOR UPGRADES</h2>
             <p>Expect it to be online soon</p>
           </div>
         </div>
