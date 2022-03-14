@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import { useHistory } from "react-router-dom";
 import { MasterAchievementBar } from "../components/MasterAchievementBar";
+import { Link } from "react-router-dom";
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 
@@ -141,7 +142,7 @@ const LoadoutBox = ({ number, frequency }) => {
 //   }
 //   return i + "th";
 // }
-const LeaderboardList = ({ userList }) => {
+const LeaderboardList = ({ userList, compacted }) => {
   const [animationIndex, setAnimationIndex] = useState(0);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -159,7 +160,7 @@ const LeaderboardList = ({ userList }) => {
             index = 50;
             break;
           }
-          await delay(10);
+          // await delay(10);
         }
       }
     }
@@ -215,16 +216,37 @@ const LeaderboardList = ({ userList }) => {
         // weeklyTotal = 25;
         // alltimeTotal = 25;
 
-        if (index + 5 > animationIndex) {
+        if (index > animationIndex) {
           communityTotal = 0;
           dailyTotal = 0;
           weeklyTotal = 0;
           alltimeTotal = 0;
         }
+        if (compacted) {
+          return (
+            <LeaderboardListContainer onClick={OnGameClick}>
+              <div className="grow">
+                <p style={{ margin: "0", flexBasis: 0, flexGrow: 0.2 }}>
+                  {user.position + 1 + ".  " + user["oculus_name"]}
+                </p>
+                <MasterAchievementBar
+                  CommunityPercent={communityTotal / 79}
+                  DailyPercent={dailyTotal / 79}
+                  WeeklyPercent={weeklyTotal / 79}
+                  SeasonPercent={alltimeTotal / 79}
+                  // Percentage={achievementData.values["63"]}
+                  Title={""}
+                  Height={"50px"}
+                  EnableBorder={true}
+                />
+              </div>
+            </LeaderboardListContainer>
+          );
+        }
         return (
           <LeaderboardListContainer onClick={OnGameClick}>
             <p style={{ margin: "0", flexBasis: 0, flexGrow: 0.2 }}>
-              {user.index + ".  " + user["oculus_name"]}
+              {user.position + 1 + ".  " + user["oculus_name"]}
             </p>
             <MasterAchievementBar
               CommunityPercent={communityTotal / 79}
@@ -236,36 +258,6 @@ const LeaderboardList = ({ userList }) => {
               Height={"50px"}
               EnableBorder={true}
             />
-            {/* {(communityTotal * 4) / 80 +
-              (dailyTotal * 25) / 80 +
-              (weeklyTotal * 25) / 80 +
-              (alltimeTotal * 25) / 80} */}
-            {/* {"  "}
-           } */}
-            {/* {user["80"]} */}
-            {/* <LeaderboardListRankingBox rank={user.index} />
-            <LeaderboardListStyle
-              key={user["oculus_name"]}
-              onClick={OnGameClick}
-              style={
-                // eslint-disable-next-line
-                localStorage.getItem("OCULUS_ID") == user.oculus_id
-                  ? {
-                      opacity: 1,
-                      backgroundColor: "#151",
-                    }
-                  : {}
-              }
-            >
-              <p style={{ margin: "0" }}>
-                {user.index + ".  " + user["oculus_name"]}
-              </p>
-              <p style={{ margin: "0 0 0 auto" }}>
-                {Math.round((user["frames_used"] / (30 * 60 * 60)) * 100) /
-                  100 + //+
-                  "h"}
-              </p>
-            </LeaderboardListStyle> */}
           </LeaderboardListContainer>
         );
       })}
@@ -275,15 +267,18 @@ const LeaderboardList = ({ userList }) => {
 const TotalLeaderboardList = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  min-width: 400px;
+  // width: 80%;
+  // min-width: 400px;
   gap: 10px;
-  margin: 10px auto;
+  margin: 0px auto;
 `;
 export default function AchievementLeaderboard({
   leaderboardStatistic,
   setBannerCallback,
   subDomain,
+  limit = 200,
+  surroundID = null,
+  compacted = true,
 }) {
   const [apiData, setApiData] = React.useState(null);
   const [sortedApiData, setSortedApiData] = React.useState(null);
@@ -292,6 +287,7 @@ export default function AchievementLeaderboard({
   }
   setBannerCallback("Challenges Leaderboard");
   const [randomLoadout, setRandomLoadout] = React.useState(null);
+  const [startIndex, setStartIndex] = React.useState(0);
 
   if (
     leaderboardStatistic === "loadout" &&
@@ -350,15 +346,29 @@ export default function AchievementLeaderboard({
       a["80"] > b["80"] ? -1 : b["80"] > a["80"] ? 1 : 0
     );
     let NewData = [];
-    apiData.forEach((element) => {
+    apiData.forEach((element, index) => {
+      if (element.oculus_id === surroundID) {
+        setStartIndex(index - 3);
+      }
+      element.position = index;
       NewData.push(element);
     });
     setSortedApiData(NewData);
-  }, [apiData]);
+  }, [apiData, surroundID]);
   return (
     <TotalLeaderboardList>
-      <LoadoutBox number={subDomain} />
-      <LeaderboardList userList={sortedApiData?.slice(0, 100)} />
+      <Link className="rounded centering padded" to={"/leaderboard/challenges"}>
+        <img
+          src="/images/ECFCS1.png"
+          alt="Season 1 banner"
+          style={{ width: "400px" }}
+        ></img>
+      </Link>
+
+      <LeaderboardList
+        userList={sortedApiData?.slice(startIndex, startIndex + limit)}
+        compacted={compacted}
+      />
     </TotalLeaderboardList>
     // <>
     //   {/* <FailedSearchBar  onFormSubmit={whenSearchSubmit} /> */}

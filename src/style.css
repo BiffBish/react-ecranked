@@ -66,6 +66,37 @@ h2 {
   flex-direction: row;
   gap: 20px;
 }
+.wide-gap {
+  gap: 40px;
+  /* gap: 150px; */
+  /* gap: 400px; */
+}
+@font-face {
+  font-family: "ConthraxSB";
+  src: local("Conthrax2"), url(font/conthrax-sb.ttf) format("truetype");
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+.conthrax {
+  font-family: ConthraxSB;
+  font-weight: 100;
+  /* font-size: 10; */
+  /* font-size: 1.2vmin; */
+  /* letter-spacing: 5px; */
+  letter-spacing: 7px;
+  line-height: 10px;
+  height: 10px;
+}
+.conthrax-thin {
+  font-family: ConthraxSB;
+  font-weight: 100;
+  /* font-size: 10; */
+  /* font-size: 1.2vmin; */
+  /* letter-spacing: 5px; */
+  /* letter-spacing: 7px; */
+  line-height: 10px;
+  height: 10px;
+}
 
 .button {
   display: flex;
@@ -97,8 +128,9 @@ h3 {
   display: flex;
   justify-content: center;
   align-content: center;
-  flex-direction: column;
+  /* flex-direction: column; */
   text-align: center;
+  align-self: center;
 }
 .centered {
   text-align: center;
