@@ -24,6 +24,7 @@ import MakeTeam from "./pages/MakeTeam";
 import Teams from "./pages/Teams";
 
 import Component from "./pages/Testing";
+import AchievementLeaderboard from "./pages/AchievementLeaderboard";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -206,8 +207,8 @@ function App() {
   if (BannerIconSrc === "/images/verified_icon.png") {
     BannerIconTitle = "Verified User";
   }
-  if (BannerIconSrc === "/images/capture_point_crown_green.png") {
-    BannerIconTitle = "Certified Cutie";
+  if (BannerIconSrc === "/images/happy_cubesat.png") {
+    BannerIconTitle = "Developer";
   }
   return (
     <Router>
@@ -262,11 +263,18 @@ function App() {
           path={`/user/:username/:subDomain`}
           render={(props) => {
             setBannerHeight(100);
-            const setBannerTextCallback = (username, iconSRC) => {
-              console.log(username);
-              setBannerText(username, iconSRC);
-            };
+            // const setBannerText = (username, iconSRC) => {
+            //   console.log(username);
+            //   setBannerText(username, iconSRC);
+            // };
             console.log("User");
+            // return (
+            //   <User
+            //     username={"BiffBish"}
+            //     setBannerCallback={setBannerText}
+            //     subDomain={"Stats"}
+            //   />
+            // );
             return (
               <User
                 username={props.match.params.username}
@@ -312,6 +320,24 @@ function App() {
 
             console.log("Teams");
             return <Teams />;
+          }}
+        />
+        <Route
+          path={`/leaderboard/challenges`}
+          render={(props) => {
+            setBannerHeight(100);
+            const setBannerTextCallback = (username) => {
+              console.log(username);
+              setBannerText(username);
+            };
+            console.log("Leaderboard");
+            return (
+              <AchievementLeaderboard
+                leaderboardStatistic={props.match.params.leaderboardStatistic}
+                setBannerCallback={setBannerTextCallback}
+                subDomain={props.match.params.subDomain}
+              />
+            );
           }}
         />
         <Route

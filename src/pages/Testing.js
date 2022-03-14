@@ -3,17 +3,17 @@ import React, { useState } from "react";
 
 export default function Component() {
   return null;
-  return (
-    <div style={{ backgroundColor: "#e262c1", padding: "20px" }}>
-      Biff is a cutie
-      <SubComponent color={"#69c9a9"} paddingValue={20} />
-      <SubComponent color={"#965ec7"} paddingValue={20} />
-      <SubComponent color={"#b6dfd3"} paddingValue={20} />
-      <SubComponent color={"#965ec7"} paddingValue={20} />
-      <SubComponent color={"#69c9a9"} paddingValue={20} />
-      <SubComponent2 color={"#565656"} paddingValue={20} />
-    </div>
-  );
+  // return (
+  //   <div style={{ backgroundColor: "#e262c1", padding: "20px" }}>
+  //     Biff is a cutie
+  //     <SubComponent color={"#69c9a9"} paddingValue={20} />
+  //     <SubComponent color={"#965ec7"} paddingValue={20} />
+  //     <SubComponent color={"#b6dfd3"} paddingValue={20} />
+  //     <SubComponent color={"#965ec7"} paddingValue={20} />
+  //     <SubComponent color={"#69c9a9"} paddingValue={20} />
+  //     <SubComponent2 color={"#565656"} paddingValue={20} />
+  //   </div>
+  // );
 }
 // {const [opacity, setOpacity] = React.useState("100%");
 

@@ -23,7 +23,7 @@ const LoadoutStyle = styled.div`
 
   display: flex;
   padding: 10px 10px 10px;
-  background-color: #222;
+  background-color: #282828;
   color: white;
   float: left;
   border: 1px solid rgb(70, 70, 70);
@@ -33,7 +33,7 @@ const LoadoutBoxStyle = styled(NavLink)`
   justify-content: center;
   padding: 10px 10px 10px;
   margin: 20px 10px 20px;
-  background-color: #222;
+  background-color: #282828;
   color: white;
   float: left;
   border: 1px solid rgb(70, 70, 70);
@@ -175,7 +175,7 @@ const HeatmapStyle = styled.div`
 
   flex-direction: column;
   padding: 10px 10px 10px;
-  background-color: #222;
+  background-color: #282828;
   color: white;
   float: left;
   border: 1px solid rgb(70, 70, 70);
@@ -713,7 +713,7 @@ const Loadout = ({ user_id, top_loadout }) => {
 const UserStatStyle = styled.div`
   margin: 1px;
   float: left;
-  background-color: #222;
+  background-color: #282828;
   color: white;
   z-index: 3;
   font-size: 20px;
@@ -775,15 +775,15 @@ const UserStat = ({ name, value, displayValue }) => {
   );
 };
 const UserStatsStyle = styled.div`
-  padding: 10px 10px 10px;
-  background-color: #222;
+  padding: 0px 20px 20px;
+  background-color: #282828;
   color: white;
   float: left;
   border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
-  gap: 0px 10px;
+  gap: 0px 20px;
 `;
 const UserStats = ({ userData, statChoice }) => {
   const userStats = userData[statChoice];
@@ -845,7 +845,7 @@ const UserStats = ({ userData, statChoice }) => {
   );
 };
 const CenterColumnStyle = styled.div`
-  background-color: #222;
+  // background-color: #282828;
   float: left;
   display: flex;
   flex: 400px 4;
@@ -853,7 +853,7 @@ const CenterColumnStyle = styled.div`
 `;
 const StatChoiceStyle = styled.div`
   padding: 0px;
-  background-color: #222;
+  background-color: #333;
   color: white;
   float: left;
   border-radius: 10px;
@@ -863,7 +863,7 @@ const StatChoiceStyle = styled.div`
 `;
 const StatChoiceButton = styled.div`
   padding: 10px 10px 0px;
-  background-color: #222;
+  background-color: #282828;
   color: white;
   float: left;
   border: 1px solid rgb(70, 70, 70);
@@ -916,7 +916,7 @@ const StatChoice = ({ currentSelected, onClick }) => {
   );
 };
 const LeftCenterSection = styled.div`
-  gap: 10px;
+  gap: 20px;
   display: flex;
   flex-direction: column;
 `;
