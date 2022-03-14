@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 
 import { useHistory } from "react-router-dom";
 import { MasterAchievementBar } from "../components/MasterAchievementBar";
@@ -48,103 +47,9 @@ const ContainerTitle = styled.div`
   color: #fff;
   flex-grow: 0;
 `;
-// const LoadoutStyle = styled.div`
-//   flex-wrap: wrap;
 
-//   display: flex;
-//   padding: 10px 10px 10px;
-//   margin: 20px 10px 20px;
-//   background-color: #222;
-//   color: white;
-//   float: left;
-//   border: 1px solid rgb(70, 70, 70);
-//   border-radius: 10px;
-// `;
-
-const LoadoutBoxStyle = styled(NavLink)`
-  justify-content: center;
-  padding: 10px 10px 10px;
-  // margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-  float: left;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 10px;
-  flex: 60px 1;
-  font-size: 11px;
-  text-align: center;
-  flex-direction: column;
-  min-width: 60px;
-`;
-const LoadoutBoxItemStyle = styled.div`
-  flex-grow: 1;
-`;
-const LoadoutBox = ({ number, frequency }) => {
-  const tacNumber = number % 4;
-  const grenadeNumber = ((number - tacNumber) % 16) / 4;
-  const weaponNumber = ((number - (tacNumber + grenadeNumber * 4)) % 64) / 16;
-
-  const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
-  ];
-  const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
-  ];
-  const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
-  ];
-  // if (displayNumber === 100) {
-  //   displayNumber = 99.999;
-  // }
-  return (
-    <LoadoutBoxStyle to={"/leaderboard/loadout/" + number}>
-      <img
-        src={weaponMap[weaponNumber]}
-        alt={"weapon"}
-        style={{ width: "60px", height: "60px" }}
-      />
-      <img
-        src={ordinanceMap[grenadeNumber]}
-        alt={"weapon"}
-        style={{ width: "60px", height: "60px" }}
-      />
-      <img
-        src={tacModMap[tacNumber]}
-        alt={"tacMod"}
-        style={{ width: "60px", height: "60px" }}
-      />
-      <LoadoutBoxItemStyle
-        style={{ fontSize: "20px", fontWeight: "900" }}
-      ></LoadoutBoxItemStyle>
-    </LoadoutBoxStyle>
-  );
-};
-// function ordinal_suffix_of(i) {
-//   var j = i % 10,
-//     k = i % 100;
-//   if (j === 1 && k !== 11) {
-//     return i + "st";
-//   }
-//   if (j === 2 && k !== 12) {
-//     return i + "nd";
-//   }
-//   if (j === 3 && k !== 13) {
-//     return i + "rd";
-//   }
-//   return i + "th";
-// }
 const LeaderboardList = ({ userList, compacted }) => {
   const [animationIndex, setAnimationIndex] = useState(0);
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   useEffect(() => {
     console.log("LOADING ANIMATION");

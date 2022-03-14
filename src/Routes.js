@@ -25,6 +25,7 @@ import Teams from "./pages/Teams";
 import Component from "./pages/Testing";
 import GlobalUserState from "./contexts/GlobalUserState";
 import { ApiCallHelper } from "./helpers/makeApiCall";
+import AchievementLeaderboard from "./pages/AchievementLeaderboard";
 const PageBody = styled.div`
   position: absolute;
   width: 100%;
@@ -281,6 +282,26 @@ function Routes() {
             setBannerHeight(400);
             setBannerText("ECRanked");
             return <Home replays={WhatApiRequest()} />;
+          }}
+        />
+        <Route
+          path={`/leaderboard/challenges`}
+          render={(props) => {
+            setBannerHeight(100);
+            const setBannerTextCallback = (username) => {
+              console.log(username);
+              setBannerText(username);
+            };
+            console.log("Leaderboard");
+            return (
+              <div style={{ padding: "10px 100px" }}>
+                <AchievementLeaderboard
+                  leaderboardStatistic={props.match.params.leaderboardStatistic}
+                  setBannerCallback={setBannerTextCallback}
+                  subDomain={props.match.params.subDomain}
+                />
+              </div>
+            );
           }}
         />
         <Route

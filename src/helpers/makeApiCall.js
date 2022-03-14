@@ -3,7 +3,7 @@ import GlobalUserState from "../contexts/GlobalUserState";
 
 var authToken = null;
 export const ApiCallHelper = () => {
-  const [globalUserState, setGlobalUserState] = useContext(GlobalUserState);
+  const [globalUserState] = useContext(GlobalUserState);
   useEffect(() => {
     authToken = globalUserState.authorization_token;
   }, [globalUserState.authorization_token]);

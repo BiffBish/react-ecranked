@@ -206,7 +206,7 @@ function getWindowDimensions() {
   };
 }
 export default function Nav({ clientData }) {
-  const [globalUserState, setGlobalUserState] = useContext(GlobalUserState);
+  const [globalUserState] = useContext(GlobalUserState);
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
