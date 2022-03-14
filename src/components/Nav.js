@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "./AutoComplete";
+import GlobalUserState from "../contexts/GlobalUserState";
+
 const TopBar = styled.div`
   height: 100%;
   z-index: 100;
@@ -168,7 +170,7 @@ const autoCompleteOptionDiv = styled.div`
   }
   transition-duration: 0.1s;
 `;
-const AuthorizeButton = ({ userData }) => {
+const AuthorizeButton = ({ loggedIn }) => {
   const logout = () => {
     localStorage.removeItem("AUTHORIZATION_TOKEN");
     localStorage.removeItem("OCULUS_ID");
@@ -177,7 +179,7 @@ const AuthorizeButton = ({ userData }) => {
     window.location.reload(false);
   };
   // console.log(userData.authorization_token);
-  if (userData.authorization_token == null) {
+  if (!loggedIn) {
     return (
       <ButtonLink
         style={{ float: "right" }}
@@ -204,6 +206,7 @@ function getWindowDimensions() {
   };
 }
 export default function Nav({ clientData }) {
+  const [globalUserState, setGlobalUserState] = useContext(GlobalUserState);
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
@@ -288,12 +291,12 @@ export default function Nav({ clientData }) {
           />
           <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
           <TopBarLink link="/Changelog" text="Changelog" />
-          {clientData.moderator ? (
+          {globalUserState.moderator ? (
             <TopBarLink link="/Moderator" text="Moderator" />
           ) : (
             ""
           )}
-          <AuthorizeButton userData={clientData} />
+          <AuthorizeButton loggedIn={globalUserState.authorization_token} />
           <AutoComplete
             options={allUsernames.concat(allTeams)}
             onFormSubmit={whenSearchSubmit}

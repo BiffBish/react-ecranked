@@ -101,6 +101,7 @@ h2 {
   cursor: pointer;
   animation: FadeIn 0.2s;
 }
+
 .button h1 {
   font-size: 36px;
   font-weight: 400;
@@ -135,6 +136,27 @@ h3 {
 }
 .no-gap {
   gap: 0px;
+}
+
+.button:hover {
+  background-color: #555;
+  color: #000;
+}
+
+.disabled-button {
+  display: flex;
+  align-items: center;
+  background-color: #262626;
+  padding: 10px;
+  color: rgb(70, 70, 70);
+  /* margin: 10px 0px; */
+  text-decoration: none;
+  color: white;
+  line-height: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  cursor: not-allowed;
+  animation: FadeIn 0.2s;
 }
 /* .list .button {
   flex-grow: 1;
