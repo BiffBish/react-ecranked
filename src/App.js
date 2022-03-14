@@ -3,27 +3,12 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import Replay from "./pages/Replay";
-import User from "./pages/User";
-import Home from "./pages/Home";
-import ApproveImagesModeration from "./pages/Moderation/ApproveImagesModeration";
-import Moderator from "./pages/Moderator";
 import Nav from "./components/Nav";
 
-import Team from "./pages/Team";
-
 import AnimateHeight from "react-animate-height";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Changelog from "./pages/Changelog";
 
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Leaderboard from "./pages/Leaderboard";
-import UncontactedUsersModeration from "./pages/Moderation/UncontactedModeration";
-import MakeTeam from "./pages/MakeTeam";
-import Teams from "./pages/Teams";
-
-import Component from "./pages/Testing";
 //import { Button } from "@mui/material";
 const PageBody = styled.div`
   position: absolute;
@@ -213,13 +198,6 @@ function App() {
     <Router>
       <Nav clientData={clientData} style={{ height: "10px" }} />
       <PageBody>
-        <header style={{ fontSize: "30px", textAlign: "center" }}>
-          <p>
-            3/15/2022...
-            {/* {MModeTimer(CountdownTarget)} */}
-            {Hint}
-          </p>
-        </header>
         <Banner
           id="example-panel"
           duration={500}
@@ -245,170 +223,12 @@ function App() {
             )}
           </div>
         </Banner>
-        <Route exact path={["/"]}>
-          <Redirect to="/home" />
-        </Route>
-        <Route
-          exact
-          path={["/home", "/"]}
-          render={(props) => {
-            console.log("/");
-            setBannerHeight(400);
-            setBannerText("ECRanked");
-            return <Home replays={WhatApiRequest()} />;
-          }}
-        />
-        <Route
-          path={`/user/:username/:subDomain`}
-          render={(props) => {
-            setBannerHeight(100);
-            const setBannerTextCallback = (username, iconSRC) => {
-              console.log(username);
-              setBannerText(username, iconSRC);
-            };
-            console.log("User");
-            return (
-              <User
-                username={props.match.params.username}
-                setBannerCallback={setBannerTextCallback}
-                subDomain={props.match.params.subDomain}
-              />
-            );
-          }}
-        />
-        <Route
-          path={`/team/:name/:subDomain`}
-          render={(props) => {
-            setBannerHeight(100);
-            const setBannerTextCallback = (username, iconSRC) => {
-              console.log(username);
-              setBannerText(username, iconSRC);
-            };
-            console.log("User");
-            return (
-              <Team
-                teamname={props.match.params.name}
-                setBannerCallback={setBannerTextCallback}
-                subDomain={props.match.params.subDomain}
-              />
-            );
-          }}
-        />
-        <Route
-          path={`/maketeam`}
-          render={(props) => {
-            setBannerHeight(100);
-            setBannerText("Make a team!");
-
-            console.log("User");
-            return <MakeTeam />;
-          }}
-        />
-        <Route
-          path={"/teams"}
-          render={(props) => {
-            setBannerHeight(100);
-            setBannerText("Teams");
-
-            console.log("Teams");
-            return <Teams />;
-          }}
-        />
-        <Route
-          path={`/leaderboard/:leaderboardStatistic/:subDomain`}
-          render={(props) => {
-            setBannerHeight(100);
-            const setBannerTextCallback = (username) => {
-              console.log(username);
-              setBannerText(username);
-            };
-            console.log("Leaderboard");
-            return (
-              <Leaderboard
-                leaderboardStatistic={props.match.params.leaderboardStatistic}
-                setBannerCallback={setBannerTextCallback}
-                subDomain={props.match.params.subDomain}
-              />
-            );
-          }}
-        />
-        <Route
-          path={`/replay/:session_id`}
-          render={(props) => {
-            setBannerHeight(100);
-            setBannerText("Replay");
-            console.log("User");
-            return <Replay session_id={props.match.params.session_id} />;
-          }}
-        />
-        <Route
-          path={`/auth/discord/callback`}
-          render={(props) => {
-            const callbackCode = new URLSearchParams(props.location.search).get(
-              "code"
-            );
-            setBannerText("Redirecting");
-            setBannerHeight(100);
-
-            return (
-              <DiscordOAuthCallback
-                callbackCode={callbackCode}
-                onFinish={() => {
-                  var redirectLink = localStorage.getItem("REDIRECT_URI");
-
-                  window.location.href = redirectLink ? redirectLink : "/home";
-                }}
-              />
-            );
-          }}
-        />
-        <Route
-          path={`/TermsOfUse`}
-          render={() => {
-            setBannerHeight(100);
-            setBannerText("Terms Of Service");
-            return <PrivacyPolicy />;
-          }}
-        />
-        <Route
-          path={`/Changelog`}
-          render={() => {
-            setBannerHeight(100);
-            setBannerText("Changelog");
-            return <Changelog />;
-          }}
-        />
-        <Route
-          path={`/Moderator/UnapprovedImages`}
-          render={() => {
-            setBannerHeight(100);
-            setBannerText("Moderation");
-            return <ApproveImagesModeration />;
-          }}
-        />
-        <Route
-          path={`/Moderator/UncontactedUsers`}
-          render={() => {
-            setBannerHeight(100);
-            setBannerText("Moderation");
-            return <UncontactedUsersModeration />;
-          }}
-        />
-        <Route
-          path={"/Testing"}
-          render={() => {
-            return <Component />;
-          }}
-        />
-        <Route
-          exact
-          path={`/Moderator`}
-          render={() => {
-            setBannerHeight(100);
-            setBannerText("Moderation");
-            return <Moderator />;
-          }}
-        />
+        <div style={{ padding: "100px" }}>
+          <div className="rounded padded">
+            <h2>ECRANKED.COM HAS BEEN TAKEN DOWN TEMPORARLY</h2>
+            <p>Expect it to be online soon</p>
+          </div>
+        </div>
       </PageBody>
     </Router>
   );
