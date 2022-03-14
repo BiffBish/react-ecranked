@@ -11,6 +11,7 @@
         "Type": ""
       }
     ],
+    "Title": "COMMUNITY 1",
     "Progress": "",
     "Locked": ""
   },
@@ -26,6 +27,7 @@
         "Type": ""
       }
     ],
+    "Title": "COMMUNITY 2",
     "Progress": "",
     "Locked": ""
   },
@@ -41,6 +43,7 @@
         "Type": ""
       }
     ],
+    "Title": "COMMUNITY 3",
     "Progress": "",
     "Locked": ""
   },
@@ -56,6 +59,7 @@
         "Type": ""
       }
     ],
+    "Title": "COMMUNITY 4",
     "Progress": "",
     "Locked": ""
   },
@@ -71,6 +75,7 @@
         "Type": ""
       }
     ],
+    "Title": "COMMUNITY 5",
     "Progress": "",
     "Locked": ""
   },
@@ -113,6 +118,7 @@
         "Type": "Pulsar"
       }
     ],
+    "Title": "PULSAR CHALLENGE",
     "Progress": "Play more games using only Pulsar as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Pulsar.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -155,6 +161,7 @@
         "Type": "Nova"
       }
     ],
+    "Title": "NOVA  CHALLENGE",
     "Progress": "Play more games using only Nova as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Nova.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -197,6 +204,7 @@
         "Type": "Comet"
       }
     ],
+    "Title": "COMET CHALLENGE",
     "Progress": "Play more games using only Comet as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Comet.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -239,6 +247,7 @@
         "Type": "Meteor"
       }
     ],
+    "Title": "METEOR CHALLENGE",
     "Progress": "Play more games using only Meteor as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this achevement by only using Meteor as your weapon until all achievements are met."
   },
@@ -281,6 +290,7 @@
         "Type": "Detonator"
       }
     ],
+    "Title": "DETONATOR CHALLENGE",
     "Progress": "Play more games using only Detonator as your ordnance!  Be sure to not use any other ordnance in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Detonator.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -332,6 +342,7 @@
         "Type": "Arc Mine"
       }
     ],
+    "Title": "STUN FIELD CHALLENGE",
     "Progress": "Play more games using only Stun Field as your ordnance!  Be sure to not use any other ordnance in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -365,6 +376,7 @@
         "Type": "Arc Mine"
       }
     ],
+    "Title": "",
     "Progress": "",
     "Locked": ""
   },
@@ -407,6 +419,7 @@
         "Type": "Instant Repair"
       }
     ],
+    "Title": "INSTANT REPAIR CHALLENGE",
     "Progress": "Play more games using only Instant Repair as your ordnance!  Be sure to not use any other ordnance in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -449,6 +462,7 @@
         "Type": "Repair Matriix"
       }
     ],
+    "Title": "REPAIR MATRIX CHALLENGE",
     "Progress": "Play more games using only Repair Matrix as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -491,6 +505,7 @@
         "Type": "Threat Scanner"
       }
     ],
+    "Title": "THREAT SCANNER CHALLENGE",
     "Progress": "Play more games using only Threat Scanner as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -533,6 +548,7 @@
         "Type": "Energy Barrier"
       }
     ],
+    "Title": "ENERGY BARRIER CHALLENGE",
     "Progress": "Play more games using only Energy Barrier as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
     "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
   },
@@ -575,6 +591,7 @@
         "Type": "Phase Shift"
       }
     ],
+    "Title": "PHASE SHIFT CHALLENGE",
     "Progress": "Play more games using only Phase Shift as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
     "Locked": ""
   },
@@ -617,6 +634,7 @@
         "Type": "Loadout"
       }
     ],
+    "Title": "LOADOUT CHALLENGE",
     "Progress": "NEED TO WRITE",
     "Locked": "NEED TO WRITE"
   },
@@ -659,6 +677,7 @@
         "Type": "Death"
       }
     ],
+    "Title": "DEATHS CHALLENGE",
     "Progress": "Play more games and try to die less!",
     "Locked": ""
   },
@@ -701,6 +720,7 @@
         "Type": "Capture Point"
       }
     ],
+    "Title": "CAPTURE POINT CHALLENGE",
     "Progress": "Play more games so you play more Capture Point maps!",
     "Locked": ""
   },
@@ -743,6 +763,7 @@
         "Type": "Payload"
       }
     ],
+    "Title": "PAYLOAD CHALLENGE",
     "Progress": "Play more games so you play more Payload maps!",
     "Locked": ""
   },
@@ -785,6 +806,7 @@
         "Type": "Team Proximity "
       }
     ],
+    "Title": "TEAM PROXIMITY CHALLENGE",
     "Progress": "Stay closer to your teammates in the next game!",
     "Locked": ""
   },
@@ -827,6 +849,7 @@
         "Type": "Enemy Proximity "
       }
     ],
+    "Title": "ENEMY PROXIMITY CHALLENGE",
     "Progress": "Stay closer to the enemy in the next game!",
     "Locked": ""
   },
@@ -869,6 +892,7 @@
         "Type": "Speed"
       }
     ],
+    "Title": "SPEED CHALLENGE",
     "Progress": "Fly faster in the next game!",
     "Locked": ""
   },
@@ -911,6 +935,7 @@
         "Type": "Inverted"
       }
     ],
+    "Title": "INVERTED CHALLENGE",
     "Progress": "Play upside down more in the next game!",
     "Locked": ""
   },
@@ -953,6 +978,7 @@
         "Type": "Dyson"
       }
     ],
+    "Title": "DYSON CHALLENGE",
     "Progress": "Play more games for a higher chance the map will be Dyson!",
     "Locked": ""
   },
@@ -995,6 +1021,7 @@
         "Type": "Combustion"
       }
     ],
+    "Title": "COMBUSTION CHALLENGE",
     "Progress": "Play more games for a higher chance the map will be Combustion!",
     "Locked": ""
   },
@@ -1037,6 +1064,7 @@
         "Type": "Fission"
       }
     ],
+    "Title": "FISSION CHALLENGE",
     "Progress": "Play more games for a higher chance the map will be Fission!",
     "Locked": ""
   },
@@ -1079,6 +1107,7 @@
         "Type": "Surge"
       }
     ],
+    "Title": "SURGE CHALLENGE",
     "Progress": "Play more games for a higher chance the map will be Surge!",
     "Locked": ""
   },
@@ -1256,6 +1285,7 @@
         "Type": "Pub Count 19"
       }
     ],
+    "Title": "PUBLIC MATCH CHALLENGE",
     "Progress": "Play more Public Matches!",
     "Locked": ""
   },
@@ -1298,6 +1328,7 @@
         "Type": "Pulsar"
       }
     ],
+    "Title": "PULSAR CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1340,6 +1371,7 @@
         "Type": "Nova"
       }
     ],
+    "Title": "NOVA  CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1382,6 +1414,7 @@
         "Type": "Comet"
       }
     ],
+    "Title": "COMET CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1424,6 +1457,7 @@
         "Type": "Meteor"
       }
     ],
+    "Title": "METEOR CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1466,6 +1500,7 @@
         "Type": "Detonator"
       }
     ],
+    "Title": "DETONATOR CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1508,6 +1543,7 @@
         "Type": "Stun Field"
       }
     ],
+    "Title": "STUN FIELD CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1550,6 +1586,7 @@
         "Type": "Arc Mine"
       }
     ],
+    "Title": "ARC MINE CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1592,6 +1629,7 @@
         "Type": "Instant Repair"
       }
     ],
+    "Title": "INSTANT REPAIR CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1634,6 +1672,7 @@
         "Type": "Repair Matriix"
       }
     ],
+    "Title": "REPAIR MATRIX CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1676,6 +1715,7 @@
         "Type": "Threat Scanner"
       }
     ],
+    "Title": "THREAT SCANNER CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1718,6 +1758,7 @@
         "Type": "Energy Barrier"
       }
     ],
+    "Title": "ENERGY BARRIER CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1760,6 +1801,7 @@
         "Type": "Phase Shift"
       }
     ],
+    "Title": "PHASE SHIFT CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1802,6 +1844,7 @@
         "Type": "Loadout"
       }
     ],
+    "Title": "LOADOUT CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1844,6 +1887,7 @@
         "Type": "Death"
       }
     ],
+    "Title": "DEATHS CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1886,6 +1930,7 @@
         "Type": "Capture Point"
       }
     ],
+    "Title": "CAPTURE POINT CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1928,6 +1973,7 @@
         "Type": "Payload"
       }
     ],
+    "Title": "PAYLOAD CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -1970,6 +2016,7 @@
         "Type": "Team Proximity "
       }
     ],
+    "Title": "TEAM PROXIMITY CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2012,6 +2059,7 @@
         "Type": "Enemy Proximity "
       }
     ],
+    "Title": "ENEMY PROXIMITY CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2054,6 +2102,7 @@
         "Type": "Speed"
       }
     ],
+    "Title": "SPEED CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2096,6 +2145,7 @@
         "Type": "Inverted"
       }
     ],
+    "Title": "INVERTED CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2138,6 +2188,7 @@
         "Type": "Dyson"
       }
     ],
+    "Title": "DYSON CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2180,6 +2231,7 @@
         "Type": "Combustion"
       }
     ],
+    "Title": "COMBUSTION CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2222,6 +2274,7 @@
         "Type": "Fission"
       }
     ],
+    "Title": "FISSION CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2264,6 +2317,7 @@
         "Type": "Surge"
       }
     ],
+    "Title": "SURGE CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2441,6 +2495,7 @@
         "Type": "Pub Count 19"
       }
     ],
+    "Title": "PUBLIC MATCH CHALLENGE",
     "Progress": "",
     "Locked": ""
   },
@@ -2483,6 +2538,7 @@
         "Type": "Pulsar"
       }
     ],
+    "Title": "PULSAR CHALLENGE",
     "Progress": "Play more games using Pulsar as your weapon! ",
     "Locked": "This challenge is locked because you haven't played enough games with Pulsar yet.  You need to pew pew pew more!"
   },
@@ -2525,6 +2581,7 @@
         "Type": "Nova"
       }
     ],
+    "Title": "NOVA  CHALLENGE",
     "Progress": "Play more games using Nova as your weapon! ",
     "Locked": "This challenge is locked because you haven't played enough games with Nova yet. "
   },
@@ -2567,6 +2624,7 @@
         "Type": "Comet"
       }
     ],
+    "Title": "COMET CHALLENGE",
     "Progress": "Play more games using Comet as your weapon! ",
     "Locked": "This challenge is locked because you haven't played enough games with Comet yet. "
   },
@@ -2609,6 +2667,7 @@
         "Type": "Meteor"
       }
     ],
+    "Title": "METEOR CHALLENGE",
     "Progress": "Play more games using Meteor as your weapon! ",
     "Locked": "This challenge is locked because you haven't played enough games with Meteor yet. "
   },
@@ -2651,6 +2710,7 @@
         "Type": "Detonator"
       }
     ],
+    "Title": "DETONATOR CHALLENGE",
     "Progress": "Play more games using Detonator as your ordnance!",
     "Locked": "This challenge is locked because you haven't played enough games with Detonator yet. "
   },
@@ -2693,6 +2753,7 @@
         "Type": "Stun Field"
       }
     ],
+    "Title": "STUN FIELD CHALLENGE",
     "Progress": "Play more games using Stun Field as your ordnance!",
     "Locked": "This challenge is locked because you haven't played enough games with Stun Field yet. "
   },
@@ -2735,6 +2796,7 @@
         "Type": "Arc Mine"
       }
     ],
+    "Title": "ARC MINE CHALLENGE",
     "Progress": "Play more games using Arc Mine as your ordnance!",
     "Locked": "This challenge is locked because you haven't played enough games with Arc Mine yet. "
   },
@@ -2777,6 +2839,7 @@
         "Type": "Instant Repair"
       }
     ],
+    "Title": "INSTANT REPAIR CHALLENGE",
     "Progress": "Play more games using Instant Repair as your ordnance!",
     "Locked": "This challenge is locked because you haven't played enough games with Instant Repair yet. "
   },
@@ -2819,6 +2882,7 @@
         "Type": "Repair Matriix"
       }
     ],
+    "Title": "REPAIR MATRIX CHALLENGE",
     "Progress": "Play more games using Repair Matrix as your tac-mod!",
     "Locked": "This challenge is locked because you haven't played enough games with Repair Matrix yet. "
   },
@@ -2861,6 +2925,7 @@
         "Type": "Threat Scanner"
       }
     ],
+    "Title": "THREAT SCANNER CHALLENGE",
     "Progress": "Play more games using Threat Scanner as your tac-mod!",
     "Locked": "This challenge is locked because you haven't played enough games with Threat Scanner yet. "
   },
@@ -2903,6 +2968,7 @@
         "Type": "Energy Barrier"
       }
     ],
+    "Title": "ENERGY BARRIER CHALLENGE",
     "Progress": "Play more games using Energy Barrier as your tac-mod!",
     "Locked": "This challenge is locked because you haven't played enough games with Energy Barrier yet. "
   },
@@ -2945,6 +3011,7 @@
         "Type": "Phase Shift"
       }
     ],
+    "Title": "PHASE SHIFT CHALLENGE",
     "Progress": "Play more games using Phase Shift as your tac-mod!",
     "Locked": "This challenge is locked because you haven't played enough games with Phase Shift yet. "
   },
@@ -2987,6 +3054,7 @@
         "Type": "Loadout"
       }
     ],
+    "Title": "LOADOUT CHALLENGE",
     "Progress": "NEED TO WRITE",
     "Locked": "NEED TO WRITE"
   },
@@ -3029,6 +3097,7 @@
         "Type": "Death"
       }
     ],
+    "Title": "DEATHS CHALLENGE",
     "Progress": "Play more games!  The more games you play the more deaths you'll also have.",
     "Locked": "This challenge is locked because you haven't died enough times yet, which means you haven't played enough games.  Play more games to unlock this challenge!"
   },
@@ -3071,6 +3140,7 @@
         "Type": "Capture Point"
       }
     ],
+    "Title": "CAPTURE POINT CHALLENGE",
     "Progress": "Play more games so you play more Capture Point maps!",
     "Locked": "This challenge is locked because you haven't played enough Capture Point games.  Play more games so you play more Capture Point maps!  "
   },
@@ -3113,6 +3183,7 @@
         "Type": "Payload"
       }
     ],
+    "Title": "PAYLOAD CHALLENGE",
     "Progress": "Play more games so you play more Payload maps!",
     "Locked": "This challenge is locked because you haven't played enough Payload games.  Play more games so you play more Payload maps!"
   },
@@ -3155,6 +3226,7 @@
         "Type": "Team Proximity "
       }
     ],
+    "Title": "TEAM PROXIMITY CHALLENGE",
     "Progress": "Stay close to your teammates in more games!",
     "Locked": "This challenge is locked because you haven't played close to your teammates in enough games.  Unlock this challenge by playing more games close to your teammates!"
   },
@@ -3197,6 +3269,7 @@
         "Type": "Enemy Proximity "
       }
     ],
+    "Title": "ENEMY PROXIMITY CHALLENGE",
     "Progress": "Stay close to the enemy in more games!",
     "Locked": "This challenge is locked because you haven't played close to the enemy in enough games.  Unlock this challenge by playing more games close to the enemy."
   },
@@ -3239,6 +3312,7 @@
         "Type": "Speed"
       }
     ],
+    "Title": "SPEED CHALLENGE",
     "Progress": "Play more games while flying fast!",
     "Locked": "This challenge is locked because you haven't played "
   },
@@ -3281,6 +3355,7 @@
         "Type": "Inverted"
       }
     ],
+    "Title": "INVERTED CHALLENGE",
     "Progress": "Play more games while upside down more!",
     "Locked": "This challenge is locked because you haven't played "
   },
@@ -3323,6 +3398,7 @@
         "Type": "Dyson"
       }
     ],
+    "Title": "DYSON CHALLENGE",
     "Progress": "Play more games of Dyson!",
     "Locked": "This challenge is locked because you haven't played.......... "
   },
@@ -3365,6 +3441,7 @@
         "Type": "Combustion"
       }
     ],
+    "Title": "COMBUSTION CHALLENGE",
     "Progress": "Play more games of Combustion!",
     "Locked": "This challenge is locked because you haven't played.........."
   },
@@ -3407,6 +3484,7 @@
         "Type": "Fission"
       }
     ],
+    "Title": "FISSION CHALLENGE",
     "Progress": "Play more games of Fission!",
     "Locked": "This challenge is locked because you haven't played.........."
   },
@@ -3449,6 +3527,7 @@
         "Type": "Surge"
       }
     ],
+    "Title": "SURGE CHALLENGE",
     "Progress": "Play more games of  Surge!",
     "Locked": "This challenge is locked because you haven't played.........."
   },
@@ -3626,6 +3705,7 @@
         "Type": "Pub Count 19"
       }
     ],
+    "Title": "PUBLIC MATCH CHALLENGE",
     "Progress": "Play more Public Matches!",
     "Locked": ""
   }

@@ -44,80 +44,87 @@ export const MasterAchievementBar = ({
   }
 
   return (
-    <SegmentedProgressBarContainerStyle
-      className="grow"
-      style={
-        backgroundHighlighted
-          ? {
-              backgroundColor: "#fff4",
-            }
-          : {
-              backgroundColor: "#fff0",
-            }
-      }
-      onMouseEnter={() => {
-        setBackgroundHighlighted(true);
-      }}
-      onMouseLeave={() => {
-        setBackgroundHighlighted(false);
-      }}
-      ref={fullRef}
-    >
-      {/* {AchievementNumber} */}
-      {Title}
-      <ProgressDivStyle
-        className="rounded"
-        style={{
-          height: Height,
-          ...(EnableBorder ? {} : { borderWidth: "0px" }),
+    <div className="grow horizontal-container">
+      <SegmentedProgressBarContainerStyle
+        className="grow"
+        style={
+          backgroundHighlighted
+            ? {
+                backgroundColor: "#fff4",
+              }
+            : {
+                backgroundColor: "#fff0",
+              }
+        }
+        onMouseEnter={() => {
+          setBackgroundHighlighted(true);
         }}
-        ref={barRef}
+        onMouseLeave={() => {
+          setBackgroundHighlighted(false);
+        }}
+        ref={fullRef}
       >
-        <ProgressBarStyle
+        {/* {AchievementNumber} */}
+        {Title}
+        <ProgressDivStyle
+          className="rounded"
           style={{
-            width: `${map_range(
-              communityValue + dailyValue + weeklyValue + seasonValue,
-              0,
-              100,
-              0,
-              200
-            )}%`,
-            transform: `translate(-50%, -0%)`,
+            height: Height,
+            ...(EnableBorder ? {} : { borderWidth: "0px" }),
           }}
-          className="progress season-background"
-        />
-        <ProgressBarStyle
-          style={{
-            width: `${map_range(
-              communityValue + dailyValue + weeklyValue,
-              0,
-              100,
-              0,
-              200
-            )}%`,
-            transform: `translate(-50%, -100%)`,
-          }}
-          className="progress weekly-background"
-          color=""
-        />
-        <ProgressBarStyle
-          style={{
-            width: `${map_range(communityValue + dailyValue, 0, 100, 0, 200)}%`,
-            transform: `translate(-50%, -200%)`,
-          }}
-          className="progress daily-background"
-          color=""
-        />
-        <ProgressBarStyle
-          style={{
-            width: `${map_range(communityValue, 0, 100, 0, 200)}%`,
-            transform: `translate(-50%, -300%)`,
-          }}
-          className="progress community-background"
-          color=""
-        />
+          ref={barRef}
+        >
+          <ProgressBarStyle
+            style={{
+              width: `${map_range(
+                communityValue + dailyValue + weeklyValue + seasonValue,
+                0,
+                100,
+                0,
+                200
+              )}%`,
+              transform: `translate(-50%, -0%)`,
+            }}
+            className="progress season-background"
+          />
+          <ProgressBarStyle
+            style={{
+              width: `${map_range(
+                communityValue + dailyValue + weeklyValue,
+                0,
+                100,
+                0,
+                200
+              )}%`,
+              transform: `translate(-50%, -100%)`,
+            }}
+            className="progress weekly-background"
+            color=""
+          />
+          <ProgressBarStyle
+            style={{
+              width: `${map_range(
+                communityValue + dailyValue,
+                0,
+                100,
+                0,
+                200
+              )}%`,
+              transform: `translate(-50%, -200%)`,
+            }}
+            className="progress daily-background"
+            color=""
+          />
+          <ProgressBarStyle
+            style={{
+              width: `${map_range(communityValue, 0, 100, 0, 200)}%`,
+              transform: `translate(-50%, -300%)`,
+            }}
+            className="progress community-background"
+            color=""
+          />
 
-        {/* {segments.map((segment) => {
+          {/* {segments.map((segment) => {
               return (
                 <SegmentOfProgressBar
                   style={{
@@ -129,8 +136,18 @@ export const MasterAchievementBar = ({
                 />
               );
             })} */}
-      </ProgressDivStyle>
-    </SegmentedProgressBarContainerStyle>
+        </ProgressDivStyle>
+      </SegmentedProgressBarContainerStyle>
+      <div className="centering" style={{ width: "100px" }}>
+        <h3 className="conthrax-thin">
+          {Math.round(
+            (CommunityPercent + DailyPercent + WeeklyPercent + SeasonPercent) *
+              10000
+          ) / 100}{" "}
+          %
+        </h3>
+      </div>
+    </div>
   );
 };
 const ProgressDivStyle = styled.div`

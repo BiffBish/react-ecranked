@@ -253,6 +253,16 @@ export default function User({ username, setBannerCallback, subDomain }) {
           userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
+        <h3
+          className="conthrax centered"
+          style={{
+            fontSize: "50px",
+            letterSpacing: "20px",
+            lineHeight: "10px",
+          }}
+        >
+          --- FLAMINGO CHALLENGE ---
+        </h3>
         <Achievements userData={apiData} />
         {/* <div> */}
         <MetaTags>

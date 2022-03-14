@@ -61,7 +61,7 @@ const AchievementPopup = ({
     uncompletedStatement = uncompletedStatement.replace("%m", MaxNumber);
   }
 
-  let CurrentStepNumber = SelectedAchievement.parts.length - 1;
+  let CurrentStepNumber = SelectedAchievement.parts.length;
   for (let index = 0; index < SelectedAchievement.parts.length; index++) {
     const element = SelectedAchievement.parts[index];
     if (element.Percent > displayedValue) {
@@ -75,17 +75,17 @@ const AchievementPopup = ({
   if (locked) AchievementStatus = "Challenge Locked";
   if (displayedValue === 1) AchievementStatus = "Completed";
 
-  let iconSRC = "white";
-  if (CurrentStepNumber / totalAchievements == 0) {
+  let iconSRC = "lock_clear_no_square";
+  if (CurrentStepNumber / totalAchievements >= 0.25) {
     iconSRC = "white";
   }
-  if (CurrentStepNumber / totalAchievements >= 0.25) {
+  if (CurrentStepNumber / totalAchievements >= 0.5) {
     iconSRC = "bronze";
   }
-  if (CurrentStepNumber / totalAchievements >= 0.5) {
+  if (CurrentStepNumber / totalAchievements >= 0.75) {
     iconSRC = "silver";
   }
-  if (CurrentStepNumber + 1 == totalAchievements) {
+  if (CurrentStepNumber / totalAchievements >= 1) {
     ShowHelperBox = false;
     iconSRC = "gold";
   } else if (locked) {
@@ -128,9 +128,7 @@ const AchievementPopup = ({
           }}
         >
           <div className="list grow">
-            <h3 className="centered">
-              {SelectedAchievement.parts[CurrentStepNumber].Title}
-            </h3>
+            <h3 className="centered conthrax">{SelectedAchievement.Title}</h3>
             <div className="horizontal-container">
               <div
                 className="grow"
@@ -292,6 +290,8 @@ const SegmentedLProgressBar = ({
   onLeft = false,
   onTop = false,
   DialogBoxOverride = null,
+  centeredIcon = false,
+  titleStyle = {},
 }) => {
   const fullRef = useRef();
 
@@ -328,25 +328,39 @@ const SegmentedLProgressBar = ({
   return (
     <div
       style={{
-        height: "30px",
+        height: centeredIcon ? "60px" : "30px",
         overflow: "visible",
         flexBasis: 0,
       }}
     >
+      {centeredIcon ? (
+        <div className="centering">
+          <img
+            src={"/images/" + icon + ".png"}
+            alt="iconImage"
+            style={{ height: "28px", width: "28px" }}
+          />
+        </div>
+      ) : null}
       <div
         style={{
           display: "flex",
           opacity: locked ? 0.5 : 1,
           position: "relative",
           height: "30px",
+
+          flexDirection: onLeft ? "row-reverse" : "row",
         }}
         ref={fullRef}
       >
-        <img
-          src={"/images/" + icon + ".png"}
-          alt="iconImage"
-          style={{ height: "28px", width: "28px" }}
-        />
+        {!centeredIcon ? (
+          <img
+            src={"/images/" + icon + ".png"}
+            alt="iconImage"
+            style={{ height: "28px", width: "28px" }}
+          />
+        ) : null}
+
         <div
           style={{ flexGrow: 1 }}
           onMouseEnter={() => {
@@ -372,6 +386,9 @@ const SegmentedLProgressBar = ({
             // Percentage={0.5}
             Height={15}
             ProgressBarClass={type + "-background"}
+            centeredTitle={centeredIcon}
+            leftTitle={onLeft}
+            titleStyle={titleStyle}
           />
         </div>
       </div>
@@ -739,15 +756,21 @@ export const AchievementLoadoutStats = ({
   if (selectedAchievementType === "daily") {
     return (
       <div className="list rounded-overflow padded light-background">
-        <SegmentedLProgressBar
-          AchNum={29}
-          icon={"pubs"}
-          achievementData={achievementData}
-          cb={cb}
-          type={"daily"}
-        />
+        <div className={"centering grow"} style={{ width: "100%" }}>
+          <div style={{ width: "70%" }}>
+            <SegmentedLProgressBar
+              AchNum={29}
+              icon={"pubs"}
+              achievementData={achievementData}
+              cb={cb}
+              type={"daily"}
+              centeredIcon={true}
+            />
+          </div>
+        </div>
+
         <div className="container">
-          <div className="horizontal-container">
+          <div className="wide-gap horizontal-container">
             <div className="list grow">
               {achievementItems.slice(0, 12).map((element, index) => {
                 return (
@@ -787,13 +810,18 @@ export const AchievementLoadoutStats = ({
   if (selectedAchievementType === "weekly") {
     return (
       <div className="list rounded padded light-background">
-        <SegmentedLProgressBar
-          AchNum={29 + 25}
-          icon={"pubs"}
-          achievementData={achievementData}
-          cb={cb}
-          type={"weekly"}
-        />
+        <div className={"centering grow"} style={{ width: "100%" }}>
+          <div style={{ width: "70%" }}>
+            <SegmentedLProgressBar
+              AchNum={29 + 25}
+              icon={"pubs"}
+              achievementData={achievementData}
+              cb={cb}
+              centeredIcon={true}
+              type={"weekly"}
+            />
+          </div>
+        </div>
         <div className="container">
           <div className="horizontal-container">
             <div className="list grow">
@@ -834,13 +862,18 @@ export const AchievementLoadoutStats = ({
   if (selectedAchievementType === "global") {
     return (
       <div className="list rounded padded light-background">
-        <SegmentedLProgressBar
-          AchNum={79}
-          icon={"pubs"}
-          achievementData={achievementData}
-          cb={cb}
-          type={"season"}
-        />
+        <div className={"centering grow"} style={{ width: "100%" }}>
+          <div style={{ width: "70%" }}>
+            <SegmentedLProgressBar
+              AchNum={79}
+              icon={"pubs"}
+              achievementData={achievementData}
+              cb={cb}
+              centeredIcon={true}
+              type={"season"}
+            />
+          </div>
+        </div>
         {/* <EquipableHelper userData={userData} /> */}
         <div className="container">
           <div className="horizontal-container">
@@ -891,35 +924,39 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "community") {
     return (
-      <div className="list rounded-overflow padded light-background">
-        <SegmentedLProgressBar
-          AchNum={1}
-          icon={"community"}
-          achievementData={achievementData}
-          cb={cb}
-          type={"community"}
-        />
-        <SegmentedLProgressBar
-          AchNum={2}
-          icon={"community"}
-          achievementData={achievementData}
-          cb={cb}
-          type={"community"}
-        />
-        <SegmentedLProgressBar
-          AchNum={3}
-          icon={"community"}
-          achievementData={achievementData}
-          cb={cb}
-          type={"community"}
-        />
-        <SegmentedLProgressBar
-          AchNum={4}
-          icon={"community"}
-          achievementData={achievementData}
-          cb={cb}
-          type={"community"}
-        />
+      <div className={"rounded-overflow centering light-background"}>
+        <div style={{ width: "50%" }}>
+          <div className="list padded light-background">
+            <SegmentedLProgressBar
+              AchNum={1}
+              icon={"community"}
+              achievementData={achievementData}
+              cb={cb}
+              type={"community"}
+            />
+            <SegmentedLProgressBar
+              AchNum={2}
+              icon={"community"}
+              achievementData={achievementData}
+              cb={cb}
+              type={"community"}
+            />
+            <SegmentedLProgressBar
+              AchNum={3}
+              icon={"community"}
+              achievementData={achievementData}
+              cb={cb}
+              type={"community"}
+            />
+            <SegmentedLProgressBar
+              AchNum={4}
+              icon={"community"}
+              achievementData={achievementData}
+              cb={cb}
+              type={"community"}
+            />
+          </div>
+        </div>
       </div>
     );
   }

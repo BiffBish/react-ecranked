@@ -1,12 +1,13 @@
 /* eslint-disable */
 
 import { height } from "@mui/system";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { AchievementHeaderButton } from "./achievements/AchievementHeaderButton";
 import { AchievementLoadoutStats } from "./achievements/AchievementLoadoutStats";
 import { MasterAchievementBar } from "./MasterAchievementBar";
 import { SegmentedProgressBar } from "./SegmentedProgressBar";
+import AchievementLeaderboard from "../pages/AchievementLeaderboard";
 var achievementFormatingData = require("./AchievementData.json");
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
@@ -193,10 +194,26 @@ export default function Achievements({ userData }) {
       return true;
     });
   }
+  const [wantFAQ, setWantFAQ] = useState(false);
+  const [hasFAQ, setHasFAQ] = useState(false);
+
   const [fullView, setFullView] = useState(false);
 
   const [selectedAchievementType, setSelectedAchievementType] =
     useState("daily");
+  useEffect(async () => {
+    function delay(time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
+    if (!fullView) return;
+    async function FAQAnimation() {
+      setFullView(false);
+      await delay(500);
+      setHasFAQ(wantFAQ);
+      setFullView(true);
+    }
+    FAQAnimation();
+  }, [wantFAQ]);
 
   var communityTotal = 0;
   for (let index = 1; index <= 4; index++) {
@@ -217,133 +234,259 @@ export default function Achievements({ userData }) {
   weeklyTotal /= 25;
 
   var alltimeTotal = 0;
-  for (let index = 54; index <= 79; index++) {
+  for (let index = 55; index <= 79; index++) {
     alltimeTotal += achievementData.values[index];
   }
   alltimeTotal /= 25;
+  let containerHeight = 50;
+
+  // if(fullView){
+  //   if()
+  // }
 
   return (
     <div
       className="padded rounded list"
       style={{
-        height: fullView ? 2000 : 50,
+        maxHeight: fullView ? 1000 : 50,
         ...(fullView
           ? { padding: "10px 20px 20px", gap: "20px" }
           : { padding: "0px", gap: "0px" }),
-        transitionProperty: "padding,height,gap",
+        transitionProperty: "padding,max-height,gap",
         transitionDuration: "0.5s",
       }}
     >
-      <div>{/* <div className="container-title">Challenges</div> */}</div>
-      {/* <AchievementPopup
-        topPosition={popupPosition.top}
-        leftPosition={popupPosition.left}
-        width={popupSize.width}
-        height={popupSize.height}
-        visible={popupVisibility}
-        visibilityCallback={setPopupVisibility}
-        selectedNumber={popupSelectedNumber}
-        achievementData={achievementData}
-        lockedAchievements={lockedAchievements}
-      /> */}
       <div
         style={{ color: "white", cursor: "pointer" }}
         onClick={() => {
           setFullView(!fullView);
         }}
       >
-        {" "}
-        {/* <SegmentedProgressBar
-          percent={totalPercentage / 62}
-          displayValue={`${((totalPercentage / 62) * 100).toFixed(2)}%`}
-          segments={[
-            { percentage: 25 / 100, earned: ahData },
-            { percentage: 50 / 100, earned: ahData },
-            { percentage: 75 / 100, earned: ahData },
-          ]}
-          updateHoverCallback={setHn}
-          selectedNumbers={[]}
-        /> */}
         <div
-          className="horizontal-container"
+          className=""
           style={{
+            margin: "-1px 0px 0px 0px",
             gap: fullView ? "" : "0px",
           }}
         >
           <MasterAchievementBar
-            CommunityPercent={(communityTotal * 5) / 80}
-            DailyPercent={(dailyTotal * 25) / 80}
-            WeeklyPercent={(weeklyTotal * 25) / 80}
-            SeasonPercent={(alltimeTotal * 25) / 80}
+            CommunityPercent={(communityTotal * 4) / 79}
+            DailyPercent={(dailyTotal * 25) / 79}
+            WeeklyPercent={(weeklyTotal * 25) / 79}
+            SeasonPercent={(alltimeTotal * 25) / 79}
             // Percentage={achievementData.values["63"]}
             Title={""}
             Height={"50px"}
-            EnableBorder={fullView}
+            EnableBorder={true}
           />
-
-          <h3
-            style={{
-              margin: fullView ? "auto 10px" : "auto 0px",
-              width: fullView ? "90px" : "0px",
-              flexBasis: 0,
-              transitionProperty: "margin,width",
-              transitionDuration: "0.5s",
-            }}
+        </div>
+      </div>
+      {hasFAQ ? (
+        <div className="centering">
+          <div
+            className="rounded padded light-background list"
+            style={{ width: "50%" }}
           >
-            {/* {Math.round(
-              (communityTotal * 5 +
-                dailyTotal * 25 +
-                weeklyTotal * 25 +
-                alltimeTotal * 25) /
-                0.008
-            ) /
-              100 +
-              "%"} */}
-          </h3>
+            <h2>THE FLAMINGO CHALLENGE FAQ</h2>
+            <p>
+              Echo Combat Lounge and ECRanked announce the release of The
+              Flamingo Challenge, an ongoing/regular event for Echo Combat (an
+              in-app purchase for Echo VR by Ready at Dawn for the Oculus/Meta
+              platform) running parallel to Echo VR's Echo Pass from start to
+              end of each season. Season 1 begins March 15th, 2022 and ends May
+              31st, 2022, the same days as Echo Pass Season 5.
+            </p>
+
+            <h2>Can you lose progress?</h2>
+            <p>
+              Nope! You never lose progress on challenges. However a challenge
+              can become "locked" meaning that you are unable to progress
+              further until it becomes unlocked.
+            </p>
+
+            <h2>How do you unlock a challange?</h2>
+            <p>
+              By waiting! When a daily challenge gets locked you have to wait
+              till tomorrow for it to become unlocked. Meaning you have to start
+              over to gain any more progress. Same with weekly challenges. You
+              have to wait till monday of the next week for it to reset for the
+              challenge to become unlocked
+            </p>
+            <h2>How do weekly and daily challenges work?</h2>
+            <p>
+              Daily challenges are determined by statistics that reset every day
+              at midnight PST, 3am EST, 7pm GMT. Weekly challenges are
+              determined by statistics that reset every week monday at midnight.
+              So when games start on monday all weekly stats reset.
+            </p>
+            <div
+              className="button rounded padded centering"
+              onClick={() => {
+                setWantFAQ(false);
+              }}
+            >
+              Return
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="list" style={{ width: "70%", margin: "0 auto" }}>
-        <div className="horizontal-container">
-          <AchievementHeaderButton
-            selectedAchievementType={selectedAchievementType}
-            setSelectedAchievementType={setSelectedAchievementType}
-            name={"community"}
-            displayName={"Community"}
-            progress={communityTotal}
-            progressClass={"community-background"}
-          />
-          <AchievementHeaderButton
-            selectedAchievementType={selectedAchievementType}
-            setSelectedAchievementType={setSelectedAchievementType}
-            name={"daily"}
-            displayName={"Daily"}
-            progress={dailyTotal}
-            progressClass={"daily-background"}
-          />
-          <AchievementHeaderButton
-            selectedAchievementType={selectedAchievementType}
-            setSelectedAchievementType={setSelectedAchievementType}
-            name={"weekly"}
-            displayName={"Weekly"}
-            progress={weeklyTotal}
-            progressClass={"weekly-background"}
-          />
-          <AchievementHeaderButton
-            selectedAchievementType={selectedAchievementType}
-            setSelectedAchievementType={setSelectedAchievementType}
-            name={"global"}
-            displayName={"Season"}
-            progress={alltimeTotal}
-            progressClass={"season-background"}
-          />
+      ) : (
+        <div className="horizontal-container" style={{ display: "flex" }}>
+          {/* <div style={{ flexBasis: 0, flexGrow: 1 }}>
+            <div
+              className="button padded rounded centering"
+              onClick={() => {
+                setWantFAQ(true);
+              }}
+            >
+              SEE FAQ
+            </div>
+          </div> */}
+          <div style={{ flexBasis: 0, flexGrow: 5 }}>
+            <div className="list" style={{ width: "100%", margin: "0 auto" }}>
+              <div className="horizontal-container">
+                <AchievementHeaderButton
+                  selectedAchievementType={selectedAchievementType}
+                  setSelectedAchievementType={setSelectedAchievementType}
+                  name={"community"}
+                  displayName={"Community"}
+                  progress={communityTotal}
+                  progressClass={"community-background"}
+                />
+                <AchievementHeaderButton
+                  selectedAchievementType={selectedAchievementType}
+                  setSelectedAchievementType={setSelectedAchievementType}
+                  name={"daily"}
+                  displayName={"Day"}
+                  progress={dailyTotal}
+                  progressClass={"daily-background"}
+                />
+                <AchievementHeaderButton
+                  selectedAchievementType={selectedAchievementType}
+                  setSelectedAchievementType={setSelectedAchievementType}
+                  name={"weekly"}
+                  displayName={"Week"}
+                  progress={weeklyTotal}
+                  progressClass={"weekly-background"}
+                />
+                <AchievementHeaderButton
+                  selectedAchievementType={selectedAchievementType}
+                  setSelectedAchievementType={setSelectedAchievementType}
+                  name={"global"}
+                  displayName={"Season"}
+                  progress={alltimeTotal}
+                  progressClass={"season-background"}
+                />
+              </div>
+              <AchievementLoadoutStats
+                userData={userData}
+                selectedAchievementType={selectedAchievementType}
+                achievementData={achievementData}
+                lockedAchievements={lockedAchievements}
+              />
+            </div>
+          </div>
+          <div style={{ flexBasis: 0, flexGrow: 1 }}>
+            {userData.oculus_id ? (
+              <AchievementLeaderboard
+                setBannerCallback={() => {}}
+                surroundID={userData.oculus_id}
+                limit={6}
+              />
+            ) : null}
+          </div>
         </div>
-        <AchievementLoadoutStats
-          userData={userData}
-          selectedAchievementType={selectedAchievementType}
-          achievementData={achievementData}
-          lockedAchievements={lockedAchievements}
-        />
-      </div>
+      )}
     </div>
   );
+
+  // return (
+  //   <div
+  //     className="padded rounded list"
+  //     style={{
+  //       height: fullView ? 2000 : 50,
+  //       ...(fullView
+  //         ? { padding: "10px 20px 20px", gap: "20px" }
+  //         : { padding: "0px", gap: "0px" }),
+  //       transitionProperty: "padding,height,gap",
+  //       transitionDuration: "0.5s",
+  //     }}
+  //   >
+  //     <div
+  //       style={{ color: "white", cursor: "pointer" }}
+  //       onClick={() => {
+  //         setFullView(!fullView);
+  //       }}
+  //     >
+  //       <div
+  //         className="horizontal-container"
+  //         style={{
+  //           gap: fullView ? "" : "0px",
+  //         }}
+  //       >
+  //         <MasterAchievementBar
+  //           CommunityPercent={(communityTotal * 5) / 80}
+  //           DailyPercent={(dailyTotal * 25) / 80}
+  //           WeeklyPercent={(weeklyTotal * 25) / 80}
+  //           SeasonPercent={(alltimeTotal * 25) / 80}
+  //           // Percentage={achievementData.values["63"]}
+  //           Title={""}
+  //           Height={"50px"}
+  //           EnableBorder={fullView}
+  //         />
+
+  //         <h3
+  //           style={{
+  //             margin: fullView ? "auto 10px" : "auto 0px",
+  //             width: fullView ? "90px" : "0px",
+  //             flexBasis: 0,
+  //             transitionProperty: "margin,width",
+  //             transitionDuration: "0.5s",
+  //           }}
+  //         ></h3>
+  //       </div>
+  //     </div>
+  //     <div className="list" style={{ width: "70%", margin: "0 auto" }}>
+  //       <div className="horizontal-container">
+  //         <AchievementHeaderButton
+  //           selectedAchievementType={selectedAchievementType}
+  //           setSelectedAchievementType={setSelectedAchievementType}
+  //           name={"community"}
+  //           displayName={"Community"}
+  //           progress={communityTotal}
+  //           progressClass={"community-background"}
+  //         />
+  //         <AchievementHeaderButton
+  //           selectedAchievementType={selectedAchievementType}
+  //           setSelectedAchievementType={setSelectedAchievementType}
+  //           name={"daily"}
+  //           displayName={"Daily"}
+  //           progress={dailyTotal}
+  //           progressClass={"daily-background"}
+  //         />
+  //         <AchievementHeaderButton
+  //           selectedAchievementType={selectedAchievementType}
+  //           setSelectedAchievementType={setSelectedAchievementType}
+  //           name={"weekly"}
+  //           displayName={"Weekly"}
+  //           progress={weeklyTotal}
+  //           progressClass={"weekly-background"}
+  //         />
+  //         <AchievementHeaderButton
+  //           selectedAchievementType={selectedAchievementType}
+  //           setSelectedAchievementType={setSelectedAchievementType}
+  //           name={"global"}
+  //           displayName={"Season"}
+  //           progress={alltimeTotal}
+  //           progressClass={"season-background"}
+  //         />
+  //       </div>
+  //       <AchievementLoadoutStats
+  //         userData={userData}
+  //         selectedAchievementType={selectedAchievementType}
+  //         achievementData={achievementData}
+  //         lockedAchievements={lockedAchievements}
+  //       />
+  //     </div>
+  //   </div>
+  // );
 }

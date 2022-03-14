@@ -15,6 +15,9 @@ export const SegmentedProgressBar = ({
   EnableBorder = true,
   SecondaryPercentage = 0.0,
   ProgressBarClass,
+  centeredTitle = false,
+  leftTitle = true,
+  titleStyle = {},
 }) => {
   const [value, setValue] = React.useState(0);
   const [secondaryValue, setSecondaryValue] = React.useState(0);
@@ -55,12 +58,18 @@ export const SegmentedProgressBar = ({
       ref={fullRef}
     >
       {/* {AchievementNumber} */}
-      {Title}
+      <div
+        className={centeredTitle ? "centering" : ""}
+        style={{ textAlign: leftTitle ? "right" : undefined, ...titleStyle }}
+      >
+        {Title}
+      </div>
       <ProgressDivStyle
         className="rounded"
         style={{
           height: Height,
           ...(EnableBorder ? {} : { borderWidth: "0px" }),
+          transform: leftTitle ? "scale(-100%,100%)" : undefined,
         }}
         ref={barRef}
       >
