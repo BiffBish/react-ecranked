@@ -11,14 +11,10 @@ export const AchievementHeaderButton = ({
 }) => {
   return (
     <AchievementHeaderButtonStyle
-      className="grow rounded"
+      className="grow rounded relative"
       style={{
         width: "0px",
-        ...(selectedAchievementType === name
-          ? {
-              backgroundColor: "#333",
-            }
-          : {}),
+        backgroundColor: selectedAchievementType === name ? "#333" : undefined,
       }}
       onClick={() => {
         setSelectedAchievementType(name);
@@ -31,8 +27,9 @@ export const AchievementHeaderButton = ({
         }}
       />
       <div
+        className="centering absolute fill"
         style={{
-          position: "relative",
+          top: 0,
         }}
       >
         <TextStyle>{displayName}</TextStyle>
@@ -48,8 +45,9 @@ const ProgressBarStyle = styled.div`
 `;
 const TextStyle = styled.h3`
   position: relative;
-  height: 100%;
-  transform: translate(0, -240%);
+  // height: 100%;
+  margin: auto;
+  // transform: translate(0, -240%);
 `;
 const AchievementHeaderButtonStyle = styled.div`
   // height: 80px;

@@ -212,11 +212,18 @@ function App() {
           path={`/user/:username/:subDomain`}
           render={(props) => {
             setBannerHeight(100);
-            const setBannerTextCallback = (username, iconSRC) => {
-              console.log(username);
-              setBannerText(username, iconSRC);
-            };
+            // const setBannerText = (username, iconSRC) => {
+            //   console.log(username);
+            //   setBannerText(username, iconSRC);
+            // };
             console.log("User");
+            // return (
+            //   <User
+            //     username={"BiffBish"}
+            //     setBannerCallback={setBannerText}
+            //     subDomain={"Stats"}
+            //   />
+            // );
             return (
               <User
                 username={props.match.params.username}

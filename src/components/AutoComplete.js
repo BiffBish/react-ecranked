@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Fuse from "fuse.js";
-import { exception } from "sjcl";
 const AutoCompleteBoxSub = styled.div`
   display: flex;
   flex-direction: column;

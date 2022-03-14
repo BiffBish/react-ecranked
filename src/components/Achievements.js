@@ -90,19 +90,6 @@ export const LeftAchievementCollumn = styled.div`
 //   );
 // };
 
-const AchievementPopupStyle = styled.div`
-  box-sizing: border-box;
-
-  position: absolute;
-  color: white;
-  padding: 10px;
-  // margin: 20px 10px 20px;
-  background-color: #222;
-  color: white;
-
-  z-index: 10;
-`;
-
 // const ProgressDivStyle = styled.div`
 //   position: relative;
 
@@ -150,6 +137,7 @@ const AchievementPopupStyle = styled.div`
 
 export default function Achievements({ userData }) {
   let achievementData = { values: userData["test"], locked: {} };
+  if (userData["test"] === undefined) achievementData.values = {};
 
   let dailyLoadoutData = userData["daily_stats"]["top_loadout"];
 
@@ -160,77 +148,55 @@ export default function Achievements({ userData }) {
     totalPercentage += achievementData.values[index.toString()];
   }
 
-  let dailyItemUsage = {
-    pulsar: false,
-    nova: false,
-    comet: false,
-    meteor: false,
-    repair: false,
-    threat: false,
-    energy: false,
-    phase: false,
-    detonator: false,
-    stun: false,
-    arcmine: false,
-    instant: false,
-  };
-
   let lockedAchievements = [];
+  if (userData.daily_stats.top_loadout) {
+    userData.daily_stats.top_loadout.every((element) => {
+      if (element[1] == 0) return false;
+      let loadoutNumber = parseInt(element[0]);
 
-  userData.daily_stats.top_loadout.every((element) => {
-    if (element[1] == 0) return false;
-    let loadoutNumber = parseInt(element[0]);
-    console.log(loadoutNumber.toString(2));
-    console.log(((loadoutNumber >> 2) & 3).toString(2));
-    // console.log((loadoutNumber & 3).toString(2));
+      if (!(loadoutNumber >> 4 == 0)) lockedAchievements[5] = true;
+      if (!(loadoutNumber >> 4 == 1)) lockedAchievements[6] = true;
+      if (!(loadoutNumber >> 4 == 2)) lockedAchievements[7] = true;
+      if (!(loadoutNumber >> 4 == 3)) lockedAchievements[8] = true;
 
-    if (!(loadoutNumber >> 4 == 0)) lockedAchievements[5] = true;
-    if (!(loadoutNumber >> 4 == 1)) lockedAchievements[6] = true;
-    if (!(loadoutNumber >> 4 == 2)) lockedAchievements[7] = true;
-    if (!(loadoutNumber >> 4 == 3)) lockedAchievements[8] = true;
+      if (!(((loadoutNumber >> 2) & 3) == 0)) lockedAchievements[9] = true;
+      if (!(((loadoutNumber >> 2) & 3) == 1)) lockedAchievements[10] = true;
+      if (!(((loadoutNumber >> 2) & 3) == 2)) lockedAchievements[11] = true;
+      if (!(((loadoutNumber >> 2) & 3) == 3)) lockedAchievements[12] = true;
 
-    if (!(((loadoutNumber >> 2) & 3) == 0)) lockedAchievements[9] = true;
-    if (!(((loadoutNumber >> 2) & 3) == 1)) lockedAchievements[10] = true;
-    if (!(((loadoutNumber >> 2) & 3) == 2)) lockedAchievements[11] = true;
-    if (!(((loadoutNumber >> 2) & 3) == 3)) lockedAchievements[12] = true;
+      if (!((loadoutNumber & 3) == 0)) lockedAchievements[13] = true;
+      if (!((loadoutNumber & 3) == 1)) lockedAchievements[14] = true;
+      if (!((loadoutNumber & 3) == 2)) lockedAchievements[15] = true;
+      if (!((loadoutNumber & 3) == 3)) lockedAchievements[16] = true;
+      return true;
+    });
+  }
+  if (userData.weekly_stats.top_loadout) {
+    userData.weekly_stats.top_loadout.every((element) => {
+      if (element[1] == 0) return false;
+      let loadoutNumber = parseInt(element[0]);
 
-    if (!((loadoutNumber & 3) == 0)) lockedAchievements[13] = true;
-    if (!((loadoutNumber & 3) == 1)) lockedAchievements[14] = true;
-    if (!((loadoutNumber & 3) == 2)) lockedAchievements[15] = true;
-    if (!((loadoutNumber & 3) == 3)) lockedAchievements[16] = true;
-    return true;
-  });
+      if (!(loadoutNumber >> 4 == 0)) lockedAchievements[30] = true;
+      if (!(loadoutNumber >> 4 == 1)) lockedAchievements[31] = true;
+      if (!(loadoutNumber >> 4 == 2)) lockedAchievements[32] = true;
+      if (!(loadoutNumber >> 4 == 3)) lockedAchievements[33] = true;
 
-  const [hn, setHn] = useState([]);
+      if (!(((loadoutNumber >> 2) & 3) == 0)) lockedAchievements[34] = true;
+      if (!(((loadoutNumber >> 2) & 3) == 1)) lockedAchievements[35] = true;
+      if (!(((loadoutNumber >> 2) & 3) == 2)) lockedAchievements[36] = true;
+      if (!(((loadoutNumber >> 2) & 3) == 3)) lockedAchievements[37] = true;
 
-  const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
-  const [popupSize, setPopupSize] = useState({ width: 0, height: 0 });
-  const [popupVisibility, setPopupVisibility] = useState(true);
-  const [popupSelectedNumber, setPopupSelectedNumber] = useState(0);
-
+      if (!((loadoutNumber & 3) == 0)) lockedAchievements[38] = true;
+      if (!((loadoutNumber & 3) == 1)) lockedAchievements[39] = true;
+      if (!((loadoutNumber & 3) == 2)) lockedAchievements[40] = true;
+      if (!((loadoutNumber & 3) == 3)) lockedAchievements[41] = true;
+      return true;
+    });
+  }
   const [fullView, setFullView] = useState(false);
-
-  var cb = (ref, selectedNumber, showPopup = true) => {
-    console.log(ref);
-    setPopupPosition({
-      top: ref.current.offsetTop + ref.current.offsetHeight,
-      left: ref.current.offsetLeft,
-    });
-
-    setPopupSize({
-      width: ref.current.offsetWidth,
-      height: ref.current.offsetHeight,
-    });
-    setPopupVisibility(showPopup);
-    setPopupSelectedNumber(selectedNumber);
-  };
 
   const [selectedAchievementType, setSelectedAchievementType] =
     useState("daily");
-  // achievementData.values["1"] = userData["team_id"] ? 1 : 0;
-  // achievementData.values["2"] = userData["discord_name"] !== null ? 1 : 0;
-  // achievementData.values["3"] = userData["about_string"] ? 1 : 0;
-  // achievementData.values["4"] = userData["avatar"] ? 1 : 0;
 
   var communityTotal = 0;
   for (let index = 1; index <= 4; index++) {
@@ -375,7 +341,6 @@ export default function Achievements({ userData }) {
           userData={userData}
           selectedAchievementType={selectedAchievementType}
           achievementData={achievementData}
-          cb={cb}
           lockedAchievements={lockedAchievements}
         />
       </div>
