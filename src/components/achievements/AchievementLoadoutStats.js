@@ -961,7 +961,9 @@ export const AchievementLoadoutStats = ({
                         : // 20
                           0
                     }
-                    pubRequirement={[4, 5, 6, 7, 8].includes(index) ? 25 : null}
+                    pubRequirement={
+                      [4, 5, 6, 7, 8].includes(index) ? 100 : null
+                    }
                   />
                 );
               })}
