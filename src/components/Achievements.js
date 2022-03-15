@@ -59,7 +59,7 @@ export default function Achievements({ userData, screenWidth }) {
   let lockedAchievements = [];
   if (userData.daily_stats.top_loadout) {
     userData.daily_stats.top_loadout.every((element) => {
-      if (element[1] == 0) return false;
+      if (element[1] < 0.01) return false;
       let loadoutNumber = parseInt(element[0]);
 
       if (!(loadoutNumber >> 4 == 0)) lockedAchievements[5] = true;
@@ -81,7 +81,7 @@ export default function Achievements({ userData, screenWidth }) {
   }
   if (userData.weekly_stats.top_loadout) {
     userData.weekly_stats.top_loadout.every((element) => {
-      if (element[1] == 0) return false;
+      if (element[1] < 0.01) return false;
       let loadoutNumber = parseInt(element[0]);
 
       if (!(loadoutNumber >> 4 == 0)) lockedAchievements[30] = true;
