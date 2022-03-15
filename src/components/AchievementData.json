@@ -1984,7 +1984,7 @@
         "Title": "Get It Together",
         "Description": "Proximity to teammate 20% or more (in 1 week)",
         "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.25",
+        "Percent": "0.40",
         "Extra": "check %'s",
         "Type": "Team Proximity "
       },
@@ -1993,7 +1993,7 @@
         "Title": "Teamwork Makes the Dreamwork",
         "Description": "Proximity to teammate 30% or more (in 1 week)",
         "Timeframe": "",
-        "Percent": "0.50",
+        "Percent": "0.6",
         "Extra": "check %'s",
         "Type": "Team Proximity "
       },
@@ -2002,7 +2002,7 @@
         "Title": "The Friend Zone",
         "Description": "Proximity to teammate 40% or more (in 1 week)",
         "Timeframe": "",
-        "Percent": "0.75",
+        "Percent": "0.80",
         "Extra": "check %'s",
         "Type": "Team Proximity "
       },
@@ -2156,14 +2156,23 @@
         "Title": "Silicon Valley",
         "Description": "Play 5+ games of Dyson (in one week)",
         "Timeframe": "Total in 1 week",
-        "Percent": "0.625",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Dyson"
       },
       {
         "CID": "50",
         "Title": "Predictable Backpad Regrabs",
-        "Description": "Play 6+ games of Dyson (in one week)",
+        "Description": "Play 10+ games of Dyson (in one week)",
+        "Timeframe": "Total in 1 week",
+        "Percent": "0.5",
+        "Extra": "",
+        "Type": "Dyson"
+      },
+      {
+        "CID": "50",
+        "Title": "Dyson Spawn Times are Trash",
+        "Description": "Play 15+ games of Dyson (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -2171,17 +2180,8 @@
       },
       {
         "CID": "50",
-        "Title": "Dyson Spawn Times are Trash",
-        "Description": "Play 7+ games of Dyson (in one week)",
-        "Timeframe": "Total in 1 week",
-        "Percent": "0.875",
-        "Extra": "",
-        "Type": "Dyson"
-      },
-      {
-        "CID": "50",
         "Title": "Frame-Drop Hell",
-        "Description": "Play 8+ games of Dyson (in one week)",
+        "Description": "Play 20+ games of Dyson (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -2199,14 +2199,23 @@
         "Title": "Is It Warm in Here or Is It Just the Pew Pew Pew?",
         "Description": "Play 5+ games of Combustion (in one week)",
         "Timeframe": "Total in 1 week",
-        "Percent": "0.625",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Combustion"
       },
       {
         "CID": "51",
         "Title": "If You Can't Take the Heat Get out of the Point!",
-        "Description": "Play 6+ games of Combustion (in one week)",
+        "Description": "Play 10+ games of Combustion (in one week)",
+        "Timeframe": "Total in 1 week",
+        "Percent": "0.5",
+        "Extra": "",
+        "Type": "Combustion"
+      },
+      {
+        "CID": "51",
+        "Title": "I Love the Smell of Melting Chassis in the Morning",
+        "Description": "Play 15+ games of Combustion (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -2214,17 +2223,8 @@
       },
       {
         "CID": "51",
-        "Title": "I Love the Smell of Melting Chassis in the Morning",
-        "Description": "Play 7+ games of Combustion (in one week)",
-        "Timeframe": "Total in 1 week",
-        "Percent": "0.875",
-        "Extra": "",
-        "Type": "Combustion"
-      },
-      {
-        "CID": "51",
         "Title": "I've Got a Fever, and the Only Prescription Is Pew Pew Pew!",
-        "Description": "Play 8+ games of Combustion (in one week)",
+        "Description": "Play 20+ games of Combustion (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -2242,14 +2242,23 @@
         "Title": "Phoenicopteriformes",
         "Description": "Play 5+ games of Fission (in one week)",
         "Timeframe": "Total in 1 week",
-        "Percent": "0.625",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Fission"
       },
       {
         "CID": "52",
         "Title": "Phoenicopteridae",
-        "Description": "Play 6+ games of Fission (in one week)",
+        "Description": "Play 10+ games of Fission (in one week)",
+        "Timeframe": "Total in 1 week",
+        "Percent": "0.5",
+        "Extra": "",
+        "Type": "Fission"
+      },
+      {
+        "CID": "52",
+        "Title": "Phoenicopterus roseus",
+        "Description": "Play 15+ games of Fission (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -2257,17 +2266,8 @@
       },
       {
         "CID": "52",
-        "Title": "Phoenicopterus roseus",
-        "Description": "Play 7+ games of Fission (in one week)",
-        "Timeframe": "Total in 1 week",
-        "Percent": "0.875",
-        "Extra": "",
-        "Type": "Fission"
-      },
-      {
-        "CID": "52",
         "Title": "Phoeniconaias minor",
-        "Description": "Play 8+ games of Fission (in one week)",
+        "Description": "Play 20+ games of Fission (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -2285,14 +2285,23 @@
         "Title": "Phoenicopterus chilensis",
         "Description": "Play 5+ games of Surge (in one week)",
         "Timeframe": "Total in 1 week",
-        "Percent": "0.625",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Surge"
       },
       {
         "CID": "53",
         "Title": "Phoenicoparrus jamesi",
-        "Description": "Play 6+ games of Surge (in one week)",
+        "Description": "Play 10+ games of Surge (in one week)",
+        "Timeframe": "Total in 1 week",
+        "Percent": "0.5",
+        "Extra": "",
+        "Type": "Surge"
+      },
+      {
+        "CID": "53",
+        "Title": "Phoenicoparrus andinus",
+        "Description": "Play 15+ games of Surge (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -2300,17 +2309,8 @@
       },
       {
         "CID": "53",
-        "Title": "Phoenicoparrus andinus",
-        "Description": "Play 7+ games of Surge (in one week)",
-        "Timeframe": "Total in 1 week",
-        "Percent": "0.875",
-        "Extra": "",
-        "Type": "Surge"
-      },
-      {
-        "CID": "53",
         "Title": "Phoenicopterus ruber",
-        "Description": "Play 8+ games of Surge (in one week)",
+        "Description": "Play 20+ games of Surge (in one week)",
         "Timeframe": "Total in 1 week",
         "Percent": "1",
         "Extra": "",
