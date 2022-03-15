@@ -185,6 +185,7 @@ export default function AchievementLeaderboard({
   surroundID = null,
   compacted = true,
 }) {
+  console.log("LOADING ACHIEVEMENT LEADERBOARD");
   const [apiData, setApiData] = React.useState(null);
   const [sortedApiData, setSortedApiData] = React.useState(null);
   if (subDomain === undefined) {
@@ -253,7 +254,11 @@ export default function AchievementLeaderboard({
     let NewData = [];
     apiData.forEach((element, index) => {
       if (element.oculus_id === surroundID) {
-        setStartIndex(index - 3);
+        if (index - 3 < 0) {
+          setStartIndex(0);
+        } else {
+          setStartIndex(index - 3);
+        }
       }
       element.position = index;
       NewData.push(element);

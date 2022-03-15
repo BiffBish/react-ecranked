@@ -37,7 +37,6 @@ export const SegmentedProgressBar = ({
     }
     return barRef.current.getBoundingClientRect().width;
   }
-  console.log(Title, SecondaryPercentage, Percentage);
   return (
     <SegmentedProgressBarContainerStyle
       style={

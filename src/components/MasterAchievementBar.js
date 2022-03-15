@@ -133,18 +133,20 @@ export const MasterAchievementBar = ({
             className="progress community-background"
             color=""
           />
-          {/* {clickMe?} */}
-          <div
-            className="centering"
-            style={{
-              width: `100%`,
-              transform: `translate(-0%, -400%)`,
-              height: "100%",
-              flexDirection: "column",
-            }}
-          >
-            <div className="conthrax"> Click me!</div>
-          </div>
+          {clickMe ? (
+            <div
+              className="centering"
+              style={{
+                width: `100%`,
+                transform: `translate(-0%, -400%)`,
+                height: "100%",
+                flexDirection: "column",
+              }}
+            >
+              <div className="conthrax"> Click to view Achievements!</div>
+            </div>
+          ) : null}
+
           {/* {segments.map((segment) => {
               return (
                 <SegmentOfProgressBar
