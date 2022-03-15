@@ -281,7 +281,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
             letterSpacing:
               windowDimensions.width < 1000
                 ? "calc(-16px + 3.9vw)"
-                : "calc(3.8vw - 36px)",
+                : "calc(-39px + 3.8vw)",
             lineHeight: "10px",
           }}
         >
