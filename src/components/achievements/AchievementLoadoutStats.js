@@ -957,7 +957,7 @@ export const AchievementLoadoutStats = ({
                     onLeft={true}
                     totalGames={
                       [4, 5, 6, 7, 8].includes(index)
-                        ? userData.achieve_stats.total_games
+                        ? userData.achievement_stats.total_games
                         : // 20
                           0
                     }
