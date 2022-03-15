@@ -7,7 +7,7 @@ function Contact() {
         <h2>BiffBish</h2>
         <div>
           <p>
-            Hi, Im Kaleb. My allias and what most people will know my by is
+            Hi, Im Kaleb. My allias and what most people will know me by is
             BiffBish. Im the primary developer of ecranked and developed the
             frontend and backend for ecranked. Ive spent months developing this
             website from scratch and started my coding journey through this
