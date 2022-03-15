@@ -197,6 +197,7 @@ export default function Achievements({ userData, screenWidth }) {
             Title={""}
             Height={"50px"}
             EnableBorder={true}
+            clickMe={true}
           />
         </div>
       </div>

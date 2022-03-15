@@ -16,6 +16,7 @@ export const MasterAchievementBar = ({
   WeeklyPercent = 0.25,
   SeasonPercent = 0.25,
   CommunityPercent = 0.25,
+  clickMe = false,
 }) => {
   const [communityValue, setCommunityValue] = React.useState(0);
   const [dailyValue, setDailyValue] = React.useState(0);
@@ -132,7 +133,18 @@ export const MasterAchievementBar = ({
             className="progress community-background"
             color=""
           />
-
+          {/* {clickMe?} */}
+          <div
+            className="centering"
+            style={{
+              width: `100%`,
+              transform: `translate(-0%, -400%)`,
+              height: "100%",
+              flexDirection: "column",
+            }}
+          >
+            <div className="conthrax"> Click me!</div>
+          </div>
           {/* {segments.map((segment) => {
               return (
                 <SegmentOfProgressBar
