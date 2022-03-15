@@ -26,6 +26,7 @@ import Component from "./pages/Testing";
 import GlobalUserState from "./contexts/GlobalUserState";
 import { ApiCallHelper } from "./helpers/makeApiCall";
 import AchievementLeaderboard from "./pages/AchievementLeaderboard";
+import Contact from "./pages/Contact";
 const PageBody = styled.div`
   position: absolute;
   width: 100%;
@@ -228,6 +229,16 @@ function Routes() {
         <Route exact path={["/"]}>
           <Redirect to="/home" />
         </Route>
+
+        <Route
+          exact
+          path={["/contact"]}
+          render={(props) => {
+            setBannerHeight(400);
+            setBannerText("Contact");
+            return <Contact />;
+          }}
+        />
         <Route
           exact
           path={["/home", "/"]}

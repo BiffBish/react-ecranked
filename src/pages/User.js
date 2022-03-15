@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 import MetaTags from "react-meta-tags";
@@ -38,6 +38,15 @@ const StatChoiceButton = styled.div`
   cursor: pointer;
   line-height: 20px;
 `;
+
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
 const StatChoice = ({ currentSelected, onClick }) => {
   return (
     <StatChoiceStyle>
@@ -241,6 +250,17 @@ export default function User({ username, setBannerCallback, subDomain }) {
 
   //   return EMPTYREQUEST;
   // }
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   console.log("userNotFound", userNotFound);
   return (
@@ -256,14 +276,18 @@ export default function User({ username, setBannerCallback, subDomain }) {
         <h3
           className="conthrax centered"
           style={{
-            fontSize: "50px",
-            letterSpacing: "20px",
+            fontSize: windowDimensions.width < 1000 ? "20px" : "50px",
+            // letterSpacing: "20px",
+            letterSpacing:
+              windowDimensions.width < 1000
+                ? "calc(-16px + 3.9vw)"
+                : "calc(3.8vw - 36px)",
             lineHeight: "10px",
           }}
         >
           --- FLAMINGO CHALLENGE ---
         </h3>
-        <Achievements userData={apiData} />
+        <Achievements userData={apiData} screenWidth={windowDimensions.width} />
         {/* <div> */}
         <MetaTags>
           <title>{username}'s Page!</title>

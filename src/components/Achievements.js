@@ -42,103 +42,10 @@ export const LeftAchievementCollumn = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
 `;
-// const AchievementSquare = ({ num, data, cb, hn = [] }) => {
-//   var ref = React.useRef();
-//   let backGroundColor = "#A44";
 
-//   if (data["values"][num.toString()] > 0.5) {
-//     if (hn.includes(num)) {
-//       backGroundColor = "#4A4";
-//     } else {
-//       backGroundColor = "#008000ff";
-//     }
-//   } else if (data["locked"][num.toString()]) {
-//     if (hn.includes(num)) {
-//       backGroundColor = "#A44";
-//     } else {
-//       backGroundColor = "#f004";
-//     }
-//   } else {
-//     if (hn.includes(num)) {
-//       backGroundColor = "#444";
-//     } else {
-//       backGroundColor = "#0000";
-//     }
-//   }
-//   return (
-//     <AchievementSquareStyle
-//       onClick={() => {
-//         cb(ref, num);
-//       }}
-//       ref={ref}
-//       style={{ backgroundColor: backGroundColor }}
-//     >
-//       {num}
-//     </AchievementSquareStyle>
-//   );
-// };
-// const AchievementWide = ({ num, complete }) => {
-//   return (
-//     <AchievementWideStyle
-//       style={
-//         complete
-//           ? { backgroundColor: "green" }
-//           : { backgroundColor: "transparent" }
-//       }
-//     >
-//       {num}
-//     </AchievementWideStyle>
-//   );
-// };
-
-// const ProgressDivStyle = styled.div`
-//   position: relative;
-
-//   border-radius: 0.5rem;
-//   border: 1px solid white;
-//   border-radius: 10px;
-//   height: 7px;
-//   overflow: hidden;
-// `;
-// const ProgressBarStyle = styled.div`
-//   position: relative;
-
-//   transform: translate(-50%, -0%);
-//   background-color: #b35252;
-//   height: 100%;
-//   border-radius: 8px;
-//   transition-duration: 3s;
-//   transition-property: width;
-// `;
-// const ProgressBarTextStyle = styled.p`
-//   position: relative;
-//   margin: -${AchievementSize - 4}px 4px;
-//   text-align: left;
-
-//   z-index: 5;
-// `;
-
-// export var ProgressBar = ({ percent, displayValue }) => {
-//   const [value, setValue] = React.useState(0);
-
-//   React.useEffect(() => {
-//     setValue(percent * 100);
-//   }, [percent]);
-
-//   return (
-//     <ProgressDivStyle className="progress-div">
-//       <ProgressBarStyle
-//         style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
-//         className="progress"
-//       ></ProgressBarStyle>
-//       <ProgressBarTextStyle>{displayValue}</ProgressBarTextStyle>
-//     </ProgressDivStyle>
-//   );
-// };
-
-export default function Achievements({ userData }) {
-  let achievementData = { values: userData["test"], locked: {} };
-  if (userData["test"] === undefined) achievementData.values = {};
+export default function Achievements({ userData, screenWidth }) {
+  let achievementData = { values: userData["achievements"], locked: {} };
+  if (userData["achievements"] === undefined) achievementData.values = {};
 
   let dailyLoadoutData = userData["daily_stats"]["top_loadout"];
 
@@ -217,38 +124,50 @@ export default function Achievements({ userData }) {
 
   var communityTotal = 0;
   for (let index = 1; index <= 4; index++) {
-    communityTotal += achievementData.values[index];
+    if (achievementData.values[index] === undefined) {
+      communityTotal += 0;
+    } else {
+      communityTotal += achievementData.values[index];
+    }
   }
   communityTotal /= 4;
 
   var dailyTotal = 0;
   for (let index = 5; index <= 29; index++) {
-    dailyTotal += achievementData.values[index];
+    if (achievementData.values[index] === undefined) {
+      dailyTotal += 0;
+    } else {
+      dailyTotal += achievementData.values[index];
+    }
   }
   dailyTotal /= 25;
 
   var weeklyTotal = 0;
   for (let index = 30; index <= 54; index++) {
-    weeklyTotal += achievementData.values[index];
+    if (achievementData.values[index] === undefined) {
+      weeklyTotal += 0;
+    } else {
+      weeklyTotal += achievementData.values[index];
+    }
   }
   weeklyTotal /= 25;
 
   var alltimeTotal = 0;
   for (let index = 55; index <= 79; index++) {
-    alltimeTotal += achievementData.values[index];
+    if (achievementData.values[index] === undefined) {
+      alltimeTotal += 0;
+    } else {
+      alltimeTotal += achievementData.values[index];
+    }
   }
   alltimeTotal /= 25;
   let containerHeight = 50;
-
-  // if(fullView){
-  //   if()
-  // }
 
   return (
     <div
       className="padded rounded list"
       style={{
-        maxHeight: fullView ? 1000 : 50,
+        maxHeight: fullView ? 1500 : 50,
         ...(fullView
           ? { padding: "10px 20px 20px", gap: "20px" }
           : { padding: "0px", gap: "0px" }),
@@ -281,7 +200,11 @@ export default function Achievements({ userData }) {
           />
         </div>
       </div>
-      {hasFAQ ? (
+      {screenWidth < 700 ? (
+        <div>
+          Challenges cannot be viewed on mobile. Please move to a desktop
+        </div>
+      ) : hasFAQ ? (
         <div className="centering">
           <div
             className="rounded padded light-background list"
@@ -383,17 +306,27 @@ export default function Achievements({ userData }) {
                 achievementData={achievementData}
                 lockedAchievements={lockedAchievements}
               />
+              <div
+                className="button rounded padded"
+                onClick={() => {
+                  setWantFAQ(true);
+                }}
+              >
+                FAQ
+              </div>
             </div>
           </div>
-          <div style={{ flexBasis: 0, flexGrow: 1 }}>
-            {userData.oculus_id ? (
-              <AchievementLeaderboard
-                setBannerCallback={() => {}}
-                surroundID={userData.oculus_id}
-                limit={6}
-              />
-            ) : null}
-          </div>
+          {screenWidth < 1000 ? null : (
+            <div style={{ flexBasis: 0, flexGrow: 1.5 }}>
+              {userData.oculus_id ? (
+                <AchievementLeaderboard
+                  setBannerCallback={() => {}}
+                  surroundID={userData.oculus_id}
+                  limit={6}
+                />
+              ) : null}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -43,6 +43,15 @@ export const MasterAchievementBar = ({
     return barRef.current.getBoundingClientRect().width;
   }
 
+  let TotalPercent =
+    Math.round(
+      (CommunityPercent + DailyPercent + WeeklyPercent + SeasonPercent) * 10000
+    ) / 100;
+  console.log("#50", TotalPercent, TotalPercent === NaN);
+  if (isNaN(TotalPercent)) {
+    TotalPercent = 0;
+  }
+
   return (
     <div className="grow horizontal-container">
       <SegmentedProgressBarContainerStyle
@@ -139,13 +148,7 @@ export const MasterAchievementBar = ({
         </ProgressDivStyle>
       </SegmentedProgressBarContainerStyle>
       <div className="centering" style={{ width: "100px" }}>
-        <h3 className="conthrax-thin">
-          {Math.round(
-            (CommunityPercent + DailyPercent + WeeklyPercent + SeasonPercent) *
-              10000
-          ) / 100}{" "}
-          %
-        </h3>
+        <h3 className="conthrax-thin">{TotalPercent} %</h3>
       </div>
     </div>
   );

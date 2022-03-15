@@ -266,7 +266,7 @@ export default function AchievementLeaderboard({
         <img
           src="/images/ECFCS1.png"
           alt="Season 1 banner"
-          style={{ width: "400px" }}
+          style={{ width: "100%", maxWidth: "400px" }}
         ></img>
       </Link>
 

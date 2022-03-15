@@ -279,23 +279,24 @@ export default function Nav({ clientData }) {
       <TopBar>
         <TopBarLinksDesktop>
           <TopBarLink link="/home" text="Home" />
-          <TopBarLink
+          {/* <TopBarLink
             link="https://ecranked.ddns.net/docs"
             text="API"
             externalLink={true}
-          />
+          /> */}
           <TopBarLink
             link="https://discord.gg/4fxM7tPRdZ"
             text="Join us on Discord"
             externalLink={true}
           />
-          <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
-          <TopBarLink link="/Changelog" text="Changelog" />
+          {/* <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
+          <TopBarLink link="/Changelog" text="Changelog" /> */}
           {globalUserState.moderator ? (
             <TopBarLink link="/Moderator" text="Moderator" />
           ) : (
             ""
           )}
+          <TopBarLink link="/contact" text="Contact me" />
           <AuthorizeButton loggedIn={globalUserState.authorization_token} />
           <AutoComplete
             options={allUsernames.concat(allTeams)}

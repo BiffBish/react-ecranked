@@ -11,7 +11,7 @@
         "Type": ""
       }
     ],
-    "Title": "COMMUNITY 1",
+    "Title": "",
     "Progress": "",
     "Locked": ""
   },
@@ -19,64 +19,64 @@
     "parts": [
       {
         "CID": "1",
-        "Title": "Beep Boop",
-        "Description": "Player in Echo Games Discord Server",
-        "Timeframe": "Community",
+        "Title": "One of Us",
+        "Description": "Player in Combat Lounge Discord Server",
+        "Timeframe": "",
         "Percent": "1",
-        "Extra": "Community",
-        "Type": ""
+        "Extra": "",
+        "Type": "Community"
       }
     ],
-    "Title": "COMMUNITY 2",
-    "Progress": "",
+    "Title": "COMMUNITY 1",
+    "Progress": "Join the Combat Community discord!  Click the link at the top of the page to join!",
     "Locked": ""
   },
   "2": {
     "parts": [
       {
         "CID": "2",
-        "Title": "One of Us",
-        "Description": "Player in Combat Lounge Discord Server",
-        "Timeframe": "Community",
+        "Title": "Calibration Complete",
+        "Description": "Player bio listed on ecranked.com",
+        "Timeframe": "",
         "Percent": "1",
-        "Extra": "Community",
-        "Type": ""
+        "Extra": "",
+        "Type": "Community"
       }
     ],
-    "Title": "COMMUNITY 3",
-    "Progress": "",
+    "Title": "COMMUNITY 2",
+    "Progress": "Don't be shy, community is all about the players and we want to know about you!  It can just be a catchphrase or a full description.  All submissions are manually reviewed to meet community safety/comfort standards.",
     "Locked": ""
   },
   "3": {
     "parts": [
       {
         "CID": "3",
-        "Title": "Calibration Complete",
-        "Description": "Player bio listed on ecranked.com",
-        "Timeframe": "Community",
+        "Title": "Got That Chassis Drip",
+        "Description": "Player chassis picture on ecranked.com",
+        "Timeframe": "",
         "Percent": "1",
-        "Extra": "Community",
-        "Type": ""
+        "Extra": "",
+        "Type": "Community"
       }
     ],
-    "Title": "COMMUNITY 4",
-    "Progress": "",
+    "Title": "COMMUNITY 3",
+    "Progress": "Show off your mad-crazy chassis style with a cool pic of you in-game or in-lobby!  Get a fellow player to take a pic and send to you and make friends!",
     "Locked": ""
   },
   "4": {
     "parts": [
       {
         "CID": "4",
-        "Title": "Got That Chassis Drip",
-        "Description": "Player chassis picture on ecranked.com",
-        "Timeframe": "Community",
+        "Title": "Beep Boop",
+        "Description": "Join an ECRanked team!",
+        "Timeframe": "",
         "Percent": "1",
-        "Extra": "Community",
-        "Type": ""
+        "Extra": "",
+        "Type": "Community"
       }
     ],
-    "Title": "COMMUNITY 5",
-    "Progress": "",
+    "Title": "COMMUNITY 4",
+    "Progress": "Create or join a team!  Take the next step on your Echo Combat journey.  Many of the best teams were created from a group of complete strangers whom became close friends!  You can either join another player's team or create one wiith your friends! ",
     "Locked": ""
   },
   "5": {
@@ -119,8 +119,8 @@
       }
     ],
     "Title": "PULSAR CHALLENGE",
-    "Progress": "Play more games using only Pulsar as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Pulsar.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Pulsar as your weapon!  Don't use any other weapons the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Pulsar.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "6": {
     "parts": [
@@ -162,8 +162,8 @@
       }
     ],
     "Title": "NOVA  CHALLENGE",
-    "Progress": "Play more games using only Nova as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Nova.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Nova as your weapon!  Don't use any other weapons the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Nova.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "7": {
     "parts": [
@@ -205,8 +205,8 @@
       }
     ],
     "Title": "COMET CHALLENGE",
-    "Progress": "Play more games using only Comet as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Comet.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Comet as your weapon!  Don't use any other weapons the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Comet.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "8": {
     "parts": [
@@ -248,8 +248,8 @@
       }
     ],
     "Title": "METEOR CHALLENGE",
-    "Progress": "Play more games using only Meteor as your weapon!  Be sure to not use any other weapons in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this achevement by only using Meteor as your weapon until all achievements are met."
+    "Progress": "Play more games using only Meteor as your weapon!  Don't use any other weapons the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Meteor.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "9": {
     "parts": [
@@ -291,8 +291,8 @@
       }
     ],
     "Title": "DETONATOR CHALLENGE",
-    "Progress": "Play more games using only Detonator as your ordnance!  Be sure to not use any other ordnance in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Detonator.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Detonator as your ordnance!  Don't use any other ordnance the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Detonator.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "10": {
     "parts": [
@@ -343,8 +343,8 @@
       }
     ],
     "Title": "STUN FIELD CHALLENGE",
-    "Progress": "Play more games using only Stun Field as your ordnance!  Be sure to not use any other ordnance in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Stun Field as your ordnance!  Don't use any other ordnance the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Stun Field.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "11": {
     "parts": [
@@ -420,8 +420,8 @@
       }
     ],
     "Title": "INSTANT REPAIR CHALLENGE",
-    "Progress": "Play more games using only Instant Repair as your ordnance!  Be sure to not use any other ordnance in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Instant Repair as your ordnance!  Don't use any other ordnance the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Instant Repair.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "13": {
     "parts": [
@@ -463,8 +463,8 @@
       }
     ],
     "Title": "REPAIR MATRIX CHALLENGE",
-    "Progress": "Play more games using only Repair Matrix as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Repair Matrix as your tac-mod!  Don't use any other tac-mods the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Repair Matrix.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "14": {
     "parts": [
@@ -506,8 +506,8 @@
       }
     ],
     "Title": "THREAT SCANNER CHALLENGE",
-    "Progress": "Play more games using only Threat Scanner as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Threat Scanner as your tac-mod!  Don't use any other tac-mods the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Threat Scanner.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "15": {
     "parts": [
@@ -549,8 +549,8 @@
       }
     ],
     "Title": "ENERGY BARRIER CHALLENGE",
-    "Progress": "Play more games using only Energy Barrier as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
-    "Locked": "This achievement is locked because you didn't only use Meteor.  Unlock this challenge by only using Pulsar as your weapon until all achievements are met."
+    "Progress": "Play more games using only Energy Barrier as your tac-mod!  Don't use any other tac-mods the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Energy Barrier.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "16": {
     "parts": [
@@ -592,8 +592,8 @@
       }
     ],
     "Title": "PHASE SHIFT CHALLENGE",
-    "Progress": "Play more games using only Phase Shift as your tac-mod!  Be sure to not use any other tac-mod in the 24 hour period you attempt this challenge.",
-    "Locked": ""
+    "Progress": "Play more games using only Phase Shift as your tac-mod!  Don't use any other tac-mods the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Phase Shift.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "17": {
     "parts": [
@@ -635,8 +635,8 @@
       }
     ],
     "Title": "LOADOUT CHALLENGE",
-    "Progress": "NEED TO WRITE",
-    "Locked": "NEED TO WRITE"
+    "Progress": "Try to use more equipables next game! ",
+    "Locked": ""
   },
   "18": {
     "parts": [
@@ -645,7 +645,7 @@
         "Title": "What Is Your Major Malfunction?!",
         "Description": "Have only 6 deaths (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0",
+        "Percent": "0.4285714286",
         "Extra": "check #'s",
         "Type": "Death"
       },
@@ -654,7 +654,7 @@
         "Title": "I'm Having Technical Difficulties",
         "Description": "Have only 5 deaths (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.3333333333",
+        "Percent": "0.7142857143",
         "Extra": "check #'s",
         "Type": "Death"
       },
@@ -663,7 +663,7 @@
         "Title": "More Lives Than a Nexus 6",
         "Description": "Have only 4 deaths (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.6666666667",
+        "Percent": "0.8571428571",
         "Extra": "check #'s",
         "Type": "Death"
       },
@@ -688,7 +688,7 @@
         "Title": "Capture the Point",
         "Description": "Play 2+ Capture Point games (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "Total in 1 day",
         "Type": "Capture Point"
       },
@@ -697,7 +697,7 @@
         "Title": "Point Stolen",
         "Description": "Play 4+ Capture Point games (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "Total in 1 day",
         "Type": "Capture Point"
       },
@@ -706,7 +706,7 @@
         "Title": "Point Contested",
         "Description": "Play 6+ Capture Point games (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "Total in 1 day",
         "Type": "Capture Point"
       },
@@ -731,7 +731,7 @@
         "Title": "Deliver the Payload",
         "Description": "Play 2+ Payload games (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "Total in 1 day",
         "Type": "Payload"
       },
@@ -740,7 +740,7 @@
         "Title": "Payload Mobilized",
         "Description": "Play 4+ Payload games (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "Total in 1 day",
         "Type": "Payload"
       },
@@ -749,7 +749,7 @@
         "Title": "Payload Accelerated!",
         "Description": "Play 6+ Payload games (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "Total in 1 day",
         "Type": "Payload"
       },
@@ -774,7 +774,7 @@
         "Title": "Comrades in Arms",
         "Description": "Proximity to teammate 20% or more (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0",
+        "Percent": "0.4",
         "Extra": "check %'s",
         "Type": "Team Proximity"
       },
@@ -783,7 +783,7 @@
         "Title": "Echo Units Unite!",
         "Description": "Proximity to teammate 30% or more (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.3333333333",
+        "Percent": "0.6",
         "Extra": "check %'s",
         "Type": "Team Proximity "
       },
@@ -792,7 +792,7 @@
         "Title": "We Win These",
         "Description": "Proximity to teammate 40% or more (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.6666666667",
+        "Percent": "0.8",
         "Extra": "check %'s",
         "Type": "Team Proximity "
       },
@@ -817,7 +817,7 @@
         "Title": "Engage the Enemy",
         "Description": "Proximity to enemy 0.5% or more (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "check %'s",
         "Type": "Enemy Proximity "
       },
@@ -826,7 +826,7 @@
         "Title": "Stomping Grounds",
         "Description": "Proximity to enemy 1.0% or more (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "check %'s",
         "Type": "Enemy Proximity "
       },
@@ -835,7 +835,7 @@
         "Title": "Heyyy, Let's Be Friends...Pew Pew Pew!",
         "Description": "Proximity to enemy 1.5% or more (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "check %'s",
         "Type": "Enemy Proximity "
       },
@@ -860,7 +860,7 @@
         "Title": "Boost Action",
         "Description": "Hit top speed of 20m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0",
+        "Percent": "0.5714285714",
         "Extra": "check %'s",
         "Type": "Speed"
       },
@@ -869,7 +869,7 @@
         "Title": "Regrabby Grabby Grabs",
         "Description": "Hit top speed of 25m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.3333333333",
+        "Percent": "0.7142857143",
         "Extra": "check %'s",
         "Type": "Speed"
       },
@@ -878,7 +878,7 @@
         "Title": "Terminal Velocity",
         "Description": "Hit top speed of 30m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.6666666667",
+        "Percent": "0.8571428571",
         "Extra": "check %'s",
         "Type": "Speed"
       },
@@ -903,7 +903,7 @@
         "Title": "Bottoms Up",
         "Description": "Play inverted for 5% (of 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "check %'s",
         "Type": "Inverted"
       },
@@ -912,7 +912,7 @@
         "Title": "Just Hangin' Out",
         "Description": "Play inverted for 10% (of 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "check %'s",
         "Type": "Inverted"
       },
@@ -921,7 +921,7 @@
         "Title": "Inverse Engineering",
         "Description": "Play inverted for 25% (of 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "check %'s",
         "Type": "Inverted"
       },
@@ -946,7 +946,7 @@
         "Title": "Junction!",
         "Description": "Play 1+ games of Dyson (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Dyson"
       },
@@ -955,7 +955,7 @@
         "Title": "Full Squad Tunnel Attack!",
         "Description": "Play 2+ games of Dyson (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Dyson"
       },
@@ -964,7 +964,7 @@
         "Title": "Camper's Delight",
         "Description": "Play 3+ games of Dyson (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Dyson"
       },
@@ -989,7 +989,7 @@
         "Title": "Burn Center",
         "Description": "Play 1+ games of Combustion (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Combustion"
       },
@@ -998,7 +998,7 @@
         "Title": "Some Like It Hot",
         "Description": "Play 2+ games of Combustion (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Combustion"
       },
@@ -1007,7 +1007,7 @@
         "Title": "Heatwave",
         "Description": "Play 3+ games of Combustion (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Combustion"
       },
@@ -1032,7 +1032,7 @@
         "Title": "Radioactive Decay",
         "Description": "Play 1+ games of Fission (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Fission"
       },
@@ -1041,7 +1041,7 @@
         "Title": "Atom Smasher",
         "Description": "Play 2+ games of Fission (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Fission"
       },
@@ -1050,7 +1050,7 @@
         "Title": "Nucleonics",
         "Description": "Play 3+ games of Fission (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Fission"
       },
@@ -1075,7 +1075,7 @@
         "Title": "The Flamingo Rides Again",
         "Description": "Play 1+ games of Surge (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Surge"
       },
@@ -1084,7 +1084,7 @@
         "Title": "Songbird",
         "Description": "Play 2+ games of Surge (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Surge"
       },
@@ -1093,7 +1093,7 @@
         "Title": "Bird of Paradise",
         "Description": "Play 3+ games of Surge (in 24 hours)",
         "Timeframe": "In 24 hours",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Surge"
       },
@@ -1296,7 +1296,7 @@
         "Title": "There's No Time Like Pew Time",
         "Description": "Use only pulsar 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Pulsar"
       },
@@ -1305,7 +1305,7 @@
         "Title": "Shoot 'n Juke",
         "Description": "Use only pulsar 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Pulsar"
       },
@@ -1314,7 +1314,7 @@
         "Title": "My Trusty Particle Beam Accelerator",
         "Description": "Use only pulsar 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Pulsar"
       },
@@ -1329,8 +1329,8 @@
       }
     ],
     "Title": "PULSAR CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Pulsar as your weapon!  Don't use any other weapons in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Pulsar.  You have to wait until next week for this challenge to become unlocked."
   },
   "31": {
     "parts": [
@@ -1339,7 +1339,7 @@
         "Title": "I Call Shotgun!",
         "Description": "Use only nova 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Nova"
       },
@@ -1348,7 +1348,7 @@
         "Title": "Standard Issue Faceblaster 5000",
         "Description": "Use only nova 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Nova"
       },
@@ -1357,7 +1357,7 @@
         "Title": "Frontline Crab Assault!",
         "Description": "Use only nova 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Nova"
       },
@@ -1372,8 +1372,8 @@
       }
     ],
     "Title": "NOVA  CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Nova as your weapon!  Don't use any other weapons in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Nova.  You have to wait until next week for this challenge to become unlocked."
   },
   "32": {
     "parts": [
@@ -1382,7 +1382,7 @@
         "Title": "Paranoid Android",
         "Description": "Use only comet 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Comet"
       },
@@ -1391,7 +1391,7 @@
         "Title": "Sentinel",
         "Description": "Use only comet 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Comet"
       },
@@ -1400,7 +1400,7 @@
         "Title": "It's All in the Wrist",
         "Description": "Use only comet 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Comet"
       },
@@ -1415,8 +1415,8 @@
       }
     ],
     "Title": "COMET CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Comet as your weapon!  Don't use any other weapons in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Comet.  You have to wait until next week for this challenge to become unlocked."
   },
   "33": {
     "parts": [
@@ -1425,7 +1425,7 @@
         "Title": "Careful Where You Point That Thing",
         "Description": "Use only meteor 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Meteor"
       },
@@ -1434,7 +1434,7 @@
         "Title": "Happy Explosive Projectile Time",
         "Description": "Use only meteor 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Meteor"
       },
@@ -1443,7 +1443,7 @@
         "Title": "Meteor Spam FTW",
         "Description": "Use only meteor 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Meteor"
       },
@@ -1458,8 +1458,8 @@
       }
     ],
     "Title": "METEOR CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Meteor as your weapon!  Don't use any other weapons in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Meteor.  You have to wait until next week for this challenge to become unlocked."
   },
   "34": {
     "parts": [
@@ -1468,7 +1468,7 @@
         "Title": "Bomb Squad",
         "Description": "Use only detonator 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Detonator"
       },
@@ -1477,7 +1477,7 @@
         "Title": "Here, Hold This for a Sec",
         "Description": "Use only detonator 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Detonator"
       },
@@ -1486,7 +1486,7 @@
         "Title": "Damage Patrol",
         "Description": "Use only detonator 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Detonator"
       },
@@ -1501,8 +1501,8 @@
       }
     ],
     "Title": "DETONATOR CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Detonator as your ordnance!  Don't use any other ordnance in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Detonator.  You have to wait until next week for this challenge to become unlocked."
   },
   "35": {
     "parts": [
@@ -1511,7 +1511,7 @@
         "Title": "Stinger",
         "Description": "Use only stun field 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Stun Field"
       },
@@ -1520,7 +1520,7 @@
         "Title": "Sparks Flying",
         "Description": "Use only stun field 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Stun Field"
       },
@@ -1529,7 +1529,7 @@
         "Title": "Force-Fed Zap Attack!",
         "Description": "Use only stun field 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Stun Field"
       },
@@ -1544,8 +1544,8 @@
       }
     ],
     "Title": "STUN FIELD CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Stun Field as your ordnance!  Don't use any other ordnance in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Stun Field.  You have to wait until next week for this challenge to become unlocked."
   },
   "36": {
     "parts": [
@@ -1554,7 +1554,7 @@
         "Title": "That'll Give You a Jolt",
         "Description": "Use only arc mine 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Arc Mine"
       },
@@ -1563,7 +1563,7 @@
         "Title": "Synaptic Short Circuit",
         "Description": "Use only arc mine 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Arc Mine"
       },
@@ -1572,7 +1572,7 @@
         "Title": "Digital Storm",
         "Description": "Use only arc mine 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Arc Mine"
       },
@@ -1587,8 +1587,8 @@
       }
     ],
     "Title": "ARC MINE CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Arc Mine as your ordnance!  Don't use any other ordnance in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Arc Mine.  You have to wait until next week for this challenge to become unlocked."
   },
   "37": {
     "parts": [
@@ -1597,7 +1597,7 @@
         "Title": "Hardware Repair ",
         "Description": "Use only instant repair 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Instant Repair"
       },
@@ -1606,7 +1606,7 @@
         "Title": "Digital Defragment",
         "Description": "Use only instant repair 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Instant Repair"
       },
@@ -1615,7 +1615,7 @@
         "Title": "The High-Tech Glow Up",
         "Description": "Use only instant repair 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Instant Repair"
       },
@@ -1630,8 +1630,8 @@
       }
     ],
     "Title": "INSTANT REPAIR CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Instant Repair as your ordnance!  Don't use any other ordnance in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Instant Repair.  You have to wait until next week for this challenge to become unlocked."
   },
   "38": {
     "parts": [
@@ -1640,7 +1640,7 @@
         "Title": "Technical Difficulties, Please Stand By",
         "Description": "Use only repair matrix 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Repair Matriix"
       },
@@ -1649,7 +1649,7 @@
         "Title": "System Reboot",
         "Description": "Use only repair matrix 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Repair Matriix"
       },
@@ -1658,7 +1658,7 @@
         "Title": "Want to Live!  ",
         "Description": "Use only repair matrix 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Repair Matriix"
       },
@@ -1673,8 +1673,8 @@
       }
     ],
     "Title": "REPAIR MATRIX CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Repair Matrix as your tac-mod!  Don't use any other tac-mods in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Repair Matrix.  You have to wait until next week for this challenge to become unlocked."
   },
   "39": {
     "parts": [
@@ -1683,7 +1683,7 @@
         "Title": "Scanner Deployed",
         "Description": "Use only threat scanner 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Threat Scanner"
       },
@@ -1692,7 +1692,7 @@
         "Title": "Tracking System Engaged",
         "Description": "Use only threat scanner 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Threat Scanner"
       },
@@ -1701,7 +1701,7 @@
         "Title": "Perimeter Alert!",
         "Description": "Use only threat scanner 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Threat Scanner"
       },
@@ -1716,8 +1716,8 @@
       }
     ],
     "Title": "THREAT SCANNER CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Threat Scanner as your tac-mod!  Don't use any other tac-mods in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Threat Scanner.  You have to wait until next week for this challenge to become unlocked."
   },
   "40": {
     "parts": [
@@ -1726,7 +1726,7 @@
         "Title": "Divert Power to Shields!",
         "Description": "Use only energy barrier 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Energy Barrier"
       },
@@ -1735,7 +1735,7 @@
         "Title": "Personal Pew Pew Pew! Deflector",
         "Description": "Use only energy barrier 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Energy Barrier"
       },
@@ -1744,7 +1744,7 @@
         "Title": "Portable Anti-Eliminator Separator",
         "Description": "Use only energy barrier 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Energy Barrier"
       },
@@ -1759,8 +1759,8 @@
       }
     ],
     "Title": "ENERGY BARRIER CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Energy Barrier as your tac-mod!  Don't use any other tac-mods in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Energy Barrier.  You have to wait until next week for this challenge to become unlocked."
   },
   "41": {
     "parts": [
@@ -1769,7 +1769,7 @@
         "Title": "Escape Device",
         "Description": "Use only phase shift 5+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.06666666667",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Phase Shift"
       },
@@ -1778,7 +1778,7 @@
         "Title": "Covert Operations",
         "Description": "Use only phase shift 10+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.3333333333",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Phase Shift"
       },
@@ -1787,7 +1787,7 @@
         "Title": "Stealth Mode",
         "Description": "Use only phase shift 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
-        "Percent": "0.6666666667",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Phase Shift"
       },
@@ -1802,8 +1802,8 @@
       }
     ],
     "Title": "PHASE SHIFT CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Play more games using only Phase Shift as your tac-mod!  Don't use any other tac-mods in the week you attempt this challenge or it becomes locked until the following week reset.",
+    "Locked": "This challenge is locked because you didn't only use Phase Shift.  You have to wait until next week for this challenge to become unlocked."
   },
   "42": {
     "parts": [
@@ -1845,8 +1845,8 @@
       }
     ],
     "Title": "LOADOUT CHALLENGE",
-    "Progress": "",
-    "Locked": ""
+    "Progress": "Get comfortable with a single loadout and stick to it this week!  Be sure to not accidentally switch your loadout.",
+    "Locked": "spellchecked ths one to the left, red because correct!!!!"
   },
   "43": {
     "parts": [
@@ -1855,7 +1855,7 @@
         "Title": "Deathwish",
         "Description": "Average less than 6 deaths per game (in 1 week)",
         "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0",
+        "Percent": "0.43",
         "Extra": "check #'s",
         "Type": "Death"
       },
@@ -1864,7 +1864,7 @@
         "Title": "About as Useful as a Shield",
         "Description": "Average less than 5 deaths per game (in 1 week)",
         "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.3333333333",
+        "Percent": "0.7142857143",
         "Extra": "check #'s",
         "Type": "Death"
       },
@@ -1873,7 +1873,7 @@
         "Title": "Armored Core",
         "Description": "Average less than 4 deaths per game (in 1 week)",
         "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.6666666667",
+        "Percent": "0.8571428571",
         "Extra": "check #'s",
         "Type": "Death"
       },
@@ -1888,7 +1888,7 @@
       }
     ],
     "Title": "DEATHS CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more games and try to die less!",
     "Locked": ""
   },
   "44": {
@@ -1931,7 +1931,7 @@
       }
     ],
     "Title": "CAPTURE POINT CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more games so you play more Capture Point maps!",
     "Locked": ""
   },
   "45": {
@@ -1974,7 +1974,7 @@
       }
     ],
     "Title": "PAYLOAD CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more games so you play more Payload maps!",
     "Locked": ""
   },
   "46": {
@@ -2017,7 +2017,7 @@
       }
     ],
     "Title": "TEAM PROXIMITY CHALLENGE",
-    "Progress": "",
+    "Progress": "Stay closer to your teammates in the next game!",
     "Locked": ""
   },
   "47": {
@@ -2060,7 +2060,7 @@
       }
     ],
     "Title": "ENEMY PROXIMITY CHALLENGE",
-    "Progress": "",
+    "Progress": "Stay closer to the enemy in the next game!",
     "Locked": ""
   },
   "48": {
@@ -2103,7 +2103,7 @@
       }
     ],
     "Title": "SPEED CHALLENGE",
-    "Progress": "",
+    "Progress": "Fly faster in the next game!",
     "Locked": ""
   },
   "49": {
@@ -2146,7 +2146,7 @@
       }
     ],
     "Title": "INVERTED CHALLENGE",
-    "Progress": "",
+    "Progress": "Play upside down more in the next game!",
     "Locked": ""
   },
   "50": {
@@ -2189,7 +2189,7 @@
       }
     ],
     "Title": "DYSON CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more games for a higher chance the map will be Dyson!",
     "Locked": ""
   },
   "51": {
@@ -2232,7 +2232,7 @@
       }
     ],
     "Title": "COMBUSTION CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more games for a higher chance the map will be Combustion!",
     "Locked": ""
   },
   "52": {
@@ -2275,7 +2275,7 @@
       }
     ],
     "Title": "FISSION CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more games for a higher chance the map will be Fission!",
     "Locked": ""
   },
   "53": {
@@ -2318,7 +2318,7 @@
       }
     ],
     "Title": "SURGE CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more games for a higher chance the map will be Surge!",
     "Locked": ""
   },
   "54": {
@@ -2496,7 +2496,7 @@
       }
     ],
     "Title": "PUBLIC MATCH CHALLENGE",
-    "Progress": "",
+    "Progress": "Play more Public Matches!",
     "Locked": ""
   },
   "55": {
@@ -2540,7 +2540,7 @@
     ],
     "Title": "PULSAR CHALLENGE",
     "Progress": "Play more games using Pulsar as your weapon! ",
-    "Locked": "This challenge is locked because you haven't played enough games with Pulsar yet.  You need to pew pew pew more!"
+    "Locked": ""
   },
   "56": {
     "parts": [
@@ -2583,7 +2583,7 @@
     ],
     "Title": "NOVA  CHALLENGE",
     "Progress": "Play more games using Nova as your weapon! ",
-    "Locked": "This challenge is locked because you haven't played enough games with Nova yet. "
+    "Locked": ""
   },
   "57": {
     "parts": [
@@ -2626,7 +2626,7 @@
     ],
     "Title": "COMET CHALLENGE",
     "Progress": "Play more games using Comet as your weapon! ",
-    "Locked": "This challenge is locked because you haven't played enough games with Comet yet. "
+    "Locked": ""
   },
   "58": {
     "parts": [
@@ -2669,7 +2669,7 @@
     ],
     "Title": "METEOR CHALLENGE",
     "Progress": "Play more games using Meteor as your weapon! ",
-    "Locked": "This challenge is locked because you haven't played enough games with Meteor yet. "
+    "Locked": ""
   },
   "59": {
     "parts": [
@@ -2712,7 +2712,7 @@
     ],
     "Title": "DETONATOR CHALLENGE",
     "Progress": "Play more games using Detonator as your ordnance!",
-    "Locked": "This challenge is locked because you haven't played enough games with Detonator yet. "
+    "Locked": ""
   },
   "60": {
     "parts": [
@@ -2755,7 +2755,7 @@
     ],
     "Title": "STUN FIELD CHALLENGE",
     "Progress": "Play more games using Stun Field as your ordnance!",
-    "Locked": "This challenge is locked because you haven't played enough games with Stun Field yet. "
+    "Locked": ""
   },
   "61": {
     "parts": [
@@ -2798,7 +2798,7 @@
     ],
     "Title": "ARC MINE CHALLENGE",
     "Progress": "Play more games using Arc Mine as your ordnance!",
-    "Locked": "This challenge is locked because you haven't played enough games with Arc Mine yet. "
+    "Locked": ""
   },
   "62": {
     "parts": [
@@ -2841,7 +2841,7 @@
     ],
     "Title": "INSTANT REPAIR CHALLENGE",
     "Progress": "Play more games using Instant Repair as your ordnance!",
-    "Locked": "This challenge is locked because you haven't played enough games with Instant Repair yet. "
+    "Locked": ""
   },
   "63": {
     "parts": [
@@ -2884,7 +2884,7 @@
     ],
     "Title": "REPAIR MATRIX CHALLENGE",
     "Progress": "Play more games using Repair Matrix as your tac-mod!",
-    "Locked": "This challenge is locked because you haven't played enough games with Repair Matrix yet. "
+    "Locked": ""
   },
   "64": {
     "parts": [
@@ -2927,7 +2927,7 @@
     ],
     "Title": "THREAT SCANNER CHALLENGE",
     "Progress": "Play more games using Threat Scanner as your tac-mod!",
-    "Locked": "This challenge is locked because you haven't played enough games with Threat Scanner yet. "
+    "Locked": ""
   },
   "65": {
     "parts": [
@@ -2970,7 +2970,7 @@
     ],
     "Title": "ENERGY BARRIER CHALLENGE",
     "Progress": "Play more games using Energy Barrier as your tac-mod!",
-    "Locked": "This challenge is locked because you haven't played enough games with Energy Barrier yet. "
+    "Locked": ""
   },
   "66": {
     "parts": [
@@ -3013,7 +3013,7 @@
     ],
     "Title": "PHASE SHIFT CHALLENGE",
     "Progress": "Play more games using Phase Shift as your tac-mod!",
-    "Locked": "This challenge is locked because you haven't played enough games with Phase Shift yet. "
+    "Locked": ""
   },
   "67": {
     "parts": [
@@ -3055,15 +3055,15 @@
       }
     ],
     "Title": "LOADOUT CHALLENGE",
-    "Progress": "NEED TO WRITE",
-    "Locked": "NEED TO WRITE"
+    "Progress": "Be sure to use a loadout you've never used before!",
+    "Locked": ""
   },
   "68": {
     "parts": [
       {
         "CID": "68",
         "Title": "Blame It on the Tracking",
-        "Description": "Die 250+ times (cumulative)",
+        "Description": "Die 500+ times (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.25",
         "Extra": "check #'s",
@@ -3072,7 +3072,7 @@
       {
         "CID": "68",
         "Title": "Battle Scarred",
-        "Description": "Die 500+ times (cumulative)",
+        "Description": "Die 1000+ times (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.5",
         "Extra": "check #'s",
@@ -3081,7 +3081,7 @@
       {
         "CID": "68",
         "Title": "Spare Parts",
-        "Description": "Die 750+ times (cumulative)",
+        "Description": "Die 1500+ times (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.75",
         "Extra": "check #'s",
@@ -3090,7 +3090,7 @@
       {
         "CID": "68",
         "Title": "Pixel Party!",
-        "Description": "Die 1000+ times (cumulative)",
+        "Description": "Die 2000+ times (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "1",
         "Extra": "check #'s",
@@ -3098,8 +3098,8 @@
       }
     ],
     "Title": "DEATHS CHALLENGE",
-    "Progress": "Play more games!  The more games you play the more deaths you'll also have.",
-    "Locked": "This challenge is locked because you haven't died enough times yet, which means you haven't played enough games.  Play more games to unlock this challenge!"
+    "Progress": "Play more games! Try and be agressive and not afraid of dying. You will always respawn and potentialy be able to return to the battle field together",
+    "Locked": ""
   },
   "69": {
     "parts": [
@@ -3142,7 +3142,7 @@
     ],
     "Title": "CAPTURE POINT CHALLENGE",
     "Progress": "Play more games so you play more Capture Point maps!",
-    "Locked": "This challenge is locked because you haven't played enough Capture Point games.  Play more games so you play more Capture Point maps!  "
+    "Locked": ""
   },
   "70": {
     "parts": [
@@ -3185,7 +3185,7 @@
     ],
     "Title": "PAYLOAD CHALLENGE",
     "Progress": "Play more games so you play more Payload maps!",
-    "Locked": "This challenge is locked because you haven't played enough Payload games.  Play more games so you play more Payload maps!"
+    "Locked": ""
   },
   "71": {
     "parts": [
@@ -3228,7 +3228,7 @@
     ],
     "Title": "TEAM PROXIMITY CHALLENGE",
     "Progress": "Stay close to your teammates in more games!",
-    "Locked": "This challenge is locked because you haven't played close to your teammates in enough games.  Unlock this challenge by playing more games close to your teammates!"
+    "Locked": ""
   },
   "72": {
     "parts": [
@@ -3271,7 +3271,7 @@
     ],
     "Title": "ENEMY PROXIMITY CHALLENGE",
     "Progress": "Stay close to the enemy in more games!",
-    "Locked": "This challenge is locked because you haven't played close to the enemy in enough games.  Unlock this challenge by playing more games close to the enemy."
+    "Locked": ""
   },
   "73": {
     "parts": [
@@ -3314,7 +3314,7 @@
     ],
     "Title": "SPEED CHALLENGE",
     "Progress": "Play more games while flying fast!",
-    "Locked": "This challenge is locked because you haven't played "
+    "Locked": ""
   },
   "74": {
     "parts": [
@@ -3357,7 +3357,7 @@
     ],
     "Title": "INVERTED CHALLENGE",
     "Progress": "Play more games while upside down more!",
-    "Locked": "This challenge is locked because you haven't played "
+    "Locked": ""
   },
   "75": {
     "parts": [
@@ -3400,7 +3400,7 @@
     ],
     "Title": "DYSON CHALLENGE",
     "Progress": "Play more games of Dyson!",
-    "Locked": "This challenge is locked because you haven't played.......... "
+    "Locked": ""
   },
   "76": {
     "parts": [
@@ -3443,7 +3443,7 @@
     ],
     "Title": "COMBUSTION CHALLENGE",
     "Progress": "Play more games of Combustion!",
-    "Locked": "This challenge is locked because you haven't played.........."
+    "Locked": ""
   },
   "77": {
     "parts": [
@@ -3486,7 +3486,7 @@
     ],
     "Title": "FISSION CHALLENGE",
     "Progress": "Play more games of Fission!",
-    "Locked": "This challenge is locked because you haven't played.........."
+    "Locked": ""
   },
   "78": {
     "parts": [
@@ -3529,7 +3529,7 @@
     ],
     "Title": "SURGE CHALLENGE",
     "Progress": "Play more games of  Surge!",
-    "Locked": "This challenge is locked because you haven't played.........."
+    "Locked": ""
   },
   "79": {
     "parts": [

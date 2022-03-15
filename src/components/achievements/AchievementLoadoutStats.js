@@ -30,12 +30,15 @@ const AchievementPopup = ({
   floatLeft = false,
   floatTop = false,
   DialogBoxOverride = null,
+  pubRequirement = null,
 }) => {
   // if (selectedNumber == 15) {
   //   visible = true;
   // }
   let displayedValue = achievementData.values[selectedNumber.toString()];
-
+  if (displayedValue === undefined) {
+    displayedValue = 0;
+  }
   let SelectedAchievement = achievementFormatingData[selectedNumber.toString()];
   if (SelectedAchievement == null) return null;
   let SelectedAchievementDataName = SelectedAchievement.progressDataName;
@@ -64,11 +67,14 @@ const AchievementPopup = ({
   let CurrentStepNumber = SelectedAchievement.parts.length;
   for (let index = 0; index < SelectedAchievement.parts.length; index++) {
     const element = SelectedAchievement.parts[index];
+
     if (element.Percent > displayedValue) {
       CurrentStepNumber = index;
       break;
     }
   }
+
+  // console.log(selectedNumber, CurrentStepNumber);
   let ShowHelperBox = true;
   let AchievementStatus = "In Progress";
   let totalAchievements = SelectedAchievement.parts.length;
@@ -93,9 +99,7 @@ const AchievementPopup = ({
   }
 
   let partOffset = 0;
-  if (selectedNumber == 29) {
-    CurrentStepNumber = 17;
-  }
+
   if (SelectedAchievement.parts.length > 4) {
     if (CurrentStepNumber < 17) {
       if (CurrentStepNumber < 17 && CurrentStepNumber > 1) {
@@ -105,6 +109,7 @@ const AchievementPopup = ({
       partOffset = SelectedAchievement.parts.length - 4;
     }
   }
+
   return (
     <div
       style={{ position: "relative", display: !visible ? "none" : undefined }}
@@ -223,7 +228,7 @@ const AchievementPopup = ({
         <PopupProgressBar />{" "}
         
       </div> */}
-                {SelectedAchievement.parts.length - partOffset - 4 != 0 ? (
+                {SelectedAchievement.parts.length - partOffset - 4 > 0 ? (
                   <div
                     className="horizontal-container"
                     style={
@@ -252,23 +257,47 @@ const AchievementPopup = ({
         {DialogBoxOverride != null ? (
           <DialogBoxOverride />
         ) : (
-          <AchievementPopupStyle
-            className="rounded padded list horizontal-container"
-            style={{
-              display: ShowHelperBox ? undefined : "none",
-              width: 600,
-              // margin: "0 0 0 200px",
-            }}
-          >
-            <h3>{AchievementStatus}</h3>
-            {/* <div className="centering">
+          <>
+            {pubRequirement ? (
+              <AchievementPopupStyle
+                className="rounded padded list horizontal-container"
+                style={{
+                  display: ShowHelperBox ? undefined : "none",
+                  width: 600,
+                  // margin: "0 0 0 200px",
+                }}
+              >
+                <h3>Secondary Pub Requirement</h3>
+                {/* <div className="centering">
               </div> */}
-            <p>
-              {locked
-                ? SelectedAchievement.Locked
-                : SelectedAchievement.Progress}
-            </p>
-          </AchievementPopupStyle>
+                <p>
+                  There is a secondary pub requirement for this challenge. Aswel
+                  as the normal requirement you must complete {pubRequirement}{" "}
+                  games in the challenges timeframe. You can see a secondary
+                  grey bar that represents your secondary progress. if you only
+                  partially complete the secondary requirement you will only get
+                  partial challenge credit.
+                </p>
+              </AchievementPopupStyle>
+            ) : null}
+            <AchievementPopupStyle
+              className="rounded padded list horizontal-container"
+              style={{
+                display: ShowHelperBox ? undefined : "none",
+                width: 600,
+                // margin: "0 0 0 200px",
+              }}
+            >
+              <h3>{AchievementStatus}</h3>
+              {/* <div className="centering">
+              </div> */}
+              <p>
+                {locked
+                  ? SelectedAchievement.Locked
+                  : SelectedAchievement.Progress}
+              </p>
+            </AchievementPopupStyle>
+          </>
         )}
       </div>
     </div>
@@ -282,7 +311,7 @@ const SegmentedLProgressBar = ({
   achievementData,
   AchNum,
   icon = "comet",
-  pubRequirement = 20,
+  pubRequirement = null,
   totalGames = 0,
   type,
   cb = () => {},
@@ -313,6 +342,11 @@ const SegmentedLProgressBar = ({
   //   }
   let SelectedAchievement = achievementFormatingData[AchNum.toString()];
   let displayedValue = achievementData.values[AchNum.toString()];
+  console.log(displayedValue);
+  // let displayedValue = achievementData.values[AchNum.toString()];
+  if (displayedValue === undefined) {
+    displayedValue = 0;
+  }
   let CurrentStepNumber = -1;
   const [visible, setVisible] = useState(false);
 
@@ -380,7 +414,7 @@ const SegmentedLProgressBar = ({
           <SegmentedProgressBar
             Title={DisplayedTitle}
             // Title={achievementData.values[AchievementNumber.toString()]}
-            Percentage={achievementData.values[AchNum.toString()]}
+            Percentage={displayedValue}
             SecondaryPercentage={Math.min(totalGames / pubRequirement, 1)}
             // SecondaryPercentage={0.9}
             // Percentage={0.5}
@@ -401,6 +435,7 @@ const SegmentedLProgressBar = ({
         floatLeft={onLeft}
         floatTop={onTop}
         DialogBoxOverride={DialogBoxOverride}
+        pubRequirement={pubRequirement}
       />
     </div>
 
@@ -755,7 +790,7 @@ export const AchievementLoadoutStats = ({
 
   if (selectedAchievementType === "daily") {
     return (
-      <div className="list rounded-overflow padded light-background">
+      <div className="list rounded-overflow padded light-background fill">
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
             <SegmentedLProgressBar
@@ -809,7 +844,7 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "weekly") {
     return (
-      <div className="list rounded padded light-background">
+      <div className="list rounded-overflow padded light-background fill">
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
             <SegmentedLProgressBar
@@ -850,6 +885,13 @@ export const AchievementLoadoutStats = ({
                     achievementData={achievementData}
                     onTop={index > 4}
                     onLeft={true}
+                    totalGames={
+                      [1, 4, 5, 6, 7].includes(index)
+                        ? userData.weekly_stats.total_games
+                        : // 20
+                          0
+                    }
+                    pubRequirement={[1, 4, 5, 6, 7].includes(index) ? 25 : null}
                   />
                 );
               })}
@@ -861,7 +903,7 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "global") {
     return (
-      <div className="list rounded padded light-background">
+      <div className="list rounded-overflow padded light-background fill">
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
             <SegmentedLProgressBar
@@ -913,6 +955,13 @@ export const AchievementLoadoutStats = ({
                     achievementData={achievementData}
                     onTop={index > 4}
                     onLeft={true}
+                    totalGames={
+                      [4, 5, 6, 7, 8].includes(index)
+                        ? userData.achieve_stats.total_games
+                        : // 20
+                          0
+                    }
+                    pubRequirement={[4, 5, 6, 7, 8].includes(index) ? 25 : null}
                   />
                 );
               })}
@@ -924,7 +973,7 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "community") {
     return (
-      <div className={"rounded-overflow centering light-background"}>
+      <div className="list rounded-overflow padded light-background fill">
         <div style={{ width: "50%" }}>
           <div className="list padded light-background">
             <SegmentedLProgressBar
