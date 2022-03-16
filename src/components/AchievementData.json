@@ -1294,7 +1294,7 @@
       {
         "CID": "30",
         "Title": "There's No Time Like Pew Time",
-        "Description": "Use only pulsar 5+ games in a row (in 1 week)",
+        "Description": "Use only pulsar 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1303,7 +1303,7 @@
       {
         "CID": "30",
         "Title": "Shoot 'n Juke",
-        "Description": "Use only pulsar 10+ games in a row (in 1 week)",
+        "Description": "Use only pulsar 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1312,7 +1312,7 @@
       {
         "CID": "30",
         "Title": "My Trusty Particle Beam Accelerator",
-        "Description": "Use only pulsar 15+ games in a row (in 1 week)",
+        "Description": "Use only pulsar 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1321,7 +1321,7 @@
       {
         "CID": "30",
         "Title": "Set Phasers to Kill!",
-        "Description": "Use only pulsar 20+ games in a row (in 1 week)",
+        "Description": "Use only pulsar 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1337,7 +1337,7 @@
       {
         "CID": "31",
         "Title": "I Call Shotgun!",
-        "Description": "Use only nova 5+ games in a row (in 1 week)",
+        "Description": "Use only nova 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1346,7 +1346,7 @@
       {
         "CID": "31",
         "Title": "Standard Issue Faceblaster 5000",
-        "Description": "Use only nova 10+ games in a row (in 1 week)",
+        "Description": "Use only nova 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1355,7 +1355,7 @@
       {
         "CID": "31",
         "Title": "Frontline Crab Assault!",
-        "Description": "Use only nova 15+ games in a row (in 1 week)",
+        "Description": "Use only nova 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1364,7 +1364,7 @@
       {
         "CID": "31",
         "Title": "Eat My Nova!",
-        "Description": "Use only nova 20+ games in a row (in 1 week)",
+        "Description": "Use only nova 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1380,7 +1380,7 @@
       {
         "CID": "32",
         "Title": "Paranoid Android",
-        "Description": "Use only comet 5+ games in a row (in 1 week)",
+        "Description": "Use only comet 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1389,7 +1389,7 @@
       {
         "CID": "32",
         "Title": "Sentinel",
-        "Description": "Use only comet 10+ games in a row (in 1 week)",
+        "Description": "Use only comet 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1398,7 +1398,7 @@
       {
         "CID": "32",
         "Title": "It's All in the Wrist",
-        "Description": "Use only comet 15+ games in a row (in 1 week)",
+        "Description": "Use only comet 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1407,7 +1407,7 @@
       {
         "CID": "32",
         "Title": "Silicon Assassin",
-        "Description": "Use only comet  20+ games in a row (in 1 week)",
+        "Description": "Use only comet  60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1423,7 +1423,7 @@
       {
         "CID": "33",
         "Title": "Careful Where You Point That Thing",
-        "Description": "Use only meteor 5+ games in a row (in 1 week)",
+        "Description": "Use only meteor 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1432,7 +1432,7 @@
       {
         "CID": "33",
         "Title": "Happy Explosive Projectile Time",
-        "Description": "Use only meteor 10+ games in a row (in 1 week)",
+        "Description": "Use only meteor 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1441,7 +1441,7 @@
       {
         "CID": "33",
         "Title": "Meteor Spam FTW",
-        "Description": "Use only meteor 15+ games in a row (in 1 week)",
+        "Description": "Use only meteor 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1450,7 +1450,7 @@
       {
         "CID": "33",
         "Title": "I Came to Drop Bombs",
-        "Description": "Use only meteor 20+ games in a row (in 1 week)",
+        "Description": "Use only meteor 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1466,7 +1466,7 @@
       {
         "CID": "34",
         "Title": "Bomb Squad",
-        "Description": "Use only detonator 5+ games in a row (in 1 week)",
+        "Description": "Use only detonator 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1475,7 +1475,7 @@
       {
         "CID": "34",
         "Title": "Here, Hold This for a Sec",
-        "Description": "Use only detonator 10+ games in a row (in 1 week)",
+        "Description": "Use only detonator 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1484,7 +1484,7 @@
       {
         "CID": "34",
         "Title": "Damage Patrol",
-        "Description": "Use only detonator 15+ games in a row (in 1 week)",
+        "Description": "Use only detonator 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1493,7 +1493,7 @@
       {
         "CID": "34",
         "Title": "Throws Better Than an Arena Disc",
-        "Description": "Use only detonator 20+ games in a row (in 1 week)",
+        "Description": "Use only detonator 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1509,7 +1509,7 @@
       {
         "CID": "35",
         "Title": "Stinger",
-        "Description": "Use only stun field 5+ games in a row (in 1 week)",
+        "Description": "Use only stun field 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1518,7 +1518,7 @@
       {
         "CID": "35",
         "Title": "Sparks Flying",
-        "Description": "Use only stun field 10+ games in a row (in 1 week)",
+        "Description": "Use only stun field 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1527,7 +1527,7 @@
       {
         "CID": "35",
         "Title": "Force-Fed Zap Attack!",
-        "Description": "Use only stun field 15+ games in a row (in 1 week)",
+        "Description": "Use only stun field 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1536,7 +1536,7 @@
       {
         "CID": "35",
         "Title": "Don't Taze Me Bro Bot",
-        "Description": "Use only stun field 20+ games in a row (in 1 week)",
+        "Description": "Use only stun field 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1552,7 +1552,7 @@
       {
         "CID": "36",
         "Title": "That'll Give You a Jolt",
-        "Description": "Use only arc mine 5+ games in a row (in 1 week)",
+        "Description": "Use only arc mine 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1561,7 +1561,7 @@
       {
         "CID": "36",
         "Title": "Synaptic Short Circuit",
-        "Description": "Use only arc mine 10+ games in a row (in 1 week)",
+        "Description": "Use only arc mine 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1570,7 +1570,7 @@
       {
         "CID": "36",
         "Title": "Digital Storm",
-        "Description": "Use only arc mine 15+ games in a row (in 1 week)",
+        "Description": "Use only arc mine 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1579,7 +1579,7 @@
       {
         "CID": "36",
         "Title": "Electroshock Therapy",
-        "Description": "Use only arc mine 20+ games in a row (in 1 week)",
+        "Description": "Use only arc mine 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1595,7 +1595,7 @@
       {
         "CID": "37",
         "Title": "Hardware Repair ",
-        "Description": "Use only instant repair 5+ games in a row (in 1 week)",
+        "Description": "Use only instant repair 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1604,7 +1604,7 @@
       {
         "CID": "37",
         "Title": "Digital Defragment",
-        "Description": "Use only instant repair 10+ games in a row (in 1 week)",
+        "Description": "Use only instant repair 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1613,7 +1613,7 @@
       {
         "CID": "37",
         "Title": "The High-Tech Glow Up",
-        "Description": "Use only instant repair 15+ games in a row (in 1 week)",
+        "Description": "Use only instant repair 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1622,7 +1622,7 @@
       {
         "CID": "37",
         "Title": "Fully Juiced",
-        "Description": "Use only instant repair 20+ games in a row (in 1 week)",
+        "Description": "Use only instant repair 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1638,7 +1638,7 @@
       {
         "CID": "38",
         "Title": "Technical Difficulties, Please Stand By",
-        "Description": "Use only repair matrix 5+ games in a row (in 1 week)",
+        "Description": "Use only repair matrix 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1647,7 +1647,7 @@
       {
         "CID": "38",
         "Title": "System Reboot",
-        "Description": "Use only repair matrix 10+ games in a row (in 1 week)",
+        "Description": "Use only repair matrix 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1656,7 +1656,7 @@
       {
         "CID": "38",
         "Title": "Want to Live!  ",
-        "Description": "Use only repair matrix 15+ games in a row (in 1 week)",
+        "Description": "Use only repair matrix 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1665,7 +1665,7 @@
       {
         "CID": "38",
         "Title": "Built to Last",
-        "Description": "Use only repair matrix  20+ games in a row (in 1 week)",
+        "Description": "Use only repair matrix  60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1681,7 +1681,7 @@
       {
         "CID": "39",
         "Title": "Scanner Deployed",
-        "Description": "Use only threat scanner 5+ games in a row (in 1 week)",
+        "Description": "Use only threat scanner 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1690,7 +1690,7 @@
       {
         "CID": "39",
         "Title": "Tracking System Engaged",
-        "Description": "Use only threat scanner 10+ games in a row (in 1 week)",
+        "Description": "Use only threat scanner 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1699,7 +1699,7 @@
       {
         "CID": "39",
         "Title": "Perimeter Alert!",
-        "Description": "Use only threat scanner 15+ games in a row (in 1 week)",
+        "Description": "Use only threat scanner 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1708,7 +1708,7 @@
       {
         "CID": "39",
         "Title": "X-Ray Vision Implant Upgrade",
-        "Description": "Use only threat scanner 20+ games in a row (in 1 week)",
+        "Description": "Use only threat scanner 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1724,7 +1724,7 @@
       {
         "CID": "40",
         "Title": "Divert Power to Shields!",
-        "Description": "Use only energy barrier 5+ games in a row (in 1 week)",
+        "Description": "Use only energy barrier 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1733,7 +1733,7 @@
       {
         "CID": "40",
         "Title": "Personal Pew Pew Pew! Deflector",
-        "Description": "Use only energy barrier 10+ games in a row (in 1 week)",
+        "Description": "Use only energy barrier 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1742,7 +1742,7 @@
       {
         "CID": "40",
         "Title": "Portable Anti-Eliminator Separator",
-        "Description": "Use only energy barrier 15+ games in a row (in 1 week)",
+        "Description": "Use only energy barrier 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1751,7 +1751,7 @@
       {
         "CID": "40",
         "Title": "Check Out My Cool Screensaver",
-        "Description": "Use only energy barrier 20+ games in a row (in 1 week)",
+        "Description": "Use only energy barrier 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
@@ -1767,7 +1767,7 @@
       {
         "CID": "41",
         "Title": "Escape Device",
-        "Description": "Use only phase shift 5+ games in a row (in 1 week)",
+        "Description": "Use only phase shift 15+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.25",
         "Extra": "",
@@ -1776,7 +1776,7 @@
       {
         "CID": "41",
         "Title": "Covert Operations",
-        "Description": "Use only phase shift 10+ games in a row (in 1 week)",
+        "Description": "Use only phase shift 30+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.5",
         "Extra": "",
@@ -1785,7 +1785,7 @@
       {
         "CID": "41",
         "Title": "Stealth Mode",
-        "Description": "Use only phase shift 15+ games in a row (in 1 week)",
+        "Description": "Use only phase shift 45+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "0.75",
         "Extra": "",
@@ -1794,7 +1794,7 @@
       {
         "CID": "41",
         "Title": "Ghost in the Shell",
-        "Description": "Use only phase shift 20+ games in a row (in 1 week)",
+        "Description": "Use only phase shift 60+ games in a row (in 1 week)",
         "Timeframe": "Consecutive games in 1 week",
         "Percent": "1",
         "Extra": "",
