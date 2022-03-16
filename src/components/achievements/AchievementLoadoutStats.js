@@ -891,7 +891,7 @@ export const AchievementLoadoutStats = ({
                         : // 20
                           0
                     }
-                    pubRequirement={[1, 4, 5, 6, 7].includes(index) ? 25 : null}
+                    pubRequirement={[1, 4, 5, 6, 7].includes(index) ? 40 : null}
                   />
                 );
               })}
@@ -956,13 +956,13 @@ export const AchievementLoadoutStats = ({
                     onTop={index > 4}
                     onLeft={true}
                     totalGames={
-                      [4, 5, 6, 7, 8].includes(index)
+                      [3, 4, 5, 6, 7].includes(index)
                         ? userData.achievement_stats.total_games
                         : // 20
                           0
                     }
                     pubRequirement={
-                      [4, 5, 6, 7, 8].includes(index) ? 100 : null
+                      [3, 4, 5, 6, 7].includes(index) ? 200 : null
                     }
                   />
                 );
