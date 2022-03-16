@@ -860,7 +860,7 @@
         "Title": "Boost Action",
         "Description": "Hit top speed of 20m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.5714285714",
+        "Percent": "0.25",
         "Extra": "check %'s",
         "Type": "Speed"
       },
@@ -869,7 +869,7 @@
         "Title": "Regrabby Grabby Grabs",
         "Description": "Hit top speed of 25m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.7142857143",
+        "Percent": "0.5",
         "Extra": "check %'s",
         "Type": "Speed"
       },
@@ -878,7 +878,7 @@
         "Title": "Terminal Velocity",
         "Description": "Hit top speed of 30m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.8571428571",
+        "Percent": "0.75",
         "Extra": "check %'s",
         "Type": "Speed"
       },

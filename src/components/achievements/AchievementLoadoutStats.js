@@ -924,7 +924,7 @@ export const AchievementLoadoutStats = ({
                 return (
                   <SegmentedLProgressBar
                     AchNum={element[0] + 50}
-                    locked={lockedAchievements[element[0]] === true}
+                    // locked={lockedAchievements[element[0]] === true}
                     icon={element[1]}
                     type={"season"}
                     cb={cb}
