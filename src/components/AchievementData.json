@@ -3106,7 +3106,7 @@
       {
         "CID": "69",
         "Title": "Point Unlocked",
-        "Description": "Play 5+ Capture Point games (cumulative)",
+        "Description": "Play 10+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.1",
         "Extra": "",
@@ -3115,7 +3115,7 @@
       {
         "CID": "69",
         "Title": "This is MY Point",
-        "Description": "Play 10+ Capture Point games (cumulative)",
+        "Description": "Play 20+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.2",
         "Extra": "",
@@ -3124,7 +3124,7 @@
       {
         "CID": "69",
         "Title": "Coming in Clutch",
-        "Description": "Play 25+ Capture Point games (cumulative)",
+        "Description": "Play 50+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.5",
         "Extra": "",
@@ -3133,7 +3133,7 @@
       {
         "CID": "69",
         "Title": "King of the Hill",
-        "Description": "Play 50+ Capture Point games (cumulative)",
+        "Description": "Play 100+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "1",
         "Extra": "",
@@ -3149,7 +3149,7 @@
       {
         "CID": "70",
         "Title": "Stop the Payload",
-        "Description": "Play 5+ Payload games (cumulative)",
+        "Description": "Play 10+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.1",
         "Extra": "",
@@ -3158,7 +3158,7 @@
       {
         "CID": "70",
         "Title": "Payload Contested!",
-        "Description": "Play 10+ Payload games (cumulative)",
+        "Description": "Play 20+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.2",
         "Extra": "",
@@ -3167,7 +3167,7 @@
       {
         "CID": "70",
         "Title": "Payload Returning",
-        "Description": "Play 25+ Payload games (cumulative)",
+        "Description": "Play 50+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.5",
         "Extra": "",
@@ -3176,7 +3176,7 @@
       {
         "CID": "70",
         "Title": "Feed the Flamingo",
-        "Description": "Play 50+ Payload games (cumulative)",
+        "Description": "Play 100+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "1",
         "Extra": "",
