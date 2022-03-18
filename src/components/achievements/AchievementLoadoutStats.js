@@ -691,8 +691,8 @@ export const AchievementLoadoutStats = ({
           loadouts you have not used before. Give them a try!
         </p>
         <div className="horizontal-container">
-          {userData.stats.top_loadout.map((element) => {
-            if (element[1] < 0.01) return null;
+          {Object.entries(userData.stats.loadout).map((element) => {
+            if (element[1] > 3 * 60 * 30) return null;
             numOfHelpers += 1;
             if (numOfHelpers >= 10) return null;
             return (
