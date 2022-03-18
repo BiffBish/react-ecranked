@@ -924,7 +924,7 @@ export const AchievementLoadoutStats = ({
                   <SegmentedLProgressBar
                     type={"season"}
                     percentage={element}
-                    AchNum={index + 5}
+                    AchNum={index + 55}
                     icon={achievementIcons[index]}
                     cb={cb}
                     onTop={index > 4}
