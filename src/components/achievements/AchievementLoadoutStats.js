@@ -734,32 +734,20 @@ export const AchievementLoadoutStats = ({
         <div style={{ width: "50%" }}>
           <div className="list padded light-background">
             <SegmentedLProgressBar
-              AchNum={1}
-              icon={"community"}
-              percentage={achievementsData["1"]}
-              cb={cb}
               type={"community"}
+              achievementData={achievementsData[1]}
             />
             <SegmentedLProgressBar
-              AchNum={2}
-              icon={"community"}
-              percentage={achievementsData["2"]}
-              cb={cb}
               type={"community"}
-            />
+              achievementData={achievementsData[2]}
+            />{" "}
             <SegmentedLProgressBar
-              AchNum={3}
-              icon={"community"}
-              percentage={achievementsData["3"]}
-              cb={cb}
               type={"community"}
-            />
+              achievementData={achievementsData[3]}
+            />{" "}
             <SegmentedLProgressBar
-              AchNum={4}
-              icon={"community"}
-              percentage={achievementsData["4"]}
-              cb={cb}
               type={"community"}
+              achievementData={achievementsData[4]}
             />
           </div>
         </div>
