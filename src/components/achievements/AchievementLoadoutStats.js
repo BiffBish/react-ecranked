@@ -692,7 +692,7 @@ export const AchievementLoadoutStats = ({
         </p>
         <div className="horizontal-container">
           {userData.stats.top_loadout.map((element) => {
-            if (element[1] != 0) return null;
+            if (element[1] < 0.01) return null;
             numOfHelpers += 1;
             if (numOfHelpers >= 10) return null;
             return (
@@ -906,9 +906,9 @@ export const AchievementLoadoutStats = ({
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
             <SegmentedLProgressBar
-              AchNum={54}
+              AchNum={79}
               icon={"pubs"}
-              percentage={achievementData["54"]}
+              percentage={achievementData["79"]}
               achievementData={achievementData}
               cb={cb}
               centeredIcon={true}
@@ -933,16 +933,27 @@ export const AchievementLoadoutStats = ({
                 );
               })}
             </div>
+
             <div className="list grow">
-              {achievementData.slice(67, 79).map((element, index) => {
+              <SegmentedLProgressBar
+                AchNum={67}
+                icon={"loadout"}
+                type={"season"}
+                cb={cb}
+                percentage={achievementData["67"]}
+                // onTop={index > 4}
+                onLeft={true}
+                DialogBoxOverride={AllLoadoutHelper}
+              />
+              {achievementData.slice(68, 79).map((element, index) => {
                 return (
                   <SegmentedLProgressBar
-                    AchNum={index + 67}
-                    icon={achievementIcons[index + 12]}
+                    AchNum={index + 68}
+                    icon={achievementIcons[index + 13]}
                     type={"season"}
                     percentage={element}
                     cb={cb}
-                    onTop={index > 4}
+                    onTop={index + 1 > 4}
                     onLeft={true}
                     totalGames={
                       [3, 4, 5, 6, 7].includes(index)
