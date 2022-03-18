@@ -101,6 +101,8 @@ export default function Achievements({ userData, screenWidth }) {
       return true;
     });
   }
+  console.log("#104", lockedAchievements);
+  console.log("#105", userData.weekly_stats.top_loadout);
   const [wantFAQ, setWantFAQ] = useState(false);
   const [hasFAQ, setHasFAQ] = useState(false);
 
@@ -211,6 +213,25 @@ export default function Achievements({ userData, screenWidth }) {
             className="rounded padded light-background list"
             style={{ width: "50%" }}
           >
+            <div
+              className="button rounded padded centering fill"
+              onClick={() => {
+                setWantFAQ(false);
+              }}
+            >
+              <div className="list centering">
+                <p
+                  className="conthrax"
+                  style={{
+                    lineHeight: "10px",
+                    height: "10px",
+                    fontSize: "30px",
+                  }}
+                >
+                  Return
+                </p>
+              </div>
+            </div>
             <h2>THE FLAMINGO CHALLENGE FAQ</h2>
             <p>
               Echo Combat Lounge and ECRanked announce the release of The
@@ -244,12 +265,23 @@ export default function Achievements({ userData, screenWidth }) {
               So when games start on monday all weekly stats reset.
             </p>
             <div
-              className="button rounded padded centering"
+              className="button rounded padded centering fill"
               onClick={() => {
                 setWantFAQ(false);
               }}
             >
-              Return
+              <div className="list centering">
+                <p
+                  className="conthrax"
+                  style={{
+                    lineHeight: "10px",
+                    height: "10px",
+                    fontSize: "30px",
+                  }}
+                >
+                  Return
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -301,20 +333,35 @@ export default function Achievements({ userData, screenWidth }) {
                   progressClass={"season-background"}
                 />
               </div>
-              <AchievementLoadoutStats
-                userData={userData}
-                selectedAchievementType={selectedAchievementType}
-                achievementData={achievementData}
-                lockedAchievements={lockedAchievements}
-              />
               <div
-                className="button rounded padded"
+                className="button rounded padded centering fill"
                 onClick={() => {
                   setWantFAQ(true);
                 }}
               >
-                FAQ
+                <div className="list centering">
+                  <p
+                    className="conthrax"
+                    style={{
+                      lineHeight: "10px",
+                      height: "10px",
+                      fontSize: "30px",
+                    }}
+                  >
+                    FAQ
+                  </p>
+                </div>
               </div>
+              <AchievementLoadoutStats
+                userData={userData}
+                selectedAchievementType={selectedAchievementType}
+                achievementData={
+                  userData["achievements"]
+                    ? Object.values(userData["achievements"])
+                    : undefined
+                }
+                lockedAchievements={lockedAchievements}
+              />
             </div>
           </div>
           {screenWidth < 1000 ? null : (
@@ -332,95 +379,4 @@ export default function Achievements({ userData, screenWidth }) {
       )}
     </div>
   );
-
-  // return (
-  //   <div
-  //     className="padded rounded list"
-  //     style={{
-  //       height: fullView ? 2000 : 50,
-  //       ...(fullView
-  //         ? { padding: "10px 20px 20px", gap: "20px" }
-  //         : { padding: "0px", gap: "0px" }),
-  //       transitionProperty: "padding,height,gap",
-  //       transitionDuration: "0.5s",
-  //     }}
-  //   >
-  //     <div
-  //       style={{ color: "white", cursor: "pointer" }}
-  //       onClick={() => {
-  //         setFullView(!fullView);
-  //       }}
-  //     >
-  //       <div
-  //         className="horizontal-container"
-  //         style={{
-  //           gap: fullView ? "" : "0px",
-  //         }}
-  //       >
-  //         <MasterAchievementBar
-  //           CommunityPercent={(communityTotal * 5) / 80}
-  //           DailyPercent={(dailyTotal * 25) / 80}
-  //           WeeklyPercent={(weeklyTotal * 25) / 80}
-  //           SeasonPercent={(alltimeTotal * 25) / 80}
-  //           // Percentage={achievementData.values["63"]}
-  //           Title={""}
-  //           Height={"50px"}
-  //           EnableBorder={fullView}
-  //         />
-
-  //         <h3
-  //           style={{
-  //             margin: fullView ? "auto 10px" : "auto 0px",
-  //             width: fullView ? "90px" : "0px",
-  //             flexBasis: 0,
-  //             transitionProperty: "margin,width",
-  //             transitionDuration: "0.5s",
-  //           }}
-  //         ></h3>
-  //       </div>
-  //     </div>
-  //     <div className="list" style={{ width: "70%", margin: "0 auto" }}>
-  //       <div className="horizontal-container">
-  //         <AchievementHeaderButton
-  //           selectedAchievementType={selectedAchievementType}
-  //           setSelectedAchievementType={setSelectedAchievementType}
-  //           name={"community"}
-  //           displayName={"Community"}
-  //           progress={communityTotal}
-  //           progressClass={"community-background"}
-  //         />
-  //         <AchievementHeaderButton
-  //           selectedAchievementType={selectedAchievementType}
-  //           setSelectedAchievementType={setSelectedAchievementType}
-  //           name={"daily"}
-  //           displayName={"Daily"}
-  //           progress={dailyTotal}
-  //           progressClass={"daily-background"}
-  //         />
-  //         <AchievementHeaderButton
-  //           selectedAchievementType={selectedAchievementType}
-  //           setSelectedAchievementType={setSelectedAchievementType}
-  //           name={"weekly"}
-  //           displayName={"Weekly"}
-  //           progress={weeklyTotal}
-  //           progressClass={"weekly-background"}
-  //         />
-  //         <AchievementHeaderButton
-  //           selectedAchievementType={selectedAchievementType}
-  //           setSelectedAchievementType={setSelectedAchievementType}
-  //           name={"global"}
-  //           displayName={"Season"}
-  //           progress={alltimeTotal}
-  //           progressClass={"season-background"}
-  //         />
-  //       </div>
-  //       <AchievementLoadoutStats
-  //         userData={userData}
-  //         selectedAchievementType={selectedAchievementType}
-  //         achievementData={achievementData}
-  //         lockedAchievements={lockedAchievements}
-  //       />
-  //     </div>
-  //   </div>
-  // );
 }

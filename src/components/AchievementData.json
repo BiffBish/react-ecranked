@@ -331,15 +331,6 @@
         "Percent": "1",
         "Extra": "",
         "Type": "Stun Field"
-      },
-      {
-        "CID": "10",
-        "Title": "Wow, Shocking",
-        "Description": "Use only arc mine 1+ games in a row (in 24 hours)",
-        "Timeframe": "In 24 hours",
-        "Percent": "0.06666666667",
-        "Extra": "",
-        "Type": "Arc Mine"
       }
     ],
     "Title": "STUN FIELD CHALLENGE",
@@ -348,6 +339,15 @@
   },
   "11": {
     "parts": [
+      {
+        "CID": "11",
+        "Title": "Wow, Shocking",
+        "Description": "Use only arc mine 1+ games in a row (in 24 hours)",
+        "Timeframe": "In 24 hours",
+        "Percent": "0.06666666667",
+        "Extra": "",
+        "Type": "Arc Mine"
+      },
       {
         "CID": "11",
         "Title": "Botnet Surprise!",
@@ -376,9 +376,9 @@
         "Type": "Arc Mine"
       }
     ],
-    "Title": "",
-    "Progress": "",
-    "Locked": ""
+    "Title": "ARC MINE CHALLENGE",
+    "Progress": "Play more games using only Arc Mine as your ordnance!  Don't use any other ordnance the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Arc Mine.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "12": {
     "parts": [
