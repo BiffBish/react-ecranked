@@ -283,28 +283,29 @@ export default function Achievements({ userData, screenWidth }) {
               end of each season. Season 1 begins March 15th, 2022 and ends May
               31st, 2022, the same days as Echo Pass Season 5.
             </p>
-
             <h2>Can you lose progress?</h2>
             <p>
-              Nope! You never lose progress on challenges. However a challenge
-              can become "locked" meaning that you are unable to progress
-              further until it becomes unlocked.
+              Nope! You never lose progress on challenges. However, a challenge
+              can become "locked," meaning you are unable to progress further
+              until it becomes unlocked.
             </p>
-
             <h2>How do you unlock a challenge?</h2>
             <p>
-              By waiting! When a daily challenge gets locked you have to wait
-              till tomorrow for it to become unlocked. Meaning you have to start
-              over to gain any more progress. Same with weekly challenges. You
-              have to wait till monday of the next week for it to reset for the
-              challenge to become unlocked
+              By waiting! When a DAY challenge gets locked you have to wait
+              until tomorrow for it to become unlocked. This means you have to
+              start over again (the count of games from zero) to gain any more
+              progress. Same with WEEK challenges. You have to wait until Monday
+              of the next week for it to reset for the challenge to become
+              unlocked.
             </p>
-            <h2>How do weekly and daily challenges work?</h2>
+            <h2>How do week and day challenges work?</h2>
             <p>
-              Daily challenges are determined by statistics that reset every day
-              at midnight PST, 3am EST, 7pm GMT. Weekly challenges are
-              determined by statistics that reset every week monday at midnight.
-              So when games start on monday all weekly stats reset.
+              DAY challenges are determined by statistics that reset everyday at
+              midnight PDT/3am EDT/7pm GMT. WEEK challenges are determined by
+              statistics that reset every Monday of a week at midnight. So, when
+              games start on Monday all WEEK statistics have been reset, which
+              means if something became locked the prior week it is now unlocked
+              and you can attempt it again.
             </p>
             <div
               className="button rounded padded centering fill"
@@ -375,29 +376,12 @@ export default function Achievements({ userData, screenWidth }) {
                   progressClass={"season-background"}
                 />
               </div>
-              <div
-                className="button rounded padded centering fill"
-                onClick={() => {
-                  setWantFAQ(true);
-                }}
-              >
-                <div className="list centering">
-                  <p
-                    className="conthrax"
-                    style={{
-                      lineHeight: "10px",
-                      height: "10px",
-                      fontSize: "30px",
-                    }}
-                  >
-                    FAQ
-                  </p>
-                </div>
-              </div>
+
               <AchievementLoadoutStats
                 userData={userData}
                 selectedAchievementType={selectedAchievementType}
                 achievementsData={achievementData}
+                setWantFAQ={setWantFAQ}
               />
             </div>
           </div>

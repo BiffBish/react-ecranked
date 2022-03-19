@@ -267,7 +267,10 @@ export default function AchievementLeaderboard({
   }, [apiData, surroundID]);
   return (
     <TotalLeaderboardList>
-      <Link className="rounded centering padded" to={"/leaderboard/challenges"}>
+      <Link
+        className="rounded centering padded button"
+        to={"/leaderboard/challenges"}
+      >
         <img
           src="/images/ECFCS1.png"
           alt="Season 1 banner"

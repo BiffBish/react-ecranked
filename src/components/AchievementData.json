@@ -1854,7 +1854,7 @@
         "CID": "43",
         "Title": "Deathwish",
         "Description": "Average less than 6 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
+        "Timeframe": "(1 week average, 40 game minimum) ",
         "Percent": "0.43",
         "Extra": "check #'s",
         "Type": "Death"
@@ -1863,7 +1863,7 @@
         "CID": "43",
         "Title": "About as Useful as a Shield",
         "Description": "Average less than 5 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
+        "Timeframe": "(1 week average, 40 game minimum) ",
         "Percent": "0.7142857143",
         "Extra": "check #'s",
         "Type": "Death"
@@ -1872,7 +1872,7 @@
         "CID": "43",
         "Title": "Armored Core",
         "Description": "Average less than 4 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
+        "Timeframe": "(1 week average, 40 game minimum) ",
         "Percent": "0.8571428571",
         "Extra": "check #'s",
         "Type": "Death"
@@ -1881,7 +1881,7 @@
         "CID": "43",
         "Title": "Pew Pew Proof",
         "Description": "Average less than 3 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
+        "Timeframe": "(1 week average, 40 game minimum) ",
         "Percent": "1",
         "Extra": "check #'s",
         "Type": "Death"
@@ -3055,7 +3055,7 @@
       }
     ],
     "Title": "LOADOUT CHALLENGE",
-    "Progress": "Be sure to use a loadout you've never used before!",
+    "Progress": "Play with loadouts you've never used before!  Listed below are some loadouts you haven't used yet and need to  in order to complete this challenge.  Give them a try!",
     "Locked": ""
   },
   "68": {
@@ -3098,7 +3098,7 @@
       }
     ],
     "Title": "DEATHS CHALLENGE",
-    "Progress": "Play more games! Try and be agressive and not afraid of dying. You will always respawn and potentialy be able to return to the battle field together",
+    "Progress": "Play more games!  Try to be aggressive and not afraid of dying.  You will always respawn and potentially be able to return to the battlefield to help your team try to win.  A player who dies more can actually be a good thing in many matches!",
     "Locked": ""
   },
   "69": {
@@ -3106,27 +3106,27 @@
       {
         "CID": "69",
         "Title": "Point Unlocked",
-        "Description": "Play 10+ Capture Point games (cumulative)",
+        "Description": "Play 25+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.1",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Capture Point"
       },
       {
         "CID": "69",
         "Title": "This is MY Point",
-        "Description": "Play 20+ Capture Point games (cumulative)",
+        "Description": "Play 50+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.2",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Capture Point"
       },
       {
         "CID": "69",
         "Title": "Coming in Clutch",
-        "Description": "Play 50+ Capture Point games (cumulative)",
+        "Description": "Play 75+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.5",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Capture Point"
       },
@@ -3149,27 +3149,27 @@
       {
         "CID": "70",
         "Title": "Stop the Payload",
-        "Description": "Play 10+ Payload games (cumulative)",
+        "Description": "Play 25+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.1",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Payload"
       },
       {
         "CID": "70",
         "Title": "Payload Contested!",
-        "Description": "Play 20+ Payload games (cumulative)",
+        "Description": "Play 50+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.2",
+        "Percent": "0.5",
         "Extra": "",
         "Type": "Payload"
       },
       {
         "CID": "70",
         "Title": "Payload Returning",
-        "Description": "Play 50+ Payload games (cumulative)",
+        "Description": "Play 75+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.5",
+        "Percent": "0.75",
         "Extra": "",
         "Type": "Payload"
       },
