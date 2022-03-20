@@ -139,6 +139,7 @@ const LeaderboardList = ({ userList, compacted }) => {
                   DailyPercent={dailyTotal / 79}
                   WeeklyPercent={weeklyTotal / 79}
                   SeasonPercent={alltimeTotal / 79}
+                  totalPercent={user[80]}
                   // Percentage={achievementData.values["63"]}
                   Title={""}
                   Height={"50px"}

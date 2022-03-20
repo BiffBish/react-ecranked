@@ -74,7 +74,7 @@ export default function Achievements({ userData, screenWidth }) {
       "surge",
       "pubs",
     ];
-    for (let index = 0; index < 80; index++) {
+    for (let index = 1; index < 80; index++) {
       var element = userData?.achievements?.[index];
       if (element === undefined) {
         element = 0;
@@ -107,6 +107,7 @@ export default function Achievements({ userData, screenWidth }) {
         icon: chosenIcon,
       };
     }
+    console.log("#110", totalPercentage / 79);
     exportAchievementData.totalPercentage = totalPercentage / 79;
     exportAchievementData.communityTotal = communityTotal / 79;
     exportAchievementData.dailyTotal = dailyTotal / 79;
@@ -237,6 +238,7 @@ export default function Achievements({ userData, screenWidth }) {
             DailyPercent={achievementData?.dailyTotal ?? 0}
             WeeklyPercent={achievementData?.weeklyTotal ?? 0}
             SeasonPercent={achievementData?.seasonTotal ?? 0}
+            totalPercent={achievementData?.totalPercentage ?? 0}
             // Percentage={achievementData.values["63"]}
             Title={""}
             Height={"50px"}

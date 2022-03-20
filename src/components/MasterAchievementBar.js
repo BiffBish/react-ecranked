@@ -16,6 +16,7 @@ export const MasterAchievementBar = ({
   WeeklyPercent = 0.25,
   SeasonPercent = 0.25,
   CommunityPercent = 0.25,
+  totalPercent = 0,
   clickMe = false,
 }) => {
   const [communityValue, setCommunityValue] = React.useState(0);
@@ -44,10 +45,7 @@ export const MasterAchievementBar = ({
     return barRef.current.getBoundingClientRect().width;
   }
 
-  let TotalPercent =
-    Math.round(
-      (CommunityPercent + DailyPercent + WeeklyPercent + SeasonPercent) * 10000
-    ) / 100;
+  let TotalPercent = Math.round(totalPercent * 10000) / 100;
   console.log("#50", TotalPercent, TotalPercent === NaN);
   if (isNaN(TotalPercent)) {
     TotalPercent = 0;
