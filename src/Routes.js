@@ -27,6 +27,7 @@ import GlobalUserState from "./contexts/GlobalUserState";
 import { ApiCallHelper } from "./helpers/makeApiCall";
 import AchievementLeaderboard from "./pages/AchievementLeaderboard";
 import Contact from "./pages/Contact";
+import DeveloperGuide from "./pages/DeveloperGuide";
 const PageBody = styled.div`
   position: absolute;
   width: 100%;
@@ -92,9 +93,7 @@ function Routes() {
             localStorage.setItem("MODERATOR", data.moderator);
           } else {
             if (localStorage.getItem("AUTHORIZATION_TOKEN") !== null) {
-              alert(
-                "You have been logged out. Please log back in or contact a moderator if the problem persists."
-              );
+              alert("You have been logged out. Please log back in or contact a moderator if the problem persists.");
             }
             localStorage.removeItem("AUTHORIZATION_TOKEN");
             localStorage.removeItem("OCULUS_ID");
@@ -113,13 +112,8 @@ function Routes() {
             oculus_id: null,
             moderator: null,
           }));
-          alert(
-            "There was an error when authenticating you. Please contact a moderator"
-          );
-          console.error(
-            "There was an error when authenticating you. Please contact a moderator",
-            error
-          );
+          alert("There was an error when authenticating you. Please contact a moderator");
+          console.error("There was an error when authenticating you. Please contact a moderator", error);
         });
     }
   }, [setGlobalUserState]);
@@ -219,11 +213,7 @@ function Routes() {
             }}
           >
             {BannerText}
-            {BannerIconSrc ? (
-              <UserIcon title={BannerIconTitle} src={BannerIconSrc} />
-            ) : (
-              ""
-            )}
+            {BannerIconSrc ? <UserIcon title={BannerIconTitle} src={BannerIconSrc} /> : ""}
           </div>
         </Banner>
         <Route exact path={["/"]}>
@@ -234,11 +224,22 @@ function Routes() {
           exact
           path={["/contact"]}
           render={(props) => {
-            setBannerHeight(400);
+            setBannerHeight(200);
             setBannerText("Contact");
             return <Contact />;
           }}
         />
+
+        <Route
+          exact
+          path={["/achievementguide"]}
+          render={(props) => {
+            setBannerHeight(200);
+            setBannerText("Guide");
+            return <DeveloperGuide />;
+          }}
+        />
+
         <Route
           exact
           path={["/home", "/"]}
@@ -355,9 +356,7 @@ function Routes() {
         <Route
           path={`/auth/discord/callback`}
           render={(props) => {
-            const callbackCode = new URLSearchParams(props.location.search).get(
-              "code"
-            );
+            const callbackCode = new URLSearchParams(props.location.search).get("code");
             setBannerText("Redirecting");
             setBannerHeight(100);
 
