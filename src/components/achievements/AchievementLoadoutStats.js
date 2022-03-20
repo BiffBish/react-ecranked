@@ -101,15 +101,20 @@ const AchievementPopup = ({
     CurrentStepNumber = SelectedAchievementFormat.parts.length - 1;
   }
 
+  let helperText = locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress;
+
+  let helperSegments = helperText.split(". ");
+
   return (
     <div style={{ position: "relative", display: !visible ? "none" : undefined }}>
       <div
         style={{
           position: "absolute",
           zIndex: 1000,
-          right: floatLeft ? 0 : undefined,
-          left: !floatLeft ? 0 : undefined,
+          right: floatLeft ? "50px" : undefined,
+          left: !floatLeft ? "50px" : undefined,
           bottom: floatTop ? "30px" : undefined,
+          top: "2px",
         }}
       >
         <AchievementPopupStyle
@@ -248,10 +253,9 @@ const AchievementPopup = ({
                 {/* <div className="centering">
               </div> */}
                 <p>
-                  In addition to the normal requirement you must complete {achievementData?.pubRequirement}
-                  games in an achievement's timeframe. You can see a 2nd grey bar representing your secondary progress.
-                  If you only partially complete the secondary requirement you will only get partial credit for an
-                  achievement.
+                  In addition to the normal requirement you must complete {achievementData?.pubRequirement} games in an
+                  achievement's timeframe. You can see a 2nd grey bar representing your secondary progress. If you only
+                  partially complete the secondary requirement you will only get partial credit for an achievement.
                 </p>
               </AchievementPopupStyle>
             ) : null}
@@ -260,13 +264,20 @@ const AchievementPopup = ({
               style={{
                 display: ShowHelperBox ? undefined : "none",
                 width: 600,
+                gap: "5px",
                 // margin: "0 0 0 200px",
               }}
             >
               <h3>{AchievementStatus}</h3>
               {/* <div className="centering">
               </div> */}
-              <p>{locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress}</p>
+              <ul style={{ paddingLeft: "15px", margin: "0px" }}>
+                {helperSegments.map((element) => {
+                  return <li style={{ margin: "0px" }}> {element}</li>;
+                })}
+              </ul>
+
+              {/* <p>{locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress}</p> */}
             </AchievementPopupStyle>
           </>
         )}
@@ -288,7 +299,9 @@ const SegmentedLProgressBar = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [clicked, setClicked] = useState(false);
+
   var locked = achievementData.locked;
+  var completed = false;
 
   useEffect(() => {
     eventBus.on("closeAll", (data) => setClicked(false));
@@ -304,7 +317,11 @@ const SegmentedLProgressBar = ({
   }
 
   if (achievementData?.value === undefined) return null;
-  if (achievementData?.value === 1) locked = false;
+  if (achievementData?.value === 1) {
+    locked = false;
+    completed = true;
+  }
+
   let DisplayedTitle = "Completed!";
   if (achievementData) {
     for (let index = 0; index < achievementData?.formatting?.parts?.length; index++) {
@@ -319,6 +336,23 @@ const SegmentedLProgressBar = ({
 
   let icon =
     "/images/icons/" + (achievementData?.icon ?? "pulsar") + (achievementData?.inProgress ? "_" + type : "") + ".png";
+  var showWhite = true;
+
+  if (locked) {
+    showWhite = false;
+  }
+  if (completed) {
+    showWhite = false;
+  }
+  if (
+    !(
+      (achievementData?.id >= 30 && achievementData?.id <= 41) ||
+      (achievementData?.id >= 5 && achievementData?.id <= 16)
+    )
+  ) {
+    showWhite = false;
+  }
+
   return (
     <div
       style={{
@@ -335,14 +369,48 @@ const SegmentedLProgressBar = ({
       <div
         style={{
           display: "flex",
-          opacity: locked ? 0.5 : 1,
+          opacity: locked && !visible ? 0.5 : 1,
           position: "relative",
           height: "30px",
           gap: "10px",
           flexDirection: onLeft ? "row-reverse" : "row",
         }}
       >
-        {!centeredIcon ? <img src={icon} alt="iconImage" style={{ height: "40px", width: "40px" }} /> : null}
+        {/* {iconHovered ? (
+          <div
+            className={"rounded padded"}
+            style={{ position: "absolute", top: "50px", left: "0px", opacity: 1, zIndex: 1, backgroundColor: "#222" }}
+          >
+            {!centeredIcon ? <img src={icon} alt="iconImage" style={{ height: "80px", width: "80px" }} /> : null}
+            {locked ? (
+              <img
+                src={"/images/lock_clear_no_square.png"}
+                alt="iconImage"
+                style={{ height: "25px", width: "25px", position: "absolute", left: "-23px", top: "8px" }}
+              />
+            ) : null}
+          </div>
+        ) : null} */}
+        {!centeredIcon ? (
+          <img
+            src={icon}
+            onMouseEnter={() => {
+              setVisible(true);
+            }}
+            onMouseLeave={() => {
+              setVisible(false);
+            }}
+            alt="iconImage"
+            style={{ height: "40px", width: "40px" }}
+          />
+        ) : null}
+        {locked ? (
+          <img
+            src={"/images/lock_clear_no_square.png"}
+            alt="iconImage"
+            style={{ height: "25px", width: "25px", position: "absolute", left: "-23px", top: "8px" }}
+          />
+        ) : null}
 
         <div
           style={{ flexGrow: 1, cursor: "pointer" }}
@@ -355,6 +423,7 @@ const SegmentedLProgressBar = ({
           onClick={onClicked}
         >
           <SegmentedProgressBar
+            // SetBarWhite={locked}
             Title={DisplayedTitle}
             Percentage={achievementData?.value ?? 0}
             SecondaryPercentage={
@@ -364,7 +433,9 @@ const SegmentedLProgressBar = ({
             }
             Height={15}
             ProgressBarClass={type + "-background"}
-            ActiveProgress={achievementData?.id == 34 ? 0.0 : 0}
+            // ActiveProgress={showWhite ? achievementData?.todayProgress : null}
+            // ActiveProgress={showWhite ? 0.5 : undefined}
+            ActiveProgress={showWhite ? achievementData?.todayProgress : undefined}
             centeredTitle={centeredIcon}
             leftTitle={onLeft}
             titleStyle={titleStyle}

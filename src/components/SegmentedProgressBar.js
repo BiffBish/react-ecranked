@@ -9,12 +9,13 @@ function map_range(value, low1, high1, low2, high2) {
 }
 const AchievementSize = 40;
 export const SegmentedProgressBar = ({
+  SetBarWhite = false,
   Percentage = 0,
   Title,
   Height = AchievementSize - 4,
   EnableBorder = true,
   SecondaryPercentage = 0.0,
-  ActiveProgress = 0.0,
+  ActiveProgress = null,
   ProgressBarClass,
   centeredTitle = false,
   leftTitle = true,
@@ -26,6 +27,11 @@ export const SegmentedProgressBar = ({
 
   const barRef = useRef();
   const fullRef = useRef();
+  var switchDefaultToWhite = false;
+
+  if (ActiveProgress !== null) {
+    switchDefaultToWhite = true;
+  }
 
   const [backgroundHighlighted, setBackgroundHighlighted] = useState(false);
   useEffect(() => {
@@ -45,7 +51,7 @@ export const SegmentedProgressBar = ({
       style={
         backgroundHighlighted
           ? {
-              backgroundColor: "#fff4",
+              backgroundColor: "#fff0",
             }
           : {
               backgroundColor: "#fff0",
@@ -87,13 +93,14 @@ export const SegmentedProgressBar = ({
           style={{
             width: `${map_range(value, 0, 100, 0, 200)}%`,
             transform: `translate(-50%, -100%)`,
+            backgroundColor: switchDefaultToWhite || SetBarWhite ? "#ccc" : undefined,
           }}
           className={"progress " + ProgressBarClass}
         />
         <ProgressBarStyle
           style={{
             width: `${map_range(activeValue, 0, 100, 0, 200)}%`,
-            backgroundColor: "#0ff",
+            // backgroundColor: "#0ff",
             transform: `translate(-50%, -200%)`,
           }}
           className={"progress " + ProgressBarClass}

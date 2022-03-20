@@ -74,6 +74,96 @@ export default function Achievements({ userData, screenWidth }) {
       "surge",
       "pubs",
     ];
+
+    const todayValues = [
+      /* 0 */ "",
+      /* 1 */ "",
+      /* 2 */ "",
+      /* 3 */ "",
+      /* 4 */ "",
+      /* 5 */ userData.daily_stats.total_games,
+      /* 6 */ userData.daily_stats.total_games,
+      /* 7 */ userData.daily_stats.total_games,
+      /* 8 */ userData.daily_stats.total_games,
+      /* 9 */ userData.daily_stats.total_games,
+      /* 10 */ userData.daily_stats.total_games,
+      /* 11 */ userData.daily_stats.total_games,
+      /* 12 */ userData.daily_stats.total_games,
+      /* 13 */ userData.daily_stats.total_games,
+      /* 14 */ userData.daily_stats.total_games,
+      /* 15 */ userData.daily_stats.total_games,
+      /* 16 */ userData.daily_stats.total_games,
+      /* 17 */ Math.round(exportAchievementData[17] * 12),
+      /* 18 */ "",
+      /* 19 */ "",
+      /* 20 */ "",
+      /* 21 */ "",
+      /* 22 */ "",
+      /* 23 */ "",
+      /* 24 */ "",
+      /* 25 */ "",
+      /* 26 */ "",
+      /* 27 */ "",
+      /* 28 */ "",
+      /* 29 */ "",
+      /* 30 */ userData.weekly_stats.total_games,
+      /* 31 */ userData.weekly_stats.total_games,
+      /* 32 */ userData.weekly_stats.total_games,
+      /* 33 */ userData.weekly_stats.total_games,
+      /* 34 */ userData.weekly_stats.total_games,
+      /* 35 */ userData.weekly_stats.total_games,
+      /* 36 */ userData.weekly_stats.total_games,
+      /* 37 */ userData.weekly_stats.total_games,
+      /* 38 */ userData.weekly_stats.total_games,
+      /* 39 */ userData.weekly_stats.total_games,
+      /* 40 */ userData.weekly_stats.total_games,
+      /* 41 */ userData.weekly_stats.total_games,
+    ];
+    const todayProgress = [
+      /* 0 */ "",
+      /* 1 */ "",
+      /* 2 */ "",
+      /* 3 */ "",
+      /* 4 */ "",
+      /* 5 */ userData.daily_stats.total_games / 15,
+      /* 6 */ userData.daily_stats.total_games / 15,
+      /* 7 */ userData.daily_stats.total_games / 15,
+      /* 8 */ userData.daily_stats.total_games / 15,
+      /* 9 */ userData.daily_stats.total_games / 15,
+      /* 10 */ userData.daily_stats.total_games / 15,
+      /* 11 */ userData.daily_stats.total_games / 15,
+      /* 12 */ userData.daily_stats.total_games / 15,
+      /* 13 */ userData.daily_stats.total_games / 15,
+      /* 14 */ userData.daily_stats.total_games / 15,
+      /* 15 */ userData.daily_stats.total_games / 15,
+      /* 16 */ userData.daily_stats.total_games / 15,
+      /* 17 */ Math.round(exportAchievementData[17] * 12),
+      /* 18 */ "",
+      /* 19 */ "",
+      /* 20 */ "",
+      /* 21 */ "",
+      /* 22 */ "",
+      /* 23 */ "",
+      /* 24 */ "",
+      /* 25 */ "",
+      /* 26 */ "",
+      /* 27 */ "",
+      /* 28 */ "",
+      /* 29 */ "",
+      /* 30 */ userData.weekly_stats.total_games / 40,
+      /* 31 */ userData.weekly_stats.total_games / 40,
+      /* 32 */ userData.weekly_stats.total_games / 40,
+      /* 33 */ userData.weekly_stats.total_games / 40,
+      /* 34 */ userData.weekly_stats.total_games / 40,
+      /* 35 */ userData.weekly_stats.total_games / 40,
+      /* 36 */ userData.weekly_stats.total_games / 40,
+      /* 37 */ userData.weekly_stats.total_games / 40,
+      /* 38 */ userData.weekly_stats.total_games / 40,
+      /* 39 */ userData.weekly_stats.total_games / 40,
+      /* 40 */ userData.weekly_stats.total_games / 40,
+      /* 41 */ userData.weekly_stats.total_games / 40,
+    ];
+
     for (let index = 0; index < 80; index++) {
       var element = userData?.achievements?.[index];
       if (element === undefined) {
@@ -109,6 +199,15 @@ export default function Achievements({ userData, screenWidth }) {
         icon: chosenIcon,
       };
     }
+
+    todayValues.forEach((element, index) => {
+      exportAchievementData[index].todayValue = element;
+    });
+
+    todayProgress.forEach((element, index) => {
+      exportAchievementData[index].todayProgress = element;
+    });
+
     console.log("#110", totalPercentage / 79);
     exportAchievementData.totalPercentage = totalPercentage / 79;
     exportAchievementData.communityTotal = communityTotal / 79;
@@ -116,7 +215,7 @@ export default function Achievements({ userData, screenWidth }) {
     exportAchievementData.weeklyTotal = weeklyTotal / 79;
     exportAchievementData.seasonTotal = seasonTotal / 79;
     exportAchievementData.oculus_id = userData?.achievements?.oculus_id ?? null;
-
+    if (!userData) return null;
     if (userData && userData.daily_stats && userData.daily_stats.top_loadout) {
       userData.daily_stats.top_loadout.every((element) => {
         if (element[1] < 0.01) return false;
@@ -200,7 +299,10 @@ export default function Achievements({ userData, screenWidth }) {
     exportAchievementData[73].pubRequirement = 200;
     exportAchievementData[74].pubRequirement = 200;
 
+    exportAchievementData[30].todayValueText = "";
+
     function setMessage(achievementData, timeframe, word, otherWordList) {
+      const id = achievementData.id;
       if (timeframe === "week") timeframe = "this week";
       if (timeframe === "day") timeframe = "today";
       if (achievementData.locked && achievementData.inProgress) {
@@ -224,18 +326,36 @@ export default function Achievements({ userData, screenWidth }) {
           " this challenge is locked.";
       }
       if (achievementData.inProgress) {
-        achievementData.formatting.Progress =
-          "You are currently only using " +
-          word +
-          " " +
-          timeframe +
-          ". Keep playing games using only " +
-          word +
-          " to continue progressing.";
-      } else {
-        achievementData.formatting.Progress =
-          "You have not used " + word + " " + timeframe + ". Play a game using only meteor to start progressing.";
+        if (timeframe === "this week") timeframe = "This week";
+        if (timeframe === "today") timeframe = "Today";
+
+        if (achievementData.todayProgress < achievementData.value) {
+          achievementData.formatting.Progress =
+            "You are currently only using " +
+            word +
+            ". " +
+            timeframe +
+            "s progress is " +
+            todayValues[id] +
+            " games. The white bar is your highest record. Keep playing games using only detonator to surpass your record and keep progressing.";
+        } else {
+          achievementData.formatting.Progress =
+            "You are currently only using " +
+            word +
+            ". " +
+            timeframe +
+            "s progress is " +
+            todayValues[id] +
+            " games. Keep playing games using only " +
+            word +
+            " to continue progressing.";
+        }
+
+        return;
       }
+
+      achievementData.formatting.Progress =
+        "You have not used " + word + " " + timeframe + ". Play a game using only meteor to start progressing.";
     }
 
     let dailyWeaponsList = [];
@@ -295,19 +415,6 @@ export default function Achievements({ userData, screenWidth }) {
     setMessage(exportAchievementData[14], "day", "threat scanner", dailyTechsList);
     setMessage(exportAchievementData[15], "day", "energy barrier", dailyTechsList);
     setMessage(exportAchievementData[16], "day", "phase shift", dailyTechsList);
-    // exportAchievementData[30].formatting.locked =
-    //   "You have used meteor this week, however since you also used comet this challenge is locked.";
-    // [Locked And Used]
-    // "You have used meteor this week, however since you also used comet this challenge is locked."
-
-    // [Locked]
-    // "You have not used meteor this week,however since you also used comet this challenge is locked."
-
-    // [Not started]
-    // "You have not used meteor this week. Play a game using only meteor to start progressing."
-
-    // [In progress]
-    // "You are currently only using meteor this week. Keep playing games using only meteor to continue progressing."
 
     setAchievementData(exportAchievementData);
   }, [userData]);
@@ -500,7 +607,7 @@ export default function Achievements({ userData, screenWidth }) {
             </div>
           </div>
           {screenWidth < 1000 ? null : (
-            <div style={{ flexBasis: 0, flexGrow: 1.5 }}>
+            <div style={{ flexBasis: 0, flexGrow: 1.5, display: "flex" }}>
               {userData.oculus_id ? (
                 <AchievementLeaderboard setBannerCallback={() => {}} surroundID={userData.oculus_id} limit={6} />
               ) : null}

@@ -59,9 +59,7 @@ const StatChoice = ({ currentSelected, onClick }) => {
         Replays
       </StatChoiceButton>
       <StatChoiceButton
-        style={
-          currentSelected === "public_games" ? { backgroundColor: "#333" } : {}
-        }
+        style={currentSelected === "public_games" ? { backgroundColor: "#333" } : {}}
         onClick={() => {
           onClick("public_games");
         }}
@@ -82,10 +80,7 @@ const LeftSide = ({ username, replays }) => {
   const [selectedOption, setSelectedOption] = React.useState("public_games");
   return (
     <LeftSideStyle>
-      <StatChoice
-        currentSelected={selectedOption}
-        onClick={setSelectedOption}
-      ></StatChoice>
+      <StatChoice currentSelected={selectedOption} onClick={setSelectedOption}></StatChoice>
       {selectedOption === "public_games" ? (
         <UserPubLeaderboard oculus_name={username} />
       ) : (
@@ -95,12 +90,8 @@ const LeftSide = ({ username, replays }) => {
   );
 };
 export default function User({ username, setBannerCallback, subDomain }) {
-  const [randomUsernameOverride, setRandomUsernameOverride] =
-    React.useState(null);
-  if (
-    randomUsernameOverride !== null &&
-    (username === "random_async" || username === "random")
-  ) {
+  const [randomUsernameOverride, setRandomUsernameOverride] = React.useState(null);
+  if (randomUsernameOverride !== null && (username === "random_async" || username === "random")) {
     username = randomUsernameOverride;
   }
   if (username === "random") {
@@ -115,9 +106,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
     })
       .then(async (response) => {
         const data = await response.json();
-        setRandomUsernameOverride(
-          data[Math.floor(Math.random() * data.length)]
-        );
+        setRandomUsernameOverride(data[Math.floor(Math.random() * data.length)]);
       })
       .catch((error) => {
         setUserNotFound(true);
@@ -202,10 +191,10 @@ export default function User({ username, setBannerCallback, subDomain }) {
             setUserNotFound(false);
             var iconSrc = null;
             if (data.discord_name !== null) {
-              iconSrc = "/images/verified_icon.png";
+              iconSrc = "/images/icons/verified_icon.png";
             }
             if (data.moderator === true) {
-              iconSrc = "/images/moderator_icon.png";
+              iconSrc = "/images/icons/moderator_icon.png";
             }
             if (data.oculus_name === "BiffBish") {
               iconSrc = "/images/happy_cubesat.png";
@@ -250,9 +239,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
 
   //   return EMPTYREQUEST;
   // }
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   useEffect(() => {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
@@ -267,21 +254,13 @@ export default function User({ username, setBannerCallback, subDomain }) {
     <>
       <FailedSearchBar shown={userNotFound} onFormSubmit={whenSearchSubmit} />
 
-      <div
-        className="list padded"
-        style={
-          userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
-        }
-      >
+      <div className="list padded" style={userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}}>
         <h3
           className="conthrax centered"
           style={{
             fontSize: windowDimensions.width < 1000 ? "20px" : "50px",
             // letterSpacing: "20px",
-            letterSpacing:
-              windowDimensions.width < 1000
-                ? "calc(-16px + 3.9vw)"
-                : "calc(-39px + 3.8vw)",
+            letterSpacing: windowDimensions.width < 1000 ? "calc(-16px + 3.9vw)" : "calc(-39px + 3.8vw)",
             lineHeight: "10px",
           }}
         >

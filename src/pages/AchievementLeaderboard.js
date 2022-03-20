@@ -80,7 +80,7 @@ const LeaderboardList = ({ userList, compacted }) => {
     return null;
   }
   return (
-    <LeaderboardListsStyle>
+    <LeaderboardListsStyle className="grow">
       <ContainerTitle></ContainerTitle>
       {userList.slice(0, animationIndex).map((user, index) => {
         const OnGameClick = () => {
@@ -170,14 +170,6 @@ const LeaderboardList = ({ userList, compacted }) => {
     </LeaderboardListsStyle>
   );
 };
-const TotalLeaderboardList = styled.div`
-  display: flex;
-  flex-direction: column;
-  // width: 80%;
-  // min-width: 400px;
-  gap: 10px;
-  margin: 0px auto;
-`;
 export default function AchievementLeaderboard({
   leaderboardStatistic,
   setBannerCallback,
@@ -196,11 +188,7 @@ export default function AchievementLeaderboard({
   const [randomLoadout, setRandomLoadout] = React.useState(null);
   const [startIndex, setStartIndex] = React.useState(0);
 
-  if (
-    leaderboardStatistic === "loadout" &&
-    subDomain === "random" &&
-    randomLoadout === null
-  ) {
+  if (leaderboardStatistic === "loadout" && subDomain === "random" && randomLoadout === null) {
     var randomLoadoutNumber = Math.round(Math.random() * 64);
     setRandomLoadout(randomLoadoutNumber);
     subDomain = randomLoadout;
@@ -249,9 +237,7 @@ export default function AchievementLeaderboard({
       element["80"] = total / 79;
     });
 
-    apiData.sort((a, b) =>
-      a["80"] > b["80"] ? -1 : b["80"] > a["80"] ? 1 : 0
-    );
+    apiData.sort((a, b) => (a["80"] > b["80"] ? -1 : b["80"] > a["80"] ? 1 : 0));
     let NewData = [];
     apiData.forEach((element, index) => {
       if (element.oculus_id === surroundID) {
@@ -267,23 +253,21 @@ export default function AchievementLeaderboard({
     setSortedApiData(NewData);
   }, [apiData, surroundID]);
   return (
-    <TotalLeaderboardList>
+    <div className="list grow">
       <Link
-        className="rounded centering padded button"
+        style={{ height: "42.5px" }}
+        className="rounded centering padded button fill"
         to={"/leaderboard/challenges"}
       >
-        <img
-          src="/images/ECFCS1.png"
-          alt="Season 1 banner"
-          style={{ width: "100%", maxWidth: "400px" }}
-        ></img>
+        <h3>Leaderboard </h3>
       </Link>
 
-      <LeaderboardList
-        userList={sortedApiData?.slice(startIndex, startIndex + limit)}
-        compacted={compacted}
-      />
-    </TotalLeaderboardList>
+      <Link className="rounded centering padded" to={"/leaderboard/challenges"}>
+        <img src="/images/ECFCS1.png" alt="Season 1 banner" style={{ width: "100%", maxWidth: "400px" }}></img>
+      </Link>
+
+      <LeaderboardList userList={sortedApiData?.slice(startIndex, startIndex + limit)} compacted={compacted} />
+    </div>
     // <>
     //   {/* <FailedSearchBar  onFormSubmit={whenSearchSubmit} /> */}
     //   <UserBody
