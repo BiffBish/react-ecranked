@@ -74,14 +74,16 @@ export default function Achievements({ userData, screenWidth }) {
       "surge",
       "pubs",
     ];
-    for (let index = 1; index < 80; index++) {
+    for (let index = 0; index < 80; index++) {
       var element = userData?.achievements?.[index];
       if (element === undefined) {
         element = 0;
       }
       let pubCount = 0;
+      if (index > 0) {
+        totalPercentage += element;
+      }
 
-      totalPercentage += element;
       if (index < 5) {
         communityTotal += element;
       } else if (index < 29) {
