@@ -114,7 +114,7 @@ const AchievementPopup = ({
           right: floatLeft ? "50px" : undefined,
           left: !floatLeft ? "50px" : undefined,
           bottom: floatTop ? "30px" : undefined,
-          top: "2px",
+          top: !floatTop ? "2px" : undefined,
         }}
       >
         <AchievementPopupStyle
