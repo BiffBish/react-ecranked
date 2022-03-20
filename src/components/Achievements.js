@@ -337,7 +337,9 @@ export default function Achievements({ userData, screenWidth }) {
             timeframe +
             "s progress is " +
             todayValues[id] +
-            " games. The white bar is your highest record. Keep playing games using only detonator to surpass your record and keep progressing.";
+            " games. The white bar is your highest record. Keep playing games using only " +
+            word +
+            " to surpass your record and keep progressing.";
         } else {
           achievementData.formatting.Progress =
             "You are currently only using " +
