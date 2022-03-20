@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 var achievementFormatingData = require("./AchievementData.json");
 
@@ -14,21 +14,24 @@ export const SegmentedProgressBar = ({
   Height = AchievementSize - 4,
   EnableBorder = true,
   SecondaryPercentage = 0.0,
+  ActiveProgress = 0.0,
   ProgressBarClass,
   centeredTitle = false,
   leftTitle = true,
   titleStyle = {},
 }) => {
-  const [value, setValue] = React.useState(0);
-  const [secondaryValue, setSecondaryValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [secondaryValue, setSecondaryValue] = useState(0);
+  const [activeValue, setActiveValue] = useState(0);
+
   const barRef = useRef();
   const fullRef = useRef();
 
-  const [backgroundHighlighted, setBackgroundHighlighted] =
-    React.useState(false);
-  React.useEffect(() => {
+  const [backgroundHighlighted, setBackgroundHighlighted] = useState(false);
+  useEffect(() => {
     setValue(Percentage * 100);
     setSecondaryValue(SecondaryPercentage * 100);
+    setActiveValue(ActiveProgress * 100);
   }, [Percentage]);
 
   function getWidth() {
@@ -79,14 +82,22 @@ export const SegmentedProgressBar = ({
           }}
           className="progress"
           color=""
-        ></ProgressBarStyle>
+        />
         <ProgressBarStyle
           style={{
             width: `${map_range(value, 0, 100, 0, 200)}%`,
             transform: `translate(-50%, -100%)`,
           }}
           className={"progress " + ProgressBarClass}
-        ></ProgressBarStyle>
+        />
+        <ProgressBarStyle
+          style={{
+            width: `${map_range(activeValue, 0, 100, 0, 200)}%`,
+            backgroundColor: "#0ff",
+            transform: `translate(-50%, -200%)`,
+          }}
+          className={"progress " + ProgressBarClass}
+        />
         <ProgressBarTextStyle></ProgressBarTextStyle>
         {/* {segments.map((segment) => {
               return (

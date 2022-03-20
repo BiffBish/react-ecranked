@@ -91,23 +91,18 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
   const weaponNumber = ((number - (tacNumber + grenadeNumber * 4)) % 64) / 16;
 
   const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
+    "repair_matrix.png",
+    "threat_scanner.png",
+    "energy_barrier.png",
+    "phaseshift.png",
   ];
   const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
+    "detonator.png",
+    "stun_field.png",
+    "arcmine.png",
+    "instant_repair.png",
   ];
-  const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
-  ];
+  const weaponMap = ["pulsar.png", "nova.png", "comet.png", "meteor.png"];
   const tacModMapName = [
     "Repair matrix",
     "Threat scanner",
@@ -128,19 +123,19 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
   return (
     <LoadoutBoxStyle to={"/leaderboard/loadout/" + number}>
       <img
-        src={weaponMap[weaponNumber]}
+        src={"/images/icons/" + weaponMap[weaponNumber]}
         alt={weaponMapName[weaponNumber]}
         style={{ width: "60px", height: "60px" }}
         title={weaponMapName[weaponNumber]}
       />
       <img
-        src={ordinanceMap[grenadeNumber]}
+        src={"/images/icons/" + ordinanceMap[grenadeNumber]}
         alt={ordinanceMapName[grenadeNumber]}
         style={{ width: "60px", height: "60px" }}
         title={ordinanceMapName[grenadeNumber]}
       />
       <img
-        src={tacModMap[tacNumber]}
+        src={"/images/icons/" + tacModMap[tacNumber]}
         alt={tacModMapName[tacNumber]}
         style={{ width: "60px", height: "60px" }}
         title={tacModMapName[tacNumber]}
