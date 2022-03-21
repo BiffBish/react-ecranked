@@ -32,6 +32,7 @@ export const SegmentedProgressBar = ({
   if (_todayValue !== null && _todayValue + 0.0001 < _recordValue) switchDefaultToWhite = true;
   if (_recordValue === 1) switchDefaultToWhite = false;
   if (forceRecord) switchDefaultToWhite = false;
+  if (_todayValue + 0.0001 > _recordValue) _todayValue = _recordValue;
   // Title = todayValue + " " + recordValue;
 
   const [backgroundHighlighted, setBackgroundHighlighted] = useState(false);

@@ -1846,7 +1846,7 @@
     ],
     "Title": "LOADOUT CHALLENGE",
     "Progress": "You've used only one loadout for %p games in a single week.  Get comfortable with one loadout and stick to it for an entire week to complete this challenge!  Be sure to not accidentally switch your loadout.",
-    "Locked": "spellchecked ths one to the left, red because correct!!!!"
+    "Locked": "This challenge is locked because you didn't only use Pulsar.  You have to wait until next week for this challenge to become unlocked."
   },
   "43": {
     "parts": [
