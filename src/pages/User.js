@@ -191,7 +191,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
             setUserNotFound(false);
             var iconSrc = null;
             if (data.discord_name !== null) {
-              iconSrc = "/images/icons/verified_icon.png";
+              iconSrc = "/images/verified_icon.png";
             }
             if (data.moderator === true) {
               iconSrc = "/images/icons/moderator_icon.png";
