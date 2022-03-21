@@ -51,8 +51,8 @@ export default function Achievements({ userData, screenWidth }) {
   const [letOverflow, setLetOverflow] = useState(false);
 
   useEffect(() => {
-    if (!userData) return null;
-    if (!userData.achievements) return null;
+    // if (!userData) return null;
+    // if (!userData.achievements) return null;
 
     const exportAchievementData = {};
     var totalPercentage = 0;
@@ -120,6 +120,7 @@ export default function Achievements({ userData, screenWidth }) {
       /* 27 */ userData?.daily_stats?.fission_games ?? 0,
       /* 28 */ userData?.daily_stats?.surge_games ?? 0,
       /* 29 */ userData?.daily_stats?.total_games ?? 0,
+
       /* 30 */ userData?.weekly_stats?.total_games ?? 0,
       /* 31 */ userData?.weekly_stats?.total_games ?? 0,
       /* 32 */ userData?.weekly_stats?.total_games ?? 0,
@@ -145,7 +146,8 @@ export default function Achievements({ userData, screenWidth }) {
       /* 51 */ userData?.weekly_stats?.combustion_games ?? 0,
       /* 52 */ userData?.weekly_stats?.fission_games ?? 0,
       /* 53 */ userData?.weekly_stats?.surge_games ?? 0,
-      /* 54 */ userData?.weekly_stats?.total_games ?? 0,
+      // /* 54 */ userData.weekly_stats.total_games,
+      /* 54 */ 1000,
 
       /* 55 */ userData?.achievement_stats?.total_games ?? 0,
       /* 56 */ userData?.achievement_stats?.total_games ?? 0,
@@ -228,6 +230,7 @@ export default function Achievements({ userData, screenWidth }) {
       /* 2 */ "",
       /* 3 */ "",
       /* 4 */ "",
+
       /* 5 */ (userData?.daily_stats?.total_games ?? 0) / 15,
       /* 6 */ (userData?.daily_stats?.total_games ?? 0) / 15,
       /* 7 */ (userData?.daily_stats?.total_games ?? 0) / 15,
@@ -338,20 +341,18 @@ export default function Achievements({ userData, screenWidth }) {
         id: index,
         value: element,
         locked: false,
-        formatting: achievementFormattingData[index],
+        formatting: { ...achievementFormattingData[index] },
         pubCount: pubCount,
         icon: chosenIcon,
         todayValue: todayValue[index],
         todayProgress: todayProgress[index],
       };
-      console.log(exportAchievementData[index]);
       // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayValues[index]);
       achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayProgress[index]);
-
-      exportAchievementData[index] = achievementData;
+      // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p");
+      exportAchievementData[index] = { ...achievementData };
     }
 
-    console.log("#110", totalPercentage / 79);
     exportAchievementData.totalPercentage = totalPercentage / 79;
     exportAchievementData.communityTotal = communityTotal / 79;
     exportAchievementData.dailyTotal = dailyTotal / 79;
@@ -566,7 +567,7 @@ export default function Achievements({ userData, screenWidth }) {
     setMessage(exportAchievementData[16], "day", "phase shift", dailyTechsList);
 
     setAchievementData(exportAchievementData);
-  }, [userData]);
+  }, [userData, userData.weekly_stats]);
 
   const [wantFAQ, setWantFAQ] = useState(false);
   const [hasFAQ, setHasFAQ] = useState(false);

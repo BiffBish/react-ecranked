@@ -50,6 +50,14 @@ const AchievementPopup = ({
   pubRequirement = null,
 }) => {
   let SelectedAchievementFormat = achievementData?.formatting;
+
+  // const [helperText, sethelperText] = useState("");
+  // useEffect(() => {
+  //   sethelperText(locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress);
+  // }, [locked, SelectedAchievementFormat.Locked, SelectedAchievementFormat.Progress]);
+
+  const helperText = locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress;
+
   if (SelectedAchievementFormat == null) return null;
 
   let CurrentStepNumber = SelectedAchievementFormat.parts.length;
@@ -100,8 +108,6 @@ const AchievementPopup = ({
   if (achievementData?.value === 1) {
     CurrentStepNumber = SelectedAchievementFormat.parts.length - 1;
   }
-
-  let helperText = locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress;
 
   let helperSegments = helperText.split(". ");
 
