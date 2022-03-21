@@ -6,6 +6,16 @@ import { MasterAchievementBar } from "./MasterAchievementBar";
 import AchievementLeaderboard from "../pages/AchievementLeaderboard";
 var achievementFormattingData = require("./AchievementData.json");
 
+function map_range(value, low1, high1, low2, high2, capPercentage = false) {
+  if (capPercentage) {
+    return Math.max(Math.min(1, low2 + ((high2 - low2) * (value - low1)) / (high1 - low1)), 0);
+  }
+  return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
+}
+
+function round(value, digits = 0) {
+  return Math.round(value * 10 ** digits) / 10 ** digits;
+}
 export const AchievementSize = 40;
 const AchievementGap = 5;
 
@@ -38,8 +48,12 @@ export const LeftAchievementColumn = styled.div`
 
 export default function Achievements({ userData, screenWidth }) {
   const [achievementData, setAchievementData] = useState(undefined);
+  const [letOverflow, setLetOverflow] = useState(false);
 
   useEffect(() => {
+    if (!userData) return null;
+    if (!userData.achievements) return null;
+
     const exportAchievementData = {};
     var totalPercentage = 0;
     var communityTotal = 0;
@@ -75,7 +89,7 @@ export default function Achievements({ userData, screenWidth }) {
       "pubs",
     ];
 
-    const todayValues = [
+    const todayProgress = [
       /* 0 */ "",
       /* 1 */ "",
       /* 2 */ "",
@@ -93,75 +107,205 @@ export default function Achievements({ userData, screenWidth }) {
       /* 14 */ userData.daily_stats.total_games,
       /* 15 */ userData.daily_stats.total_games,
       /* 16 */ userData.daily_stats.total_games,
-      /* 17 */ Math.round(exportAchievementData[17] * 12),
-      /* 18 */ "",
-      /* 19 */ "",
-      /* 20 */ "",
-      /* 21 */ "",
-      /* 22 */ "",
-      /* 23 */ "",
-      /* 24 */ "",
-      /* 25 */ "",
-      /* 26 */ "",
-      /* 27 */ "",
-      /* 28 */ "",
-      /* 29 */ "",
-      /* 30 */ userData.weekly_stats.total_games,
-      /* 31 */ userData.weekly_stats.total_games,
-      /* 32 */ userData.weekly_stats.total_games,
-      /* 33 */ userData.weekly_stats.total_games,
-      /* 34 */ userData.weekly_stats.total_games,
-      /* 35 */ userData.weekly_stats.total_games,
-      /* 36 */ userData.weekly_stats.total_games,
-      /* 37 */ userData.weekly_stats.total_games,
-      /* 38 */ userData.weekly_stats.total_games,
-      /* 39 */ userData.weekly_stats.total_games,
-      /* 40 */ userData.weekly_stats.total_games,
-      /* 41 */ userData.weekly_stats.total_games,
+      /* 17 */ round(map_range(userData?.achievements?.[17] ?? 0, 0, 1, 0, 12)),
+      /* 18 */ round(map_range(userData?.achievements?.[18] ?? 0, 0, 1, 8, 3)),
+      /* 19 */ userData.daily_stats.combustion_games + userData.daily_stats.dyson_games,
+      /* 20 */ userData.daily_stats.fission_games + userData.daily_stats.surge_games,
+      /* 21 */ round(map_range(userData?.achievements?.[21] ?? 0, 0, 1, 0, 50), 1) + "%",
+      /* 22 */ round(map_range(userData?.achievements?.[22] ?? 0, 0, 1, 0, 2), 1) + "%",
+      /* 23 */ round(userData?.daily_stats?.top_speed ?? 0, 1) + "m/s",
+      /* 24 */ round(map_range(userData?.achievements?.[24] ?? 0, 0, 1, 0, 50), 1) + "%",
+      /* 25 */ userData?.daily_stats?.dyson_games ?? 0,
+      /* 26 */ userData?.daily_stats?.combustion_games ?? 0,
+      /* 27 */ userData?.daily_stats?.fission_games ?? 0,
+      /* 28 */ userData?.daily_stats?.surge_games ?? 0,
+      /* 29 */ userData?.daily_stats?.total_games ?? 0,
+      /* 30 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 31 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 32 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 33 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 34 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 35 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 36 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 37 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 38 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 39 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 40 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 41 */ userData?.weekly_stats?.total_games ?? 0,
+
+      /* 42 */ userData?.weekly_stats?.total_games ?? 0,
+      /* 43 */ round(userData?.weekly_stats?.deaths ?? 1000000 / userData?.weekly_stats?.total_games ?? 0, 1),
+      /* 44 */ (userData?.weekly_stats?.combustion_games ?? 0) + (userData?.weekly_stats?.dyson_games ?? 0),
+      /* 45 */ (userData?.weekly_stats?.fission_games ?? 0) + (userData?.weekly_stats?.surge_games ?? 0),
+      /* 46 */ round((userData?.weekly_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
+      /* 47 */ round((userData?.weekly_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
+      /* 48 */ round(userData?.weekly_stats?.average_speed ?? 0, 1) + "m/s",
+      /* 49 */ round((userData?.weekly_stats?.percent_upsidedown ?? 0) * 100, 1) + "%",
+      /* 50 */ userData?.weekly_stats?.dyson_games ?? 0,
+      /* 51 */ userData?.weekly_stats?.combustion_games ?? 0,
+      /* 52 */ userData?.weekly_stats?.fission_games ?? 0,
+      /* 53 */ userData?.weekly_stats?.surge_games ?? 0,
+      /* 54 */ userData?.weekly_stats?.total_games ?? 0,
+
+      /* 55 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 56 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 57 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 58 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 59 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 60 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 61 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 62 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 63 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 64 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 65 */ userData?.achievement_stats?.total_games ?? 0,
+      /* 66 */ userData?.achievement_stats?.total_games ?? 0,
+
+      /* 67 */ round((userData?.achievements?.[67] ?? 0) * 64),
+      /* 68 */ userData?.achievement_stats?.deaths ?? 0,
+      /* 69 */ (userData?.achievement_stats?.combustion_games ?? 0) + (userData?.achievement_stats?.dyson_games ?? 0),
+      /* 70 */ (userData?.achievement_stats?.fission_games ?? 0) + (userData?.achievement_stats?.surge_games ?? 0),
+      /* 71 */ round((userData?.achievement_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
+      /* 72 */ round((userData?.achievement_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
+      /* 73 */ round(userData?.achievement_stats?.average_speed ?? 0, 1) + "m/s",
+      /* 74 */ round((userData?.achievement_stats?.percent_upsidedown ?? 0) * 100, 1) + "%",
+      /* 75 */ userData?.achievement_stats?.dyson_games ?? 0,
+      /* 76 */ userData?.achievement_stats?.combustion_games ?? 0,
+      /* 77 */ userData?.achievement_stats?.fission_games ?? 0,
+      /* 78 */ userData?.achievement_stats?.surge_games ?? 0,
+      /* 79 */ userData?.achievement_stats?.total_games ?? 0,
     ];
-    const todayProgress = [
+
+    // const todayValue = [
+    //   /* 0 */ "",
+    //   /* 1 */ "",
+    //   /* 2 */ "",
+    //   /* 3 */ "",
+    //   /* 4 */ "",
+    //   /* 5 */ userData.daily_stats.total_games,
+    //   /* 6 */ userData.daily_stats.total_games,
+    //   /* 7 */ userData.daily_stats.total_games,
+    //   /* 8 */ userData.daily_stats.total_games,
+    //   /* 9 */ userData.daily_stats.total_games,
+    //   /* 10 */ userData.daily_stats.total_games,
+    //   /* 11 */ userData.daily_stats.total_games,
+    //   /* 12 */ userData.daily_stats.total_games,
+    //   /* 13 */ userData.daily_stats.total_games,
+    //   /* 14 */ userData.daily_stats.total_games,
+    //   /* 15 */ userData.daily_stats.total_games,
+    //   /* 16 */ userData.daily_stats.total_games,
+    //   /* 17 */ round(userData?.achievements?.[17] ?? 0 * 12),
+    //   /* 18 */ round(map_range(userData?.achievements?.[18] ?? 0, 0, 1, 8, 3)),
+    //   /* 19 */ userData.daily_stats.combustion_games + userData.daily_stats.dyson_games,
+    //   /* 20 */ userData.daily_stats.fission_games + userData.daily_stats.surge_games,
+    //   /* 21 */ round(map_range(userData?.achievements?.[21] ?? 0, 0, 1, 0, 50), 1) + "%",
+    //   /* 22 */ round(map_range(userData?.achievements?.[22] ?? 0, 0, 1, 0, 2), 1) + "%",
+    //   /* 23 */ round(map_range(userData?.achievements?.[23] ?? 0, 0, 1, 15, 35), 1) + "m/s",
+    //   /* 24 */ round(map_range(userData?.achievements?.[24] ?? 0, 0, 1, 0, 50), 1) + "%",
+    //   /* 25 */ userData?.daily_stats?.dyson_games ?? 0,
+    //   /* 26 */ userData?.daily_stats?.combustion_games ?? 0,
+    //   /* 27 */ userData?.daily_stats?.fission_games ?? 0,
+    //   /* 28 */ userData?.daily_stats?.surge_games ?? 0,
+    //   /* 29 */ userData?.daily_stats?.total_games ?? 0,
+    //   /* 30 */ userData.weekly_stats.total_games,
+    //   /* 31 */ userData.weekly_stats.total_games,
+    //   /* 32 */ userData.weekly_stats.total_games,
+    //   /* 33 */ userData.weekly_stats.total_games,
+    //   /* 34 */ userData.weekly_stats.total_games,
+    //   /* 35 */ userData.weekly_stats.total_games,
+    //   /* 36 */ userData.weekly_stats.total_games,
+    //   /* 37 */ userData.weekly_stats.total_games,
+    //   /* 38 */ userData.weekly_stats.total_games,
+    //   /* 39 */ userData.weekly_stats.total_games,
+    //   /* 40 */ userData.weekly_stats.total_games,
+    //   /* 41 */ userData.weekly_stats.total_games,
+    // ];
+
+    const weeklyOutOf40 = Math.min(1, (userData?.weekly_stats?.total_games ?? 0) / 40);
+
+    const todayValue = [
       /* 0 */ "",
       /* 1 */ "",
       /* 2 */ "",
       /* 3 */ "",
       /* 4 */ "",
-      /* 5 */ userData.daily_stats.total_games / 15,
-      /* 6 */ userData.daily_stats.total_games / 15,
-      /* 7 */ userData.daily_stats.total_games / 15,
-      /* 8 */ userData.daily_stats.total_games / 15,
-      /* 9 */ userData.daily_stats.total_games / 15,
-      /* 10 */ userData.daily_stats.total_games / 15,
-      /* 11 */ userData.daily_stats.total_games / 15,
-      /* 12 */ userData.daily_stats.total_games / 15,
-      /* 13 */ userData.daily_stats.total_games / 15,
-      /* 14 */ userData.daily_stats.total_games / 15,
-      /* 15 */ userData.daily_stats.total_games / 15,
-      /* 16 */ userData.daily_stats.total_games / 15,
-      /* 17 */ Math.round(exportAchievementData[17] * 12),
-      /* 18 */ "",
-      /* 19 */ "",
-      /* 20 */ "",
-      /* 21 */ "",
-      /* 22 */ "",
-      /* 23 */ "",
-      /* 24 */ "",
-      /* 25 */ "",
-      /* 26 */ "",
-      /* 27 */ "",
-      /* 28 */ "",
-      /* 29 */ "",
-      /* 30 */ userData.weekly_stats.total_games / 40,
-      /* 31 */ userData.weekly_stats.total_games / 40,
-      /* 32 */ userData.weekly_stats.total_games / 40,
-      /* 33 */ userData.weekly_stats.total_games / 40,
-      /* 34 */ userData.weekly_stats.total_games / 40,
-      /* 35 */ userData.weekly_stats.total_games / 40,
-      /* 36 */ userData.weekly_stats.total_games / 40,
-      /* 37 */ userData.weekly_stats.total_games / 40,
-      /* 38 */ userData.weekly_stats.total_games / 40,
-      /* 39 */ userData.weekly_stats.total_games / 40,
-      /* 40 */ userData.weekly_stats.total_games / 40,
-      /* 41 */ userData.weekly_stats.total_games / 40,
+      /* 5 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 6 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 7 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 8 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 9 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 10 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 11 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 12 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 13 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 14 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 15 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 16 */ (userData?.daily_stats?.total_games ?? 0) / 15,
+      /* 17 */ null,
+      /* 18 */ null,
+      /* 19 */ (userData.daily_stats.combustion_games + userData.daily_stats.dyson_games) / 8,
+      /* 20 */ (userData.daily_stats.fission_games + userData.daily_stats.surge_games) / 8,
+      /* 21 */ null,
+      /* 22 */ null,
+      /* 23 */ map_range(userData?.daily_stats?.top_speed ?? 0, 15, 35, 0, 1, true),
+      /* 24 */ null,
+      /* 25 */ (userData?.daily_stats?.dyson_games ?? 0) / 4,
+      /* 26 */ (userData?.daily_stats?.combustion_games ?? 0) / 4,
+      /* 27 */ (userData?.daily_stats?.fission_games ?? 0) / 4,
+      /* 28 */ (userData?.daily_stats?.surge_games ?? 0) / 4,
+      /* 29 */ (userData?.daily_stats?.total_games ?? 0) / 35,
+
+      /* 30 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 31 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 32 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 33 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 34 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 35 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 36 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 37 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 38 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 39 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 40 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+      /* 41 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
+
+      /* 42 */ (userData?.weekly_stats?.total_games ?? 0) / 25,
+      /* 43 */ map_range(userData?.weekly_stats?.average_deaths ?? 10, 10, 3, 0, 1, true) * weeklyOutOf40,
+      /* 44 */ ((userData?.weekly_stats?.combustion_games ?? 0) + (userData?.weekly_stats?.dyson_games ?? 0)) / 50,
+      /* 45 */ ((userData?.weekly_stats?.fission_games ?? 0) + (userData?.weekly_stats?.surge_games ?? 0)) / 50,
+      /* 46 */ map_range(userData?.weekly_stats?.percent_close_mate ?? 0, 0, 0.5, 0, 1, true) * weeklyOutOf40,
+      /* 47 */ map_range(userData?.weekly_stats?.percent_close_mate ?? 0, 0, 0.02, 0, 1, true) * weeklyOutOf40,
+      /* 48 */ map_range(userData?.weekly_stats?.average_speed ?? 0, 2.5, 4, 0, 1, true) * weeklyOutOf40,
+      /* 49 */ map_range(userData?.weekly_stats?.percent_upsidedown ?? 0, 0, 0.15, 0, 1, true) * weeklyOutOf40,
+      /* 50 */ (userData?.daily_stats?.dyson_games ?? 0) / 20,
+      /* 51 */ (userData?.daily_stats?.combustion_games ?? 0) / 20,
+      /* 52 */ (userData?.daily_stats?.fission_games ?? 0) / 20,
+      /* 53 */ (userData?.daily_stats?.surge_games ?? 0) / 20,
+      /* 54 */ (userData?.daily_stats?.total_games ?? 0) / 100,
+
+      /* 55 */ null,
+      /* 56 */ null,
+      /* 57 */ null,
+      /* 58 */ null,
+      /* 59 */ null,
+      /* 60 */ null,
+      /* 61 */ null,
+      /* 62 */ null,
+      /* 63 */ null,
+      /* 64 */ null,
+      /* 65 */ null,
+      /* 66 */ null,
+      /* 67 */ null,
+      /* 68 */ null,
+      /* 69 */ null,
+      /* 70 */ null,
+      /* 71 */ null,
+      /* 72 */ null,
+      /* 73 */ null,
+      /* 74 */ null,
+      /* 75 */ null,
+      /* 76 */ null,
+      /* 77 */ null,
+      /* 78 */ null,
+      /* 79 */ null,
     ];
 
     for (let index = 0; index < 80; index++) {
@@ -190,23 +334,22 @@ export default function Achievements({ userData, screenWidth }) {
       if (index > 4) {
         chosenIcon = achievementIcons[(index - 5) % 25];
       }
-      exportAchievementData[index] = {
+      let achievementData = {
         id: index,
         value: element,
         locked: false,
         formatting: achievementFormattingData[index],
         pubCount: pubCount,
         icon: chosenIcon,
+        todayValue: todayValue[index],
+        todayProgress: todayProgress[index],
       };
+      console.log(exportAchievementData[index]);
+      // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayValues[index]);
+      achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayProgress[index]);
+
+      exportAchievementData[index] = achievementData;
     }
-
-    todayValues.forEach((element, index) => {
-      exportAchievementData[index].todayValue = element;
-    });
-
-    todayProgress.forEach((element, index) => {
-      exportAchievementData[index].todayProgress = element;
-    });
 
     console.log("#110", totalPercentage / 79);
     exportAchievementData.totalPercentage = totalPercentage / 79;
@@ -215,7 +358,6 @@ export default function Achievements({ userData, screenWidth }) {
     exportAchievementData.weeklyTotal = weeklyTotal / 79;
     exportAchievementData.seasonTotal = seasonTotal / 79;
     exportAchievementData.oculus_id = userData?.achievements?.oculus_id ?? null;
-    if (!userData) return null;
     if (userData && userData.daily_stats && userData.daily_stats.top_loadout) {
       userData.daily_stats.top_loadout.every((element) => {
         if (element[1] < 0.01) return false;
@@ -253,8 +395,10 @@ export default function Achievements({ userData, screenWidth }) {
     }
 
     if (userData?.weekly_stats?.top_loadout) {
+      let numOfLoadouts = 0;
       userData.weekly_stats.top_loadout.every((element) => {
         if (element[1] < 0.01) return false;
+        numOfLoadouts++;
         let loadoutNumber = parseInt(element[0]);
 
         if (loadoutNumber >> 4 !== 0) exportAchievementData[30].locked = true;
@@ -286,6 +430,9 @@ export default function Achievements({ userData, screenWidth }) {
 
         return true;
       });
+      if (numOfLoadouts > 1) {
+        exportAchievementData[42].locked = true;
+      }
     }
 
     exportAchievementData[43].pubRequirement = 40;
@@ -336,7 +483,7 @@ export default function Achievements({ userData, screenWidth }) {
             ". " +
             timeframe +
             "s progress is " +
-            todayValues[id] +
+            todayProgress[id] +
             " games. The white bar is your highest record. Keep playing games using only " +
             word +
             " to surpass your record and keep progressing.";
@@ -347,7 +494,7 @@ export default function Achievements({ userData, screenWidth }) {
             ". " +
             timeframe +
             "s progress is " +
-            todayValues[id] +
+            todayProgress[id] +
             " games. Keep playing games using only " +
             word +
             " to continue progressing.";
@@ -443,6 +590,22 @@ export default function Achievements({ userData, screenWidth }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wantFAQ]);
 
+  useEffect(() => {
+    function delay(time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
+    // if (!fullView) return;
+    if (!fullView) {
+      setLetOverflow(false);
+      return;
+    }
+
+    async function FAQAnimation() {
+      await delay(500);
+      setLetOverflow(fullView);
+    }
+    FAQAnimation();
+  }, [fullView]);
   return (
     <div
       className="padded rounded list"
@@ -451,6 +614,7 @@ export default function Achievements({ userData, screenWidth }) {
         ...(fullView ? { padding: "10px 20px 20px", gap: "20px" } : { padding: "0px", gap: "0px" }),
         transitionProperty: "padding,max-height,gap",
         transitionDuration: "0.5s",
+        overflow: letOverflow ? "visible" : "hidden",
       }}
     >
       <div

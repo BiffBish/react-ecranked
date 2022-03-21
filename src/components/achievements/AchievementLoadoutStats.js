@@ -336,7 +336,7 @@ const SegmentedLProgressBar = ({
 
   let icon =
     "/images/icons/" + (achievementData?.icon ?? "pulsar") + (achievementData?.inProgress ? "_" + type : "") + ".png";
-  var showWhite = true;
+  var showWhite = achievementData.value > achievementData.todayValue;
 
   if (locked) {
     showWhite = false;
@@ -344,14 +344,14 @@ const SegmentedLProgressBar = ({
   if (completed) {
     showWhite = false;
   }
-  if (
-    !(
-      (achievementData?.id >= 30 && achievementData?.id <= 41) ||
-      (achievementData?.id >= 5 && achievementData?.id <= 16)
-    )
-  ) {
-    showWhite = false;
-  }
+  // if (
+  //   !(
+  //     (achievementData?.id >= 30 && achievementData?.id <= 41) ||
+  //     (achievementData?.id >= 5 && achievementData?.id <= 16)
+  //   )
+  // ) {
+  //   showWhite = false;
+  // }
 
   return (
     <div
@@ -435,7 +435,9 @@ const SegmentedLProgressBar = ({
             ProgressBarClass={type + "-background"}
             // ActiveProgress={showWhite ? achievementData?.todayProgress : null}
             // ActiveProgress={showWhite ? 0.5 : undefined}
-            ActiveProgress={showWhite ? achievementData?.todayProgress : undefined}
+            ActiveProgress={showWhite ? achievementData?.todayValue : undefined}
+            todayValue={achievementData?.todayValue}
+            recordValue={achievementData?.value}
             centeredTitle={centeredIcon}
             leftTitle={onLeft}
             titleStyle={titleStyle}
