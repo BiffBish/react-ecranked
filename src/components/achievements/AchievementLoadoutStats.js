@@ -581,6 +581,7 @@ export const AchievementLoadoutStats = ({
   cb = () => {},
   setHn = () => {},
   setWantFAQ = () => {},
+  onRefresh = () => {},
 }) => {
   if (achievementsData == null || userData == null) {
     return null;
@@ -654,7 +655,14 @@ export const AchievementLoadoutStats = ({
 
   if (selectedAchievementType === "daily") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
             <SegmentedLProgressBar achievementData={achievementsData[29]} type={"daily"} centeredIcon={true} />
@@ -704,7 +712,14 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "weekly") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
             <SegmentedLProgressBar achievementData={achievementsData[54]} type={"weekly"} centeredIcon={true} />
@@ -753,7 +768,14 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "global") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
             <SegmentedLProgressBar achievementData={achievementsData[79]} centeredIcon={true} type={"season"} />
@@ -804,7 +826,14 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "community") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div style={{ width: "50%" }}>
           <div className="list padded light-background">
             <SegmentedLProgressBar type={"community"} achievementData={achievementsData[1]} />

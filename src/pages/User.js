@@ -167,7 +167,8 @@ export default function User({ username, setBannerCallback, subDomain }) {
   };
   const [apiData, setApiData] = React.useState(EMPTYREQUEST);
   const [userNotFound, setUserNotFound] = React.useState(false);
-  const FetchUserData = () => {
+
+  const fetchUserData = () => {
     fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
       method: "GET",
       headers: {
@@ -222,7 +223,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
     if (username === "random_async") {
       return;
     }
-    FetchUserData();
+    fetchUserData();
 
     // eslint-disable-next-line
   }, [username]);
@@ -266,7 +267,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
         >
           --- FLAMINGO CHALLENGE ---
         </h3>
-        <Achievements userData={apiData} screenWidth={windowDimensions.width} />
+        <Achievements userData={apiData} screenWidth={windowDimensions.width} fetchUserData={fetchUserData} />
         {/* <div> */}
         <MetaTags>
           <title>{username}'s Page!</title>

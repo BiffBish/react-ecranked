@@ -46,7 +46,7 @@ export const LeftAchievementColumn = styled.div`
   flex-direction: column;
 `;
 
-export default function Achievements({ userData, screenWidth }) {
+export default function Achievements({ userData, screenWidth, fetchUserData = () => {} }) {
   const [achievementData, setAchievementData] = useState(undefined);
   const [letOverflow, setLetOverflow] = useState(false);
 
@@ -770,6 +770,7 @@ export default function Achievements({ userData, screenWidth }) {
                 selectedAchievementType={selectedAchievementType}
                 achievementsData={achievementData}
                 setWantFAQ={setWantFAQ}
+                onRefresh={fetchUserData}
               />
             </div>
           </div>
