@@ -519,9 +519,16 @@ const LoadoutImage = ({ number }) => {
     </>
   );
 };
-const LoadoutBarItem = ({ loadoutNumber }) => {
+const LoadoutBarItem = ({ loadoutNumber, setHovered = () => {}, barHovered = false }) => {
   var [onHovered, setOnHovered] = useState(false);
-
+  var width = "40px";
+  if (onHovered) {
+    width = "124px";
+  } else if (barHovered) {
+    width = "33px";
+  } else {
+    width = "40px";
+  }
   return (
     <div
       style={{
@@ -529,15 +536,17 @@ const LoadoutBarItem = ({ loadoutNumber }) => {
         position: "relative",
         transitionProperty: "width",
         transitionDuration: "200ms",
-        width: onHovered ? "124px" : "40px",
+        width: width,
       }}
       className="rounded list hoverable"
       onMouseEnter={() => {
         console.log("Twe");
         setOnHovered(true);
+        setHovered(true);
       }}
       onMouseLeave={() => {
         setOnHovered(false);
+        setHovered(false);
       }}
     >
       <LoadoutImage number={loadoutNumber} />
@@ -569,14 +578,40 @@ export const AchievementLoadoutStats = ({
     return null;
   }
 
+  const LoadoutList = ({ elements }) => {
+    const [barHovered, setBarHovered] = useState(false);
+
+    return (
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        {elements.map((element) => {
+          return (
+            <LoadoutBarItem
+              style={{ width: "30px" }}
+              width={0.1}
+              loadoutNumber={parseInt(element[0])}
+              setHovered={setBarHovered}
+              barHovered={barHovered}
+            />
+          );
+        })}
+      </div>
+    );
+  };
   const AllLoadoutHelper = () => {
-    let numOfHelpers = 0;
-    const [loadoutList, setLoadoutList] = useState([]);
+    const [filteredSplitList, setFilteredSplitList] = useState([]);
     useEffect(() => {
       let shuffledArray = Object.entries(userData.achievement_stats.loadout);
       shuffleArray(shuffledArray);
-      setLoadoutList(shuffledArray);
-    }, [setLoadoutList]);
+
+      shuffledArray = shuffledArray.filter((element) => element[1] < 3 * 60 * 30);
+
+      let splitList = [];
+      for (let index = 0; index < Math.ceil(shuffledArray.length / 13); index++) {
+        splitList.push(shuffledArray.slice(index * 13, index * 13 + 13));
+      }
+
+      setFilteredSplitList(splitList);
+    }, []);
 
     return (
       <AchievementPopupStyle
@@ -595,11 +630,12 @@ export const AchievementLoadoutStats = ({
         </p>
         <div style={{ overflowY: "scroll", maxHeight: "200px" }}>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {loadoutList.map((element) => {
-              if (element[1] > 3 * 60 * 30) return null;
-              numOfHelpers += 1;
-              if (numOfHelpers >= 60) return null;
-              return <LoadoutBarItem style={{ width: "30px" }} width={0.1} loadoutNumber={parseInt(element[0])} />;
+            {filteredSplitList.map((element) => {
+              return <LoadoutList elements={element}></LoadoutList>;
+              // if (element[1] > 3 * 60 * 30) return null;
+              // numOfHelpers += 1;
+              // if (numOfHelpers >= 60) return null;
+              // return <LoadoutBarItem style={{ width: "30px" }} width={0.1} loadoutNumber={parseInt(element[0])} />;
             })}
           </div>
         </div>
