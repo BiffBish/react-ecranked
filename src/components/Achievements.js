@@ -320,8 +320,8 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       if (index > 0) {
         totalPercentage += element;
       }
-
-      if (index < 5) {
+      if (index < 1) {
+      } else if (index < 5) {
         communityTotal += element;
       } else if (index < 29) {
         dailyTotal += element;
