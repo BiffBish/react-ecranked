@@ -1846,7 +1846,7 @@
     ],
     "Title": "LOADOUT CHALLENGE",
     "Progress": "You've used only one loadout for %p games in a single week.  Get comfortable with one loadout and stick to it for an entire week to complete this challenge!  Be sure to not accidentally switch your loadout.",
-    "Locked": "This challenge is locked because you didn't only use Pulsar.  You have to wait until next week for this challenge to become unlocked."
+    "Locked": "This challenge is locked because you didnt use a single loadout. You have to wait until next week for this challenge to become unlocked."
   },
   "43": {
     "parts": [
@@ -2070,7 +2070,7 @@
         "Title": "Don\u2019t Float!",
         "Description": "Average speed over 2.5m/s (in 1 week)",
         "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.25",
+        "Percent": "0",
         "Extra": "check %'s",
         "Type": "Speed"
       },
@@ -2079,7 +2079,7 @@
         "Title": "Overclocked",
         "Description": "Average speed over 3.0m/s (in 1 week)",
         "Timeframe": "",
-        "Percent": "0.5",
+        "Percent": "0.3333333333",
         "Extra": "check %'s",
         "Type": "Speed"
       },
@@ -2088,7 +2088,7 @@
         "Title": "I Am Speed!",
         "Description": "Average speed over 3.5m/s (in 1 week)",
         "Timeframe": "",
-        "Percent": "0.75",
+        "Percent": "0.6666666667",
         "Extra": "check %'s",
         "Type": "Speed"
       },

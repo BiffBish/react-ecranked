@@ -146,8 +146,8 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       /* 51 */ userData?.weekly_stats?.combustion_games ?? 0,
       /* 52 */ userData?.weekly_stats?.fission_games ?? 0,
       /* 53 */ userData?.weekly_stats?.surge_games ?? 0,
-      // /* 54 */ userData.weekly_stats.total_games,
-      /* 54 */ 1000,
+      /* 54 */ userData?.weekly_stats?.total_games,
+      // /* 54 */ 1000,
 
       /* 55 */ userData?.achievement_stats?.total_games ?? 0,
       /* 56 */ userData?.achievement_stats?.total_games ?? 0,
