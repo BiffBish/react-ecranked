@@ -36,6 +36,7 @@ export default function LinkOasis({ token }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + sessionStorage.getItem("AUTHORIZATION_TOKEN"),
             },
             body: JSON.stringify({
                 token: token,
