@@ -210,7 +210,8 @@ export default function AchievementLeaderboard({
       for (let index = 1; index <= 79; index++) {
         total += apiData[i][index.toString()];
       }
-      apiData[i][80] = total;
+      apiData[i][80] = total / 79;
+      apiData[i].position = i;
     }
 
     var sortedApiData = apiData.sort((a, b) => {
