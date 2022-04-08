@@ -32,11 +32,13 @@ export default function LinkOasis({ token }) {
     let handleSubmit = (e) => {
         e.preventDefault();
 
+
+
         fetch("https://ecranked.ddns.net/api/v2/auth/oasis/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + sessionStorage.getItem("AUTHORIZATION_TOKEN"),
+                "Authorization": localStorage.getItem("AUTHORIZATION_TOKEN"),
             },
             body: JSON.stringify({
                 token: token,

@@ -10,7 +10,7 @@ export const ApiCallHelper = () => {
   return null;
 };
 
-export default function makeApiCall(url, method = "GET", body = {}, noAlert = false) {
+export default function makeApiCall(url, method = "GET", body = {}, noAlert = false, version = "v1") {
   var promise = new Promise((resolve, reject) => {
     let requestOptions = {
       method: method,
@@ -23,7 +23,7 @@ export default function makeApiCall(url, method = "GET", body = {}, noAlert = fa
     if (!(method === "HEAD" || method === "GET")) {
       requestOptions.body = JSON.stringify(body);
     }
-    fetch("https://ecranked.ddns.net/api/v1/" + url, requestOptions)
+    fetch("https://ecranked.ddns.net/api/" + version + "/" + url, requestOptions)
       .then(async (response) => {
         const data = await response.json();
         console.log(response);
