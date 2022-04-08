@@ -1,8 +1,6 @@
-/* eslint-disable */
-
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import GlobalUserState from "../contexts/GlobalUserState";
@@ -14,8 +12,7 @@ const BodyContainer = styled.div`
 `;
 
 export default function Teams() {
-  let history = useHistory();
-  const [globalUserState, setGlobalUserState] = useContext(GlobalUserState);
+  const [globalUserState] = useContext(GlobalUserState);
   // globalUserState.requested_team_id = 1;
   console.log(globalUserState.authorization_token);
   console.log(globalUserState.requested_team_id);
@@ -24,10 +21,7 @@ export default function Teams() {
   // globalUserState.team_id = null;
   // globalUserState.requested_team_id = null;
 
-  let canJoin =
-    globalUserState.authorization_token &&
-    !globalUserState.requested_team_id &&
-    !globalUserState.team_id;
+  let canJoin = globalUserState.authorization_token && !globalUserState.requested_team_id && !globalUserState.team_id;
   let [teamList, setTeamList] = useState([]);
   useEffect(() => {
     makeApiCall("team/@all")
@@ -35,7 +29,7 @@ export default function Teams() {
         console.log(response);
         setTeamList(response.json);
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }, []);
 
   const JoinTeam = (teamname) => {
@@ -48,17 +42,16 @@ export default function Teams() {
       window.location.reload(false);
     });
   };
-  let showRequestButtons =
-    globalUserState.team_id === null && globalUserState.authorization_token;
+  let showRequestButtons = globalUserState.team_id === null && globalUserState.authorization_token;
 
-  let isRequesting = globalUserState.requesting_team_id !== null;
+  // let isRequesting = globalUserState.requesting_team_id !== null;
   console.log(globalUserState.requested_team_id);
   return (
     <>
       <p style={{ color: "white", fontSize: "15px" }}>
         {" "}
-        This page is in early beta. There may be issues and the layout might
-        change. Currently you cannot undo your request to join so be careful.
+        This page is in early beta. There may be issues and the layout might change. Currently you cannot undo your
+        request to join so be careful.
       </p>
       <BodyContainer>
         <div className="padded list">
@@ -73,14 +66,10 @@ export default function Teams() {
             {teamList.slice(0, 200).map((teamData) => {
               let disabled = false;
               if (!canJoin) disabled = true;
-              if (teamData.id == globalUserState.requested_team_id)
-                disabled = false;
+              if (teamData.id === globalUserState.requested_team_id) disabled = false;
               return (
                 <div className="button-container">
-                  <NavLink
-                    className={"button rounded grow"}
-                    to={"/team/" + teamData.name + "/overview"}
-                  >
+                  <NavLink className={"button rounded grow"} to={"/team/" + teamData.name + "/overview"}>
                     {" "}
                     {teamData.name}
                   </NavLink>
@@ -90,18 +79,14 @@ export default function Teams() {
                   </div>
                   {showRequestButtons ? (
                     <div
-                      className={
-                        "rounded " + (disabled ? "disabled-button" : "button")
-                      }
+                      className={"rounded " + (disabled ? "disabled-button" : "button")}
                       onClickCapture={() => {
                         if (disabled) return;
                         if (canJoin) return JoinTeam(teamData.name);
                         CancelTeam(teamData.name);
                       }}
                     >
-                      {teamData.id == globalUserState.requested_team_id
-                        ? "Cancel Request"
-                        : "Request To join"}
+                      {teamData.id === globalUserState.requested_team_id ? "Cancel Request" : "Request To join"}
                     </div>
                   ) : null}
                   {/* <div

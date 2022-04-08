@@ -3,14 +3,14 @@ import GlobalUserState from "../contexts/GlobalUserState";
 
 var authToken = null;
 export const ApiCallHelper = () => {
-  const [globalUserState] = useContext(GlobalUserState);
+  const globalUserState = useContext(GlobalUserState);
   useEffect(() => {
     authToken = globalUserState.authorization_token;
   }, [globalUserState.authorization_token]);
   return null;
 };
 
-export default function makeApiCall(url, method = "GET", body = {}) {
+export default function makeApiCall(url, method = "GET", body = {}, noAlert = false) {
   var promise = new Promise((resolve, reject) => {
     let requestOptions = {
       method: method,
@@ -35,9 +35,9 @@ export default function makeApiCall(url, method = "GET", body = {}) {
         resolve(returnData);
       })
       .catch((error) => {
-        alert(
-          "There was an error. Please contact a moderator immediately. #MakeApiCall36"
-        );
+        if (!noAlert) {
+          alert("There was an error. Please contact a moderator immediately. #MakeApiCall36");
+        }
         console.error("There was an error!", error);
         reject(error);
         return;

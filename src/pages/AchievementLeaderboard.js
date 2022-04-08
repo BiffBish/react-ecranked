@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MasterAchievementBar } from "../components/MasterAchievementBar";
 import { Link } from "react-router-dom";
+import makeApiCall from "../helpers/makeApiCall";
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 
@@ -171,9 +172,7 @@ const LeaderboardList = ({ userList, compacted }) => {
   );
 };
 export default function AchievementLeaderboard({
-  leaderboardStatistic,
   setBannerCallback,
-  subDomain,
   limit = 200,
   surroundID = null,
   compacted = true,
@@ -181,76 +180,55 @@ export default function AchievementLeaderboard({
   console.log("LOADING ACHIEVEMENT LEADERBOARD");
   const [apiData, setApiData] = React.useState(null);
   const [sortedApiData, setSortedApiData] = React.useState(null);
-  if (subDomain === undefined) {
-    subDomain = "global";
-  }
+
   setBannerCallback("Challenges Leaderboard");
-  const [randomLoadout, setRandomLoadout] = React.useState(null);
   const [startIndex, setStartIndex] = React.useState(0);
 
-  if (leaderboardStatistic === "loadout" && subDomain === "random" && randomLoadout === null) {
-    var randomLoadoutNumber = Math.round(Math.random() * 64);
-    setRandomLoadout(randomLoadoutNumber);
-    subDomain = randomLoadout;
-  }
-
-  if (randomLoadout != null) {
-    subDomain = randomLoadout;
-  }
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/leaderboard/achievement", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response) => {
-        console.log(response);
-        const data = await response.json();
-        console.log("code:" + response.statusCode);
-        if (response.status === 404) {
-          console.error("User not found!");
-        } else {
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-          setApiData(data);
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  }, [leaderboardStatistic, subDomain]);
+    makeApiCall("leaderboard/achievement").then((response) => {
+      if (response.status === 404) {
+        console.error("Achievement leaderboard not found");
+        return;
+      }
+      setApiData(response.json);
+    });
+  }, []);
 
   useEffect(() => {
-    if (!apiData) return;
-    apiData.forEach((element) => {
+    //for each of the items inside of apiData set
+    //the key of 80 to the sum of key 1-79.
+    //take apiData and sort it by a key of "80" putting high numbers first.
+    //then set sortedApiData to the sorted data.
+    //then set the startID to be 3 less of the index of the element with oculus_id
+    //equal to surroundID
+
+    if (apiData == null) {
+      return;
+    }
+    for (let i = 0; i < apiData.length; i++) {
       var total = 0;
       for (let index = 1; index <= 79; index++) {
-        const element2 = element[index.toString()];
-
-        total += element2;
+        total += apiData[i][index.toString()];
       }
-      element["80"] = total / 79;
-    });
+      apiData[i][80] = total;
+    }
 
-    apiData.sort((a, b) => (a["80"] > b["80"] ? -1 : b["80"] > a["80"] ? 1 : 0));
-    let NewData = [];
-    apiData.forEach((element, index) => {
-      if (element.oculus_id === surroundID) {
-        if (index - 3 < 0) {
-          setStartIndex(0);
-        } else {
-          setStartIndex(index - 3);
+    var sortedApiData = apiData.sort((a, b) => {
+      return b[80] - a[80];
+    });
+    setSortedApiData(sortedApiData);
+
+    var startIndex = 0;
+    for (let i = 0; i < sortedApiData.length; i++) {
+      if (sortedApiData[i].oculus_id === surroundID) {
+        startIndex = i - 3;
+        if (startIndex < 0) {
+          startIndex = 0;
         }
+        break;
       }
-      element.position = index;
-      NewData.push(element);
-    });
-    setSortedApiData(NewData);
+    }
+    setStartIndex(startIndex);
   }, [apiData, surroundID]);
   return (
     <div className="list grow">
@@ -268,17 +246,5 @@ export default function AchievementLeaderboard({
 
       <LeaderboardList userList={sortedApiData?.slice(startIndex, startIndex + limit)} compacted={compacted} />
     </div>
-    // <>
-    //   {/* <FailedSearchBar  onFormSubmit={whenSearchSubmit} /> */}
-    //   <UserBody
-    //     style={
-    //       userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
-    //     }
-    //   >
-    //     <LeaderboardLists replays={WhatApiRequest()["recent_games"]} />
-    //     <CenterColumn userData={WhatApiRequest()} />
-    //     <AboutMe userData={WhatApiRequest()} />
-    //   </UserBody>
-    // </>
   );
 }

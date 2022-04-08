@@ -1,0 +1,420 @@
+import React, { useEffect, useState, useContext } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import styled from "styled-components";
+
+import Replay from "./pages/Replay";
+import User from "./pages/User";
+import Home from "./pages/Home";
+import ApproveImagesModeration from "./pages/Moderation/ApproveImagesModeration";
+import Moderator from "./pages/Moderator";
+import Nav from "./components/Nav";
+
+import Team from "./pages/Team";
+
+import AnimateHeight from "react-animate-height";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Changelog from "./pages/Changelog";
+
+// import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Leaderboard from "./pages/Leaderboard";
+import UncontactedUsersModeration from "./pages/Moderation/UncontactedModeration";
+import MakeTeam from "./pages/MakeTeam";
+import Teams from "./pages/Teams";
+
+import Component from "./pages/Testing";
+import GlobalUserState from "./contexts/GlobalUserState";
+import makeApiCall, { ApiCallHelper } from "./helpers/makeApiCall";
+import AchievementLeaderboard from "./pages/AchievementLeaderboard";
+import Contact from "./pages/Contact";
+import DeveloperGuide from "./pages/DeveloperGuide";
+import { DiscordOAuthCallback } from "./helpers/DiscordOAuthCallback";
+import LinkOasis from "./pages/LinkOasis";
+const PageBody = styled.div`
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+  background-color: #222;
+  min-height: 1000px;
+`;
+const combatBackground = "/images/combat_background.jpg";
+const Banner = styled(AnimateHeight)`
+  text-align: center;
+  /* Accent / Default */
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  margin: 0px;
+  overflow: visible;
+  z-index: -1;
+  font-size: 60px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  color: #fff;
+`;
+const UserIcon = styled.img`
+  width: 40px;
+  height: 40px;
+  margin: 20px;
+`;
+function Routes() {
+  const { globalUserState, setGlobalUserState } = useContext(GlobalUserState);
+  // const [clientData, setClientData] = React.useState({
+  //   oculus_id: localStorage.getItem("OCULUS_ID"),
+  //   authorization_token: localStorage.getItem("AUTHORIZATION_TOKEN"),
+  //   confirmed_authorized: false,
+  //   moderator: localStorage.getItem("MODERATOR"),
+  // });
+  useEffect(() => {
+    setGlobalUserState((state) => ({
+      ...state,
+      oculus_id: localStorage.getItem("OCULUS_ID") ?? undefined,
+      moderator: localStorage.getItem("MODERATOR") === "true" ?? undefined,
+      authorization_token: localStorage.getItem("AUTHORIZATION_TOKEN") ?? undefined,
+    }));
+
+    let authorization_token = localStorage.getItem("AUTHORIZATION_TOKEN");
+    if (authorization_token) {
+      fetch("https://ecranked.ddns.net/api/v1/user/@me", {
+        headers: { Authorization: authorization_token },
+      })
+        .then(async (response) => {
+          let data = await response.json();
+          if (response.status === 200) {
+            console.log("#R82", data);
+            setGlobalUserState((state) => ({
+              ...state,
+              ...data,
+              oculus_id: data.oculus_id + 1,
+              moderator: data.moderator,
+            }));
+            localStorage.setItem("OCULUS_ID", data.oculus_id);
+            localStorage.setItem("MODERATOR", data.moderator ? "true" : "false");
+          } else {
+            if (localStorage.getItem("AUTHORIZATION_TOKEN") !== null) {
+              alert("You have been logged out. Please log back in or contact a moderator if the problem persists.");
+            }
+            localStorage.removeItem("AUTHORIZATION_TOKEN");
+            localStorage.removeItem("OCULUS_ID");
+            localStorage.removeItem("MODERATOR");
+            setGlobalUserState((prev) => ({}));
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          localStorage.removeItem("AUTHORIZATION_TOKEN");
+          localStorage.removeItem("OCULUS_ID");
+          localStorage.removeItem("MODERATOR");
+          setGlobalUserState((prev) => ({
+            ...prev,
+            userData: undefined,
+            oculus_id: undefined,
+            moderator: undefined,
+          }));
+          alert("There was an error when authenticating you. Please contact a moderator");
+          console.error("There was an error when authenticating you. Please contact a moderator", error);
+        });
+    }
+  }, [setGlobalUserState]);
+
+  useEffect(() => {
+    fetch("https://ecranked.ddns.net/status", {
+      headers: { Authorization: globalUserState.authorization_token ?? "" },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (data.maintenance) {
+          if (localStorage.getItem("MODERATOR") !== "1") {
+            alert("The server is down for maintenance. Please visit later");
+            window.location.reload();
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+        alert("The server unresponsive. Please visit later");
+      });
+  }, [globalUserState.authorization_token]);
+
+  const [apiData, setApiData] = React.useState([]);
+  const [BannerHeight, setBannerHeight] = useState(400);
+  const [BannerText, setBannerTextCallback] = useState("ECRanked");
+  const [BannerIconSrc, setBannerIconSrc] = useState<string | null>(null);
+
+  const setBannerText = (Text: string, IconSrc?: string) => {
+    console.log(Text, IconSrc);
+    setBannerTextCallback(Text);
+    setBannerIconSrc(IconSrc ?? null);
+  };
+
+  useEffect(() => {
+    makeApiCall("replay/@recent")
+      .then((response) => {
+        if (response.status === 404) {
+          console.error("No recent games found!");
+        } else {
+          setApiData(response.json);
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }, []);
+
+  function WhatApiRequest() {
+    console.log("APIDATA");
+    console.log(apiData);
+    if (apiData) {
+      return apiData;
+    }
+    return [];
+  }
+
+  let history = useHistory();
+  console.log(history);
+
+  var BannerIconTitle = "";
+  if (BannerIconSrc === "/images/moderator_icon.png") {
+    BannerIconTitle = "Moderator";
+  }
+  if (BannerIconSrc === "/images/verified_icon.png") {
+    BannerIconTitle = "Verified User";
+  }
+  if (BannerIconSrc === "/images/capture_point_crown_green.png") {
+    BannerIconTitle = "Certified Cutie";
+  }
+  return (
+    <Router>
+      <ApiCallHelper />
+      <Nav />
+      <PageBody>
+        <Banner
+          id="example-panel"
+          duration={500}
+          height={BannerHeight}
+          style={{
+            backgroundImage: `url(${combatBackground})`,
+            overflow: "visible",
+            display: "flex",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {BannerText}
+            {BannerIconSrc ? <UserIcon title={BannerIconTitle} src={BannerIconSrc} /> : ""}
+          </div>
+        </Banner>
+        <Route exact path={["/"]}>
+          <Redirect to="/home" />
+        </Route>
+
+        <Route
+          exact
+          path={["/contact"]}
+          render={(props) => {
+            setBannerHeight(200);
+            setBannerText("Contact");
+            return <Contact />;
+          }}
+        />
+
+        <Route
+          exact
+          path={["/achievementguide"]}
+          render={(props) => {
+            setBannerHeight(200);
+            setBannerText("Guide");
+            return <DeveloperGuide />;
+          }}
+        />
+
+        <Route
+          exact
+          path={["/home", "/"]}
+          render={(props) => {
+            console.log("/");
+            setBannerHeight(400);
+            setBannerText("ECRanked");
+            return <Home replays={WhatApiRequest()} />;
+          }}
+        />
+        <Route
+          path={`/leaderboard/challenges`}
+          render={(props) => {
+            setBannerHeight(100);
+            const setBannerTextCallback = (username: string) => {
+              console.log(username);
+              setBannerText(username);
+            };
+            console.log("Leaderboard");
+            return (
+              <div style={{ padding: "10px 100px" }}>
+                <AchievementLeaderboard setBannerCallback={setBannerTextCallback} />
+              </div>
+            );
+          }}
+        />
+        <Route
+          path={`/user/:username/:subDomain`}
+          render={(props) => {
+            setBannerHeight(100);
+            return (
+              <User
+                username={props.match.params.username}
+                setBannerCallback={setBannerText}
+                subDomain={props.match.params.subDomain}
+              />
+            );
+          }}
+        />
+        <Route
+          path={`/team/:name/:subDomain`}
+          render={(props) => {
+            setBannerHeight(100);
+            console.log("User");
+            return (
+              <Team
+                teamname={props.match.params.name}
+                setBannerCallback={setBannerText}
+                subDomain={props.match.params.subDomain}
+              />
+            );
+          }}
+        />
+        <Route
+          path={`/maketeam`}
+          render={(props) => {
+            setBannerHeight(100);
+            setBannerText("Make a team!");
+
+            console.log("User");
+            return <MakeTeam />;
+          }}
+        />
+        <Route
+          path={"/teams"}
+          render={(props) => {
+            setBannerHeight(100);
+            setBannerText("Teams");
+
+            console.log("Teams");
+            return <Teams />;
+          }}
+        />
+        <Route
+          path={`/leaderboard/:leaderboardStatistic/:subDomain`}
+          render={(props) => {
+            setBannerHeight(100);
+            console.log("Leaderboard");
+            return (
+              <Leaderboard
+                leaderboardStatistic={props.match.params.leaderboardStatistic}
+                setBannerCallback={setBannerText}
+                subDomain={props.match.params.subDomain}
+              />
+            );
+          }}
+        />
+        <Route
+          path={`/replay/:session_id`}
+          render={(props) => {
+            setBannerHeight(100);
+            setBannerText("Replay");
+            console.log("User");
+            return <Replay session_id={props.match.params.session_id} />;
+          }}
+        />
+        <Route
+          path={`/auth/discord/callback`}
+          render={(props) => {
+            const callbackCode = new URLSearchParams(props.location.search).get("code");
+            setBannerText("Redirecting");
+            setBannerHeight(100);
+
+            return (
+              <DiscordOAuthCallback
+                callbackCode={callbackCode}
+                onFinish={() => {
+                  var redirectLink = localStorage.getItem("REDIRECT_URI");
+
+                  window.location.href = redirectLink ? redirectLink : "/home";
+                }}
+              />
+            );
+          }}
+        />
+        <Route
+          path={`/oasis/login`}
+          render={(props) => {
+
+            setBannerText("Authencatate");
+            const token = new URLSearchParams(props.location.search).get("token");
+            setBannerHeight(100);
+
+            return (
+              <LinkOasis token={token} />
+            );
+          }}
+        />
+        <Route
+          path={`/TermsOfUse`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Terms Of Service22");
+            return <PrivacyPolicy />;
+          }}
+        />
+        <Route
+          path={`/Changelog`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Changelog");
+            return <Changelog />;
+          }}
+        />
+        <Route
+          path={`/Moderator/UnapprovedImages`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Moderation");
+            return <ApproveImagesModeration />;
+          }}
+        />
+        <Route
+          path={`/Moderator/UncontactedUsers`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Moderation");
+            return <UncontactedUsersModeration />;
+          }}
+        />
+        <Route
+          path={"/Testing"}
+          render={() => {
+            return <Component />;
+          }}
+        />
+        <Route
+          exact
+          path={`/Moderator`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Moderation");
+            return <Moderator />;
+          }}
+        />
+      </PageBody>
+    </Router>
+  );
+}
+
+export default Routes;

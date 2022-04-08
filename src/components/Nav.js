@@ -205,11 +205,9 @@ function getWindowDimensions() {
     height,
   };
 }
-export default function Nav({ clientData }) {
-  const [globalUserState] = useContext(GlobalUserState);
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
+export default function Nav() {
+  const globalUserState = useContext(GlobalUserState);
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   useEffect(() => {
     function handleResize() {
@@ -284,18 +282,10 @@ export default function Nav({ clientData }) {
             text="API"
             externalLink={true}
           /> */}
-          <TopBarLink
-            link="https://discord.gg/4fxM7tPRdZ"
-            text="Join us on Discord"
-            externalLink={true}
-          />
+          <TopBarLink link="https://discord.gg/4fxM7tPRdZ" text="Join us on Discord" externalLink={true} />
           {/* <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
           <TopBarLink link="/Changelog" text="Changelog" /> */}
-          {globalUserState.moderator ? (
-            <TopBarLink link="/Moderator" text="Moderator" />
-          ) : (
-            ""
-          )}
+          {globalUserState.moderator ? <TopBarLink link="/Moderator" text="Moderator" /> : ""}
           <TopBarLink link="/contact" text="Contact me" />
           <AuthorizeButton loggedIn={globalUserState.authorization_token} />
           <AutoComplete
@@ -335,29 +325,14 @@ export default function Nav({ clientData }) {
           {navigationPopupOut ? (
             <>
               <TopBarLink link="/home" text="Home" />
-              <TopBarLink
-                link="https://ecranked.ddns.net"
-                text="API"
-                externalLink={true}
-              />
+              <TopBarLink link="https://ecranked.ddns.net" text="API" externalLink={true} />
 
               <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
               <TopBarLink link="/Changelog" text="Changelog" />
 
-              {clientData.moderator ? (
-                <TopBarLink
-                  link="/Moderator/UnapprovedImages"
-                  text="Moderator"
-                />
-              ) : (
-                ""
-              )}
-              <TopBarLink
-                link="https://discord.gg/4fxM7tPRdZ"
-                text="Join us on Discord"
-                externalLink={true}
-              />
-              <AuthorizeButton userData={clientData} />
+              {globalUserState.moderator ? <TopBarLink link="/Moderator/UnapprovedImages" text="Moderator" /> : ""}
+              <TopBarLink link="https://discord.gg/4fxM7tPRdZ" text="Join us on Discord" externalLink={true} />
+              <AuthorizeButton userData={globalUserState} />
             </>
           ) : (
             <></>
