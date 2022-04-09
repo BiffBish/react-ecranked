@@ -3,14 +3,14 @@ import GlobalUserState from "../contexts/GlobalUserState";
 
 var authToken = null;
 export const ApiCallHelper = () => {
-  const globalUserState = useContext(GlobalUserState);
+  const [globalUserState] = useContext(GlobalUserState);
   useEffect(() => {
     authToken = globalUserState.authorization_token;
   }, [globalUserState.authorization_token]);
   return null;
 };
 
-export default function makeApiCall(url, method = "GET", body = {}, noAlert = false, version = "v1") {
+export default function makeApiCall(url, method = "GET", body = {}) {
   var promise = new Promise((resolve, reject) => {
     let requestOptions = {
       method: method,
@@ -23,7 +23,7 @@ export default function makeApiCall(url, method = "GET", body = {}, noAlert = fa
     if (!(method === "HEAD" || method === "GET")) {
       requestOptions.body = JSON.stringify(body);
     }
-    fetch("https://ecranked.ddns.net/api/" + version + "/" + url, requestOptions)
+    fetch("https://ecranked.ddns.net/api/v1/" + url, requestOptions)
       .then(async (response) => {
         const data = await response.json();
         console.log(response);
@@ -35,9 +35,9 @@ export default function makeApiCall(url, method = "GET", body = {}, noAlert = fa
         resolve(returnData);
       })
       .catch((error) => {
-        if (!noAlert) {
-          alert("There was an error. Please contact a moderator immediately. #MakeApiCall36");
-        }
+        alert(
+          "There was an error. Please contact a moderator immediately. #MakeApiCall36"
+        );
         console.error("There was an error!", error);
         reject(error);
         return;

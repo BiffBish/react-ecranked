@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import makeApiCall from "../../helpers/makeApiCall";
 
 const EditButtonsStyle = styled.div`
   padding: 10px;
@@ -134,18 +133,53 @@ const UserLink = styled(NavLink)`
   color: white;
   font-size: 30px;
 `;
-export default function ApproveImagesModeration() {
+export default function ApproveImagesModeration({
+  username,
+  setBannerCallback,
+  subDomain,
+}) {
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
-    makeApiCall("GET", "moderator/unapprovedimages")
-      .then((data) => {
-        setUnapprovedImages(data);
+    fetch("https://ecranked.ddns.net/api/v1/moderator/unapprovedimages", {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          const json = await response.json();
+          setUnapprovedImages(json);
+        }
+        // const data = await response.json();
+        // console.log("code:" + response.statusCode);
+        // if (response.status === 404) {
+        //   console.error("User not found!");
+        //   setUserNotFound(true);
+        // } else {
+        //   if (!response.ok) {
+        //     // get error message from body or default to response statusText
+        //     const error = (data && data.message) || response.statusText;
+        //     return Promise.reject(error);
+        //   }
+        //   if ("oculus_name" in data) {
+        //     setUserNotFound(false);
+        //     setBannerCallback(data["oculus_name"]);
+        //     console.log(data["oculus_name"]);
+        //     setApiData(data);
+        //   } else {
+        //     setBannerCallback("Unknown");
+        //     setUserNotFound(true);
+        //   }
+        // }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.error("There was an error!", error);
       });
-  }, []);
+  }, [username, setBannerCallback]);
+  console.log(unapprovedImages);
   return (
     <>
       <ApproveImagesContainer>
@@ -154,7 +188,10 @@ export default function ApproveImagesModeration() {
           {unapprovedImages.map((user) => {
             return (
               <AvatarContainer>
-                <UserLink to={"/user/" + user.oculus_name + "/stats"}> {user.oculus_name}</UserLink>
+                <UserLink to={"/user/" + user.oculus_name + "/stats"}>
+                  {" "}
+                  {user.oculus_name}
+                </UserLink>
                 <AboutAvatar avatar={user.avatar} oculus_id={user.oculus_id} />
               </AvatarContainer>
             );

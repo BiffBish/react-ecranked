@@ -12,7 +12,7 @@ const MakeTeamBoxStyle = styled.div`
   flex: 200px 1;
 `;
 
-export default function MakeTeam() {
+export default function MakeTeam({ setBannerCallback, subDomain }) {
   let history = useHistory();
 
   useEffect(() => {
@@ -21,19 +21,25 @@ export default function MakeTeam() {
       // history.push("/");
       return;
     }
-    fetch("https://ecranked.ddns.net/api/v1/user/" + localStorage.getItem("OCULUS_ID"), {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      "https://ecranked.ddns.net/api/v1/user/" +
+        localStorage.getItem("OCULUS_ID"),
+      {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then(async (response) => {
         const data = await response.json();
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");
-          alert("There was an error. Please contact a moderator immediately. #EPMT134");
+          alert(
+            "There was an error. Please contact a moderator immediately. #EPMT134"
+          );
           history.push("/");
           return;
         } else {
@@ -43,7 +49,9 @@ export default function MakeTeam() {
             return Promise.reject(error);
           }
           if (data.team_id !== null) {
-            alert("You are already part of a team. You cannot create a new team without leaving your current one");
+            alert(
+              "You are already part of a team. You cannot create a new team without leaving your current one"
+            );
             history.push("/");
             return;
           }
@@ -57,7 +65,9 @@ export default function MakeTeam() {
         }
       })
       .catch((error) => {
-        alert("There was an error. Please contact a moderator immediately. #EPMT167");
+        alert(
+          "There was an error. Please contact a moderator immediately. #EPMT167"
+        );
         console.error("There was an error!", error);
         return;
       });
@@ -104,8 +114,9 @@ export default function MakeTeam() {
       {" "}
       <p style={{ color: "white", fontSize: "15px" }}>
         {" "}
-        This page is in early beta. There may be issues and the layout might change. Currently your not able to change
-        your teams name or description after creation.
+        This page is in early beta. There may be issues and the layout might
+        change. Currently your not able to change your teams name or description
+        after creation.
       </p>
       {/* <TeamBody style={{ height: "0px", margin: "0px", opacity: "0%" }}> */}
       <MakeTeamBoxStyle className="padded list">

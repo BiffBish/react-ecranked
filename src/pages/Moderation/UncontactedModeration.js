@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import makeApiCall from "../../helpers/makeApiCall";
 function timeDifference(current, previous) {
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;
@@ -101,22 +100,43 @@ const BodyContainer = styled.div`
   min-width: 400px;
   display: flex;
 `;
-export default function UncontactedUsersModeration() {
+export default function UncontactedUsersModeration({
+  username,
+  setBannerCallback,
+  subDomain,
+}) {
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
-    makeApiCall("moderator/uncontactedusers")
-      .then((data) => {
-        setUnapprovedImages(data.json);
+    fetch("https://ecranked.ddns.net/api/v1/moderator/uncontactedusers", {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          const json = await response.json();
+          console.log(json[0]);
+          setUnapprovedImages(json);
+        }
       })
       .catch((error) => {
-        console.log(error);
+        console.error("There was an error!", error);
       });
-  }, []);
+  }, [username, setBannerCallback]);
+  console.log(unapprovedImages);
   const RemoveUser = (username) => {
-    makeApiCall("user" + username, "PUT", JSON.stringify({ contacted: 1 }));
+    fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
+      method: "PUT",
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ contacted: 1 }),
+    });
   };
-
   return (
     <BodyContainer>
       <ApproveImagesContainer>
@@ -125,7 +145,9 @@ export default function UncontactedUsersModeration() {
           {unapprovedImages.slice(0, 200).map((user) => {
             return (
               <UserContainer>
-                <NotClickableButton>{timeDifference(Date.now(), user.join_date * 1000)}</NotClickableButton>
+                <NotClickableButton>
+                  {timeDifference(Date.now(), user.join_date * 1000)}
+                </NotClickableButton>
 
                 <Button
                   onClick={() => {
@@ -134,7 +156,10 @@ export default function UncontactedUsersModeration() {
                 >
                   Copy
                 </Button>
-                <UserLink to={"/user/" + user.oculus_name + "/stats"}> {user.oculus_name}</UserLink>
+                <UserLink to={"/user/" + user.oculus_name + "/stats"}>
+                  {" "}
+                  {user.oculus_name}
+                </UserLink>
                 <Button
                   onClickCapture={() => {
                     RemoveUser(user.oculus_name);
