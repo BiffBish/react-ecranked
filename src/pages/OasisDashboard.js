@@ -156,6 +156,7 @@ const HostGameOptions = ({ websocket }) => {
   );
 };
 const client = new W3CWebSocket("ws://127.0.0.1:13113");
+const serverLive = new W3CWebSocket("wss://ecranked.ddns.net/api/v2/reticle");
 
 export default function OasisDashboard() {
   const JoinGameIDRef = useRef();
@@ -168,11 +169,19 @@ export default function OasisDashboard() {
 
   const [gameID, setGameID] = useState(null);
   const [gameIDText, setGameIDText] = useState(null);
+
+  const [currentServerState, setCurrentServerState] = useState(null);
   // const [currentInterval, setCurrentInterval] = useState(null);
 
   useEffect(() => {
+    serverLive.send(
+      JSON.stringify({
+        command: "get-game-state",
+      })
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const pingServer = () => {
     console.log("pinging server");
     client.send(
@@ -181,6 +190,90 @@ export default function OasisDashboard() {
       })
     );
   };
+
+  const [gameStartTime, setGameStartTime] = useState(0);
+
+  useEffect(() => {
+    //Set game start time to current time in seconds
+    setGameStartTime(Math.floor(Date.now() / 1000));
+    if (gameID === null) {
+      serverLive.send(
+        JSON.stringify({
+          command: "game-end-state",
+        })
+      );
+    }
+  }, [gameID]);
+
+  const ParseGameData = (data) => {
+    var properMapName = data.mapName;
+    switch (data.mapName) {
+      case "mpl_combat_dyson":
+        properMapName = "Dyson";
+        break;
+      case "mpl_combat_combustion":
+        properMapName = "Combustion";
+        break;
+      case "mpl_combat_fission":
+        properMapName = "Fission";
+        break;
+      case "mpl_combat_gauss":
+        properMapName = "Surge";
+        break;
+    }
+
+    const gameData = {
+      id: data.sessionid,
+      blueTeam:
+        data?.teams[0]?.players?.map((player) => ({
+          id: player.userid,
+          name: player.name,
+        })) ?? [],
+      orangeTeam:
+        data?.teams[1]?.players?.map((player) => ({
+          id: player.userid,
+          name: player.name,
+        })) ?? [],
+      mapName: properMapName,
+      startTime: gameStartTime,
+    };
+    serverLive.send(
+      JSON.stringify({
+        command: "update-game-state",
+        payload: gameData,
+      })
+    );
+  };
+
+  useEffect(() => {
+    serverLive.onmessage(function (e) {
+      console.log(e);
+      const data = JSON.parse(e.data);
+      console.log(data);
+      if (data.command === "get-game-state") {
+        setCurrentServerState(data.payload);
+      }
+
+      if (data.command === "game-end") {
+        setCurrentServerState((current) => {
+          return current.filter((game) => game.id !== data.payload.id);
+        });
+      }
+
+      if (data.command === "update-game-state") {
+        setCurrentServerState((current) => {
+          return current.map((game) => {
+            if (game.id === data.payload.id) {
+              return data.payload;
+            }
+            return game;
+          });
+        });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     // alert("useEffect");
     // if (websocket === null) {
@@ -200,7 +293,6 @@ export default function OasisDashboard() {
     client.onmessage = (message) => {
       try {
         const data = JSON.parse(message.data);
-
         if (data.version) {
           if (data.version !== "0.2") {
             alert(
@@ -209,8 +301,14 @@ export default function OasisDashboard() {
             window.history.push("/");
           }
         }
-        setGameID(data.sessionid);
+        if (data.sessionid) {
+          setGameID(data.sessionid);
+          ParseGameData(data);
+        } else {
+          setGameID(null);
+        }
       } catch (e) {
+        setGameID(null);
         console.log(e);
       }
     };
