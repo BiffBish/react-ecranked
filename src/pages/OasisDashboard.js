@@ -181,6 +181,9 @@ export default function OasisDashboard() {
   };
   useEffect(() => {
     // alert("useEffect");
+    // if (websocket === null) {
+    //   return;
+    // }
     window.addEventListener("beforeunload", (ev) => {
       ev.preventDefault();
       return (ev.returnValue = "Are you sure you want to close?");
@@ -204,7 +207,7 @@ export default function OasisDashboard() {
             window.history.push("/");
           }
         }
-        setGameID(JSON.parse(message.data).session_id);
+        setGameID(data.sessionid);
       } catch (e) {
         console.log(e);
       }
@@ -212,6 +215,7 @@ export default function OasisDashboard() {
     setTimeout(() => {
       setInterval(pingServer, 5000);
     }, 5000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     setGameIDText(gameID);
