@@ -168,16 +168,6 @@ export default function OasisDashboard() {
   // const [currentInterval, setCurrentInterval] = useState(null);
 
   useEffect(() => {
-    const pingServer = () => {
-      if (websocket) {
-        websocket.send(
-          JSON.stringify({
-            command: "get-session",
-          })
-        );
-      }
-    };
-    setInterval(pingServer, 5000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -203,6 +193,20 @@ export default function OasisDashboard() {
               "Reticle is out of date. Please update to the latest version."
             );
             window.history.push("/");
+          } else {
+            const pingServer = () => {
+              console.log("pinging server");
+
+              if (websocket) {
+                console.log("pinging server");
+                websocket.send(
+                  JSON.stringify({
+                    command: "get-session",
+                  })
+                );
+              }
+            };
+            setInterval(pingServer, 5000);
           }
         }
         setGameID(JSON.parse(message.data).session_id);
