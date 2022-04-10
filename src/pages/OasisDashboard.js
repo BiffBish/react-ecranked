@@ -253,8 +253,8 @@ export default function OasisDashboard() {
       client.send(JSON.stringify({ command: "get-version" }));
       setClientConnected(true);
       setTimeout(() => {
-        setInterval(pingServer, 1000);
-      }, 1000);
+        setInterval(pingServer, 4000);
+      }, 4000);
     };
     serverLive.onopen = () => {
       console.log("Server Connected");
@@ -294,7 +294,7 @@ export default function OasisDashboard() {
   }, [gameID, serverConnected]);
 
   const ParseGameData = (data) => {
-    var properMapName = data.mapName;
+    var properMapName = data.map_name;
     switch (data.mapName) {
       case "mpl_combat_dyson":
         properMapName = "Dyson";
@@ -408,12 +408,20 @@ export default function OasisDashboard() {
         if (data.sessionid) {
           setGameID(data.sessionid);
           ParseGameData(data);
-        } else {
-          setGameID(null);
+          return;
         }
+
+        setGameID(null);
       } catch (e) {
         setGameID(null);
         console.log(e);
+      }
+      if (serverConnected) {
+        serverLive.send(
+          JSON.stringify({
+            ping: true,
+          })
+        );
       }
     };
 
