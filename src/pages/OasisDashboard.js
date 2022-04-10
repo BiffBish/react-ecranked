@@ -159,12 +159,24 @@ const HostGameOptions = ({ websocket }) => {
 export default function OasisDashboard() {
   const JoinGameIDRef = useRef();
 
-  const [gameID, setGameID] = useState("");
+  const [gameID, setGameID] = useState(null);
+
   const [websocket, setWebsocket] = useState("");
 
   const [showHostGame, setShowHostGame] = useState(false);
+  const [gameIDText, setGameIDText] = useState(gameID);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setInterval(() => {
+      fetch("http://127.0.0.1:6721/session").then((res) => {
+        res.json().then((data) => {
+          if (data.session_id) {
+            setGameID(data.session_id);
+          }
+        });
+      });
+    }, 1000);
+  }, []);
 
   useEffect(() => {
     // alert("useEffect");
@@ -181,10 +193,32 @@ export default function OasisDashboard() {
       console.log(message);
     };
   }, []);
-
+  useEffect(() => {
+    setGameIDText(gameID);
+  }, [gameID]);
   return (
     <div className="padded rounded list" style={{ margin: "20px" }}>
       <h2>Reticle Dashboard</h2>
+      {gameID ? (
+        <div className="padded rounded horizontal-container">
+          <div className="padded button">{gameIDText}</div>
+          {/* A click to copy button */}
+          <div
+            className="padded button"
+            onClick={() => {
+              navigator.clipboard.writeText(gameID);
+            }}
+            onMouseEnter={() => {
+              setGameIDText("Click to copy!");
+            }}
+            onMouseLeave={() => {
+              setGameIDText(gameID);
+            }}
+          />
+          <h3 className="centered">Connected to game!</h3>
+        </div>
+      ) : null}
+
       <div className="padded horizontal-container">
         <div className="list">
           <div
