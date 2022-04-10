@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import ApproveImagesModeration from "./pages/Moderation/ApproveImagesModeration";
 import Moderator from "./pages/Moderator";
 import Nav from "./components/Nav";
-
+import OasisDashboard from "./pages/OasisDashboard";
 import Team from "./pages/Team";
 
 import AnimateHeight from "react-animate-height";
@@ -93,7 +93,9 @@ function Routes() {
             localStorage.setItem("MODERATOR", data.moderator);
           } else {
             if (localStorage.getItem("AUTHORIZATION_TOKEN") !== null) {
-              alert("You have been logged out. Please log back in or contact a moderator if the problem persists.");
+              alert(
+                "You have been logged out. Please log back in or contact a moderator if the problem persists."
+              );
             }
             localStorage.removeItem("AUTHORIZATION_TOKEN");
             localStorage.removeItem("OCULUS_ID");
@@ -112,8 +114,13 @@ function Routes() {
             oculus_id: null,
             moderator: null,
           }));
-          alert("There was an error when authenticating you. Please contact a moderator");
-          console.error("There was an error when authenticating you. Please contact a moderator", error);
+          alert(
+            "There was an error when authenticating you. Please contact a moderator"
+          );
+          console.error(
+            "There was an error when authenticating you. Please contact a moderator",
+            error
+          );
         });
     }
   }, [setGlobalUserState]);
@@ -213,7 +220,11 @@ function Routes() {
             }}
           >
             {BannerText}
-            {BannerIconSrc ? <UserIcon title={BannerIconTitle} src={BannerIconSrc} /> : ""}
+            {BannerIconSrc ? (
+              <UserIcon title={BannerIconTitle} src={BannerIconSrc} />
+            ) : (
+              ""
+            )}
           </div>
         </Banner>
         <Route exact path={["/"]}>
@@ -356,7 +367,9 @@ function Routes() {
         <Route
           path={`/auth/discord/callback`}
           render={(props) => {
-            const callbackCode = new URLSearchParams(props.location.search).get("code");
+            const callbackCode = new URLSearchParams(props.location.search).get(
+              "code"
+            );
             setBannerText("Redirecting");
             setBannerHeight(100);
 
@@ -417,6 +430,15 @@ function Routes() {
             setBannerHeight(100);
             setBannerText("Moderation");
             return <Moderator />;
+          }}
+        />
+        <Route
+          exact
+          path={`/reticle/dashboard`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Reticle Dashboard");
+            return <OasisDashboard />;
           }}
         />
       </PageBody>
