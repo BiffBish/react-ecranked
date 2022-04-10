@@ -37,7 +37,7 @@ const HostGameOptions = ({ websocket }) => {
   const [gameName, setGameName] = useState("");
   const [gameRegion, setGameRegion] = useState("");
   const [gameTeam, setGameTeam] = useState("");
-
+  // const history = useHistory();
   function onSubmit() {
     if (gameName === "" || gameRegion === "" || gameTeam === "") {
       alert("Please fill out all fields");
@@ -149,7 +149,7 @@ const HostGameOptions = ({ websocket }) => {
 
       <div className="horizontal-container">
         <div className="rounded button padded" onClick={onSubmit}>
-          Confirm
+          Launch
         </div>
       </div>
     </div>
@@ -165,17 +165,20 @@ export default function OasisDashboard() {
 
   const [showHostGame, setShowHostGame] = useState(false);
   const [gameIDText, setGameIDText] = useState(gameID);
+  // const [currentInterval, setCurrentInterval] = useState(null);
 
   useEffect(() => {
-    setInterval(() => {
-      fetch("http://127.0.0.1:6721/session").then((res) => {
-        res.json().then((data) => {
-          if (data.session_id) {
-            setGameID(data.session_id);
-          }
-        });
-      });
-    }, 1000);
+    const pingServer = () => {
+      if (websocket) {
+        websocket.send(
+          JSON.stringify({
+            command: "get-session",
+          })
+        );
+      }
+    };
+    setInterval(pingServer, 5000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -190,7 +193,21 @@ export default function OasisDashboard() {
       console.log("WebSocket Client Connected");
     };
     client.onmessage = (message) => {
-      console.log(message);
+      try {
+        const data = JSON.parse(message.data);
+
+        if (data.version) {
+          if (data.version !== "0.2") {
+            alert(
+              "Reticle is out of date. Please update to the latest version."
+            );
+            window.history.push("/");
+          }
+        }
+        setGameID(JSON.parse(message.data).session_id);
+      } catch (e) {
+        console.log(e);
+      }
     };
   }, []);
   useEffect(() => {
@@ -260,7 +277,7 @@ export default function OasisDashboard() {
           </div>
 
           <div className="list" style={{ gap: 0 }}>
-            <p>Logs</p>
+            <p>Game History</p>
             <div className="border horizontal-container">
               <div className="button" style={{ flexGrow: 0.5 }}>
                 42 minuets ago
