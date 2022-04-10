@@ -45,7 +45,7 @@ const HostGameOptions = ({ websocket }) => {
     }
     websocket.send(
       JSON.stringify({
-        type: "hostGame",
+        type: "create-server",
         map: gameName,
         region: gameRegion,
         lobby_team: gameTeam,
