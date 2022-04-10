@@ -196,15 +196,11 @@ export default function OasisDashboard() {
           } else {
             const pingServer = () => {
               console.log("pinging server");
-
-              if (websocket) {
-                console.log("pinging server");
-                websocket.send(
-                  JSON.stringify({
-                    command: "get-session",
-                  })
-                );
-              }
+              websocket.send(
+                JSON.stringify({
+                  command: "get-session",
+                })
+              );
             };
             setInterval(pingServer, 5000);
           }
