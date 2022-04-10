@@ -200,7 +200,12 @@ const ActiveGame = ({ gameState }) => {
           Join Orange ({gameState.orangeTeam.length}/4)
         </div>
       )}{" "}
-      <div className="border button">Spectate</div>
+      <div
+        className="border button"
+        onClick={() => JoinServer(gameState.id, 2)}
+      >
+        Spectate
+      </div>
       {gameState?.reportingSocketIds?.length}
     </div>
   );
@@ -295,7 +300,7 @@ export default function OasisDashboard() {
 
   const ParseGameData = (data) => {
     var properMapName = data.map_name;
-    switch (data.mapName) {
+    switch (data.map_name) {
       case "mpl_combat_dyson":
         properMapName = "Dyson";
         break;
