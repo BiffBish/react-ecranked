@@ -58,7 +58,7 @@ const HostGameOptions = ({ websocket }) => {
       <div className="horizontal-container">
         <RadioSwitch
           label={"Dyson"}
-          value={"mlp_combat_dyson"}
+          value={"mpl_combat_dyson"}
           current={gameName}
           setCurrent={setGameName}
         />
