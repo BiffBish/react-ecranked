@@ -155,6 +155,7 @@ const HostGameOptions = ({ websocket }) => {
     </div>
   );
 };
+const client = new W3CWebSocket("ws://127.0.0.1:13113");
 
 export default function OasisDashboard() {
   const JoinGameIDRef = useRef();
@@ -172,7 +173,7 @@ export default function OasisDashboard() {
   }, []);
   const pingServer = () => {
     console.log("pinging server");
-    websocket.send(
+    client.send(
       JSON.stringify({
         command: "get-session",
       })
@@ -184,7 +185,6 @@ export default function OasisDashboard() {
       ev.preventDefault();
       return (ev.returnValue = "Are you sure you want to close?");
     });
-    const client = new W3CWebSocket("ws://127.0.0.1:13113");
     setWebsocket(client);
 
     console.log("SETTING WEBSOCKET", websocket);
