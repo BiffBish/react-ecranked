@@ -241,6 +241,9 @@ export default function OasisDashboard() {
       console.log("WebSocket Client Connected");
       client.send(JSON.stringify({ command: "get-version" }));
       setClientConnected(true);
+      setTimeout(() => {
+        setInterval(pingServer, 5000);
+      }, 5000);
     };
     serverLive.onopen = () => {
       console.log("Server Connected");
@@ -263,6 +266,7 @@ export default function OasisDashboard() {
   }, [serverConnected]);
 
   const pingServer = () => {
+    console.log("Trying Ping");
     if (!clientConnected) return;
     console.log("pinging server");
     client.send(
@@ -412,9 +416,7 @@ export default function OasisDashboard() {
         console.log(e);
       }
     };
-    setTimeout(() => {
-      setInterval(pingServer, 5000);
-    }, 5000);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
