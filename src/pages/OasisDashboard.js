@@ -239,7 +239,6 @@ export default function OasisDashboard() {
 
   const pingServer = () => {
     console.log("Trying Ping");
-    if (!clientConnected) return;
     console.log("pinging server");
     client.send(
       JSON.stringify({
@@ -254,8 +253,8 @@ export default function OasisDashboard() {
       client.send(JSON.stringify({ command: "get-version" }));
       setClientConnected(true);
       setTimeout(() => {
-        setInterval(pingServer, 5000);
-      }, 5000);
+        setInterval(pingServer, 1000);
+      }, 1000);
     };
     serverLive.onopen = () => {
       console.log("Server Connected");
