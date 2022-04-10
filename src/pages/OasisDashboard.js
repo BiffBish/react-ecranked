@@ -155,8 +155,68 @@ const HostGameOptions = ({ websocket }) => {
     </div>
   );
 };
+
 const client = new W3CWebSocket("ws://127.0.0.1:13113");
 const serverLive = new W3CWebSocket("wss://ecranked.ddns.net/api/v2/reticle");
+
+function JoinServer(sessionID, teamID) {
+  client.send(
+    JSON.stringify({
+      command: "join-server",
+      session_id: sessionID,
+      team_id: teamID,
+    })
+  );
+}
+
+const ActiveGame = ({ gameState }) => {
+  console.log("gameState", gameState);
+  return (
+    <div className="horizontal-container">
+      <div className="border disabled-button" style={{ flexGrow: 2 }}>
+        {gameState.mapName}
+      </div>
+      {gameState.blueTeam.length < 4 ? (
+        <div
+          className="border button"
+          onClick={() => JoinServer(gameState.id, 0)}
+        >
+          Join Blue ({gameState.blueTeam.length}/4)
+        </div>
+      ) : (
+        <div className="border disabled-button">
+          Join Blue ({gameState.blueTeam.length}/4)
+        </div>
+      )}
+      {gameState.orangeTeam.length < 4 ? (
+        <div
+          className="border button"
+          onClick={() => JoinServer(gameState.id, 1)}
+        >
+          Join Orange ({gameState.orangeTeam.length}/4)
+        </div>
+      ) : (
+        <div className="border disabled-button">
+          Join Orange ({gameState.orangeTeam.length}/4)
+        </div>
+      )}{" "}
+      <div className="border button">Spectate</div>
+      {gameState?.reportingSocketIds?.length}
+    </div>
+  );
+};
+
+const ActiveGames = ({ serverState }) => {
+  console.log(serverState);
+  return (
+    <div className="padded rounded list">
+      <h2>Active Games</h2>
+      {serverState?.map((game) => {
+        return <ActiveGame gameState={game} />;
+      })}
+    </div>
+  );
+};
 
 export default function OasisDashboard() {
   const JoinGameIDRef = useRef();
@@ -171,18 +231,39 @@ export default function OasisDashboard() {
   const [gameIDText, setGameIDText] = useState(null);
 
   const [currentServerState, setCurrentServerState] = useState(null);
+
+  const [serverConnected, setServerConnected] = useState(false);
+  const [clientConnected, setClientConnected] = useState(false);
+
   // const [currentInterval, setCurrentInterval] = useState(null);
+  useEffect(() => {
+    client.onopen = () => {
+      console.log("WebSocket Client Connected");
+      client.send(JSON.stringify({ command: "get-version" }));
+      setClientConnected(true);
+    };
+    serverLive.onopen = () => {
+      console.log("Server Connected");
+      serverLive.send(JSON.stringify({ command: "get-game-state" }));
+      setServerConnected(true);
+    };
+  }, []);
 
   useEffect(() => {
+    if (!serverConnected) {
+      return;
+    }
     serverLive.send(
       JSON.stringify({
         command: "get-game-state",
       })
     );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [serverConnected]);
 
   const pingServer = () => {
+    if (!clientConnected) return;
     console.log("pinging server");
     client.send(
       JSON.stringify({
@@ -194,6 +275,9 @@ export default function OasisDashboard() {
   const [gameStartTime, setGameStartTime] = useState(0);
 
   useEffect(() => {
+    if (!serverConnected) {
+      return;
+    }
     //Set game start time to current time in seconds
     setGameStartTime(Math.floor(Date.now() / 1000));
     if (gameID === null) {
@@ -203,7 +287,7 @@ export default function OasisDashboard() {
         })
       );
     }
-  }, [gameID]);
+  }, [gameID, serverConnected]);
 
   const ParseGameData = (data) => {
     var properMapName = data.mapName;
@@ -219,6 +303,9 @@ export default function OasisDashboard() {
         break;
       case "mpl_combat_gauss":
         properMapName = "Surge";
+        break;
+      default:
+        properMapName = "Error";
         break;
     }
 
@@ -246,15 +333,23 @@ export default function OasisDashboard() {
   };
 
   useEffect(() => {
-    serverLive.onmessage(function (e) {
-      console.log(e);
-      const data = JSON.parse(e.data);
+    if (!serverConnected) {
+      return;
+    }
+    console.log("SERVER", serverLive);
+    console.log("SERVER", serverLive.onmessage);
+    serverLive.onmessage = (message) => {
+      console.log(message);
+      const data = JSON.parse(message.data);
       console.log(data);
       if (data.command === "get-game-state") {
+        console.log("GOT GAME STATE");
         setCurrentServerState(data.payload);
       }
 
-      if (data.command === "game-end") {
+      if (data.command === "end-game") {
+        console.log(data.payload.id);
+
         setCurrentServerState((current) => {
           return current.filter((game) => game.id !== data.payload.id);
         });
@@ -262,17 +357,25 @@ export default function OasisDashboard() {
 
       if (data.command === "update-game-state") {
         setCurrentServerState((current) => {
-          return current.map((game) => {
+          var FoundGame = false;
+
+          var newState = current?.map((game) => {
             if (game.id === data.payload.id) {
+              FoundGame = true;
               return data.payload;
             }
             return game;
           });
+
+          if (!FoundGame) {
+            newState.push(data.payload);
+          }
+          return newState;
         });
       }
-    });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [serverConnected]);
 
   useEffect(() => {
     // alert("useEffect");
@@ -286,10 +389,7 @@ export default function OasisDashboard() {
     setWebsocket(client);
 
     console.log("SETTING WEBSOCKET", websocket);
-    client.onopen = () => {
-      console.log("WebSocket Client Connected");
-      client.send(JSON.stringify({ command: "get-version" }));
-    };
+
     client.onmessage = (message) => {
       try {
         const data = JSON.parse(message.data);
@@ -415,33 +515,7 @@ export default function OasisDashboard() {
             </div>
           </div>
         </div>
-        <div className="padded rounded list">
-          <h2>Active Games</h2>
-          <div className="horizontal-container">
-            <div className="border button" style={{ flexGrow: 2 }}>
-              Surge
-            </div>
-            <div className="border button">3/4</div>
-            <div className="border button">4/4</div>
-            <div className="border button">Spectate</div>
-          </div>
-          <div className="horizontal-container">
-            <div className="border button" style={{ flexGrow: 2 }}>
-              Surge
-            </div>
-            <div className="border button">3/4</div>
-            <div className="border button">4/4</div>
-            <div className="border button">Spectate</div>
-          </div>
-          <div className="horizontal-container">
-            <div className="border button" style={{ flexGrow: 2 }}>
-              Surge
-            </div>
-            <div className="border button">3/4</div>
-            <div className="border button">4/4</div>
-            <div className="border button">Spectate</div>
-          </div>
-        </div>
+        <ActiveGames serverState={currentServerState} />
       </div>
       <div className="horizontal-container">
         <div className="padded border button">Autojoin Activated</div>
