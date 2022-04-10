@@ -425,14 +425,14 @@ export default function OasisDashboard() {
       }
       console.log("HeartbeatBefore");
 
-      if (serverConnected) {
-        console.log("Heartbeat");
-        serverLive.send(
-          JSON.stringify({
-            ping: true,
-          })
-        );
-      }
+      // if () {
+      console.log("Heartbeat");
+      serverLive.send(
+        JSON.stringify({
+          ping: true,
+        })
+      );
+      // }
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
