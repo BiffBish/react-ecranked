@@ -191,6 +191,7 @@ export default function OasisDashboard() {
     setWebsocket(client);
     client.onopen = () => {
       console.log("WebSocket Client Connected");
+      client.send(JSON.stringify({ command: "get-version" }));
     };
     client.onmessage = (message) => {
       try {
