@@ -160,12 +160,14 @@ const client = new W3CWebSocket("ws://127.0.0.1:13113");
 export default function OasisDashboard() {
   const JoinGameIDRef = useRef();
 
-  const [gameID, setGameID] = useState(null);
+  const [gameIDInput, setGameIDInput] = useState("");
 
   const [websocket, setWebsocket] = useState(null);
 
   const [showHostGame, setShowHostGame] = useState(false);
-  const [gameIDText, setGameIDText] = useState(gameID);
+
+  const [gameID, setGameID] = useState(null);
+  const [gameIDText, setGameIDText] = useState(null);
   // const [currentInterval, setCurrentInterval] = useState(null);
 
   useEffect(() => {
@@ -225,8 +227,6 @@ export default function OasisDashboard() {
       <h2>Reticle Dashboard</h2>
       {gameID ? (
         <div className="padded rounded horizontal-container">
-          <div className="padded button">{gameIDText}</div>
-          {/* A click to copy button */}
           <div
             className="padded button"
             onClick={() => {
@@ -238,7 +238,9 @@ export default function OasisDashboard() {
             onMouseLeave={() => {
               setGameIDText(gameID);
             }}
-          />
+          >
+            {gameIDText}
+          </div>
           <h3 className="centered">Connected to game!</h3>
         </div>
       ) : null}
@@ -267,8 +269,8 @@ export default function OasisDashboard() {
               placeholder="Paste Game ID..."
               autoComplete="off"
               name="name"
-              value={gameID}
-              onChange={(e) => setGameID(e.target.value)}
+              value={gameIDInput}
+              onChange={(e) => setGameIDInput(e.target.value)}
               // onFocus={() => {
               //   setShowOptions(true);
               //   textInput.current.value = "";
