@@ -236,6 +236,18 @@ export default function OasisDashboard() {
   const [clientConnected, setClientConnected] = useState(false);
 
   // const [currentInterval, setCurrentInterval] = useState(null);
+
+  const pingServer = () => {
+    console.log("Trying Ping");
+    if (!clientConnected) return;
+    console.log("pinging server");
+    client.send(
+      JSON.stringify({
+        command: "get-session",
+      })
+    );
+  };
+
   useEffect(() => {
     client.onopen = () => {
       console.log("WebSocket Client Connected");
@@ -264,17 +276,6 @@ export default function OasisDashboard() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverConnected]);
-
-  const pingServer = () => {
-    console.log("Trying Ping");
-    if (!clientConnected) return;
-    console.log("pinging server");
-    client.send(
-      JSON.stringify({
-        command: "get-session",
-      })
-    );
-  };
 
   const [gameStartTime, setGameStartTime] = useState(0);
 
