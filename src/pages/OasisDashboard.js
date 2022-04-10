@@ -175,30 +175,34 @@ const ActiveGame = ({ gameState }) => {
       <div className="border disabled-button" style={{ flexGrow: 2 }}>
         {gameState.mapName}
       </div>
-      {gameState.blueTeam.length < 4 ? (
-        <div
-          className="border button"
-          onClick={() => JoinServer(gameState.id, 0)}
-        >
-          Join Blue ({gameState.blueTeam.length}/4)
-        </div>
-      ) : (
-        <div className="border disabled-button">
-          Join Blue ({gameState.blueTeam.length}/4)
-        </div>
-      )}
-      {gameState.orangeTeam.length < 4 ? (
-        <div
-          className="border button"
-          onClick={() => JoinServer(gameState.id, 1)}
-        >
-          Join Orange ({gameState.orangeTeam.length}/4)
-        </div>
-      ) : (
-        <div className="border disabled-button">
-          Join Orange ({gameState.orangeTeam.length}/4)
-        </div>
-      )}{" "}
+      <div
+        className={
+          gameState.orangeTeam.length < 4
+            ? "border button list"
+            : "border disabled-button list"
+        }
+        style={{ gap: "0px" }}
+        onClick={() => JoinServer(gameState.id, 0)}
+      >
+        Join Blue ({gameState.orangeTeam.length}/4)
+        {gameState.blueTeam.map((player) => (
+          <div>{"\n" + player.name}</div>
+        ))}
+      </div>
+      <div
+        className={
+          gameState.orangeTeam.length < 4
+            ? "border button list"
+            : "border disabled-button list"
+        }
+        onClick={() => JoinServer(gameState.id, 1)}
+        style={{ gap: "0px" }}
+      >
+        Join Orange ({gameState.orangeTeam.length}/4)
+        {gameState.orangeTeam.map((player) => (
+          <div>{"\n" + player.name}</div>
+        ))}
+      </div>
       <div
         className="border button"
         onClick={() => JoinServer(gameState.id, 2)}
@@ -343,8 +347,13 @@ export default function OasisDashboard() {
     }
     serverLive.onmessage = (message) => {
       const data = JSON.parse(message.data);
-      if (data.pong) {
-        console.log("Pong Heatbeat");
+      if (data.ping) {
+        console.log("Heartbeat");
+        serverLive.send(
+          JSON.stringify({
+            pong: true,
+          })
+        );
         return;
       }
 
@@ -415,15 +424,6 @@ export default function OasisDashboard() {
         setGameID(null);
         console.log(e);
       }
-
-      // if () {
-      console.log("Heartbeat");
-      serverLive.send(
-        JSON.stringify({
-          ping: true,
-        })
-      );
-      // }
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

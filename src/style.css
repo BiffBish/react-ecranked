@@ -154,6 +154,7 @@ h3 {
   display: flex;
   justify-content: center;
   align-content: center;
+  ;
   /* flex-direction: column; */
   text-align: center;
   align-self: center;
