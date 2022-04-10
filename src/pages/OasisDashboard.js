@@ -126,13 +126,13 @@ const HostGameOptions = ({ websocket }) => {
 
       <div className="horizontal-container">
         <RadioSwitch
-          label={"Orange Team"}
+          label={"Blue Team"}
           value={0}
           current={gameTeam}
           setCurrent={setGameTeam}
         />
         <RadioSwitch
-          label={"Blue Team"}
+          label={"Orange Team"}
           value={1}
           current={gameTeam}
           setCurrent={setGameTeam}
