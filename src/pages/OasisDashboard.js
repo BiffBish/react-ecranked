@@ -170,7 +170,6 @@ function JoinServer(sessionID, teamID) {
 }
 
 const ActiveGame = ({ gameState }) => {
-  console.log("gameState", gameState);
   return (
     <div className="horizontal-container">
       <div className="border disabled-button" style={{ flexGrow: 2 }}>
@@ -212,7 +211,6 @@ const ActiveGame = ({ gameState }) => {
 };
 
 const ActiveGames = ({ serverState }) => {
-  console.log(serverState);
   return (
     <div className="padded rounded list">
       <h2>Active Games</h2>
@@ -243,8 +241,6 @@ export default function OasisDashboard() {
   // const [currentInterval, setCurrentInterval] = useState(null);
 
   const pingServer = () => {
-    console.log("Trying Ping");
-    console.log("pinging server");
     client.send(
       JSON.stringify({
         command: "get-session",
@@ -345,22 +341,20 @@ export default function OasisDashboard() {
     if (!serverConnected) {
       return;
     }
-    console.log("SERVER", serverLive);
-    console.log("SERVER", serverLive.onmessage);
     serverLive.onmessage = (message) => {
-      console.log(message);
       const data = JSON.parse(message.data);
-      console.log(data);
       if (data.pong) {
         console.log("Pong Heatbeat");
-      } else if (data.command === "get-game-state") {
-        console.log("GOT GAME STATE");
+        return;
+      }
+
+      console.log(data);
+
+      if (data.command === "get-game-state") {
         setCurrentServerState(data.payload);
       }
 
       if (data.command === "end-game") {
-        console.log(data.payload.id);
-
         setCurrentServerState((current) => {
           return current.filter((game) => game.id !== data.payload.id);
         });
@@ -399,8 +393,6 @@ export default function OasisDashboard() {
     });
     setWebsocket(client);
 
-    console.log("SETTING WEBSOCKET", websocket);
-
     client.onmessage = (message) => {
       try {
         const data = JSON.parse(message.data);
@@ -423,7 +415,6 @@ export default function OasisDashboard() {
         setGameID(null);
         console.log(e);
       }
-      console.log("HeartbeatBefore");
 
       // if () {
       console.log("Heartbeat");
