@@ -161,7 +161,7 @@ export default function OasisDashboard() {
 
   const [gameID, setGameID] = useState(null);
 
-  const [websocket, setWebsocket] = useState("");
+  const [websocket, setWebsocket] = useState(null);
 
   const [showHostGame, setShowHostGame] = useState(false);
   const [gameIDText, setGameIDText] = useState(gameID);
@@ -170,7 +170,14 @@ export default function OasisDashboard() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  const pingServer = () => {
+    console.log("pinging server");
+    websocket.send(
+      JSON.stringify({
+        command: "get-session",
+      })
+    );
+  };
   useEffect(() => {
     // alert("useEffect");
     window.addEventListener("beforeunload", (ev) => {
@@ -179,6 +186,8 @@ export default function OasisDashboard() {
     });
     const client = new W3CWebSocket("ws://127.0.0.1:13113");
     setWebsocket(client);
+
+    console.log("SETTING WEBSOCKET", websocket);
     client.onopen = () => {
       console.log("WebSocket Client Connected");
       client.send(JSON.stringify({ command: "get-version" }));
@@ -193,16 +202,6 @@ export default function OasisDashboard() {
               "Reticle is out of date. Please update to the latest version."
             );
             window.history.push("/");
-          } else {
-            const pingServer = () => {
-              console.log("pinging server");
-              websocket.send(
-                JSON.stringify({
-                  command: "get-session",
-                })
-              );
-            };
-            setInterval(pingServer, 5000);
           }
         }
         setGameID(JSON.parse(message.data).session_id);
@@ -210,6 +209,9 @@ export default function OasisDashboard() {
         console.log(e);
       }
     };
+    setTimeout(() => {
+      setInterval(pingServer, 5000);
+    }, 5000);
   }, []);
   useEffect(() => {
     setGameIDText(gameID);
