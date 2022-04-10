@@ -351,7 +351,9 @@ export default function OasisDashboard() {
       console.log(message);
       const data = JSON.parse(message.data);
       console.log(data);
-      if (data.command === "get-game-state") {
+      if (data.pong) {
+        console.log("Pong Heatbeat");
+      } else if (data.command === "get-game-state") {
         console.log("GOT GAME STATE");
         setCurrentServerState(data.payload);
       }
@@ -421,7 +423,10 @@ export default function OasisDashboard() {
         setGameID(null);
         console.log(e);
       }
+      console.log("HeartbeatBefore");
+
       if (serverConnected) {
+        console.log("Heartbeat");
         serverLive.send(
           JSON.stringify({
             ping: true,
