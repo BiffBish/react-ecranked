@@ -164,7 +164,7 @@ function JoinServer(sessionID, teamID) {
     JSON.stringify({
       command: "join-server",
       session_id: sessionID,
-      team_id: teamID,
+      lobby_team: teamID,
     })
   );
 }
