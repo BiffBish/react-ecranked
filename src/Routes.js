@@ -59,6 +59,34 @@ const UserIcon = styled.img`
   height: 40px;
   margin: 20px;
 `;
+var popupBlockerChecker = {
+  check: function (popup_window) {
+    var _scope = this;
+    if (popup_window) {
+      if (/chrome/.test(navigator.userAgent.toLowerCase())) {
+        setTimeout(function () {
+          _scope._is_popup_blocked(_scope, popup_window);
+        }, 200);
+      } else {
+        popup_window.onload = function () {
+          _scope._is_popup_blocked(_scope, popup_window);
+        };
+      }
+    } else {
+      _scope._displayError();
+    }
+  },
+  _is_popup_blocked: function (scope, popup_window) {
+    if (popup_window.innerHeight > 0 == false) {
+      scope._displayError();
+    }
+  },
+  _displayError: function () {
+    alert(
+      "Popup Blocker is enabled! Please add this site to your exception list."
+    );
+  },
+};
 function Routes() {
   const [globalUserState, setGlobalUserState] = useContext(GlobalUserState);
   // const [clientData, setClientData] = React.useState({
@@ -445,12 +473,14 @@ function Routes() {
           exact
           path={`/reticle/dashboard/open`}
           render={() => {
+            //Check if user has popups enabled and if not prompt them to enable it
+
+            let popup = window.open("/reticle/dashboard", "", "popup");
+            popupBlockerChecker.check(popup);
+
             window.opener = null;
             window.open("", "_self");
             window.close();
-            window.open("/reticle/dashboard", "", "popup");
-            //Close the current window
-
             window.close();
             //redirect home
             return <Redirect to={"/"} />;
