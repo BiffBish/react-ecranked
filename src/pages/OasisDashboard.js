@@ -532,6 +532,18 @@ export default function OasisDashboard() {
         <div className="padded border button">Autojoin Activated</div>
         <div className="padded border button">C:/Program Files/Oculus/</div>
         <div className="padded border button">Sharing Games</div>
+        <div
+          className="padded border button"
+          onClick={() => {
+            client.send(JSON.stringify({ command: "shutdown" }));
+            //Wait a second before closing the window
+            setTimeout(() => {
+              window.close();
+            }, 1000);
+          }}
+        >
+          Shutdown Reticle
+        </div>
       </div>
     </div>
   );

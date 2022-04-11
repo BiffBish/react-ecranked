@@ -441,6 +441,21 @@ function Routes() {
             return <OasisDashboard />;
           }}
         />
+        <Route
+          exact
+          path={`/reticle/dashboard/open`}
+          render={() => {
+            window.opener = null;
+            window.open("", "_self");
+            window.close();
+            window.open("/reticle/dashboard", "", "popup");
+            //Close the current window
+
+            window.close();
+            //redirect home
+            return <Redirect to={"/"} />;
+          }}
+        />
       </PageBody>
     </Router>
   );
