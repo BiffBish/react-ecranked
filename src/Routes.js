@@ -69,17 +69,20 @@ var popupBlockerChecker = {
         }, 200);
       } else {
         popup_window.onload = function () {
-          _scope._is_popup_blocked(_scope, popup_window);
+          return _scope._is_popup_blocked(_scope, popup_window);
         };
       }
     } else {
       _scope._displayError();
+      return false;
     }
   },
   _is_popup_blocked: function (scope, popup_window) {
     if (popup_window.innerHeight > 0 == false) {
       scope._displayError();
+      return false;
     }
+    return true;
   },
   _displayError: function () {
     alert(
@@ -476,14 +479,22 @@ function Routes() {
             //Check if user has popups enabled and if not prompt them to enable it
 
             let popup = window.open("/reticle/dashboard", "", "popup");
-            popupBlockerChecker.check(popup);
+            let result = popupBlockerChecker.check(popup);
+            if (result) {
+              window.opener = null;
+              window.open("", "_self");
+              window.close();
+              window.close();
+              return <Redirect to={"/"} />;
+            } else {
+              return (
+                <div>
+                  Popups are disabled. Please enable them and refresh the page.
+                </div>
+              );
+            }
 
-            window.opener = null;
-            window.open("", "_self");
-            window.close();
-            window.close();
             //redirect home
-            return <Redirect to={"/"} />;
           }}
         />
       </PageBody>
