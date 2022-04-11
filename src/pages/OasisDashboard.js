@@ -317,22 +317,32 @@ export default function OasisDashboard() {
         properMapName = "Error";
         break;
     }
-
+    var BlueTeam = data?.teams[0]?.players;
+    //sort the blue team by playerid
+    BlueTeam?.sort((a, b) => {
+      return a.playerid - b.playerid;
+    });
+    var OrangeTeam = data?.teams[1]?.players;
+    //sort the orange team by playerid
+    OrangeTeam?.sort((a, b) => {
+      return a.playerid - b.playerid;
+    });
     const gameData = {
       id: data.sessionid,
       blueTeam:
-        data?.teams[0]?.players?.map((player) => ({
+        BlueTeam.map((player) => ({
           id: player.userid,
           name: player.name,
         })) ?? [],
       orangeTeam:
-        data?.teams[1]?.players?.map((player) => ({
+        OrangeTeam?.map((player) => ({
           id: player.userid,
           name: player.name,
         })) ?? [],
       mapName: properMapName,
       startTime: gameStartTime,
     };
+
     serverLive.send(
       JSON.stringify({
         command: "update-game-state",
