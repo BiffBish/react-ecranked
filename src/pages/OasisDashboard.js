@@ -242,6 +242,7 @@ export default function OasisDashboard() {
   const [serverConnected, setServerConnected] = useState(false);
   const [clientConnected, setClientConnected] = useState(false);
 
+  const [reticlePreferences, setReticlePreferences] = useState({});
   // const [currentInterval, setCurrentInterval] = useState(null);
 
   const pingServer = () => {
@@ -485,9 +486,7 @@ export default function OasisDashboard() {
               ref={JoinGameIDRef}
               id="AutoCompleteInputInput"
               type="text"
-              placeholder="Paste Game ID..."
-              autoComplete="off"
-              name="name"
+              reticlePreferences
               value={gameIDInput}
               onChange={(e) => setGameIDInput(e.target.value)}
               // onFocus={() => {
@@ -540,8 +539,57 @@ export default function OasisDashboard() {
       </div>
       <div className="horizontal-container">
         <div className="padded border button">Autojoin Activated</div>
-        <div className="padded border button">C:/Program Files/Oculus/</div>
-        <div className="padded border button">Sharing Games</div>
+        <div
+          className="padded border button"
+          onClick={() => {
+            var exePath = prompt("Please Enter your Name");
+            if ((exePath = "" || exePath == null || exePath === undefined)) {
+              return;
+            }
+            client.send(
+              JSON.stringify({
+                command: "set-preference",
+                key: "executable-path",
+                value: exePath,
+              })
+            );
+            setTimeout(() => {
+              client.send(
+                JSON.stringify({
+                  command: "get-config",
+                })
+              );
+            }, 1000);
+          }}
+        >
+          {reticlePreferences.executable_path}
+        </div>
+        <div
+          className="padded border button"
+          onClick={() => {
+            client.send(
+              JSON.stringify({
+                command: "set-preference",
+                key: "launch-in-popup",
+                value:
+                  reticlePreferences.launch_in_popup === "true"
+                    ? "false"
+                    : "true",
+              })
+            );
+            setTimeout(() => {
+              client.send(
+                JSON.stringify({
+                  command: "get-config",
+                })
+              );
+            }, 200);
+          }}
+        >
+          {reticlePreferences.launch_in_popup === "true"
+            ? " Launching In Popup!"
+            : "Not launching in popup"}
+        </div>
         <div
           className="padded border button"
           onClick={() => {
