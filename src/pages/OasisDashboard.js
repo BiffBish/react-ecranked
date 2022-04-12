@@ -259,6 +259,10 @@ export default function OasisDashboard() {
       client.send(JSON.stringify({ command: "get-version" }));
       setClientConnected(true);
       setTimeout(() => {
+        client.send(JSON.stringify({ command: "get-config" }));
+      }, 400);
+
+      setTimeout(() => {
         setInterval(pingServer, 4000);
       }, 4000);
     };
@@ -423,6 +427,9 @@ export default function OasisDashboard() {
             );
             window.history.push("/");
           }
+        }
+        if (data.type === "config") {
+          setReticlePreferences(data);
         }
         if (data.sessionid) {
           setGameID(data.sessionid);
