@@ -8,7 +8,10 @@ var achievementFormattingData = require("./AchievementData.json");
 
 function map_range(value, low1, high1, low2, high2, capPercentage = false) {
   if (capPercentage) {
-    return Math.max(Math.min(1, low2 + ((high2 - low2) * (value - low1)) / (high1 - low1)), 0);
+    return Math.max(
+      Math.min(1, low2 + ((high2 - low2) * (value - low1)) / (high1 - low1)),
+      0
+    );
   }
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
@@ -46,7 +49,11 @@ export const LeftAchievementColumn = styled.div`
   flex-direction: column;
 `;
 
-export default function Achievements({ userData, screenWidth, fetchUserData = () => {} }) {
+export default function Achievements({
+  userData,
+  screenWidth,
+  fetchUserData = () => {},
+}) {
   const [achievementData, setAchievementData] = useState(undefined);
   const [letOverflow, setLetOverflow] = useState(false);
 
@@ -109,12 +116,23 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       /* 16 */ userData.daily_stats.total_games,
       /* 17 */ round(map_range(userData?.achievements?.[17] ?? 0, 0, 1, 0, 12)),
       /* 18 */ round(map_range(userData?.achievements?.[18] ?? 0, 0, 1, 8, 3)),
-      /* 19 */ userData.daily_stats.combustion_games + userData.daily_stats.dyson_games,
-      /* 20 */ userData.daily_stats.fission_games + userData.daily_stats.surge_games,
-      /* 21 */ round(map_range(userData?.achievements?.[21] ?? 0, 0, 1, 0, 50), 1) + "%",
-      /* 22 */ round(map_range(userData?.achievements?.[22] ?? 0, 0, 1, 0, 2), 1) + "%",
+      /* 19 */ userData.daily_stats.combustion_games +
+        userData.daily_stats.dyson_games,
+      /* 20 */ userData.daily_stats.fission_games +
+        userData.daily_stats.surge_games,
+      /* 21 */ round(
+        map_range(userData?.achievements?.[21] ?? 0, 0, 1, 0, 50),
+        1
+      ) + "%",
+      /* 22 */ round(
+        map_range(userData?.achievements?.[22] ?? 0, 0, 1, 0, 2),
+        1
+      ) + "%",
       /* 23 */ round(userData?.daily_stats?.top_speed ?? 0, 1) + "m/s",
-      /* 24 */ round(map_range(userData?.achievements?.[24] ?? 0, 0, 1, 0, 50), 1) + "%",
+      /* 24 */ round(
+        map_range(userData?.achievements?.[24] ?? 0, 0, 1, 0, 50),
+        1
+      ) + "%",
       /* 25 */ userData?.daily_stats?.dyson_games ?? 0,
       /* 26 */ userData?.daily_stats?.combustion_games ?? 0,
       /* 27 */ userData?.daily_stats?.fission_games ?? 0,
@@ -135,13 +153,29 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       /* 41 */ userData?.weekly_stats?.total_games ?? 0,
 
       /* 42 */ userData?.weekly_stats?.total_games ?? 0,
-      /* 43 */ round(userData?.weekly_stats?.deaths ?? 1000000 / userData?.weekly_stats?.total_games ?? 0, 1),
-      /* 44 */ (userData?.weekly_stats?.combustion_games ?? 0) + (userData?.weekly_stats?.dyson_games ?? 0),
-      /* 45 */ (userData?.weekly_stats?.fission_games ?? 0) + (userData?.weekly_stats?.surge_games ?? 0),
-      /* 46 */ round((userData?.weekly_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
-      /* 47 */ round((userData?.weekly_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
+      /* 43 */ round(
+        userData?.weekly_stats?.deaths ??
+          1000000 / userData?.weekly_stats?.total_games ??
+          0,
+        1
+      ),
+      /* 44 */ (userData?.weekly_stats?.combustion_games ?? 0) +
+        (userData?.weekly_stats?.dyson_games ?? 0),
+      /* 45 */ (userData?.weekly_stats?.fission_games ?? 0) +
+        (userData?.weekly_stats?.surge_games ?? 0),
+      /* 46 */ round(
+        (userData?.weekly_stats?.percent_close_mate ?? 0) * 100,
+        1
+      ) + "%",
+      /* 47 */ round(
+        (userData?.weekly_stats?.percent_close_mate ?? 0) * 100,
+        1
+      ) + "%",
       /* 48 */ round(userData?.weekly_stats?.average_speed ?? 0, 1) + "m/s",
-      /* 49 */ round((userData?.weekly_stats?.percent_upsidedown ?? 0) * 100, 1) + "%",
+      /* 49 */ round(
+        (userData?.weekly_stats?.percent_upsidedown ?? 0) * 100,
+        1
+      ) + "%",
       /* 50 */ userData?.weekly_stats?.dyson_games ?? 0,
       /* 51 */ userData?.weekly_stats?.combustion_games ?? 0,
       /* 52 */ userData?.weekly_stats?.fission_games ?? 0,
@@ -164,12 +198,24 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
 
       /* 67 */ round((userData?.achievements?.[67] ?? 0) * 64),
       /* 68 */ userData?.achievement_stats?.deaths ?? 0,
-      /* 69 */ (userData?.achievement_stats?.combustion_games ?? 0) + (userData?.achievement_stats?.dyson_games ?? 0),
-      /* 70 */ (userData?.achievement_stats?.fission_games ?? 0) + (userData?.achievement_stats?.surge_games ?? 0),
-      /* 71 */ round((userData?.achievement_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
-      /* 72 */ round((userData?.achievement_stats?.percent_close_mate ?? 0) * 100, 1) + "%",
-      /* 73 */ round(userData?.achievement_stats?.average_speed ?? 0, 1) + "m/s",
-      /* 74 */ round((userData?.achievement_stats?.percent_upsidedown ?? 0) * 100, 1) + "%",
+      /* 69 */ (userData?.achievement_stats?.combustion_games ?? 0) +
+        (userData?.achievement_stats?.dyson_games ?? 0),
+      /* 70 */ (userData?.achievement_stats?.fission_games ?? 0) +
+        (userData?.achievement_stats?.surge_games ?? 0),
+      /* 71 */ round(
+        (userData?.achievement_stats?.percent_close_mate ?? 0) * 100,
+        1
+      ) + "%",
+      /* 72 */ round(
+        (userData?.achievement_stats?.percent_close_mate ?? 0) * 100,
+        1
+      ) + "%",
+      /* 73 */ round(userData?.achievement_stats?.average_speed ?? 0, 1) +
+        "m/s",
+      /* 74 */ round(
+        (userData?.achievement_stats?.percent_upsidedown ?? 0) * 100,
+        1
+      ) + "%",
       /* 75 */ userData?.achievement_stats?.dyson_games ?? 0,
       /* 76 */ userData?.achievement_stats?.combustion_games ?? 0,
       /* 77 */ userData?.achievement_stats?.fission_games ?? 0,
@@ -222,7 +268,10 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
     //   /* 41 */ userData.weekly_stats.total_games,
     // ];
 
-    const weeklyOutOf40 = Math.min(1, (userData?.weekly_stats?.total_games ?? 0) / 40);
+    const weeklyOutOf40 = Math.min(
+      1,
+      (userData?.weekly_stats?.total_games ?? 0) / 40
+    );
 
     const todayValue = [
       /* 0 */ "",
@@ -245,11 +294,22 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       /* 16 */ (userData?.daily_stats?.total_games ?? 0) / 15,
       /* 17 */ null,
       /* 18 */ null,
-      /* 19 */ (userData.daily_stats.combustion_games + userData.daily_stats.dyson_games) / 8,
-      /* 20 */ (userData.daily_stats.fission_games + userData.daily_stats.surge_games) / 8,
+      /* 19 */ (userData.daily_stats.combustion_games +
+        userData.daily_stats.dyson_games) /
+        8,
+      /* 20 */ (userData.daily_stats.fission_games +
+        userData.daily_stats.surge_games) /
+        8,
       /* 21 */ null,
       /* 22 */ null,
-      /* 23 */ map_range(userData?.daily_stats?.top_speed ?? 0, 15, 35, 0, 1, true),
+      /* 23 */ map_range(
+        userData?.daily_stats?.top_speed ?? 0,
+        15,
+        35,
+        0,
+        1,
+        true
+      ),
       /* 24 */ null,
       /* 25 */ (userData?.daily_stats?.dyson_games ?? 0) / 4,
       /* 26 */ (userData?.daily_stats?.combustion_games ?? 0) / 4,
@@ -271,13 +331,52 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       /* 41 */ (userData?.weekly_stats?.total_games ?? 0) / 40,
 
       /* 42 */ (userData?.weekly_stats?.total_games ?? 0) / 25,
-      /* 43 */ map_range(userData?.weekly_stats?.average_deaths ?? 10, 10, 3, 0, 1, true) * weeklyOutOf40,
-      /* 44 */ ((userData?.weekly_stats?.combustion_games ?? 0) + (userData?.weekly_stats?.dyson_games ?? 0)) / 50,
-      /* 45 */ ((userData?.weekly_stats?.fission_games ?? 0) + (userData?.weekly_stats?.surge_games ?? 0)) / 50,
-      /* 46 */ map_range(userData?.weekly_stats?.percent_close_mate ?? 0, 0, 0.5, 0, 1, true) * weeklyOutOf40,
-      /* 47 */ map_range(userData?.weekly_stats?.percent_close_mate ?? 0, 0, 0.02, 0, 1, true) * weeklyOutOf40,
-      /* 48 */ map_range(userData?.weekly_stats?.average_speed ?? 0, 2.5, 4, 0, 1, true) * weeklyOutOf40,
-      /* 49 */ map_range(userData?.weekly_stats?.percent_upsidedown ?? 0, 0, 0.15, 0, 1, true) * weeklyOutOf40,
+      /* 43 */ map_range(
+        userData?.weekly_stats?.average_deaths ?? 8,
+        8,
+        5,
+        0,
+        1,
+        true
+      ) * weeklyOutOf40,
+      /* 44 */ ((userData?.weekly_stats?.combustion_games ?? 0) +
+        (userData?.weekly_stats?.dyson_games ?? 0)) /
+        50,
+      /* 45 */ ((userData?.weekly_stats?.fission_games ?? 0) +
+        (userData?.weekly_stats?.surge_games ?? 0)) /
+        50,
+      /* 46 */ map_range(
+        userData?.weekly_stats?.percent_close_mate ?? 0,
+        0,
+        0.5,
+        0,
+        1,
+        true
+      ) * weeklyOutOf40,
+      /* 47 */ map_range(
+        userData?.weekly_stats?.percent_close_mate ?? 0,
+        0,
+        0.02,
+        0,
+        1,
+        true
+      ) * weeklyOutOf40,
+      /* 48 */ map_range(
+        userData?.weekly_stats?.average_speed ?? 0,
+        2.5,
+        4,
+        0,
+        1,
+        true
+      ) * weeklyOutOf40,
+      /* 49 */ map_range(
+        userData?.weekly_stats?.percent_upsidedown ?? 0,
+        0,
+        0.15,
+        0,
+        1,
+        true
+      ) * weeklyOutOf40,
       /* 50 */ (userData?.daily_stats?.dyson_games ?? 0) / 20,
       /* 51 */ (userData?.daily_stats?.combustion_games ?? 0) / 20,
       /* 52 */ (userData?.daily_stats?.fission_games ?? 0) / 20,
@@ -348,7 +447,8 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
         todayProgress: todayProgress[index],
       };
       // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayValues[index]);
-      achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayProgress[index]);
+      achievementData.formatting.Progress =
+        achievementData.formatting.Progress.replace("%p", todayProgress[index]);
       // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p");
       exportAchievementData[index] = { ...achievementData };
     }
@@ -373,13 +473,17 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
         if (loadoutNumber >> 4 !== 3) exportAchievementData[8].locked = true;
         else exportAchievementData[8].inProgress = true;
 
-        if (((loadoutNumber >> 2) & 3) !== 0) exportAchievementData[9].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 0)
+          exportAchievementData[9].locked = true;
         else exportAchievementData[9].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 1) exportAchievementData[10].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 1)
+          exportAchievementData[10].locked = true;
         else exportAchievementData[10].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 2) exportAchievementData[11].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 2)
+          exportAchievementData[11].locked = true;
         else exportAchievementData[11].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 3) exportAchievementData[12].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 3)
+          exportAchievementData[12].locked = true;
         else exportAchievementData[12].inProgress = true;
 
         if ((loadoutNumber & 3) !== 0) exportAchievementData[13].locked = true;
@@ -411,13 +515,17 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
         if (loadoutNumber >> 4 !== 3) exportAchievementData[33].locked = true;
         else exportAchievementData[33].inProgress = true;
 
-        if (((loadoutNumber >> 2) & 3) !== 0) exportAchievementData[34].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 0)
+          exportAchievementData[34].locked = true;
         else exportAchievementData[34].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 1) exportAchievementData[35].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 1)
+          exportAchievementData[35].locked = true;
         else exportAchievementData[35].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 2) exportAchievementData[36].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 2)
+          exportAchievementData[36].locked = true;
         else exportAchievementData[36].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 3) exportAchievementData[37].locked = true;
+        if (((loadoutNumber >> 2) & 3) !== 3)
+          exportAchievementData[37].locked = true;
         else exportAchievementData[37].inProgress = true;
 
         if ((loadoutNumber & 3) !== 0) exportAchievementData[38].locked = true;
@@ -505,7 +613,11 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       }
 
       achievementData.formatting.Progress =
-        "You have not used " + word + " " + timeframe + ". Play a game using only meteor to start progressing.";
+        "You have not used " +
+        word +
+        " " +
+        timeframe +
+        ". Play a game using only meteor to start progressing.";
     }
 
     let dailyWeaponsList = [];
@@ -518,11 +630,16 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
     if (exportAchievementData[9].inProgress) dailyOrdsList.push("detonator");
     if (exportAchievementData[10].inProgress) dailyOrdsList.push("stun field");
     if (exportAchievementData[11].inProgress) dailyOrdsList.push("arc mine");
-    if (exportAchievementData[12].inProgress) dailyOrdsList.push("instant repair");
-    if (exportAchievementData[13].inProgress) dailyTechsList.push("repair matrix");
-    if (exportAchievementData[14].inProgress) dailyTechsList.push("threat scanner");
-    if (exportAchievementData[15].inProgress) dailyTechsList.push("energy barrier");
-    if (exportAchievementData[16].inProgress) dailyTechsList.push("phase shift");
+    if (exportAchievementData[12].inProgress)
+      dailyOrdsList.push("instant repair");
+    if (exportAchievementData[13].inProgress)
+      dailyTechsList.push("repair matrix");
+    if (exportAchievementData[14].inProgress)
+      dailyTechsList.push("threat scanner");
+    if (exportAchievementData[15].inProgress)
+      dailyTechsList.push("energy barrier");
+    if (exportAchievementData[16].inProgress)
+      dailyTechsList.push("phase shift");
 
     let weeklyWeaponsList = [];
     let weeklOrdsList = [];
@@ -534,11 +651,16 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
     if (exportAchievementData[34].inProgress) weeklOrdsList.push("detonator");
     if (exportAchievementData[35].inProgress) weeklOrdsList.push("stun field");
     if (exportAchievementData[36].inProgress) weeklOrdsList.push("arc mine");
-    if (exportAchievementData[37].inProgress) weeklOrdsList.push("instant repair");
-    if (exportAchievementData[38].inProgress) weeklyTechsList.push("repair matrix");
-    if (exportAchievementData[39].inProgress) weeklyTechsList.push("threat scanner");
-    if (exportAchievementData[40].inProgress) weeklyTechsList.push("energy barrier");
-    if (exportAchievementData[41].inProgress) weeklyTechsList.push("phase shift");
+    if (exportAchievementData[37].inProgress)
+      weeklOrdsList.push("instant repair");
+    if (exportAchievementData[38].inProgress)
+      weeklyTechsList.push("repair matrix");
+    if (exportAchievementData[39].inProgress)
+      weeklyTechsList.push("threat scanner");
+    if (exportAchievementData[40].inProgress)
+      weeklyTechsList.push("energy barrier");
+    if (exportAchievementData[41].inProgress)
+      weeklyTechsList.push("phase shift");
 
     setMessage(exportAchievementData[30], "week", "pulsar", weeklyWeaponsList);
     setMessage(exportAchievementData[31], "week", "nova", weeklyWeaponsList);
@@ -547,11 +669,36 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
     setMessage(exportAchievementData[34], "week", "detonator", weeklOrdsList);
     setMessage(exportAchievementData[35], "week", "stun field", weeklOrdsList);
     setMessage(exportAchievementData[36], "week", "arc mine", weeklOrdsList);
-    setMessage(exportAchievementData[37], "week", "instant repair", weeklOrdsList);
-    setMessage(exportAchievementData[38], "week", "repair matrix", weeklyTechsList);
-    setMessage(exportAchievementData[39], "week", "threat scanner", weeklyTechsList);
-    setMessage(exportAchievementData[40], "week", "energy barrier", weeklyTechsList);
-    setMessage(exportAchievementData[41], "week", "phase shift", weeklyTechsList);
+    setMessage(
+      exportAchievementData[37],
+      "week",
+      "instant repair",
+      weeklOrdsList
+    );
+    setMessage(
+      exportAchievementData[38],
+      "week",
+      "repair matrix",
+      weeklyTechsList
+    );
+    setMessage(
+      exportAchievementData[39],
+      "week",
+      "threat scanner",
+      weeklyTechsList
+    );
+    setMessage(
+      exportAchievementData[40],
+      "week",
+      "energy barrier",
+      weeklyTechsList
+    );
+    setMessage(
+      exportAchievementData[41],
+      "week",
+      "phase shift",
+      weeklyTechsList
+    );
 
     setMessage(exportAchievementData[5], "day", "pulsar", dailyWeaponsList);
     setMessage(exportAchievementData[6], "day", "nova", dailyWeaponsList);
@@ -560,10 +707,30 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
     setMessage(exportAchievementData[9], "day", "detonator", dailyOrdsList);
     setMessage(exportAchievementData[10], "day", "stun field", dailyOrdsList);
     setMessage(exportAchievementData[11], "day", "arc mine", dailyOrdsList);
-    setMessage(exportAchievementData[12], "day", "instant repair", dailyOrdsList);
-    setMessage(exportAchievementData[13], "day", "repair matrix", dailyTechsList);
-    setMessage(exportAchievementData[14], "day", "threat scanner", dailyTechsList);
-    setMessage(exportAchievementData[15], "day", "energy barrier", dailyTechsList);
+    setMessage(
+      exportAchievementData[12],
+      "day",
+      "instant repair",
+      dailyOrdsList
+    );
+    setMessage(
+      exportAchievementData[13],
+      "day",
+      "repair matrix",
+      dailyTechsList
+    );
+    setMessage(
+      exportAchievementData[14],
+      "day",
+      "threat scanner",
+      dailyTechsList
+    );
+    setMessage(
+      exportAchievementData[15],
+      "day",
+      "energy barrier",
+      dailyTechsList
+    );
     setMessage(exportAchievementData[16], "day", "phase shift", dailyTechsList);
 
     setAchievementData(exportAchievementData);
@@ -574,7 +741,8 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
 
   const [fullView, setFullView] = useState(false);
 
-  const [selectedAchievementType, setSelectedAchievementType] = useState("daily");
+  const [selectedAchievementType, setSelectedAchievementType] =
+    useState("daily");
 
   useEffect(() => {
     function delay(time) {
@@ -612,7 +780,9 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
       className="padded rounded list"
       style={{
         maxHeight: fullView ? 1500 : 50,
-        ...(fullView ? { padding: "10px 20px 20px", gap: "20px" } : { padding: "0px", gap: "0px" }),
+        ...(fullView
+          ? { padding: "10px 20px 20px", gap: "20px" }
+          : { padding: "0px", gap: "0px" }),
         transitionProperty: "padding,max-height,gap",
         transitionDuration: "0.5s",
         overflow: letOverflow ? "visible" : "hidden",
@@ -646,10 +816,15 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
         </div>
       </div>
       {screenWidth < 700 ? (
-        <div>Challenges cannot be viewed on mobile. Please move to a desktop</div>
+        <div>
+          Challenges cannot be viewed on mobile. Please move to a desktop
+        </div>
       ) : hasFAQ ? (
         <div className="centering">
-          <div className="rounded padded light-background list" style={{ width: "50%" }}>
+          <div
+            className="rounded padded light-background list"
+            style={{ width: "50%" }}
+          >
             <div
               className="button rounded padded centering fill"
               onClick={() => {
@@ -671,29 +846,36 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
             </div>
             <h2>THE FLAMINGO CHALLENGE FAQ</h2>
             <p>
-              Echo Combat Lounge and ECRanked announce the release of The Flamingo Challenge, an ongoing/regular event
-              for Echo Combat (an in-app purchase for Echo VR by Ready at Dawn for the Oculus/Meta platform) running
-              parallel to Echo VR's Echo Pass from start to end of each season. Season 1 begins March 15th, 2022 and
-              ends May 31st, 2022, the same days as Echo Pass Season 5.
+              Echo Combat Lounge and ECRanked announce the release of The
+              Flamingo Challenge, an ongoing/regular event for Echo Combat (an
+              in-app purchase for Echo VR by Ready at Dawn for the Oculus/Meta
+              platform) running parallel to Echo VR's Echo Pass from start to
+              end of each season. Season 1 begins March 15th, 2022 and ends May
+              31st, 2022, the same days as Echo Pass Season 5.
             </p>
             <h2>Can you lose progress?</h2>
             <p>
-              Nope! You never lose progress on challenges. However, a challenge can become "locked," meaning you are
-              unable to progress further until it becomes unlocked.
+              Nope! You never lose progress on challenges. However, a challenge
+              can become "locked," meaning you are unable to progress further
+              until it becomes unlocked.
             </p>
             <h2>How do you unlock a challenge?</h2>
             <p>
-              By waiting! When a DAY challenge gets locked you have to wait until tomorrow for it to become unlocked.
-              This means you have to start over again (the count of games from zero) to gain any more progress. Same
-              with WEEK challenges. You have to wait until Monday of the next week for it to reset for the challenge to
-              become unlocked.
+              By waiting! When a DAY challenge gets locked you have to wait
+              until tomorrow for it to become unlocked. This means you have to
+              start over again (the count of games from zero) to gain any more
+              progress. Same with WEEK challenges. You have to wait until Monday
+              of the next week for it to reset for the challenge to become
+              unlocked.
             </p>
             <h2>How do week and day challenges work?</h2>
             <p>
-              DAY challenges are determined by statistics that reset everyday at midnight PDT/3am EDT/7pm GMT. WEEK
-              challenges are determined by statistics that reset every Monday of a week at midnight. So, when games
-              start on Monday all WEEK statistics have been reset, which means if something became locked the prior week
-              it is now unlocked and you can attempt it again.
+              DAY challenges are determined by statistics that reset everyday at
+              midnight PDT/3am EDT/7pm GMT. WEEK challenges are determined by
+              statistics that reset every Monday of a week at midnight. So, when
+              games start on Monday all WEEK statistics have been reset, which
+              means if something became locked the prior week it is now unlocked
+              and you can attempt it again.
             </p>
             <div
               className="button rounded padded centering fill"
@@ -777,7 +959,11 @@ export default function Achievements({ userData, screenWidth, fetchUserData = ()
           {screenWidth < 1000 ? null : (
             <div style={{ flexBasis: 0, flexGrow: 1.5, display: "flex" }}>
               {userData.oculus_id ? (
-                <AchievementLeaderboard setBannerCallback={() => {}} surroundID={userData.oculus_id} limit={6} />
+                <AchievementLeaderboard
+                  setBannerCallback={() => {}}
+                  surroundID={userData.oculus_id}
+                  limit={6}
+                />
               ) : null}
             </div>
           )}

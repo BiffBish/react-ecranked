@@ -1853,34 +1853,34 @@
       {
         "CID": "43",
         "Title": "Deathwish",
-        "Description": "Average less than 6 deaths per game (in 1 week)",
+        "Description": "Average less than 8 deaths per game (in 1 week)",
         "Timeframe": "(1 week average, 40 game minimum) ",
-        "Percent": "0.43",
+        "Percent": "0.01",
         "Extra": "check #'s",
         "Type": "Death"
       },
       {
         "CID": "43",
         "Title": "About as Useful as a Shield",
-        "Description": "Average less than 5 deaths per game (in 1 week)",
+        "Description": "Average less than 7 deaths per game (in 1 week)",
         "Timeframe": "(1 week average, 40 game minimum) ",
-        "Percent": "0.7142857143",
+        "Percent": "0.33",
         "Extra": "check #'s",
         "Type": "Death"
       },
       {
         "CID": "43",
         "Title": "Armored Core",
-        "Description": "Average less than 4 deaths per game (in 1 week)",
+        "Description": "Average less than 6 deaths per game (in 1 week)",
         "Timeframe": "(1 week average, 40 game minimum) ",
-        "Percent": "0.8571428571",
+        "Percent": "0.66",
         "Extra": "check #'s",
         "Type": "Death"
       },
       {
         "CID": "43",
         "Title": "Pew Pew Proof",
-        "Description": "Average less than 3 deaths per game (in 1 week)",
+        "Description": "Average less than 5 deaths per game (in 1 week)",
         "Timeframe": "(1 week average, 40 game minimum) ",
         "Percent": "1",
         "Extra": "check #'s",
