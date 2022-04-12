@@ -549,7 +549,7 @@ export default function OasisDashboard() {
         <div
           className="padded border button"
           onClick={() => {
-            var exePath = prompt("Please Enter your Name");
+            var exePath = prompt("Please enter your echoVR executable path");
             if ((exePath = "" || exePath == null || exePath === undefined)) {
               return;
             }
