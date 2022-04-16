@@ -527,7 +527,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
           access_token: callbackCode,
         }),
       };
-      fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
+      fetch("https://ecranked.ddns.net/api/v2/auth/login", requestOptions)
         .then((response) => response.json())
         .then((data) => {
           if (data["token"] === undefined) {
