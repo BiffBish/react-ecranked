@@ -297,7 +297,7 @@ export default function OasisDashboard() {
     if (gameID === null) {
       serverLive.send(
         JSON.stringify({
-          command: "game-end-state",
+          command: "end-game-state",
         })
       );
     }
@@ -319,8 +319,7 @@ export default function OasisDashboard() {
         properMapName = "Surge";
         break;
       default:
-        properMapName = "Error";
-        break;
+        return;
     }
     var BlueTeam = data?.teams[0]?.players;
     //sort the blue team by playerid
@@ -378,7 +377,7 @@ export default function OasisDashboard() {
         setCurrentServerState(data.payload);
       }
 
-      if (data.command === "end-game") {
+      if (data.command === "end-game-state") {
         setCurrentServerState((current) => {
           return current.filter((game) => game.id !== data.payload.id);
         });

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import makeApiCall from "../helpers/makeApiCall";
 const ContainerTitle = styled.div`
   font-size: 36px;
   font-weight: 400;
@@ -77,22 +78,12 @@ const AboutStringBox = ({ userData, oculus_id }) => {
 
     const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
 
-    const requestOptions = {
-      method: "PUT",
-      headers: { Authorization: authToken, "Content-Type": "application/json" },
-      body: JSON.stringify({ about_string: currentText }),
-    };
     //Unusual is not a cutie
-
-    fetch(
-      "https://ecranked.ddns.net/api/v1/user/" + userData["oculus_id"],
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        window.location.reload(false);
-      });
+    makeApiCall("v1/user/" + userData["oculus_id"], "PUT", {
+      about_string: currentText,
+    }).then((_) => {
+      window.location.reload(false);
+    });
   };
   if (editing) {
     return (
@@ -220,23 +211,11 @@ const FileUploadButton = ({ userData }) => {
 
     formData.append("image", selectedFile);
 
-    fetch(
-      "https://ecranked.ddns.net/api/v1/user/" +
-        userData["oculus_id"] +
-        "/avatar",
-      {
-        method: "POST",
-        body: formData,
-        headers: { Authorization: localStorage.getItem("AUTHORIZATION_TOKEN") },
-      }
-    )
-      .then((response) => response.json())
-
+    makeApiCall("v1/user/" + userData["oculus_id"], "PUT", {}, formData)
       .then((result) => {
-        console.log("Success:", result);
+        console.log("Success:", result.json);
         window.location.reload(false);
       })
-
       .catch((error) => {
         console.error("Error:", error);
       });
@@ -254,44 +233,18 @@ const FileUploadButton = ({ userData }) => {
 };
 const ModeratorAvatarControls = ({ userData }) => {
   const onApprove = () => {
-    fetch(
-      "https://ecranked.ddns.net/api/v1/user/" +
-        userData["oculus_id"] +
-        "/avatar",
-      {
-        method: "PUT",
-        headers: {
-          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ approve: true }),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        window.location.reload(false);
-      });
+    makeApiCall("v1/user/" + userData["oculus_id"] + "/avatar", "PUT", {
+      approved: true,
+    }).then((_) => {
+      window.location.reload(false);
+    });
   };
   const onRemove = () => {
-    fetch(
-      "https://ecranked.ddns.net/api/v1/user/" +
-        userData["oculus_id"] +
-        "/avatar",
-      {
-        method: "PUT",
-        headers: {
-          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ approve: false }),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        window.location.reload(false);
-      });
+    makeApiCall("v1/user/" + userData["oculus_id"] + "/avatar", "PUT", {
+      approved: false,
+    }).then((_) => {
+      window.location.reload(false);
+    });
   };
   return (
     <EditButtonsStyle>

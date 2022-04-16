@@ -24,7 +24,7 @@ import Teams from "./pages/Teams";
 
 import Component from "./pages/Testing";
 import GlobalUserState from "./contexts/GlobalUserState";
-import { ApiCallHelper } from "./helpers/makeApiCall";
+import makeApiCall, { ApiCallHelper } from "./helpers/makeApiCall";
 import AchievementLeaderboard from "./pages/AchievementLeaderboard";
 import Contact from "./pages/Contact";
 import DeveloperGuide from "./pages/DeveloperGuide";
@@ -76,11 +76,9 @@ function Routes() {
     }));
     let authorization_token = localStorage.getItem("AUTHORIZATION_TOKEN");
     if (authorization_token) {
-      fetch("https://ecranked.ddns.net/api/v1/user/@me", {
-        headers: { Authorization: authorization_token },
-      })
+      makeApiCall("v1/user/@me")
         .then(async (response) => {
-          let data = await response.json();
+          let data = response.json;
           if (response.status === 200) {
             console.log("#R82", data);
             setGlobalUserState((state) => ({
@@ -126,9 +124,7 @@ function Routes() {
   }, [setGlobalUserState]);
 
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/status", {
-      headers: { Authorization: globalUserState.authorization_token },
-    })
+    fetch("https://ecranked.ddns.net/status")
       .then(async (response) => {
         const data = await response.json();
         if (data.maintenance) {

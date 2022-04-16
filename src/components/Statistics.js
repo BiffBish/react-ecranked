@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import disableScroll from "disable-scroll";
+import makeApiCall from "../helpers/makeApiCall";
 
 // import { SideBySideMagnifier } from "react-image-magnifiers";
 function map_range(value, low1, high1, low2, high2) {
@@ -484,31 +485,23 @@ const Heatmap = ({
   //   imageZoomRef?.current?.centerView?.(0.2, 0, 0);
   // }, [imageLoaded]);
   const onHeatmapRequested = () => {
-    const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
-
-    const requestOptions = {
-      method: "PUT",
-      headers: { Authorization: authToken, "Content-Type": "application/json" },
-      body: "{}",
-    };
-    fetch(
+    makeApiCall(
       "https://ecranked.ddns.net/api/v1/user/" +
-        userData["oculus_id"] +
-        "/request_heatmaps",
-      requestOptions
-    )
-      .then((response) => {
-        if (!response.ok) {
-          alert(
-            "There was an error when requesting your heatmaps. Please contact a moderator."
-          );
-        } else {
-          alert(
-            "Heatmap requested! They can take up to 20 minutes to process. Please wait for the ping on discord. Contact a moderator if your heatmap doesn't load or you dont get a ping within 20 minutes"
-          );
-        }
-      })
-      .then((data) => {});
+        userData.oculus_id +
+        "/heatmap",
+      "PUT",
+      {}
+    ).then((response) => {
+      if (!response.ok) {
+        alert(
+          "There was an error when requesting your heatmaps. Please contact a moderator."
+        );
+      } else {
+        alert(
+          "Heatmap requested! They can take up to 20 minutes to process. Please wait for the ping on discord. Contact a moderator if your heatmap doesn't load or you dont get a ping within 20 minutes"
+        );
+      }
+    });
   };
 
   if (userData.heatmap_completed === 1) {
