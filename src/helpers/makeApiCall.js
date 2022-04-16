@@ -20,7 +20,7 @@ export default function makeApiCall(
     let requestOptions = {
       method: method,
       headers: {
-        Authorization: authToken,
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
         "Content-Type": "application/json",
       },
     };
