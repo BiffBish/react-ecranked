@@ -68,15 +68,23 @@ h2 {
   gap: 20px;
   align-items: stretch;
 }
+
+.horizontal-fill{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.horizontal-fill>* {
+  flex: 1;
+}
+
 .horizontal-container {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
 
-.horizontal-container > * {
-  flex: 1;
-}
+
 .wide-gap {
   gap: 40px;
   /* gap: 150px; */

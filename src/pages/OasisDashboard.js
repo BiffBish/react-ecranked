@@ -55,7 +55,7 @@ const HostGameOptions = ({ websocket }) => {
   return (
     <div className="list rounded padded">
       <div className="centered">Map</div>
-      <div className="horizontal-container">
+      <div className="horizontal-fill">
         <RadioSwitch
           label={"Dyson"}
           value={"mpl_combat_dyson"}
@@ -84,7 +84,7 @@ const HostGameOptions = ({ websocket }) => {
       </div>
       <div className="centered">Region</div>
 
-      <div className="horizontal-container">
+      <div className="horizontal-fill">
         <RadioSwitch
           label={"usw"}
           current={gameRegion}
@@ -124,7 +124,7 @@ const HostGameOptions = ({ websocket }) => {
 
       <div className="centered">Team</div>
 
-      <div className="horizontal-container">
+      <div className="horizontal-fill">
         <RadioSwitch
           label={"Blue Team"}
           value={0}
@@ -147,7 +147,7 @@ const HostGameOptions = ({ websocket }) => {
 
       <div className="centered"></div>
 
-      <div className="horizontal-container">
+      <div className="horizontal-fill">
         <div className="rounded button padded" onClick={onSubmit}>
           Launch
         </div>
@@ -171,7 +171,7 @@ function JoinServer(sessionID, teamID) {
 
 const ActiveGame = ({ gameState }) => {
   return (
-    <div className="horizontal-container">
+    <div className="horizontal-fill">
       <div className="border disabled-button" style={{ flexGrow: 2 }}>
         {gameState.mapName}
       </div>
@@ -218,7 +218,7 @@ const ActiveGames = ({ serverState }) => {
   return (
     <div className="padded rounded list">
       <h2>Active Games</h2>
-      {serverState?.map((game) => {
+      {serverState?.games?.map((game) => {
         return <ActiveGame gameState={game} />;
       })}
     </div>
@@ -452,7 +452,7 @@ export default function OasisDashboard() {
     <div className="padded rounded list" style={{ margin: "20px" }}>
       <h2>Reticle Dashboard</h2>
       {gameID ? (
-        <div className="padded rounded horizontal-container">
+        <div className="padded rounded horizontal-fill">
           <div
             className="padded button"
             onClick={() => {
@@ -471,7 +471,7 @@ export default function OasisDashboard() {
         </div>
       ) : null}
 
-      <div className="padded horizontal-container">
+      <div className="padded horizontal-fill">
         <div className="list">
           <div
             className="padded rounded button"
@@ -486,7 +486,7 @@ export default function OasisDashboard() {
           ) : (
             <div></div>
           )}
-          <div className="horizontal-container">
+          <div className="horizontal-fill">
             <AutoCompleteInput
               className="padded rounded"
               ref={JoinGameIDRef}
@@ -511,28 +511,28 @@ export default function OasisDashboard() {
 
           <div className="list" style={{ gap: 0 }}>
             <p>Game History</p>
-            <div className="border horizontal-container">
+            <div className="border horizontal-fill">
               <div className="button" style={{ flexGrow: 0.5 }}>
                 42 minuets ago
               </div>
               <div className="button">Orange</div>
               <div className="button">Social Lobby</div>
             </div>
-            <div className="border  horizontal-container">
+            <div className="border  horizontal-fill">
               <div className="button" style={{ flexGrow: 0.5 }}>
                 24 minuets ago
               </div>
               <div className="button"></div>
               <div className="button">Social Lobby</div>
             </div>
-            <div className="border horizontal-container">
+            <div className="border horizontal-fill">
               <div className="button" style={{ flexGrow: 0.5 }}>
                 16 minuets ago
               </div>
               <div className="button">Blue Team</div>
               <div className="button">Dyson Game</div>
             </div>
-            <div className="border  horizontal-container">
+            <div className="border  horizontal-fill">
               <div className="button" style={{ flexGrow: 0.5 }}>
                 3 minuets ago
               </div>
@@ -543,7 +543,7 @@ export default function OasisDashboard() {
         </div>
         <ActiveGames serverState={currentServerState} />
       </div>
-      <div className="horizontal-container">
+      <div className="horizontal-fill">
         <div className="padded border button">Autojoin Activated</div>
         <div
           className="padded border button"

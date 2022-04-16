@@ -485,23 +485,19 @@ const Heatmap = ({
   //   imageZoomRef?.current?.centerView?.(0.2, 0, 0);
   // }, [imageLoaded]);
   const onHeatmapRequested = () => {
-    makeApiCall(
-      "v1/user/" +
-        userData.oculus_id +
-        "/heatmap",
-      "PUT",
-      {}
-    ).then((response) => {
-      if (!response.ok) {
-        alert(
-          "There was an error when requesting your heatmaps. Please contact a moderator."
-        );
-      } else {
-        alert(
-          "Heatmap requested! They can take up to 20 minutes to process. Please wait for the ping on discord. Contact a moderator if your heatmap doesn't load or you dont get a ping within 20 minutes"
-        );
+    makeApiCall("v1/user/" + userData.oculus_id + "/heatmap", "PUT", {}).then(
+      (response) => {
+        if (!response.ok) {
+          alert(
+            "There was an error when requesting your heatmaps. Please contact a moderator."
+          );
+        } else {
+          alert(
+            "Heatmap requested! They can take up to 20 minutes to process. Please wait for the ping on discord. Contact a moderator if your heatmap doesn't load or you dont get a ping within 20 minutes"
+          );
+        }
       }
-    });
+    );
   };
 
   if (userData.heatmap_completed === 1) {
@@ -781,12 +777,12 @@ const UserStats = ({ userData, statChoice }) => {
 
       <UserStat
         name={"Total Games"}
-        displayValue={userStats["total_games"]}
+        displayValue={userStats?.total_games ?? 0}
         value={1}
       />
       <UserStat
         name={"Total Deaths"}
-        displayValue={userStats["deaths"]}
+        displayValue={userStats?.deaths ?? 0}
         value={1}
       />
       {/* <UserStat
@@ -796,23 +792,27 @@ const UserStats = ({ userData, statChoice }) => {
       /> */}
       <UserStat
         name={"Average Speed"}
-        displayValue={userStats["average_speed"].toFixed(2) + "m/s"}
-        value={map_range(userStats["average_speed"], 0, 5, 0, 1)}
+        displayValue={userStats?.average_speed?.toFixed(2) ?? 0 + "m/s"}
+        value={map_range(userStats?.average_speed ?? 0, 0, 5, 0, 1)}
       />
       <UserStat
         name={"Time idle"}
-        displayValue={(userStats["percent_stopped"] * 100).toFixed(1) + "%"}
-        value={userStats["percent_stopped"]}
+        displayValue={
+          ((userStats?.percent_stopped ?? 0) * 100).toFixed(1) + "%"
+        }
+        value={userStats?.percent_stopped ?? 0}
       />
       <UserStat
         name={"Inverted"}
-        displayValue={(userStats["percent_upsidedown"] * 100).toFixed(1) + "%"}
-        value={userStats["percent_upsidedown"]}
+        displayValue={
+          ((userStats?.percent_upsidedown ?? 0) * 100).toFixed(1) + "%"
+        }
+        value={userStats?.percent_upsidedown ?? 0}
       />
       <UserStat
         name={"Deaths/Game"}
-        displayValue={userStats["average_deaths"].toFixed(1)}
-        value={map_range(userStats["average_deaths"], 0, 15, 0, 1)}
+        displayValue={userStats?.average_deaths?.toFixed(1) ?? 0}
+        value={map_range(userStats?.average_deaths, 0, 15, 0, 1)}
       />
       {/* <UserStat
         name={"Crash/Leave"}
@@ -821,12 +821,14 @@ const UserStats = ({ userData, statChoice }) => {
       /> */}
       <UserStat
         name={"Level"}
-        displayValue={userData["level"]}
-        value={map_range(userData["level"], 0, 50, 0, 1)}
+        displayValue={userData?.level ?? 0}
+        value={map_range(userData?.level ?? 0, 0, 50, 0, 1)}
       />
       <UserStat
         name={"Hours Played"}
-        displayValue={(userStats["total_seconds"] / (60 * 60)).toFixed(1) + "h"}
+        displayValue={
+          (userStats?.total_seconds ?? 0 / (60 * 60)).toFixed(1) + "h"
+        }
         value={1}
       />
     </UserStatsStyle>
@@ -928,8 +930,8 @@ export const Statistics = ({ userData }) => {
         <Loadout
           user_id={userData["oculus_id"]}
           top_loadout={
-            userData[statChoice]["top_loadout"]
-              ? userData[statChoice]["top_loadout"]
+            userData?.[statChoice]?.["top_loadout"]
+              ? userData?.[statChoice]?.["top_loadout"]
               : []
           }
         />
