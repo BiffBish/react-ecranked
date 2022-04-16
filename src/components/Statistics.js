@@ -486,7 +486,7 @@ const Heatmap = ({
   // }, [imageLoaded]);
   const onHeatmapRequested = () => {
     makeApiCall(
-      "https://ecranked.ddns.net/api/v1/user/" +
+      "v1/user/" +
         userData.oculus_id +
         "/heatmap",
       "PUT",

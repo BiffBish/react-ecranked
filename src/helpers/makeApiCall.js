@@ -32,7 +32,7 @@ export default function makeApiCall(
     if (formData) {
       requestOptions.body = formData;
     }
-    fetch("https://ecranked.ddns.net/api/v1/" + url, requestOptions)
+    fetch("https://ecranked.ddns.net/api/" + url, requestOptions)
       .then(async (response) => {
         const data = await response.json();
         console.log(response);
