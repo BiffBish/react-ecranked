@@ -128,7 +128,7 @@ function Routes() {
       .then(async (response) => {
         const data = await response.json();
         if (data.maintenance) {
-          if (localStorage.getItem("MODERATOR") !== "1") {
+          if (localStorage.getItem("MODERATOR") !== "true") {
             alert("The server is down for maintenance. Please visit later");
             window.location.reload(false);
           }

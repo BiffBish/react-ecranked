@@ -102,24 +102,24 @@ export default function Achievements({
       /* 2 */ "",
       /* 3 */ "",
       /* 4 */ "",
-      /* 5 */ userData.daily_stats.total_games,
-      /* 6 */ userData.daily_stats.total_games,
-      /* 7 */ userData.daily_stats.total_games,
-      /* 8 */ userData.daily_stats.total_games,
-      /* 9 */ userData.daily_stats.total_games,
-      /* 10 */ userData.daily_stats.total_games,
-      /* 11 */ userData.daily_stats.total_games,
-      /* 12 */ userData.daily_stats.total_games,
-      /* 13 */ userData.daily_stats.total_games,
-      /* 14 */ userData.daily_stats.total_games,
-      /* 15 */ userData.daily_stats.total_games,
-      /* 16 */ userData.daily_stats.total_games,
+      /* 5 */ userData?.daily_stats?.total_games,
+      /* 6 */ userData?.daily_stats?.total_games,
+      /* 7 */ userData?.daily_stats?.total_games,
+      /* 8 */ userData?.daily_stats?.total_games,
+      /* 9 */ userData?.daily_stats?.total_games,
+      /* 10 */ userData?.daily_stats?.total_games,
+      /* 11 */ userData?.daily_stats?.total_games,
+      /* 12 */ userData?.daily_stats?.total_games,
+      /* 13 */ userData?.daily_stats?.total_games,
+      /* 14 */ userData?.daily_stats?.total_games,
+      /* 15 */ userData?.daily_stats?.total_games,
+      /* 16 */ userData?.daily_stats?.total_games,
       /* 17 */ round(map_range(userData?.achievements?.[17] ?? 0, 0, 1, 0, 12)),
       /* 18 */ round(map_range(userData?.achievements?.[18] ?? 0, 0, 1, 8, 3)),
-      /* 19 */ userData.daily_stats.combustion_games +
-        userData.daily_stats.dyson_games,
-      /* 20 */ userData.daily_stats.fission_games +
-        userData.daily_stats.surge_games,
+      /* 19 */ userData.daily_stats?.combustion_games +
+        userData?.daily_stats?.dyson_games,
+      /* 20 */ userData?.daily_stats?.fission_games +
+        userData?.daily_stats?.surge_games,
       /* 21 */ round(
         map_range(userData?.achievements?.[21] ?? 0, 0, 1, 0, 50),
         1
@@ -294,18 +294,18 @@ export default function Achievements({
       /* 16 */ (userData?.daily_stats?.total_games ?? 0) / 15,
       /* 17 */ null,
       /* 18 */ null,
-      /* 19 */ (userData.daily_stats.combustion_games +
-        userData.daily_stats.dyson_games) /
+      /* 19 */ (userData?.daily_stats?.combustion_games +
+        userData?.daily_stats?.dyson_games) /
         8,
-      /* 20 */ (userData.daily_stats.fission_games +
-        userData.daily_stats.surge_games) /
+      /* 20 */ (userData.daily_stats?.fission_games +
+        userData?.daily_stats?.surge_games) /
         8,
       /* 21 */ null,
       /* 22 */ null,
       /* 23 */ map_range(
         userData?.daily_stats?.top_speed ?? 0,
         15,
-        35,
+        30,
         0,
         1,
         true
@@ -363,8 +363,8 @@ export default function Achievements({
       ) * weeklyOutOf40,
       /* 48 */ map_range(
         userData?.weekly_stats?.average_speed ?? 0,
-        2.5,
-        4,
+        2.0,
+        3.5,
         0,
         1,
         true

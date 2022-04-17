@@ -858,7 +858,7 @@
       {
         "CID": "23",
         "Title": "Boost Action",
-        "Description": "Hit top speed of 20m/s (in 1 game)",
+        "Description": "Hit top speed of 15m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "0.25",
         "Extra": "check %'s",
@@ -867,7 +867,7 @@
       {
         "CID": "23",
         "Title": "Regrabby Grabby Grabs",
-        "Description": "Hit top speed of 25m/s (in 1 game)",
+        "Description": "Hit top speed of 20m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "0.5",
         "Extra": "check %'s",
@@ -876,7 +876,7 @@
       {
         "CID": "23",
         "Title": "Terminal Velocity",
-        "Description": "Hit top speed of 30m/s (in 1 game)",
+        "Description": "Hit top speed of 25m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "0.75",
         "Extra": "check %'s",
@@ -885,7 +885,7 @@
       {
         "CID": "23",
         "Title": "Super Ultra Hyper Turbo",
-        "Description": "Hit top speed of 35m/s (in 1 game)",
+        "Description": "Hit top speed of 30m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "1",
         "Extra": "check %'s",
@@ -2068,7 +2068,7 @@
       {
         "CID": "48",
         "Title": "Don\u2019t Float!",
-        "Description": "Average speed over 2.5m/s (in 1 week)",
+        "Description": "Average speed over 2.0m/s (in 1 week)",
         "Timeframe": "(1 week average, 25 game minimum)  50?",
         "Percent": "0",
         "Extra": "check %'s",
@@ -2077,7 +2077,7 @@
       {
         "CID": "48",
         "Title": "Overclocked",
-        "Description": "Average speed over 3.0m/s (in 1 week)",
+        "Description": "Average speed over 2.5m/s (in 1 week)",
         "Timeframe": "",
         "Percent": "0.3333333333",
         "Extra": "check %'s",
@@ -2086,7 +2086,7 @@
       {
         "CID": "48",
         "Title": "I Am Speed!",
-        "Description": "Average speed over 3.5m/s (in 1 week)",
+        "Description": "Average speed over 3.0m/s (in 1 week)",
         "Timeframe": "",
         "Percent": "0.6666666667",
         "Extra": "check %'s",
@@ -2095,7 +2095,7 @@
       {
         "CID": "48",
         "Title": "The Wings of RAD_Wyvern",
-        "Description": "Average speed over 4.0m/s (in 1 week)",
+        "Description": "Average speed over 3.5m/s (in 1 week)",
         "Timeframe": "",
         "Percent": "1",
         "Extra": "check %'s",
