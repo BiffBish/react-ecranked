@@ -431,7 +431,7 @@ export default function OasisDashboard() {
             var client_name = currentGameData.client_name;
             var teamID = null;
             currentGameData?.teams?.forEach((team, index) => {
-              team.players.forEach((player) => {
+              team?.players?.forEach((player) => {
                 if (player.name === client_name) {
                   teamID = index;
                 }
