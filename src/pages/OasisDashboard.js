@@ -447,6 +447,7 @@ export default function OasisDashboard() {
     console.log("Current SessionID = " + gameID);
     setGameID((current) => {
       console.log("InsideSetGameID : " + current);
+      return current;
     });
     try {
       const data = JSON.parse(message.data);
