@@ -406,7 +406,10 @@ export default function OasisDashboard() {
           if (!FoundGame) {
             newState.push(data.payload);
           }
-          return newState;
+          return {
+            ...current,
+            games: newState,
+          };
         });
       }
     };
