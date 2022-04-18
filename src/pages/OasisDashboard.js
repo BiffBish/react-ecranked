@@ -243,6 +243,7 @@ export default function OasisDashboard() {
 
   const [reticlePreferences, setReticlePreferences] = useState({});
 
+  // eslint-disable-next-line no-unused-vars
   const [gameData, setGameData] = useState({});
   // const [currentInterval, setCurrentInterval] = useState(null);
 
@@ -426,18 +427,19 @@ export default function OasisDashboard() {
           })
         );
         setTimeout(() => {
-          //Find the teamID of the player
-          var client_name = gameData.client_name;
-          var teamID = null;
-          gameData.teams.forEach((team, index) => {
-            team.players.forEach((player) => {
-              if (player.name === client_name) {
-                teamID = index;
-              }
+          setGameData((currentGameData) => {
+            var client_name = currentGameData.client_name;
+            var teamID = null;
+            currentGameData?.teams?.forEach((team, index) => {
+              team.players.forEach((player) => {
+                if (player.name === client_name) {
+                  teamID = index;
+                }
+              });
             });
-          });
-          JoinServer(currentgameID, teamID);
-          console.log("Game crash set id to null");
+            JoinServer(currentgameID, teamID);
+            console.log("Game crash set id to null");
+          }); //Find the teamID of the player
         }, 6000);
       }
       return null;
