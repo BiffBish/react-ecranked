@@ -489,7 +489,7 @@ export default function OasisDashboard() {
             JoinServer(currentgameID, teamID);
             console.log("Game crash set id to null");
           }); //Find the teamID of the player
-        }, 6000);
+        }, 1500);
       }
       return null;
     });
