@@ -10,6 +10,22 @@ export const ApiCallHelper = () => {
   return null;
 };
 
+/**
+ *
+ * @example
+ * makeApiCall("v1/user/" + oculus_id , "PUT", {
+      description: "Value",
+    }).then((response) => {
+      console.log(response.json);
+    });
+ * @param {String} url The url of the api call. Including the version number.
+ * @param {String} method The method of the api call. GET, POST, PUT, DELETE
+ * @param {Object} body The body of the api call.
+ * @param {FormData} formData The form data of the api call.
+ * @returns {Promise} A promise that resolves to the response of the api call.
+ * @description Makes an api call to the specified url.
+ 
+ */
 export default function makeApiCall(
   url,
   method = "GET",

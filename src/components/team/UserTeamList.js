@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import UserButton from "../UserButton";
+import makeApiCall from "../../helpers/makeApiCall";
 const ContainerTitle = styled.div`
   font-size: 36px;
   font-weight: 400;
@@ -164,58 +165,28 @@ export const UserTeamList = ({ teamData }) => {
                 </RecentGameStyleGrow>
                 <RecentGameStyle
                   onClickCapture={() => {
-                    // RemoveUser(user.oculus_name);
-                    const requestOptions = {
-                      method: "POST",
-                      headers: {
-                        Authorization: localStorage.getItem(
-                          "AUTHORIZATION_TOKEN"
-                        ),
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ user_id: user.oculus_id }),
-                    };
-
-                    fetch(
-                      "https://ecranked.ddns.net/api/v1/team/" +
-                        teamData.name +
-                        "/accept_join",
-                      requestOptions
-                    )
-                      .then((response) => response.json())
-                      .then((data) => {
-                        console.log(data);
-                        window.location.reload(false);
-                      });
+                    makeApiCall(
+                      "v1/team/" + teamData.team_id + "/accept_join",
+                      "POST",
+                      { user_id: user.oculus_id }
+                    ).then((_) => {
+                      console.log("Accepted");
+                      window.location.reload(false);
+                    });
                   }}
                 >
                   Accept
                 </RecentGameStyle>
                 <RecentGameStyle
                   onClickCapture={() => {
-                    // RemoveUser(user.oculus_name);
-                    const requestOptions = {
-                      method: "POST",
-                      headers: {
-                        Authorization: localStorage.getItem(
-                          "AUTHORIZATION_TOKEN"
-                        ),
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ user_id: user.oculus_id }),
-                    };
-
-                    fetch(
-                      "https://ecranked.ddns.net/api/v1/team/" +
-                        teamData.name +
-                        "/deny_join",
-                      requestOptions
-                    )
-                      .then((response) => response.json())
-                      .then((data) => {
-                        console.log(data);
-                        window.location.reload(false);
-                      });
+                    makeApiCall(
+                      "v1/team/" + teamData.team_id + "/deny_join",
+                      "POST",
+                      { user_id: user.oculus_id }
+                    ).then((_) => {
+                      console.log("denied");
+                      window.location.reload(false);
+                    });
                   }}
                 >
                   Deny

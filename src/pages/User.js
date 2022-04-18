@@ -9,6 +9,7 @@ import { Statistics } from "../components/Statistics";
 import { RecentGames } from "../components/RecentGames";
 import Achievements from "../components/Achievements";
 import UserPubLeaderboard from "../components/UserPubLeaderboard";
+import makeApiCall from "../helpers/makeApiCall";
 
 const StatChoiceStyle = styled.div`
   padding: 0px;
@@ -59,7 +60,9 @@ const StatChoice = ({ currentSelected, onClick }) => {
         Replays
       </StatChoiceButton>
       <StatChoiceButton
-        style={currentSelected === "public_games" ? { backgroundColor: "#333" } : {}}
+        style={
+          currentSelected === "public_games" ? { backgroundColor: "#333" } : {}
+        }
         onClick={() => {
           onClick("public_games");
         }}
@@ -80,7 +83,10 @@ const LeftSide = ({ username, replays }) => {
   const [selectedOption, setSelectedOption] = React.useState("public_games");
   return (
     <LeftSideStyle>
-      <StatChoice currentSelected={selectedOption} onClick={setSelectedOption}></StatChoice>
+      <StatChoice
+        currentSelected={selectedOption}
+        onClick={setSelectedOption}
+      ></StatChoice>
       {selectedOption === "public_games" ? (
         <UserPubLeaderboard oculus_name={username} />
       ) : (
@@ -90,23 +96,23 @@ const LeftSide = ({ username, replays }) => {
   );
 };
 export default function User({ username, setBannerCallback, subDomain }) {
-  const [randomUsernameOverride, setRandomUsernameOverride] = React.useState(null);
-  if (randomUsernameOverride !== null && (username === "random_async" || username === "random")) {
+  const [randomUsernameOverride, setRandomUsernameOverride] =
+    React.useState(null);
+  if (
+    randomUsernameOverride !== null &&
+    (username === "random_async" || username === "random")
+  ) {
     username = randomUsernameOverride;
   }
   if (username === "random") {
     setRandomUsernameOverride("random_async");
     username = "random_async";
-    fetch("https://ecranked.ddns.net/api/v1/user/@all", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response) => {
-        const data = await response.json();
-        setRandomUsernameOverride(data[Math.floor(Math.random() * data.length)]);
+    makeApiCall("v1/user/@all")
+      .then((response) => {
+        const data = response.json;
+        setRandomUsernameOverride(
+          data[Math.floor(Math.random() * data.length)]
+        );
       })
       .catch((error) => {
         setUserNotFound(true);
@@ -169,15 +175,9 @@ export default function User({ username, setBannerCallback, subDomain }) {
   const [userNotFound, setUserNotFound] = React.useState(false);
 
   const fetchUserData = () => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    makeApiCall("v1/user/" + username)
       .then(async (response) => {
-        const data = await response.json();
+        const data = response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");
@@ -240,7 +240,9 @@ export default function User({ username, setBannerCallback, subDomain }) {
 
   //   return EMPTYREQUEST;
   // }
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
   useEffect(() => {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
@@ -255,19 +257,31 @@ export default function User({ username, setBannerCallback, subDomain }) {
     <>
       <FailedSearchBar shown={userNotFound} onFormSubmit={whenSearchSubmit} />
 
-      <div className="list padded" style={userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}}>
+      <div
+        className="list padded"
+        style={
+          userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
+        }
+      >
         <h3
           className="conthrax centered"
           style={{
             fontSize: windowDimensions.width < 1000 ? "20px" : "50px",
             // letterSpacing: "20px",
-            letterSpacing: windowDimensions.width < 1000 ? "calc(-16px + 3.9vw)" : "calc(-39px + 3.8vw)",
+            letterSpacing:
+              windowDimensions.width < 1000
+                ? "calc(-16px + 3.9vw)"
+                : "calc(-39px + 3.8vw)",
             lineHeight: "10px",
           }}
         >
           --- FLAMINGO CHALLENGE ---
         </h3>
-        <Achievements userData={apiData} screenWidth={windowDimensions.width} fetchUserData={fetchUserData} />
+        <Achievements
+          userData={apiData}
+          screenWidth={windowDimensions.width}
+          fetchUserData={fetchUserData}
+        />
         {/* <div> */}
         <MetaTags>
           <title>{username}'s Page!</title>

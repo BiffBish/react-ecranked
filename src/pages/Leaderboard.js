@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { useHistory } from "react-router-dom";
+import makeApiCall from "../helpers/makeApiCall";
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 
@@ -253,23 +254,11 @@ export default function Leaderboard({
     subDomain = randomLoadout;
   }
   useEffect(() => {
-    fetch(
-      "https://ecranked.ddns.net/api/v1/leaderboard/" +
-        leaderboardStatistic +
-        "/" +
-        subDomain +
-        "/global",
-      {
-        method: "GET",
-        headers: {
-          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-          "Content-Type": "application/json",
-        },
-      }
+    makeApiCall(
+      "v1/leaderboard/" + leaderboardStatistic + "/" + subDomain + "/global"
     )
       .then(async (response) => {
-        console.log(response);
-        const data = await response.json();
+        const data = await response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");

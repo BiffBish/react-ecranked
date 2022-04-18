@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import makeApiCall from "../../helpers/makeApiCall";
 function timeDifference(current, previous) {
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;
@@ -108,16 +109,10 @@ export default function UncontactedUsersModeration({
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/moderator/uncontactedusers", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    makeApiCall("v1/moderator/uncontactedusers")
       .then(async (response) => {
         if (response.status === 200) {
-          const json = await response.json();
+          const json = response.json;
           console.log(json[0]);
           setUnapprovedImages(json);
         }
@@ -128,14 +123,7 @@ export default function UncontactedUsersModeration({
   }, [username, setBannerCallback]);
   console.log(unapprovedImages);
   const RemoveUser = (username) => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
-      method: "PUT",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ contacted: 1 }),
-    });
+    makeApiCall("v1/user/" + username, "PUT", { contacted: 1 });
   };
   return (
     <BodyContainer>

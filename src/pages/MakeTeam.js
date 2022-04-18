@@ -21,19 +21,9 @@ export default function MakeTeam({ setBannerCallback, subDomain }) {
       // history.push("/");
       return;
     }
-    fetch(
-      "https://ecranked.ddns.net/api/v1/user/" +
-        localStorage.getItem("OCULUS_ID"),
-      {
-        method: "GET",
-        headers: {
-          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    makeApiCall("v1/user/" + localStorage.getItem("OCULUS_ID"))
       .then(async (response) => {
-        const data = await response.json();
+        const data = response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");

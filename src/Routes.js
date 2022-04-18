@@ -477,7 +477,7 @@ const OasisDashboardPopup = ({}) => {
             }
           },
           _is_popup_blocked: function (scope, popup_window) {
-            if (popup_window.innerHeight > 0 == false) {
+            if (popup_window.innerHeight <= 0) {
               scope._displayError();
               return false;
             }

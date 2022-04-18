@@ -642,17 +642,17 @@ export default function Achievements({
       dailyTechsList.push("phase shift");
 
     let weeklyWeaponsList = [];
-    let weeklOrdsList = [];
+    let weeklyOrdsList = [];
     let weeklyTechsList = [];
     if (exportAchievementData[30].inProgress) weeklyWeaponsList.push("pulsar");
     if (exportAchievementData[31].inProgress) weeklyWeaponsList.push("nova");
     if (exportAchievementData[32].inProgress) weeklyWeaponsList.push("comet");
     if (exportAchievementData[33].inProgress) weeklyWeaponsList.push("meteor");
-    if (exportAchievementData[34].inProgress) weeklOrdsList.push("detonator");
-    if (exportAchievementData[35].inProgress) weeklOrdsList.push("stun field");
-    if (exportAchievementData[36].inProgress) weeklOrdsList.push("arc mine");
+    if (exportAchievementData[34].inProgress) weeklyOrdsList.push("detonator");
+    if (exportAchievementData[35].inProgress) weeklyOrdsList.push("stun field");
+    if (exportAchievementData[36].inProgress) weeklyOrdsList.push("arc mine");
     if (exportAchievementData[37].inProgress)
-      weeklOrdsList.push("instant repair");
+      weeklyOrdsList.push("instant repair");
     if (exportAchievementData[38].inProgress)
       weeklyTechsList.push("repair matrix");
     if (exportAchievementData[39].inProgress)
@@ -666,14 +666,14 @@ export default function Achievements({
     setMessage(exportAchievementData[31], "week", "nova", weeklyWeaponsList);
     setMessage(exportAchievementData[32], "week", "comet", weeklyWeaponsList);
     setMessage(exportAchievementData[33], "week", "meteor", weeklyWeaponsList);
-    setMessage(exportAchievementData[34], "week", "detonator", weeklOrdsList);
-    setMessage(exportAchievementData[35], "week", "stun field", weeklOrdsList);
-    setMessage(exportAchievementData[36], "week", "arc mine", weeklOrdsList);
+    setMessage(exportAchievementData[34], "week", "detonator", weeklyOrdsList);
+    setMessage(exportAchievementData[35], "week", "stun field", weeklyOrdsList);
+    setMessage(exportAchievementData[36], "week", "arc mine", weeklyOrdsList);
     setMessage(
       exportAchievementData[37],
       "week",
       "instant repair",
-      weeklOrdsList
+      weeklyOrdsList
     );
     setMessage(
       exportAchievementData[38],

@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import makeApiCall from "../helpers/makeApiCall";
 
 export default function UserButton({ username, oculus_id, className }) {
   const [verifiedName, setVerifiedName] = useState(null);
 
   useEffect(() => {
     if (!username && !oculus_id) return;
-    fetch("https://ecranked.ddns.net/api/v1/user/" + oculus_id, {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    makeApiCall("v1/user" + oculus_id)
       .then(async (response) => {
-        const data = await response.json();
+        const data = response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");

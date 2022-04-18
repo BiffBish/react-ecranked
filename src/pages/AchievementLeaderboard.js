@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MasterAchievementBar } from "../components/MasterAchievementBar";
 import { Link } from "react-router-dom";
+import makeApiCall from "../helpers/makeApiCall";
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 
@@ -188,7 +189,11 @@ export default function AchievementLeaderboard({
   const [randomLoadout, setRandomLoadout] = React.useState(null);
   const [startIndex, setStartIndex] = React.useState(0);
 
-  if (leaderboardStatistic === "loadout" && subDomain === "random" && randomLoadout === null) {
+  if (
+    leaderboardStatistic === "loadout" &&
+    subDomain === "random" &&
+    randomLoadout === null
+  ) {
     var randomLoadoutNumber = Math.round(Math.random() * 64);
     setRandomLoadout(randomLoadoutNumber);
     subDomain = randomLoadout;
@@ -198,16 +203,9 @@ export default function AchievementLeaderboard({
     subDomain = randomLoadout;
   }
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/leaderboard/achievement", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    makeApiCall("v1/leaderboard/achievement")
       .then(async (response) => {
-        console.log(response);
-        const data = await response.json();
+        const data = response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");
@@ -237,7 +235,9 @@ export default function AchievementLeaderboard({
       element["80"] = total / 79;
     });
 
-    apiData.sort((a, b) => (a["80"] > b["80"] ? -1 : b["80"] > a["80"] ? 1 : 0));
+    apiData.sort((a, b) =>
+      a["80"] > b["80"] ? -1 : b["80"] > a["80"] ? 1 : 0
+    );
     let NewData = [];
     apiData.forEach((element, index) => {
       if (element.oculus_id === surroundID) {
@@ -263,10 +263,17 @@ export default function AchievementLeaderboard({
       </Link>
 
       <Link className="rounded centering padded" to={"/leaderboard/challenges"}>
-        <img src="/images/ECFCS1.png" alt="Season 1 banner" style={{ width: "100%", maxWidth: "400px" }}></img>
+        <img
+          src="/images/ECFCS1.png"
+          alt="Season 1 banner"
+          style={{ width: "100%", maxWidth: "400px" }}
+        ></img>
       </Link>
 
-      <LeaderboardList userList={sortedApiData?.slice(startIndex, startIndex + limit)} compacted={compacted} />
+      <LeaderboardList
+        userList={sortedApiData?.slice(startIndex, startIndex + limit)}
+        compacted={compacted}
+      />
     </div>
     // <>
     //   {/* <FailedSearchBar  onFormSubmit={whenSearchSubmit} /> */}
