@@ -246,7 +246,7 @@ export default function OasisDashboard() {
   const [gameData, setGameData] = useState({});
   // const [currentInterval, setCurrentInterval] = useState(null);
 
-  const [gameID, setGameID] = useState(null);
+  const [gameID, setGameID] = useState("");
 
   const pingServer = () => {
     client.send(
@@ -445,7 +445,9 @@ export default function OasisDashboard() {
 
   const handleClientMessage = (message) => {
     console.log("Current SessionID = " + gameID);
-
+    setGameID((current) => {
+      console.log("InsideSetGameID : " + current);
+    });
     try {
       const data = JSON.parse(message.data);
       if (data.version) {
