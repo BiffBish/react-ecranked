@@ -387,7 +387,7 @@ export default function OasisDashboard() {
 
       if (data.command === "end-game-state") {
         setCurrentServerState((current) => {
-          return current?.filter((game) => game.id !== data.payload.id);
+          return current?.games?.filter((game) => game.id !== data.payload.id);
         });
       }
 
@@ -395,7 +395,7 @@ export default function OasisDashboard() {
         setCurrentServerState((current) => {
           var FoundGame = false;
 
-          var newState = current?.map((game) => {
+          var newState = current?.games?.map((game) => {
             if (game.id === data.payload.id) {
               FoundGame = true;
               return data.payload;
@@ -439,6 +439,7 @@ export default function OasisDashboard() {
           setReticlePreferences(data);
         }
         if (data.type === "connection_error") {
+          console.log("Connection Error", gameID);
           if (gameID !== null) {
             client.send(
               JSON.stringify({
