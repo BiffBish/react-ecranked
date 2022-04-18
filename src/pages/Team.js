@@ -46,15 +46,9 @@ export default function Team({ teamname, setBannerCallback, subDomain }) {
   const [teamNotFound, setTeamNotFound] = React.useState(false);
 
   const FetchTeamData = () => {
-    fetch("https://ecranked.ddns.net/api/v1/team/" + teamname, {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    makeApiCall("v1/team/" + teamname)
       .then(async (response) => {
-        const data = await response.json();
+        const data = response.json;
         console.log(data.name);
         console.log("code:" + response.statusCode);
         if (response.status === 404) {

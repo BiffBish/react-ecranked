@@ -1,13 +1,7 @@
-/* eslint-disable */
-
-import React, { useRef, useState, useMemo } from "react";
-import { matchPath } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 import styled from "styled-components";
-import { AchievementsContainer, LeftAchievementCollumn } from "../Achievements";
 import { SegmentedProgressBar } from "../SegmentedProgressBar";
-
-var achievementFormatingData = require("../AchievementData.json");
 
 const AchievementPopupStyle = styled.div`
   box-sizing: border-box;
@@ -21,54 +15,56 @@ const AchievementPopupStyle = styled.div`
 
   z-index: 10;
 `;
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+const eventBus = {
+  on(event, callback) {
+    document.addEventListener(event, (e) => callback(e.detail));
+  },
+
+  dispatch(event, data) {
+    document.dispatchEvent(new CustomEvent(event, { detail: data }));
+  },
+
+  remove(event, callback) {
+    document.removeEventListener(event, callback);
+  },
+};
+
+export default eventBus;
 
 const AchievementPopup = ({
-  visible,
-  selectedNumber,
   achievementData,
+  visible,
+  percentage = 0,
   locked,
   floatLeft = false,
   floatTop = false,
   DialogBoxOverride = null,
   pubRequirement = null,
 }) => {
-  // if (selectedNumber == 15) {
-  //   visible = true;
-  // }
-  let displayedValue = achievementData.values[selectedNumber.toString()];
-  if (displayedValue === undefined) {
-    displayedValue = 0;
-  }
-  let SelectedAchievement = achievementFormatingData[selectedNumber.toString()];
-  if (SelectedAchievement == null) return null;
-  let SelectedAchievementDataName = SelectedAchievement.progressDataName;
-  let NumberEarned = null;
-  if (SelectedAchievementDataName != undefined) {
-    NumberEarned = collectedAchievementData[SelectedAchievementDataName];
-  }
+  let SelectedAchievementFormat = achievementData?.formatting;
 
-  let MaxNumber = SelectedAchievement.progressTotal;
+  // const [helperText, sethelperText] = useState("");
+  // useEffect(() => {
+  //   sethelperText(locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress);
+  // }, [locked, SelectedAchievementFormat.Locked, SelectedAchievementFormat.Progress]);
 
-  const PopupProgressBar = () => {
-    if (achievementData.values[selectedNumber.toString()] != null) {
-      return <SegmentedProgressBar AN={selectedNumber} AD={achievementData} />;
-    } else {
-      return <></>;
-    }
-  };
+  const helperText = locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress;
 
-  let uncompletedStatement = SelectedAchievement.uncompletedInfo;
+  if (SelectedAchievementFormat == null) return null;
 
-  if (NumberEarned != null) {
-    uncompletedStatement = uncompletedStatement.replace("%c", NumberEarned);
-    uncompletedStatement = uncompletedStatement.replace("%m", MaxNumber);
-  }
+  let CurrentStepNumber = SelectedAchievementFormat.parts.length;
+  for (let index = 0; index < SelectedAchievementFormat.parts.length; index++) {
+    const element = SelectedAchievementFormat.parts[index];
 
-  let CurrentStepNumber = SelectedAchievement.parts.length;
-  for (let index = 0; index < SelectedAchievement.parts.length; index++) {
-    const element = SelectedAchievement.parts[index];
-
-    if (element.Percent > displayedValue) {
+    if (element.Percent > achievementData?.value) {
       CurrentStepNumber = index;
       break;
     }
@@ -77,9 +73,9 @@ const AchievementPopup = ({
   // console.log(selectedNumber, CurrentStepNumber);
   let ShowHelperBox = true;
   let AchievementStatus = "In Progress";
-  let totalAchievements = SelectedAchievement.parts.length;
+  let totalAchievements = SelectedAchievementFormat.parts.length;
   if (locked) AchievementStatus = "Challenge Locked";
-  if (displayedValue === 1) AchievementStatus = "Completed";
+  if (achievementData?.value === 1) AchievementStatus = "Completed";
 
   let iconSRC = "lock_clear_no_square";
   if (CurrentStepNumber / totalAchievements >= 0.25) {
@@ -94,33 +90,37 @@ const AchievementPopup = ({
   if (CurrentStepNumber / totalAchievements >= 1) {
     ShowHelperBox = false;
     iconSRC = "gold";
-  } else if (locked) {
+  } else if (locked && iconSRC !== "lock_clear_no_square") {
     iconSRC += "_lock";
   }
 
   let partOffset = 0;
 
-  if (SelectedAchievement.parts.length > 4) {
+  if (SelectedAchievementFormat.parts.length > 4) {
     if (CurrentStepNumber < 17) {
       if (CurrentStepNumber < 17 && CurrentStepNumber > 1) {
         partOffset = CurrentStepNumber - 1;
       }
     } else {
-      partOffset = SelectedAchievement.parts.length - 4;
+      partOffset = SelectedAchievementFormat.parts.length - 4;
     }
   }
+  if (achievementData?.value === 1) {
+    CurrentStepNumber = SelectedAchievementFormat.parts.length - 1;
+  }
+
+  let helperSegments = helperText.split(". ");
 
   return (
-    <div
-      style={{ position: "relative", display: !visible ? "none" : undefined }}
-    >
+    <div style={{ position: "relative", display: !visible ? "none" : undefined }}>
       <div
         style={{
           position: "absolute",
           zIndex: 1000,
-          right: floatLeft ? 0 : undefined,
-          left: !floatLeft ? 0 : undefined,
+          right: floatLeft ? "50px" : undefined,
+          left: !floatLeft ? "50px" : undefined,
           bottom: floatTop ? "30px" : undefined,
+          top: !floatTop ? "2px" : undefined,
         }}
       >
         <AchievementPopupStyle
@@ -133,13 +133,10 @@ const AchievementPopup = ({
           }}
         >
           <div className="list grow">
-            <h3 className="centered conthrax">{SelectedAchievement.Title}</h3>
+            <h3 className="centered conthrax">{SelectedAchievementFormat.Title}</h3>
             <div className="horizontal-container">
-              <div
-                className="grow"
-                style={{ gap: 0, opacity: locked ? "50%" : "100%" }}
-              >
-                {partOffset != 0 ? (
+              <div className="grow">
+                {partOffset !== 0 ? (
                   <div
                     className="horizontal-container"
                     style={
@@ -154,48 +151,40 @@ const AchievementPopup = ({
                   </div>
                 ) : null}
 
-                {SelectedAchievement.parts
-                  .slice(partOffset, partOffset + 4)
-                  .map((element, index) => {
-                    let scalePercent = 0.5;
-                    if (CurrentStepNumber == index + partOffset)
-                      scalePercent = 1.0;
-                    if (CurrentStepNumber == index + partOffset + 1)
-                      scalePercent = 0.7;
-                    if (CurrentStepNumber == index + partOffset - 1)
-                      scalePercent = 0.7;
-                    // if (CurrentStepNumber == index + 2) scalePercent = 60;
-                    // if (CurrentStepNumber == index - 2) scalePercent = 60;
-
-                    return (
-                      <>
-                        <div
-                          className="horizontal-container"
-                          style={
-                            {
-                              // transform: "scale(" + scalePercent + "%)",
-                              // transformOrigin: "left",
-                              // height: scalePercent / 2 + "px",
-                            }
+                {SelectedAchievementFormat.parts.slice(partOffset, partOffset + 4).map((element, index) => {
+                  let scalePercent = 1;
+                  // let scalePercent = 0.;
+                  // if (CurrentStepNumber === index + partOffset)
+                  //   scalePercent = 1.0;
+                  // if (CurrentStepNumber === index + partOffset + 1)
+                  //   scalePercent = 0.7;
+                  // if (CurrentStepNumber === index + partOffset - 1)
+                  //   scalePercent = 0.7;
+                  // if (CurrentStepNumber == index + 2) scalePercent = 60;
+                  // if (CurrentStepNumber == index - 2) scalePercent = 60;
+                  let earned = element.Percent <= percentage;
+                  return (
+                    <>
+                      <div
+                        className="horizontal-container"
+                        style={{
+                          gap: 0,
+                          opacity: !earned && locked ? "50%" : "100%",
+                        }}
+                      >
+                        <img
+                          src={
+                            "/images/" +
+                            (earned ? "neon_green_checkmark" : locked ? "neon_red_x" : "lock_clear_no_square") +
+                            ".png"
                           }
-                        >
-                          <img
-                            src={
-                              "/images/" +
-                              (element.Percent <= displayedValue
-                                ? "neon_green_checkmark"
-                                : locked
-                                ? "neon_red_x"
-                                : "lock_clear_no_square") +
-                              ".png"
-                            }
-                            alt="iconImage"
-                            style={{
-                              height: 40 * scalePercent + "px",
-                              width: 40 * scalePercent + "px",
-                            }}
-                          />
-                          {/* <div
+                          alt="iconImage"
+                          style={{
+                            height: 40 * scalePercent + "px",
+                            width: 40 * scalePercent + "px",
+                          }}
+                        />
+                        {/* <div
               className="rounded"
               style={{
                 width: "40px",
@@ -207,28 +196,26 @@ const AchievementPopup = ({
               
               </div> */}
 
-                          <div>
-                            <div style={{ fontSize: 20 * scalePercent }}>
-                              {element.Title}
-                            </div>
-                            <div
-                              style={{
-                                fontSize: 10 * scalePercent,
-                                padding: "0px 0px 10px",
-                              }}
-                            >
-                              {element.Description}
-                            </div>
+                        <div>
+                          <div style={{ fontSize: 20 * scalePercent }}>{element.Title}</div>
+                          <div
+                            style={{
+                              fontSize: 10 * scalePercent,
+                              padding: "0px 0px 10px",
+                            }}
+                          >
+                            {element.Description}
                           </div>
                         </div>
-                      </>
-                    );
-                  })}
+                      </div>
+                    </>
+                  );
+                })}
                 {/* <div style={{}}>
         <PopupProgressBar />{" "}
         
       </div> */}
-                {SelectedAchievement.parts.length - partOffset - 4 > 0 ? (
+                {SelectedAchievementFormat.parts.length - partOffset - 4 > 0 ? (
                   <div
                     className="horizontal-container"
                     style={
@@ -239,7 +226,7 @@ const AchievementPopup = ({
                       }
                     }
                   >
-                    {SelectedAchievement.parts.length - partOffset - 4} more...
+                    {SelectedAchievementFormat.parts.length - partOffset - 4} more...
                   </div>
                 ) : null}
               </div>
@@ -247,6 +234,7 @@ const AchievementPopup = ({
                 <img
                   style={{ width: "150px", backgroundColor: "transparent" }}
                   src={"/images/series_10_crown/" + iconSRC + ".png"}
+                  alt={iconSRC}
                 ></img>
               </div>
 
@@ -258,7 +246,7 @@ const AchievementPopup = ({
           <DialogBoxOverride />
         ) : (
           <>
-            {pubRequirement ? (
+            {achievementData?.pubRequirement ? (
               <AchievementPopupStyle
                 className="rounded padded list horizontal-container"
                 style={{
@@ -271,12 +259,9 @@ const AchievementPopup = ({
                 {/* <div className="centering">
               </div> */}
                 <p>
-                  There is a secondary pub requirement for this challenge. Aswel
-                  as the normal requirement you must complete {pubRequirement}{" "}
-                  games in the challenges timeframe. You can see a secondary
-                  grey bar that represents your secondary progress. if you only
-                  partially complete the secondary requirement you will only get
-                  partial challenge credit.
+                  In addition to the normal requirement you must complete {achievementData?.pubRequirement} games in an
+                  achievement's timeframe. You can see a 2nd grey bar representing your secondary progress. If you only
+                  partially complete the secondary requirement you will only get partial credit for an achievement.
                 </p>
               </AchievementPopupStyle>
             ) : null}
@@ -285,17 +270,20 @@ const AchievementPopup = ({
               style={{
                 display: ShowHelperBox ? undefined : "none",
                 width: 600,
+                gap: "5px",
                 // margin: "0 0 0 200px",
               }}
             >
               <h3>{AchievementStatus}</h3>
               {/* <div className="centering">
               </div> */}
-              <p>
-                {locked
-                  ? SelectedAchievement.Locked
-                  : SelectedAchievement.Progress}
-              </p>
+              <ul style={{ paddingLeft: "15px", margin: "0px" }}>
+                {helperSegments.map((element) => {
+                  return <li style={{ margin: "0px" }}> {element}</li>;
+                })}
+              </ul>
+
+              {/* <p>{locked ? SelectedAchievementFormat.Locked : SelectedAchievementFormat.Progress}</p> */}
             </AchievementPopupStyle>
           </>
         )}
@@ -304,122 +292,158 @@ const AchievementPopup = ({
   );
 };
 
-function map_range(value, low1, high1, low2, high2) {
-  return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
-}
 const SegmentedLProgressBar = ({
-  achievementData,
-  AchNum,
-  icon = "comet",
+  achievementData = null,
   pubRequirement = null,
-  totalGames = 0,
   type,
-  cb = () => {},
-  locked = false,
   onLeft = false,
   onTop = false,
   DialogBoxOverride = null,
   centeredIcon = false,
   titleStyle = {},
+  cb = () => {},
 }) => {
-  const fullRef = useRef();
-
-  if (achievementData == null) {
-    return null;
-  }
-  //   const [value, setValue] = React.useState(0);
-
-  //   const [backgroundHighlighted, setBackgroundHighlighted] =
-  //     React.useState(false);
-  //   React.useEffect(() => {
-  //     setValue(AchievementData.values[AchievementNumber.toString()] * 100);
-  //   }, [AchievementData, AchievementNumber]);
-  //   function getWidth() {
-  //     if (barRef.current === undefined) {
-  //       return 1;
-  //     }
-  //     return barRef.current.getBoundingClientRect().width;
-  //   }
-  let SelectedAchievement = achievementFormatingData[AchNum.toString()];
-  let displayedValue = achievementData.values[AchNum.toString()];
-  console.log(displayedValue);
-  // let displayedValue = achievementData.values[AchNum.toString()];
-  if (displayedValue === undefined) {
-    displayedValue = 0;
-  }
-  let CurrentStepNumber = -1;
   const [visible, setVisible] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  var locked = achievementData.locked;
+  var completed = false;
+
+  useEffect(() => {
+    eventBus.on("closeAll", (data) => setClicked(false));
+    return () => {
+      eventBus.remove("closeAll");
+    };
+  }, []);
+
+  function onClicked() {
+    console.log("applying");
+    eventBus.dispatch("closeAll", { message: null });
+    setClicked(!clicked);
+  }
+
+  if (achievementData?.value === undefined) return null;
+  if (achievementData?.value === 1) {
+    locked = false;
+    completed = true;
+  }
 
   let DisplayedTitle = "Completed!";
-  for (let index = 0; index < SelectedAchievement.parts.length; index++) {
-    const element = SelectedAchievement.parts[index];
-    if (element.Percent > displayedValue) {
-      CurrentStepNumber = index;
-      DisplayedTitle = element.Title;
-      break;
+  if (achievementData) {
+    for (let index = 0; index < achievementData?.formatting?.parts?.length; index++) {
+      const element = achievementData?.formatting?.parts[index];
+      if (element.Percent > achievementData?.value) {
+        DisplayedTitle = element.Title;
+        break;
+      }
     }
+  } else {
   }
+
+  let icon =
+    "/images/icons/" + (achievementData?.icon ?? "pulsar") + (achievementData?.inProgress ? "_" + type : "") + ".png";
+  var showWhite = achievementData.value > achievementData.todayValue;
+
+  if (locked) {
+    showWhite = false;
+  }
+  if (completed) {
+    showWhite = false;
+  }
+  // if (
+  //   !(
+  //     (achievementData?.id >= 30 && achievementData?.id <= 41) ||
+  //     (achievementData?.id >= 5 && achievementData?.id <= 16)
+  //   )
+  // ) {
+  //   showWhite = false;
+  // }
+
   return (
     <div
       style={{
-        height: centeredIcon ? "60px" : "30px",
+        height: centeredIcon ? "90px" : "30px",
         overflow: "visible",
         flexBasis: 0,
       }}
     >
       {centeredIcon ? (
         <div className="centering">
-          <img
-            src={"/images/" + icon + ".png"}
-            alt="iconImage"
-            style={{ height: "28px", width: "28px" }}
-          />
+          <img src={icon} alt="iconImage" style={{ height: "40px", width: "40px", marginBottom: "20px" }} />
         </div>
       ) : null}
       <div
         style={{
           display: "flex",
-          opacity: locked ? 0.5 : 1,
+          opacity: locked && !visible ? 0.5 : 1,
           position: "relative",
           height: "30px",
-
+          gap: "10px",
           flexDirection: onLeft ? "row-reverse" : "row",
         }}
-        ref={fullRef}
       >
+        {/* {iconHovered ? (
+          <div
+            className={"rounded padded"}
+            style={{ position: "absolute", top: "50px", left: "0px", opacity: 1, zIndex: 1, backgroundColor: "#222" }}
+          >
+            {!centeredIcon ? <img src={icon} alt="iconImage" style={{ height: "80px", width: "80px" }} /> : null}
+            {locked ? (
+              <img
+                src={"/images/lock_clear_no_square.png"}
+                alt="iconImage"
+                style={{ height: "25px", width: "25px", position: "absolute", left: "-23px", top: "8px" }}
+              />
+            ) : null}
+          </div>
+        ) : null} */}
         {!centeredIcon ? (
           <img
-            src={"/images/" + icon + ".png"}
+            src={icon}
+            onMouseEnter={() => {
+              setVisible(true);
+            }}
+            onMouseLeave={() => {
+              setVisible(false);
+            }}
             alt="iconImage"
-            style={{ height: "28px", width: "28px" }}
+            style={{ height: "40px", width: "40px" }}
+          />
+        ) : null}
+        {locked ? (
+          <img
+            src={"/images/lock_clear_no_square.png"}
+            alt="iconImage"
+            style={{ height: "25px", width: "25px", position: "absolute", left: "-23px", top: "8px" }}
           />
         ) : null}
 
         <div
-          style={{ flexGrow: 1 }}
+          style={{ flexGrow: 1, cursor: "pointer" }}
           onMouseEnter={() => {
-            // updateHoverCallback(AchievementNumber);
-            // setBackgroundHighlighted(true);
             setVisible(true);
-            cb(fullRef, AchNum, true);
           }}
           onMouseLeave={() => {
-            cb(fullRef, AchNum, false);
             setVisible(false);
-
-            // updateHoverCallback([]);
-            // setBackgroundHighlighted(false);
           }}
+          onClick={onClicked}
         >
           <SegmentedProgressBar
+            // SetBarWhite={locked}
             Title={DisplayedTitle}
-            // Title={achievementData.values[AchievementNumber.toString()]}
-            Percentage={displayedValue}
-            SecondaryPercentage={Math.min(totalGames / pubRequirement, 1)}
-            // SecondaryPercentage={0.9}
-            // Percentage={0.5}
+            Percentage={achievementData?.value ?? 0}
+            SecondaryPercentage={
+              achievementData?.pubRequirement
+                ? Math.min(achievementData?.pubCount / (achievementData?.pubRequirement ?? 1), 1)
+                : 0
+            }
             Height={15}
             ProgressBarClass={type + "-background"}
+            // ActiveProgress={showWhite ? achievementData?.todayProgress : null}
+            // ActiveProgress={showWhite ? 0.5 : undefined}
+            ActiveProgress={showWhite ? achievementData?.todayValue : undefined}
+            todayValue={achievementData?.todayValue}
+            recordValue={achievementData?.value}
             centeredTitle={centeredIcon}
             leftTitle={onLeft}
             titleStyle={titleStyle}
@@ -428,9 +452,10 @@ const SegmentedLProgressBar = ({
       </div>
       <AchievementPopup
         width={100}
-        visible={visible}
-        selectedNumber={AchNum}
+        visible={visible || clicked}
         achievementData={achievementData}
+        selectedNumber={achievementData?.id ?? 0}
+        percentage={achievementData?.value ?? 0}
         locked={locked}
         floatLeft={onLeft}
         floatTop={onTop}
@@ -438,46 +463,6 @@ const SegmentedLProgressBar = ({
         pubRequirement={pubRequirement}
       />
     </div>
-
-    // <SegmentedProgressBarContainerStyle
-    //   style={S
-    //     backgroundHighlighted
-    //       ? {
-    //           backgroundColor: "#fff4",
-    //         }
-    //       : {
-    //           backgroundColor: "#fff0",
-    //         }
-    //   }
-
-    //   ref={fullRef}
-    // >
-    //   {/* {AchievementNumber} */}
-    //   {}
-    //   <ProgressDivStyle
-    //     className="progress-div"
-    //     style={{ height: "20px" }}
-    //     ref={barRef}
-    //   >
-    //     <ProgressBarStyle
-    //       style={{ width: `${map_range(value, 0, 100, 0, 200)}%` }}
-    //       className="progress"
-    //     ></ProgressBarStyle>
-    //     <ProgressBarTextStyle></ProgressBarTextStyle>
-    //     {/* {segments.map((segment) => {
-    //       return (
-    //         <SegmentOfProgressBar
-    //           style={{
-    //             backgroundColor: segment.earned ? `green` : `white`,
-    //             transform: `translate(${
-    //               segment.percentage * 100 * 0.5 * getWidth()
-    //             }%, 0%)`,
-    //           }}
-    //         />
-    //       );
-    //     })} */}
-    //   </ProgressDivStyle>
-    // </SegmentedProgressBarContainerStyle>
   );
 };
 const LoadoutImage = ({ number }) => {
@@ -485,146 +470,95 @@ const LoadoutImage = ({ number }) => {
   const ordinance = ((number - tacMod) % 16) / 4;
   const weapon = ((number - (tacMod + ordinance * 4)) % 64) / 16;
 
-  const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
-  ];
-  const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
-  ];
-  const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
-  ];
-
+  const tacModMap = ["repair_matrix.png", "threat_scanner.png", "energy_barrier.png", "phaseshift.png"];
+  const ordinanceMap = ["detonator.png", "stun_field.png", "arcmine.png", "instant_repair.png"];
+  const weaponMap = ["pulsar.png", "nova.png", "comet.png", "meteor.png"];
+  const tacModMapName = ["Repair Matrix", "Threat Scanner", "Energy Barrier", "Phase Shift"];
+  const ordinanceMapName = ["Detonator", "Stun Field", "Arcmine", "Instant Repair"];
+  const weaponMapName = ["Pulsar", "Nova", "Comet", "Meteor"];
   return (
     <>
-      <img
-        src={weaponMap[weapon]}
-        alt={"weapon"}
-        // style={{ justifyContent: "center" }}
-      ></img>
-      <img
-        src={ordinanceMap[ordinance]}
-        alt={"ordinance"}
-        // style={{ justifyContent: "center" }}
-      ></img>
-      <img
-        src={tacModMap[tacMod]}
-        alt={"tacMod"}
-        // style={{ justifyContent: "center" }}
-      ></img>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <img
+          style={{ width: "40px" }}
+          src={"/images/icons/" + weaponMap[weapon]}
+          alt={"weapon"}
+          // style={{ justifyContent: "center" }}
+        ></img>
+        <p>{weaponMapName[weapon]}</p>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <img
+          style={{ width: "40px" }}
+          src={"/images/icons/" + ordinanceMap[ordinance]}
+          alt={"ordinance"}
+          // style={{ justifyContent: "center" }}
+        ></img>
+        <p>{ordinanceMapName[ordinance]}</p>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <img
+          style={{ width: "40px" }}
+          src={"/images/icons/" + tacModMap[tacMod]}
+          alt={"tacMod"}
+          // style={{ justifyContent: "center" }}
+        ></img>
+        <p>{tacModMapName[tacMod]}</p>
+      </div>
     </>
   );
 };
-const LoadoutBarSelectedDivStyle = styled.div`
-  color: white;
-  background-color: #444;
-  position: absolute;
-  // width: 200px;
-  // height: 150px;
-  // bottom: 100%;
-  border: 2px solid #555;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const LoadoutBarSelected = ({ number, onHover }) => {
-  const tacMod = number % 4;
-  const ordinance = ((number - tacMod) % 16) / 4;
-  const weapon = ((number - (tacMod + ordinance * 4)) % 64) / 16;
-
-  const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
-  ];
-  const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
-  ];
-  const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
-  ];
-  const tacModMapName = [
-    "Repair Matrix",
-    "Threat Scanner",
-    "Energy Barrier",
-    "Phaseshift",
-  ];
-  const ordinanceMapName = [
-    "Detonator",
-    "Stun Field",
-    "Arcmine",
-    "Instant Repair",
-  ];
-  const weaponMapName = ["Pulsar", "Nova", "Comet", "Meteor"];
-
-  return (
-    <LoadoutBarSelectedDivStyle>
-      <p style={{ margin: "0px" }}>
-        <img
-          src={weaponMap[weapon]}
-          alt={"weapon"}
-          style={{ justifyContent: "center", width: "40px", height: "40px" }}
-        />
-        {weaponMapName[weapon]}
-      </p>
-      <p style={{ margin: "0px" }}>
-        <img
-          src={ordinanceMap[ordinance]}
-          alt={"ordinance"}
-          style={{ justifyContent: "center", width: "40px", height: "40px" }}
-        />
-        {ordinanceMapName[ordinance]}
-      </p>
-      <p style={{ margin: "0px" }}>
-        <img
-          src={tacModMap[tacMod]}
-          alt={"tacMod"}
-          style={{ justifyContent: "center", width: "40px", height: "40px" }}
-        />
-        {tacModMapName[tacMod]}
-      </p>
-    </LoadoutBarSelectedDivStyle>
-  );
-};
-const LoadoutBarItem = ({ loadoutNumber }) => {
-  const [onHovered, setOnHovered] = useState(false);
+const LoadoutBarItem = ({ loadoutNumber, setHovered = () => {}, barHovered = false }) => {
+  var [onHovered, setOnHovered] = useState(false);
+  var width = "40px";
+  if (onHovered) {
+    width = "124px";
+  } else if (barHovered) {
+    width = "33px";
+  } else {
+    width = "40px";
+  }
   return (
     <div
+      style={{
+        overflow: "hidden",
+        position: "relative",
+        transitionProperty: "width",
+        transitionDuration: "200ms",
+        width: width,
+      }}
       className="rounded list hoverable"
-      // style={{ width: `${width * 100}%` }}
-      style={
-        {
-          // width: `${width * 100}%`,
-        }
-      }
       onMouseEnter={() => {
         console.log("Twe");
-
         setOnHovered(true);
+        setHovered(true);
       }}
       onMouseLeave={() => {
         setOnHovered(false);
+        setHovered(false);
       }}
     >
       <LoadoutImage number={loadoutNumber} />
-      <div style={{ position: "relative" }}>
+      {/* <div style={{}}>
         {onHovered ? (
           <LoadoutBarSelected
             number={loadoutNumber}
@@ -632,8 +566,10 @@ const LoadoutBarItem = ({ loadoutNumber }) => {
               setOnHovered(false);
             }}
           />
-        ) : null}
-      </div>
+        ) : (
+          loadoutNumber
+        )}
+      </div> */}
     </div>
   );
 };
@@ -641,113 +577,50 @@ const LoadoutBarItem = ({ loadoutNumber }) => {
 export const AchievementLoadoutStats = ({
   userData,
   selectedAchievementType = "daily",
-  achievementData,
+  achievementsData,
   cb = () => {},
   setHn = () => {},
-  lockedAchievements = [],
+  setWantFAQ = () => {},
+  onRefresh = () => {},
 }) => {
-  if (achievementData == null || userData == null) {
+  if (achievementsData == null || userData == null) {
     return null;
   }
-  let achievementItems = [
-    [5, "pulsar", 0],
-    [6, "nova", 0],
-    [7, "comet", 0],
-    [8, "meteor", 0],
-    [9, "detonator", 0],
-    [10, "stun_field", 0],
-    [11, "arc_mine", 0],
-    [12, "instant_repair", 0],
-    [13, "repair_matrix", 0],
-    [14, "threat_scanner", 0],
-    [15, "energy_barrier", 0],
-    [16, "phaseshift", 0],
-    [17, "loadout", 0],
-    [18, "deaths", 0],
-    [19, "capture_point", 0],
-    [20, "payload", 0],
-    [21, "team_proximity", 0],
-    [22, "enemy_proximity", 0],
-    [23, "speed", 0],
-    [24, "inverted", 0],
-    [25, "dyson", 0],
-    [26, "combustion", 0],
-    [27, "fission", 0],
-    [28, "surge", 0],
-  ];
 
-  const AllLoadoutHelper = ({}) => {
-    let numOfHelpers = 0;
+  const LoadoutList = ({ elements }) => {
+    const [barHovered, setBarHovered] = useState(false);
+
     return (
-      <AchievementPopupStyle
-        className="rounded padded list horizontal-container"
-        style={{
-          width: 600,
-          // margin: "0 0 0 200px",
-        }}
-      >
-        <h3>{"In Progress"}</h3>
-        {/* <div className="centering">
-    </div> */}
-        <p>
-          Play with loadouts you have never used before. Listed below are some
-          loadouts you have not used before. Give them a try!
-        </p>
-        <div className="horizontal-container">
-          {userData.stats.top_loadout.map((element) => {
-            if (element[1] != 0) return null;
-            numOfHelpers += 1;
-            if (numOfHelpers >= 10) return null;
-            return (
-              <LoadoutBarItem
-                width={0.1}
-                loadoutNumber={parseInt(element[0])}
-              />
-            );
-          })}
-        </div>
-      </AchievementPopupStyle>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        {elements.map((element) => {
+          return (
+            <LoadoutBarItem
+              style={{ width: "30px" }}
+              width={0.1}
+              loadoutNumber={parseInt(element[0])}
+              setHovered={setBarHovered}
+              barHovered={barHovered}
+            />
+          );
+        })}
+      </div>
     );
   };
-  const EquipableHelper = ({}) => {
-    let numOfHelpers = 0;
+  const AllLoadoutHelper = () => {
+    const [filteredSplitList, setFilteredSplitList] = useState([]);
+    useEffect(() => {
+      let shuffledArray = Object.entries(userData.achievement_stats.loadout);
+      shuffleArray(shuffledArray);
 
-    let notUsedAchievements = [
-      "/images/pulsar.png",
-      "/images/nova.png",
-      "/images/comet.png",
-      "/images/meteor.png",
-      "/images/detonator.png",
-      "/images/stun_field.png",
-      "/images/arcmine.png",
-      "/images/instant_repair.png",
-      "/images/repair_matrix.png",
-      "/images/threat_scanner.png",
-      "/images/energy_barrier.png",
-      "/images/phaseshift.png",
-    ];
-    if (userData.daily_stats.top_loadout) {
-      userData.daily_stats.top_loadout.every((element) => {
-        if (element[1] == 0) return false;
-        let loadoutNumber = parseInt(element[0]);
+      shuffledArray = shuffledArray.filter((element) => element[1] < 3 * 60 * 30);
 
-        if (!(loadoutNumber >> 4 == 0)) notUsedAchievements[0] = null;
-        if (!(loadoutNumber >> 4 == 1)) notUsedAchievements[1] = null;
-        if (!(loadoutNumber >> 4 == 2)) notUsedAchievements[2] = null;
-        if (!(loadoutNumber >> 4 == 3)) notUsedAchievements[3] = null;
+      let splitList = [];
+      for (let index = 0; index < Math.ceil(shuffledArray.length / 13); index++) {
+        splitList.push(shuffledArray.slice(index * 13, index * 13 + 13));
+      }
 
-        if (!(((loadoutNumber >> 2) & 3) == 0)) notUsedAchievements[4] = null;
-        if (!(((loadoutNumber >> 2) & 3) == 1)) notUsedAchievements[5] = null;
-        if (!(((loadoutNumber >> 2) & 3) == 2)) notUsedAchievements[6] = null;
-        if (!(((loadoutNumber >> 2) & 3) == 3)) notUsedAchievements[7] = null;
-
-        if (!((loadoutNumber & 3) == 0)) notUsedAchievements[8] = null;
-        if (!((loadoutNumber & 3) == 1)) notUsedAchievements[9] = null;
-        if (!((loadoutNumber & 3) == 2)) notUsedAchievements[10] = null;
-        if (!((loadoutNumber & 3) == 3)) notUsedAchievements[11] = null;
-        return true;
-      });
-    }
+      setFilteredSplitList(splitList);
+    }, []);
 
     return (
       <AchievementPopupStyle
@@ -761,82 +634,77 @@ export const AchievementLoadoutStats = ({
         {/* <div className="centering">
     </div> */}
         <p>
-          Play with more equipables. Listed below are the equipables you have
-          not used before. Give them a try!
+          Play with loadouts you have never used before. Listed below are some loadouts you have not used before. Give
+          them a try!
         </p>
-        <div className="horizontal-container">
-          {notUsedAchievements.map((element) => {
-            if (element == null) return null;
-            numOfHelpers += 1;
-            if (numOfHelpers >= 10) return null;
-            return (
-              <img
-                src={element}
-                alt={element}
-                // style={{ justifyContent: "center" }}
-              ></img>
-            );
-          })}
+        <div style={{ overflowY: "scroll", maxHeight: "200px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            {filteredSplitList.map((element) => {
+              return <LoadoutList elements={element}></LoadoutList>;
+              // if (element[1] > 3 * 60 * 30) return null;
+              // numOfHelpers += 1;
+              // if (numOfHelpers >= 60) return null;
+              // return <LoadoutBarItem style={{ width: "30px" }} width={0.1} loadoutNumber={parseInt(element[0])} />;
+            })}
+          </div>
         </div>
       </AchievementPopupStyle>
     );
   };
-  // let AllLoadoutHelper = useMemo(() => {
-  //   return <EquipableHelper userData={userData} />;
-  // }, []);
-  // console.log(lockedAchievements);
-
-  // let lockedAchievemetns = useMemo(getLockedStuff());
+  console.log("#788", achievementsData);
 
   if (selectedAchievementType === "daily") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
-            <SegmentedLProgressBar
-              AchNum={29}
-              icon={"pubs"}
-              achievementData={achievementData}
-              cb={cb}
-              type={"daily"}
-              centeredIcon={true}
-            />
+            <SegmentedLProgressBar achievementData={achievementsData[29]} type={"daily"} centeredIcon={true} />
           </div>
         </div>
 
         <div className="container">
           <div className="wide-gap horizontal-container">
             <div className="list grow">
-              {achievementItems.slice(0, 12).map((element, index) => {
-                return (
-                  <SegmentedLProgressBar
-                    AchNum={element[0]}
-                    icon={element[1]}
-                    type={"daily"}
-                    cb={cb}
-                    achievementData={achievementData}
-                    locked={lockedAchievements[element[0]] === true}
-                    onTop={index > 4}
-                    // locked={true}
-                  />
-                );
-              })}
+              {Object.values(achievementsData)
+                .slice(5, 17)
+                .map((element, index) => {
+                  return (
+                    <SegmentedLProgressBar type={"daily"} key={index} achievementData={element} onTop={index > 4} />
+                  );
+                })}
             </div>
             <div className="list grow">
-              {achievementItems.slice(12, 24).map((element, index) => {
-                return (
-                  <SegmentedLProgressBar
-                    AchNum={element[0]}
-                    icon={element[1]}
-                    type={"daily"}
-                    cb={cb}
-                    achievementData={achievementData}
-                    onTop={index > 4}
-                    onLeft={true}
-                  />
-                );
-              })}
+              {Object.values(achievementsData)
+                .slice(17, 29)
+                .map((element, index) => {
+                  return (
+                    <SegmentedLProgressBar
+                      key={index}
+                      type={"daily"}
+                      achievementData={element}
+                      onTop={index > 4}
+                      onLeft={true}
+                    />
+                  );
+                })}
             </div>
+          </div>
+        </div>
+        <div
+          className="button rounded padded centering"
+          onClick={() => {
+            setWantFAQ(true);
+          }}
+        >
+          <div className="list centering">
+            <img src="/images/faq_eyes_small_2.png" alt="FAQ"></img>
           </div>
         </div>
       </div>
@@ -844,58 +712,55 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "weekly") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
-            <SegmentedLProgressBar
-              AchNum={29 + 25}
-              icon={"pubs"}
-              achievementData={achievementData}
-              cb={cb}
-              centeredIcon={true}
-              type={"weekly"}
-            />
+            <SegmentedLProgressBar achievementData={achievementsData[54]} type={"weekly"} centeredIcon={true} />
           </div>
         </div>
         <div className="container">
-          <div className="horizontal-container">
+          <div className="wide-gap horizontal-container">
             <div className="list grow">
-              {achievementItems.slice(0, 12).map((element, index) => {
-                return (
-                  <SegmentedLProgressBar
-                    AchNum={element[0] + 25}
-                    icon={element[1]}
-                    type={"weekly"}
-                    cb={cb}
-                    onTop={index > 4}
-                    locked={lockedAchievements[element[0]] === true}
-                    achievementData={achievementData}
-                  />
-                );
-              })}
+              {Object.values(achievementsData)
+                .slice(30, 42)
+                .map((element, index) => {
+                  return (
+                    <SegmentedLProgressBar key={index} type={"weekly"} achievementData={element} onTop={index > 4} />
+                  );
+                })}
             </div>
             <div className="list grow">
-              {achievementItems.slice(12, 24).map((element, index) => {
-                return (
-                  <SegmentedLProgressBar
-                    AchNum={element[0] + 25}
-                    icon={element[1]}
-                    type={"weekly"}
-                    cb={cb}
-                    achievementData={achievementData}
-                    onTop={index > 4}
-                    onLeft={true}
-                    totalGames={
-                      [1, 4, 5, 6, 7].includes(index)
-                        ? userData.weekly_stats.total_games
-                        : // 20
-                          0
-                    }
-                    pubRequirement={[1, 4, 5, 6, 7].includes(index) ? 40 : null}
-                  />
-                );
-              })}
+              {Object.values(achievementsData)
+                .slice(42, 54)
+                .map((element, index) => {
+                  return (
+                    <SegmentedLProgressBar
+                      key={index}
+                      type={"weekly"}
+                      achievementData={element}
+                      onTop={index > 4}
+                      onLeft={true}
+                    />
+                  );
+                })}
             </div>
+          </div>
+        </div>
+        <div
+          className="button rounded padded centering"
+          onClick={() => {
+            setWantFAQ(true);
+          }}
+        >
+          <div className="list centering">
+            <img src="/images/faq_eyes_small_2.png" alt="FAQ"></img>
           </div>
         </div>
       </div>
@@ -903,71 +768,57 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "global") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div className={"centering grow"} style={{ width: "100%" }}>
           <div style={{ width: "70%" }}>
-            <SegmentedLProgressBar
-              AchNum={79}
-              icon={"pubs"}
-              achievementData={achievementData}
-              cb={cb}
-              centeredIcon={true}
-              type={"season"}
-            />
+            <SegmentedLProgressBar achievementData={achievementsData[79]} centeredIcon={true} type={"season"} />
           </div>
         </div>
-        {/* <EquipableHelper userData={userData} /> */}
         <div className="container">
-          <div className="horizontal-container">
+          <div className="wide-gap horizontal-container">
             <div className="list grow">
-              {achievementItems.slice(0, 12).map((element, index) => {
-                return (
-                  <SegmentedLProgressBar
-                    AchNum={element[0] + 50}
-                    locked={lockedAchievements[element[0]] === true}
-                    icon={element[1]}
-                    type={"season"}
-                    cb={cb}
-                    onTop={index > 4}
-                    achievementData={achievementData}
-                  />
-                );
-              })}
+              {Object.values(achievementsData)
+                .slice(55, 67)
+                .map((element, index) => {
+                  return (
+                    <SegmentedLProgressBar key={index} type={"season"} achievementData={element} onTop={index > 4} />
+                  );
+                })}
             </div>
+
             <div className="list grow">
-              <SegmentedLProgressBar
-                AchNum={67}
-                icon={"loadout"}
-                type={"season"}
-                cb={cb}
-                achievementData={achievementData}
-                // onTop={index > 4}
-                onLeft={true}
-                DialogBoxOverride={AllLoadoutHelper}
-              />
-              {achievementItems.slice(13, 24).map((element, index) => {
-                return (
-                  <SegmentedLProgressBar
-                    AchNum={element[0] + 50}
-                    icon={element[1]}
-                    type={"season"}
-                    cb={cb}
-                    achievementData={achievementData}
-                    onTop={index > 4}
-                    onLeft={true}
-                    totalGames={
-                      [3, 4, 5, 6, 7].includes(index)
-                        ? userData.achievement_stats.total_games
-                        : // 20
-                          0
-                    }
-                    pubRequirement={
-                      [3, 4, 5, 6, 7].includes(index) ? 200 : null
-                    }
-                  />
-                );
-              })}
+              {Object.values(achievementsData)
+                .slice(67, 79)
+                .map((element, index) => {
+                  return (
+                    <SegmentedLProgressBar
+                      key={index}
+                      type={"season"}
+                      achievementData={element}
+                      onTop={index + 1 > 4}
+                      onLeft={true}
+                      DialogBoxOverride={index === 0 ? AllLoadoutHelper : undefined}
+                    />
+                  );
+                })}
             </div>
+          </div>
+        </div>
+        <div
+          className="button rounded padded centering"
+          onClick={() => {
+            setWantFAQ(true);
+          }}
+        >
+          <div className="list centering">
+            <img src="/images/faq_eyes_small_2.png" alt="FAQ"></img>
           </div>
         </div>
       </div>
@@ -975,37 +826,30 @@ export const AchievementLoadoutStats = ({
   }
   if (selectedAchievementType === "community") {
     return (
-      <div className="list rounded-overflow padded light-background fill">
+      <div className="list rounded-overflow padded light-background fill" style={{ position: "relative" }}>
+        <div
+          className="button padded rounded centering"
+          style={{ position: "absolute", top: "20px", left: "20px" }}
+          onClick={onRefresh}
+        >
+          Refresh
+        </div>
         <div style={{ width: "50%" }}>
           <div className="list padded light-background">
-            <SegmentedLProgressBar
-              AchNum={1}
-              icon={"community"}
-              achievementData={achievementData}
-              cb={cb}
-              type={"community"}
-            />
-            <SegmentedLProgressBar
-              AchNum={2}
-              icon={"community"}
-              achievementData={achievementData}
-              cb={cb}
-              type={"community"}
-            />
-            <SegmentedLProgressBar
-              AchNum={3}
-              icon={"community"}
-              achievementData={achievementData}
-              cb={cb}
-              type={"community"}
-            />
-            <SegmentedLProgressBar
-              AchNum={4}
-              icon={"community"}
-              achievementData={achievementData}
-              cb={cb}
-              type={"community"}
-            />
+            <SegmentedLProgressBar type={"community"} achievementData={achievementsData[1]} />
+            <SegmentedLProgressBar type={"community"} achievementData={achievementsData[2]} />{" "}
+            <SegmentedLProgressBar type={"community"} achievementData={achievementsData[3]} />{" "}
+            <SegmentedLProgressBar type={"community"} achievementData={achievementsData[4]} />
+          </div>
+        </div>
+        <div
+          className="button rounded padded centering"
+          onClick={() => {
+            setWantFAQ(true);
+          }}
+        >
+          <div className="list centering">
+            <img src="/images/faq_eyes_small_2.png" alt="FAQ"></img>
           </div>
         </div>
       </div>

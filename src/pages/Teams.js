@@ -30,7 +30,7 @@ export default function Teams() {
     !globalUserState.team_id;
   let [teamList, setTeamList] = useState([]);
   useEffect(() => {
-    makeApiCall("team/@all")
+    makeApiCall("v1/team/@all")
       .then((response) => {
         console.log(response);
         setTeamList(response.json);
@@ -39,12 +39,12 @@ export default function Teams() {
   }, []);
 
   const JoinTeam = (teamname) => {
-    makeApiCall("team/" + teamname + "/request_join", "POST").then(() => {
+    makeApiCall("v1/team/" + teamname + "/request_join", "POST").then(() => {
       window.location.reload(false);
     });
   };
   const CancelTeam = (teamname) => {
-    makeApiCall("team/" + teamname + "/cancel_join", "POST").then(() => {
+    makeApiCall("v1/team/" + teamname + "/cancel_join", "POST").then(() => {
       window.location.reload(false);
     });
   };

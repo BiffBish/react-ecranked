@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import makeApiCall from "../../helpers/makeApiCall";
 
 const EditButtonsStyle = styled.div`
   padding: 10px;
@@ -28,34 +29,18 @@ const EditButtonStyle = styled.div`
 `;
 const ModeratorAvatarControls = ({ oculus_id }) => {
   const onApprove = () => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + oculus_id + "/avatar", {
-      method: "PUT",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ approve: true }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        window.location.reload(false);
-      });
+    makeApiCall("v1/user" + oculus_id + "/avatar", "PUT", {
+      approve: true,
+    }).then((data) => {
+      window.location.reload(false);
+    });
   };
   const onRemove = () => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + oculus_id + "/avatar", {
-      method: "PUT",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ approve: false }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        window.location.reload(false);
-      });
+    makeApiCall("v1/user" + oculus_id + "/avatar", "PUT", {
+      approve: false,
+    }).then((data) => {
+      window.location.reload(false);
+    });
   };
   return (
     <EditButtonsStyle>
@@ -141,16 +126,10 @@ export default function ApproveImagesModeration({
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/moderator/unapprovedimages", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    makeApiCall("v1/moderator/unapprovedimages")
       .then(async (response) => {
         if (response.status === 200) {
-          const json = await response.json();
+          const json = response.json;
           setUnapprovedImages(json);
         }
         // const data = await response.json();

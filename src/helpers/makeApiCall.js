@@ -10,12 +10,33 @@ export const ApiCallHelper = () => {
   return null;
 };
 
-export default function makeApiCall(url, method = "GET", body = {}) {
+/**
+ *
+ * @example
+ * makeApiCall("v1/user/" + oculus_id , "PUT", {
+      description: "Value",
+    }).then((response) => {
+      console.log(response.json);
+    });
+ * @param {String} url The url of the api call. Including the version number.
+ * @param {String} method The method of the api call. GET, POST, PUT, DELETE
+ * @param {Object} body The body of the api call.
+ * @param {FormData} formData The form data of the api call.
+ * @returns {Promise} A promise that resolves to the response of the api call.
+ * @description Makes an api call to the specified url.
+ 
+ */
+export default function makeApiCall(
+  url,
+  method = "GET",
+  body = {},
+  formData = null
+) {
   var promise = new Promise((resolve, reject) => {
     let requestOptions = {
       method: method,
       headers: {
-        Authorization: authToken,
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
         "Content-Type": "application/json",
       },
     };
@@ -23,7 +44,11 @@ export default function makeApiCall(url, method = "GET", body = {}) {
     if (!(method === "HEAD" || method === "GET")) {
       requestOptions.body = JSON.stringify(body);
     }
-    fetch("https://ecranked.ddns.net/api/v1/" + url, requestOptions)
+
+    if (formData) {
+      requestOptions.body = formData;
+    }
+    fetch("https://ecranked.ddns.net/api/" + url, requestOptions)
       .then(async (response) => {
         const data = await response.json();
         console.log(response);

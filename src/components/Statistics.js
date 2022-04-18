@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import disableScroll from "disable-scroll";
+import makeApiCall from "../helpers/makeApiCall";
 
 // import { SideBySideMagnifier } from "react-image-magnifiers";
 function map_range(value, low1, high1, low2, high2) {
@@ -91,23 +92,18 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
   const weaponNumber = ((number - (tacNumber + grenadeNumber * 4)) % 64) / 16;
 
   const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
+    "repair_matrix.png",
+    "threat_scanner.png",
+    "energy_barrier.png",
+    "phaseshift.png",
   ];
   const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
+    "detonator.png",
+    "stun_field.png",
+    "arcmine.png",
+    "instant_repair.png",
   ];
-  const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
-  ];
+  const weaponMap = ["pulsar.png", "nova.png", "comet.png", "meteor.png"];
   const tacModMapName = [
     "Repair matrix",
     "Threat scanner",
@@ -128,19 +124,19 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
   return (
     <LoadoutBoxStyle to={"/leaderboard/loadout/" + number}>
       <img
-        src={weaponMap[weaponNumber]}
+        src={"/images/icons/" + weaponMap[weaponNumber]}
         alt={weaponMapName[weaponNumber]}
         style={{ width: "60px", height: "60px" }}
         title={weaponMapName[weaponNumber]}
       />
       <img
-        src={ordinanceMap[grenadeNumber]}
+        src={"/images/icons/" + ordinanceMap[grenadeNumber]}
         alt={ordinanceMapName[grenadeNumber]}
         style={{ width: "60px", height: "60px" }}
         title={ordinanceMapName[grenadeNumber]}
       />
       <img
-        src={tacModMap[tacNumber]}
+        src={"/images/icons/" + tacModMap[tacNumber]}
         alt={tacModMapName[tacNumber]}
         style={{ width: "60px", height: "60px" }}
         title={tacModMapName[tacNumber]}
@@ -489,20 +485,8 @@ const Heatmap = ({
   //   imageZoomRef?.current?.centerView?.(0.2, 0, 0);
   // }, [imageLoaded]);
   const onHeatmapRequested = () => {
-    const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
-
-    const requestOptions = {
-      method: "PUT",
-      headers: { Authorization: authToken, "Content-Type": "application/json" },
-      body: "{}",
-    };
-    fetch(
-      "https://ecranked.ddns.net/api/v1/user/" +
-        userData["oculus_id"] +
-        "/request_heatmaps",
-      requestOptions
-    )
-      .then((response) => {
+    makeApiCall("v1/user/" + userData.oculus_id + "/heatmap", "PUT", {}).then(
+      (response) => {
         if (!response.ok) {
           alert(
             "There was an error when requesting your heatmaps. Please contact a moderator."
@@ -512,8 +496,8 @@ const Heatmap = ({
             "Heatmap requested! They can take up to 20 minutes to process. Please wait for the ping on discord. Contact a moderator if your heatmap doesn't load or you dont get a ping within 20 minutes"
           );
         }
-      })
-      .then((data) => {});
+      }
+    );
   };
 
   if (userData.heatmap_completed === 1) {
@@ -793,12 +777,12 @@ const UserStats = ({ userData, statChoice }) => {
 
       <UserStat
         name={"Total Games"}
-        displayValue={userStats["total_games"]}
+        displayValue={userStats?.total_games ?? 0}
         value={1}
       />
       <UserStat
         name={"Total Deaths"}
-        displayValue={userStats["deaths"]}
+        displayValue={userStats?.deaths ?? 0}
         value={1}
       />
       {/* <UserStat
@@ -808,23 +792,27 @@ const UserStats = ({ userData, statChoice }) => {
       /> */}
       <UserStat
         name={"Average Speed"}
-        displayValue={userStats["average_speed"].toFixed(2) + "m/s"}
-        value={map_range(userStats["average_speed"], 0, 5, 0, 1)}
+        displayValue={userStats?.average_speed?.toFixed(2) ?? 0 + "m/s"}
+        value={map_range(userStats?.average_speed ?? 0, 0, 5, 0, 1)}
       />
       <UserStat
         name={"Time idle"}
-        displayValue={(userStats["percent_stopped"] * 100).toFixed(1) + "%"}
-        value={userStats["percent_stopped"]}
+        displayValue={
+          ((userStats?.percent_stopped ?? 0) * 100).toFixed(1) + "%"
+        }
+        value={userStats?.percent_stopped ?? 0}
       />
       <UserStat
         name={"Inverted"}
-        displayValue={(userStats["percent_upsidedown"] * 100).toFixed(1) + "%"}
-        value={userStats["percent_upsidedown"]}
+        displayValue={
+          ((userStats?.percent_upsidedown ?? 0) * 100).toFixed(1) + "%"
+        }
+        value={userStats?.percent_upsidedown ?? 0}
       />
       <UserStat
         name={"Deaths/Game"}
-        displayValue={userStats["average_deaths"].toFixed(1)}
-        value={map_range(userStats["average_deaths"], 0, 15, 0, 1)}
+        displayValue={userStats?.average_deaths?.toFixed(1) ?? 0}
+        value={map_range(userStats?.average_deaths, 0, 15, 0, 1)}
       />
       {/* <UserStat
         name={"Crash/Leave"}
@@ -833,12 +821,14 @@ const UserStats = ({ userData, statChoice }) => {
       /> */}
       <UserStat
         name={"Level"}
-        displayValue={userData["level"]}
-        value={map_range(userData["level"], 0, 50, 0, 1)}
+        displayValue={userData?.level ?? 0}
+        value={map_range(userData?.level ?? 0, 0, 50, 0, 1)}
       />
       <UserStat
         name={"Hours Played"}
-        displayValue={(userStats["total_seconds"] / (60 * 60)).toFixed(1) + "h"}
+        displayValue={
+          (userStats?.total_seconds ?? 0 / (60 * 60)).toFixed(1) + "h"
+        }
         value={1}
       />
     </UserStatsStyle>
@@ -940,8 +930,8 @@ export const Statistics = ({ userData }) => {
         <Loadout
           user_id={userData["oculus_id"]}
           top_loadout={
-            userData[statChoice]["top_loadout"]
-              ? userData[statChoice]["top_loadout"]
+            userData?.[statChoice]?.["top_loadout"]
+              ? userData?.[statChoice]?.["top_loadout"]
               : []
           }
         />

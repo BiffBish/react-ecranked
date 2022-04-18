@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { useHistory } from "react-router-dom";
+import makeApiCall from "../helpers/makeApiCall";
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 
@@ -103,40 +104,35 @@ const LoadoutBox = ({ number, frequency }) => {
   const weaponNumber = ((number - (tacNumber + grenadeNumber * 4)) % 64) / 16;
 
   const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
+    "repair_matrix.png",
+    "threat_scanner.png",
+    "energy_barrier.png",
+    "phaseshift.png",
   ];
   const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
+    "detonator.png",
+    "stun_field.png",
+    "arcmine.png",
+    "instant_repair.png",
   ];
-  const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
-  ];
+  const weaponMap = ["pulsar.png", "nova.png", "comet.png", "meteor.png"];
   // if (displayNumber === 100) {
   //   displayNumber = 99.999;
   // }
   return (
     <LoadoutBoxStyle to={"/leaderboard/loadout/" + number}>
       <img
-        src={weaponMap[weaponNumber]}
+        src={"/images/icons/" + weaponMap[weaponNumber]}
         alt={"weapon"}
         style={{ width: "60px", height: "60px" }}
       />
       <img
-        src={ordinanceMap[grenadeNumber]}
+        src={"/images/icons/" + ordinanceMap[grenadeNumber]}
         alt={"weapon"}
         style={{ width: "60px", height: "60px" }}
       />
       <img
-        src={tacModMap[tacNumber]}
+        src={"/images/icons/" + tacModMap[tacNumber]}
         alt={"tacMod"}
         style={{ width: "60px", height: "60px" }}
       />
@@ -258,23 +254,11 @@ export default function Leaderboard({
     subDomain = randomLoadout;
   }
   useEffect(() => {
-    fetch(
-      "https://ecranked.ddns.net/api/v1/leaderboard/" +
-        leaderboardStatistic +
-        "/" +
-        subDomain +
-        "/global",
-      {
-        method: "GET",
-        headers: {
-          Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-          "Content-Type": "application/json",
-        },
-      }
+    makeApiCall(
+      "v1/leaderboard/" + leaderboardStatistic + "/" + subDomain + "/global"
     )
       .then(async (response) => {
-        console.log(response);
-        const data = await response.json();
+        const data = await response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");

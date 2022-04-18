@@ -2,6 +2,7 @@ import styled, { keyframes } from "styled-components";
 import React, { useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
+import makeApiCall from "../helpers/makeApiCall";
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 
@@ -131,10 +132,6 @@ export default function UserPubLeaderboard({ oculus_name }) {
   useEffect(() => {
     fetch("https://ecranked.ddns.net/pubs", {
       method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
     })
       .then(async (response) => {
         const data = await response.json();

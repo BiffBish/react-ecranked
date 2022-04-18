@@ -9,6 +9,7 @@ import { Statistics } from "../components/Statistics";
 import { RecentGames } from "../components/RecentGames";
 import Achievements from "../components/Achievements";
 import UserPubLeaderboard from "../components/UserPubLeaderboard";
+import makeApiCall from "../helpers/makeApiCall";
 
 const StatChoiceStyle = styled.div`
   padding: 0px;
@@ -106,15 +107,9 @@ export default function User({ username, setBannerCallback, subDomain }) {
   if (username === "random") {
     setRandomUsernameOverride("random_async");
     username = "random_async";
-    fetch("https://ecranked.ddns.net/api/v1/user/@all", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response) => {
-        const data = await response.json();
+    makeApiCall("v1/user/@all")
+      .then((response) => {
+        const data = response.json;
         setRandomUsernameOverride(
           data[Math.floor(Math.random() * data.length)]
         );
@@ -178,16 +173,11 @@ export default function User({ username, setBannerCallback, subDomain }) {
   };
   const [apiData, setApiData] = React.useState(EMPTYREQUEST);
   const [userNotFound, setUserNotFound] = React.useState(false);
-  const FetchUserData = () => {
-    fetch("https://ecranked.ddns.net/api/v1/user/" + username, {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+
+  const fetchUserData = () => {
+    makeApiCall("v1/user/" + username)
       .then(async (response) => {
-        const data = await response.json();
+        const data = response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");
@@ -205,7 +195,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
               iconSrc = "/images/verified_icon.png";
             }
             if (data.moderator === true) {
-              iconSrc = "/images/moderator_icon.png";
+              iconSrc = "/images/icons/moderator_icon.png";
             }
             if (data.oculus_name === "BiffBish") {
               iconSrc = "/images/happy_cubesat.png";
@@ -233,7 +223,7 @@ export default function User({ username, setBannerCallback, subDomain }) {
     if (username === "random_async") {
       return;
     }
-    FetchUserData();
+    fetchUserData();
 
     // eslint-disable-next-line
   }, [username]);
@@ -287,7 +277,11 @@ export default function User({ username, setBannerCallback, subDomain }) {
         >
           --- FLAMINGO CHALLENGE ---
         </h3>
-        <Achievements userData={apiData} screenWidth={windowDimensions.width} />
+        <Achievements
+          userData={apiData}
+          screenWidth={windowDimensions.width}
+          fetchUserData={fetchUserData}
+        />
         {/* <div> */}
         <MetaTags>
           <title>{username}'s Page!</title>

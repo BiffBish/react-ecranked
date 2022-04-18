@@ -1,48 +1,53 @@
-/* eslint-disable */
-
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
-var achievementFormatingData = require("./AchievementData.json");
 
 function map_range(value, low1, high1, low2, high2) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
 const AchievementSize = 40;
 export const SegmentedProgressBar = ({
+  SetBarWhite = false,
   Percentage = 0,
   Title,
   Height = AchievementSize - 4,
   EnableBorder = true,
   SecondaryPercentage = 0.0,
+  ActiveProgress = null,
   ProgressBarClass,
   centeredTitle = false,
   leftTitle = true,
   titleStyle = {},
+  todayValue: _todayValue = 0,
+  recordValue: _recordValue = 0,
+  forceRecord = false,
 }) => {
-  const [value, setValue] = React.useState(0);
-  const [secondaryValue, setSecondaryValue] = React.useState(0);
+  const [recordValue, setRecordValue] = useState(0);
+  const [secondaryValue, setSecondaryValue] = useState(0);
+  const [todayValue, setTodayValue] = useState(0);
+
   const barRef = useRef();
   const fullRef = useRef();
+  var switchDefaultToWhite = false;
 
-  const [backgroundHighlighted, setBackgroundHighlighted] =
-    React.useState(false);
-  React.useEffect(() => {
-    setValue(Percentage * 100);
+  if (_todayValue !== null && _todayValue + 0.0001 < _recordValue) switchDefaultToWhite = true;
+  if (_recordValue === 1) switchDefaultToWhite = false;
+  if (forceRecord) switchDefaultToWhite = false;
+  if (_todayValue + 0.0001 > _recordValue) _todayValue = _recordValue;
+  // Title = todayValue + " " + recordValue;
+
+  const [backgroundHighlighted, setBackgroundHighlighted] = useState(false);
+  useEffect(() => {
+    setRecordValue(_recordValue * 100);
     setSecondaryValue(SecondaryPercentage * 100);
-  }, [Percentage]);
+    setTodayValue(_todayValue * 100);
+  }, [_recordValue, _todayValue, SecondaryPercentage]);
 
-  function getWidth() {
-    if (barRef.current === undefined) {
-      return 1;
-    }
-    return barRef.current.getBoundingClientRect().width;
-  }
   return (
     <SegmentedProgressBarContainerStyle
       style={
         backgroundHighlighted
           ? {
-              backgroundColor: "#fff4",
+              backgroundColor: "#fff0",
             }
           : {
               backgroundColor: "#fff0",
@@ -79,14 +84,25 @@ export const SegmentedProgressBar = ({
           }}
           className="progress"
           color=""
-        ></ProgressBarStyle>
+        />
+
         <ProgressBarStyle
           style={{
-            width: `${map_range(value, 0, 100, 0, 200)}%`,
+            width: `${map_range(recordValue, 0, 100, 0, 200)}%`,
             transform: `translate(-50%, -100%)`,
+            backgroundColor: switchDefaultToWhite || SetBarWhite ? "#ccc" : undefined,
           }}
           className={"progress " + ProgressBarClass}
-        ></ProgressBarStyle>
+        />
+
+        <ProgressBarStyle
+          style={{
+            width: `${map_range(todayValue, 0, 100, 0, 200)}%`,
+            // backgroundColor: "#0ff",
+            transform: `translate(-50%, -200%)`,
+          }}
+          className={"progress " + ProgressBarClass}
+        />
         <ProgressBarTextStyle></ProgressBarTextStyle>
         {/* {segments.map((segment) => {
               return (
@@ -147,15 +163,6 @@ export var ProgressBar = ({ percent, displayValue }) => {
     </ProgressDivStyle>
   );
 };
-const SegmentOfProgressBar = styled.div`
-  width: 2px;
-  position: absolute;
-  z-index: 10;
-  height: 10px;
-  opacity: 100%;
-  background-color: white;
-  top: 0px;
-`;
 const SegmentedProgressBarContainerStyle = styled.div`
   // height: ${AchievementSize}px;
 
@@ -166,20 +173,4 @@ const SegmentedProgressBarContainerStyle = styled.div`
   transition-property: background-color;
   transition-duration: 0.2f;
   flex-basis: 0;
-`;
-const AchievementsContainer = styled.div`
-  font-size:15px;
-  width: 100%;
-  height: 1500px;
-  display: flex;
-  align-items: stretch;
-  flex-wrap: wrap;
-  overflow: hidden;
-  transition-duration: 1s;
-  opacity: 100%
-  transition-property: height margin opacity;
-  color: white;
-  line-height: ${AchievementSize - 4}px;
-  width: 800px;
-  margin: auto;
 `;

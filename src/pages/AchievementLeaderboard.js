@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MasterAchievementBar } from "../components/MasterAchievementBar";
 import { Link } from "react-router-dom";
+import makeApiCall from "../helpers/makeApiCall";
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 
@@ -80,7 +81,7 @@ const LeaderboardList = ({ userList, compacted }) => {
     return null;
   }
   return (
-    <LeaderboardListsStyle>
+    <LeaderboardListsStyle className="grow">
       <ContainerTitle></ContainerTitle>
       {userList.slice(0, animationIndex).map((user, index) => {
         const OnGameClick = () => {
@@ -139,6 +140,7 @@ const LeaderboardList = ({ userList, compacted }) => {
                   DailyPercent={dailyTotal / 79}
                   WeeklyPercent={weeklyTotal / 79}
                   SeasonPercent={alltimeTotal / 79}
+                  totalPercent={user[80]}
                   // Percentage={achievementData.values["63"]}
                   Title={""}
                   Height={"50px"}
@@ -169,14 +171,6 @@ const LeaderboardList = ({ userList, compacted }) => {
     </LeaderboardListsStyle>
   );
 };
-const TotalLeaderboardList = styled.div`
-  display: flex;
-  flex-direction: column;
-  // width: 80%;
-  // min-width: 400px;
-  gap: 10px;
-  margin: 0px auto;
-`;
 export default function AchievementLeaderboard({
   leaderboardStatistic,
   setBannerCallback,
@@ -209,16 +203,9 @@ export default function AchievementLeaderboard({
     subDomain = randomLoadout;
   }
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/leaderboard/achievement", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    })
+    makeApiCall("v1/leaderboard/achievement")
       .then(async (response) => {
-        console.log(response);
-        const data = await response.json();
+        const data = response.json;
         console.log("code:" + response.statusCode);
         if (response.status === 404) {
           console.error("User not found!");
@@ -266,7 +253,15 @@ export default function AchievementLeaderboard({
     setSortedApiData(NewData);
   }, [apiData, surroundID]);
   return (
-    <TotalLeaderboardList>
+    <div className="list grow">
+      <Link
+        style={{ height: "42.5px" }}
+        className="rounded centering padded button fill"
+        to={"/leaderboard/challenges"}
+      >
+        <h3>Leaderboard </h3>
+      </Link>
+
       <Link className="rounded centering padded" to={"/leaderboard/challenges"}>
         <img
           src="/images/ECFCS1.png"
@@ -279,7 +274,7 @@ export default function AchievementLeaderboard({
         userList={sortedApiData?.slice(startIndex, startIndex + limit)}
         compacted={compacted}
       />
-    </TotalLeaderboardList>
+    </div>
     // <>
     //   {/* <FailedSearchBar  onFormSubmit={whenSearchSubmit} /> */}
     //   <UserBody

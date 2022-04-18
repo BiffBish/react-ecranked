@@ -68,11 +68,23 @@ h2 {
   gap: 20px;
   align-items: stretch;
 }
+
+.horizontal-fill{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.horizontal-fill>* {
+  flex: 1;
+}
+
 .horizontal-container {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
+
+
 .wide-gap {
   gap: 40px;
   /* gap: 150px; */
@@ -121,7 +133,7 @@ h2 {
 .button {
   display: flex;
   align-items: center;
-  background-color: #333;
+  /* background-color: #333; */
   padding: 10px;
   /* margin: 10px 0px; */
   text-decoration: none;
@@ -131,6 +143,7 @@ h2 {
   line-height: 1.5;
   cursor: pointer;
   animation: FadeIn 0.2s;
+  text-align: center;
 }
 
 .button h1 {
@@ -149,6 +162,7 @@ h3 {
   display: flex;
   justify-content: center;
   align-content: center;
+  ;
   /* flex-direction: column; */
   text-align: center;
   align-self: center;
@@ -204,6 +218,10 @@ h3 {
   gap: 20px;
   align-items: stretch;
 }
+.list > p{
+  text-align: center;
+  margin: 10px 0px;
+}
 .list h2 {
   font-size: 36px;
   font-weight: 400;
@@ -229,6 +247,10 @@ h3 {
   flex: 0 0 100%;
   color: #fff;
   flex-grow: 0;
+}
+
+.border{
+    border: 1px solid rgb(70, 70, 70);
 }
 
 @keyframes FadeIn {

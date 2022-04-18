@@ -382,38 +382,38 @@ const LoadoutImage = ({ number }) => {
   const weapon = ((number - (tacMod + ordinance * 4)) % 64) / 16;
 
   const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
+    "repair_matrix.png",
+    "threat_scanner.png",
+    "energy_barrier.png",
+    "phaseshift.png",
   ];
   const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
+    "detonator.png",
+    "stun_field.png",
+    "arcmine.png",
+    "instant_repair.png",
   ];
   const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
+    "pulsar.png",
+    "nova.png",
+    "comet.png",
+    "meteor.png",
   ];
 
   return (
     <>
       <img
-        src={weaponMap[weapon]}
+        src={"/images/icons/"+weaponMap[weapon]}
         alt={"weapon"}
         style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
       <img
-        src={ordinanceMap[ordinance]}
+        src={"/images/icons/"+ordinanceMap[ordinance]}
         alt={"ordinance"}
         style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
       <img
-        src={tacModMap[tacMod]}
+        src={"/images/icons/"+tacModMap[tacMod]}
         alt={"tacMod"}
         style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
@@ -438,22 +438,22 @@ const LoadoutBarSelected = ({ number, onHover }) => {
   const weapon = ((number - (tacMod + ordinance * 4)) % 64) / 16;
 
   const tacModMap = [
-    "/images/repair_matrix.png",
-    "/images/threat_scanner.png",
-    "/images/energy_barrier.png",
-    "/images/phaseshift.png",
+    "repair_matrix.png",
+    "threat_scanner.png",
+    "energy_barrier.png",
+    "phaseshift.png",
   ];
   const ordinanceMap = [
-    "/images/detonator.png",
-    "/images/stun_field.png",
-    "/images/arcmine.png",
-    "/images/instant_repair.png",
+    "detonator.png",
+    "stun_field.png",
+    "arcmine.png",
+    "instant_repair.png",
   ];
   const weaponMap = [
-    "/images/pulsar.png",
-    "/images/nova.png",
-    "/images/comet.png",
-    "/images/meteor.png",
+    "pulsar.png",
+    "nova.png",
+    "comet.png",
+    "meteor.png",
   ];
   const tacModMapName = [
     "Repair Matrix",
@@ -473,7 +473,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
     <LoadoutBarSelectedDivStyle onMouseEnter={onHover}>
       <p style={{ margin: "0px" }}>
         <img
-          src={weaponMap[weapon]}
+          src={"/images/icons/"+weaponMap[weapon]}
           alt={"weapon"}
           style={{ justifyContent: "center", width: "40px", height: "40px" }}
         />
@@ -481,7 +481,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
       </p>
       <p style={{ margin: "0px" }}>
         <img
-          src={ordinanceMap[ordinance]}
+          src={"/images/icons/"+ordinanceMap[ordinance]}
           alt={"ordinance"}
           style={{ justifyContent: "center", width: "40px", height: "40px" }}
         />
@@ -489,7 +489,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
       </p>
       <p style={{ margin: "0px" }}>
         <img
-          src={tacModMap[tacMod]}
+          src={"/images/icons/"+tacModMap[tacMod]}
           alt={"tacMod"}
           style={{ justifyContent: "center", width: "40px", height: "40px" }}
         />

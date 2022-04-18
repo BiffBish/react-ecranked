@@ -331,15 +331,6 @@
         "Percent": "1",
         "Extra": "",
         "Type": "Stun Field"
-      },
-      {
-        "CID": "10",
-        "Title": "Wow, Shocking",
-        "Description": "Use only arc mine 1+ games in a row (in 24 hours)",
-        "Timeframe": "In 24 hours",
-        "Percent": "0.06666666667",
-        "Extra": "",
-        "Type": "Arc Mine"
       }
     ],
     "Title": "STUN FIELD CHALLENGE",
@@ -348,6 +339,15 @@
   },
   "11": {
     "parts": [
+      {
+        "CID": "11",
+        "Title": "Wow, Shocking",
+        "Description": "Use only arc mine 1+ games in a row (in 24 hours)",
+        "Timeframe": "In 24 hours",
+        "Percent": "0.06666666667",
+        "Extra": "",
+        "Type": "Arc Mine"
+      },
       {
         "CID": "11",
         "Title": "Botnet Surprise!",
@@ -376,9 +376,9 @@
         "Type": "Arc Mine"
       }
     ],
-    "Title": "",
-    "Progress": "",
-    "Locked": ""
+    "Title": "ARC MINE CHALLENGE",
+    "Progress": "Play more games using only Arc Mine as your ordnance!  Don't use any other ordnance the day you attempt this challenge or it becomes locked until the next day.",
+    "Locked": "This challenge is locked because you didn't only use Arc Mine.  This challenge is locked for today and you cannot progress any further.  Come back tomorow and retry the challenge and see if you can get further then yesterday."
   },
   "12": {
     "parts": [
@@ -635,7 +635,7 @@
       }
     ],
     "Title": "LOADOUT CHALLENGE",
-    "Progress": "Try to use more equipables next game! ",
+    "Progress": "You've used %p equipables in a single game.  Try to use more equipables in the next game to complete this challenge! ",
     "Locked": ""
   },
   "18": {
@@ -678,7 +678,7 @@
       }
     ],
     "Title": "DEATHS CHALLENGE",
-    "Progress": "Play more games and try to die less!",
+    "Progress": "You've been eliminated %p times in a single game.  Try to die less in the next game to complete this challenge!",
     "Locked": ""
   },
   "19": {
@@ -721,7 +721,7 @@
       }
     ],
     "Title": "CAPTURE POINT CHALLENGE",
-    "Progress": "Play more games so you play more Capture Point maps!",
+    "Progress": "You've played %p Capture Point games for the day.  Play more Capture Point maps to complete this challenge!",
     "Locked": ""
   },
   "20": {
@@ -764,7 +764,7 @@
       }
     ],
     "Title": "PAYLOAD CHALLENGE",
-    "Progress": "Play more games so you play more Payload maps!",
+    "Progress": "You've played %p Payload games for the day.  Play more Payload maps to complete this challenge!",
     "Locked": ""
   },
   "21": {
@@ -807,7 +807,7 @@
       }
     ],
     "Title": "TEAM PROXIMITY CHALLENGE",
-    "Progress": "Stay closer to your teammates in the next game!",
+    "Progress": "You've played %p of a single game close to your teammates.  Stay closer to your teammates in the next game to complete this challenge!",
     "Locked": ""
   },
   "22": {
@@ -850,7 +850,7 @@
       }
     ],
     "Title": "ENEMY PROXIMITY CHALLENGE",
-    "Progress": "Stay closer to the enemy in the next game!",
+    "Progress": "You've played %p of games close to the enemy in a single game.  Stay closer to the enemy in the next game to complete this challenge!",
     "Locked": ""
   },
   "23": {
@@ -858,34 +858,34 @@
       {
         "CID": "23",
         "Title": "Boost Action",
-        "Description": "Hit top speed of 20m/s (in 1 game)",
+        "Description": "Hit top speed of 15m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.5714285714",
+        "Percent": "0.25",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "23",
         "Title": "Regrabby Grabby Grabs",
-        "Description": "Hit top speed of 25m/s (in 1 game)",
+        "Description": "Hit top speed of 20m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.7142857143",
+        "Percent": "0.5",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "23",
         "Title": "Terminal Velocity",
-        "Description": "Hit top speed of 30m/s (in 1 game)",
+        "Description": "Hit top speed of 25m/s (in 1 game)",
         "Timeframe": "In 1 game",
-        "Percent": "0.8571428571",
+        "Percent": "0.75",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "23",
         "Title": "Super Ultra Hyper Turbo",
-        "Description": "Hit top speed of 35m/s (in 1 game)",
+        "Description": "Hit top speed of 30m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "1",
         "Extra": "check %'s",
@@ -893,7 +893,7 @@
       }
     ],
     "Title": "SPEED CHALLENGE",
-    "Progress": "Fly faster in the next game!",
+    "Progress": "Your max speed is %p in a single game so far.  Try to fly faster in the next game to complete this challenge!",
     "Locked": ""
   },
   "24": {
@@ -936,7 +936,7 @@
       }
     ],
     "Title": "INVERTED CHALLENGE",
-    "Progress": "Play upside down more in the next game!",
+    "Progress": "You've played %p inverted in a single game.  Play upside down more in the next game to complete this challenge!",
     "Locked": ""
   },
   "25": {
@@ -979,7 +979,7 @@
       }
     ],
     "Title": "DYSON CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Dyson!",
+    "Progress": "You've played %p games of Dyson for the day.  Play more games of Dyson to complete this challenge!",
     "Locked": ""
   },
   "26": {
@@ -1022,7 +1022,7 @@
       }
     ],
     "Title": "COMBUSTION CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Combustion!",
+    "Progress": "You've played %p games of Combustion for the day.  Play more games of Combustion to complete this challenge!",
     "Locked": ""
   },
   "27": {
@@ -1065,7 +1065,7 @@
       }
     ],
     "Title": "FISSION CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Fission!",
+    "Progress": "You've played %p games of Fission for the day.  Play more games of Fission to complete this challenge!",
     "Locked": ""
   },
   "28": {
@@ -1108,7 +1108,7 @@
       }
     ],
     "Title": "SURGE CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Surge!",
+    "Progress": "You've played %p games of Surge for the day.  Play more games of Surge to complete this challenge!",
     "Locked": ""
   },
   "29": {
@@ -1286,7 +1286,7 @@
       }
     ],
     "Title": "PUBLIC MATCH CHALLENGE",
-    "Progress": "Play more Public Matches!",
+    "Progress": "You've played %p games of pub games for the day.  Play more public matches to complete this challenge!",
     "Locked": ""
   },
   "30": {
@@ -1845,50 +1845,50 @@
       }
     ],
     "Title": "LOADOUT CHALLENGE",
-    "Progress": "Get comfortable with a single loadout and stick to it this week!  Be sure to not accidentally switch your loadout.",
-    "Locked": "spellchecked ths one to the left, red because correct!!!!"
+    "Progress": "You've used only one loadout for %p games in a single week.  Get comfortable with one loadout and stick to it for an entire week to complete this challenge!  Be sure to not accidentally switch your loadout.",
+    "Locked": "This challenge is locked because you didnt use a single loadout. You have to wait until next week for this challenge to become unlocked."
   },
   "43": {
     "parts": [
       {
         "CID": "43",
         "Title": "Deathwish",
-        "Description": "Average less than 6 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.43",
+        "Description": "Average less than 8 deaths per game (in 1 week)",
+        "Timeframe": "(1 week average, 40 game minimum) ",
+        "Percent": "0.01",
         "Extra": "check #'s",
         "Type": "Death"
       },
       {
         "CID": "43",
         "Title": "About as Useful as a Shield",
-        "Description": "Average less than 5 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.7142857143",
+        "Description": "Average less than 7 deaths per game (in 1 week)",
+        "Timeframe": "(1 week average, 40 game minimum) ",
+        "Percent": "0.33",
         "Extra": "check #'s",
         "Type": "Death"
       },
       {
         "CID": "43",
         "Title": "Armored Core",
-        "Description": "Average less than 4 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.8571428571",
+        "Description": "Average less than 6 deaths per game (in 1 week)",
+        "Timeframe": "(1 week average, 40 game minimum) ",
+        "Percent": "0.66",
         "Extra": "check #'s",
         "Type": "Death"
       },
       {
         "CID": "43",
         "Title": "Pew Pew Proof",
-        "Description": "Average less than 3 deaths per game (in 1 week)",
-        "Timeframe": "(1 week average, 25 game minimum)  50?",
+        "Description": "Average less than 5 deaths per game (in 1 week)",
+        "Timeframe": "(1 week average, 40 game minimum) ",
         "Percent": "1",
         "Extra": "check #'s",
         "Type": "Death"
       }
     ],
     "Title": "DEATHS CHALLENGE",
-    "Progress": "Play more games and try to die less!",
+    "Progress": "You've been eliminated %p times per game this week.  Play more games and try to die less!",
     "Locked": ""
   },
   "44": {
@@ -1931,7 +1931,7 @@
       }
     ],
     "Title": "CAPTURE POINT CHALLENGE",
-    "Progress": "Play more games so you play more Capture Point maps!",
+    "Progress": "You've played %p Capture Point games for the week.  Play more Capture Point maps to complete this challenge!",
     "Locked": ""
   },
   "45": {
@@ -1974,7 +1974,7 @@
       }
     ],
     "Title": "PAYLOAD CHALLENGE",
-    "Progress": "Play more games so you play more Payload maps!",
+    "Progress": "You've played %p Payload games for the week.  Play more Payload maps to complete this challenge!",
     "Locked": ""
   },
   "46": {
@@ -2017,7 +2017,7 @@
       }
     ],
     "Title": "TEAM PROXIMITY CHALLENGE",
-    "Progress": "Stay closer to your teammates in the next game!",
+    "Progress": "You've been close to your teammates %p of the time.  Stay closer to your teammates in more games to complete this challenge!",
     "Locked": ""
   },
   "47": {
@@ -2060,7 +2060,7 @@
       }
     ],
     "Title": "ENEMY PROXIMITY CHALLENGE",
-    "Progress": "Stay closer to the enemy in the next game!",
+    "Progress": "You've been close to enemys %p of the time. Stay closer to the enemy in more games to complete this challenge!",
     "Locked": ""
   },
   "48": {
@@ -2068,34 +2068,34 @@
       {
         "CID": "48",
         "Title": "Don\u2019t Float!",
-        "Description": "Average speed over 3.0m/s (in 1 week)",
+        "Description": "Average speed over 2.0m/s (in 1 week)",
         "Timeframe": "(1 week average, 25 game minimum)  50?",
-        "Percent": "0.25",
+        "Percent": "0",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "48",
         "Title": "Overclocked",
-        "Description": "Average speed over 3.5m/s (in 1 week)",
+        "Description": "Average speed over 2.5m/s (in 1 week)",
         "Timeframe": "",
-        "Percent": "0.5",
+        "Percent": "0.3333333333",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "48",
         "Title": "I Am Speed!",
-        "Description": "Average speed over 4.0m/s (in 1 week)",
+        "Description": "Average speed over 3.0m/s (in 1 week)",
         "Timeframe": "",
-        "Percent": "0.75",
+        "Percent": "0.6666666667",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "48",
         "Title": "The Wings of RAD_Wyvern",
-        "Description": "Average speed over 4.5m/s (in 1 week)",
+        "Description": "Average speed over 3.5m/s (in 1 week)",
         "Timeframe": "",
         "Percent": "1",
         "Extra": "check %'s",
@@ -2103,7 +2103,7 @@
       }
     ],
     "Title": "SPEED CHALLENGE",
-    "Progress": "Fly faster in the next game!",
+    "Progress": "Your average speed is %p for the week.  Fly faster more in more games this week to complete this challenge!         ",
     "Locked": ""
   },
   "49": {
@@ -2146,7 +2146,7 @@
       }
     ],
     "Title": "INVERTED CHALLENGE",
-    "Progress": "Play upside down more in the next game!",
+    "Progress": "You've played inverted %p of the time this week.  Play upside down more in more games to complete this challenge!",
     "Locked": ""
   },
   "50": {
@@ -2189,7 +2189,7 @@
       }
     ],
     "Title": "DYSON CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Dyson!",
+    "Progress": "You've played %p games of Dyson for the week.  Play more games of Dyson to complete this challenge!",
     "Locked": ""
   },
   "51": {
@@ -2232,7 +2232,7 @@
       }
     ],
     "Title": "COMBUSTION CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Combustion!",
+    "Progress": "You've played %p games of Combustion for the week.  Play more games of Combustion to complete this challenge!",
     "Locked": ""
   },
   "52": {
@@ -2275,7 +2275,7 @@
       }
     ],
     "Title": "FISSION CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Fission!",
+    "Progress": "You've played %p games of Fission for the week.  Play more games of Fission to complete this challenge!",
     "Locked": ""
   },
   "53": {
@@ -2318,7 +2318,7 @@
       }
     ],
     "Title": "SURGE CHALLENGE",
-    "Progress": "Play more games for a higher chance the map will be Surge!",
+    "Progress": "You've played %p games of Surge for the week.  Play more games of Surge to complete this challenge!",
     "Locked": ""
   },
   "54": {
@@ -2496,7 +2496,7 @@
       }
     ],
     "Title": "PUBLIC MATCH CHALLENGE",
-    "Progress": "Play more Public Matches!",
+    "Progress": "You've played %p games of pub games for the week.  Play more public matches to complete this challenge!",
     "Locked": ""
   },
   "55": {
@@ -3055,7 +3055,7 @@
       }
     ],
     "Title": "LOADOUT CHALLENGE",
-    "Progress": "Be sure to use a loadout you've never used before!",
+    "Progress": "Play with loadouts you've never used before!  Listed below are some loadouts you haven't used yet and need to  in order to complete this challenge.  Give them a try!",
     "Locked": ""
   },
   "68": {
@@ -3098,7 +3098,7 @@
       }
     ],
     "Title": "DEATHS CHALLENGE",
-    "Progress": "Play more games! Try and be agressive and not afraid of dying. You will always respawn and potentialy be able to return to the battle field together",
+    "Progress": "You've been eliminated %p times for the season.  Play more games!  Try to be aggressive and not afraid of dying.  You will always respawn be able to return to the battlefield to help your team try to win.  A player who dies more can actually be a good thing in many matches!",
     "Locked": ""
   },
   "69": {
@@ -3106,25 +3106,16 @@
       {
         "CID": "69",
         "Title": "Point Unlocked",
-        "Description": "Play 5+ Capture Point games (cumulative)",
+        "Description": "Play 25+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.1",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Capture Point"
       },
       {
         "CID": "69",
         "Title": "This is MY Point",
-        "Description": "Play 10+ Capture Point games (cumulative)",
-        "Timeframe": "Cumulative",
-        "Percent": "0.2",
-        "Extra": "",
-        "Type": "Capture Point"
-      },
-      {
-        "CID": "69",
-        "Title": "Coming in Clutch",
-        "Description": "Play 25+ Capture Point games (cumulative)",
+        "Description": "Play 50+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.5",
         "Extra": "",
@@ -3132,8 +3123,17 @@
       },
       {
         "CID": "69",
+        "Title": "Coming in Clutch",
+        "Description": "Play 75+ Capture Point games (cumulative)",
+        "Timeframe": "Cumulative",
+        "Percent": "0.75",
+        "Extra": "",
+        "Type": "Capture Point"
+      },
+      {
+        "CID": "69",
         "Title": "King of the Hill",
-        "Description": "Play 50+ Capture Point games (cumulative)",
+        "Description": "Play 100+ Capture Point games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "1",
         "Extra": "",
@@ -3141,7 +3141,7 @@
       }
     ],
     "Title": "CAPTURE POINT CHALLENGE",
-    "Progress": "Play more games so you play more Capture Point maps!",
+    "Progress": "You've played %p Capture Point games for the season.  Play more Capture Point maps to complete this challenge!",
     "Locked": ""
   },
   "70": {
@@ -3149,25 +3149,16 @@
       {
         "CID": "70",
         "Title": "Stop the Payload",
-        "Description": "Play 5+ Payload games (cumulative)",
+        "Description": "Play 25+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
-        "Percent": "0.1",
+        "Percent": "0.25",
         "Extra": "",
         "Type": "Payload"
       },
       {
         "CID": "70",
         "Title": "Payload Contested!",
-        "Description": "Play 10+ Payload games (cumulative)",
-        "Timeframe": "Cumulative",
-        "Percent": "0.2",
-        "Extra": "",
-        "Type": "Payload"
-      },
-      {
-        "CID": "70",
-        "Title": "Payload Returning",
-        "Description": "Play 25+ Payload games (cumulative)",
+        "Description": "Play 50+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "0.5",
         "Extra": "",
@@ -3175,8 +3166,17 @@
       },
       {
         "CID": "70",
+        "Title": "Payload Returning",
+        "Description": "Play 75+ Payload games (cumulative)",
+        "Timeframe": "Cumulative",
+        "Percent": "0.75",
+        "Extra": "",
+        "Type": "Payload"
+      },
+      {
+        "CID": "70",
         "Title": "Feed the Flamingo",
-        "Description": "Play 50+ Payload games (cumulative)",
+        "Description": "Play 100+ Payload games (cumulative)",
         "Timeframe": "Cumulative",
         "Percent": "1",
         "Extra": "",
@@ -3184,7 +3184,7 @@
       }
     ],
     "Title": "PAYLOAD CHALLENGE",
-    "Progress": "Play more games so you play more Payload maps!",
+    "Progress": "You've played %p Payload games for the season.  Play more Payload maps to complete this challenge!",
     "Locked": ""
   },
   "71": {
@@ -3227,7 +3227,7 @@
       }
     ],
     "Title": "TEAM PROXIMITY CHALLENGE",
-    "Progress": "Stay close to your teammates in more games!",
+    "Progress": "You've played %p of games close to your teammates for the season. Stay close to your teammates in more games to complete this challenge!",
     "Locked": ""
   },
   "72": {
@@ -3270,7 +3270,7 @@
       }
     ],
     "Title": "ENEMY PROXIMITY CHALLENGE",
-    "Progress": "Stay close to the enemy in more games!",
+    "Progress": "You've played %p of games close to the enemy for the season. Stay close to the enemy in more games to complete this challenge!",
     "Locked": ""
   },
   "73": {
@@ -3313,7 +3313,7 @@
       }
     ],
     "Title": "SPEED CHALLENGE",
-    "Progress": "Play more games while flying fast!",
+    "Progress": "Your average speed is %p for the season.  Fly faster more in more games to complete this challenge! ",
     "Locked": ""
   },
   "74": {
@@ -3356,7 +3356,7 @@
       }
     ],
     "Title": "INVERTED CHALLENGE",
-    "Progress": "Play more games while upside down more!",
+    "Progress": "You've played inverted %p of the time for the season. Play more games while upside down more to complete this challenge!",
     "Locked": ""
   },
   "75": {
@@ -3399,7 +3399,7 @@
       }
     ],
     "Title": "DYSON CHALLENGE",
-    "Progress": "Play more games of Dyson!",
+    "Progress": "You've played %p games of Dyson for the season.  Play more games of Dyson to complete this challenge!",
     "Locked": ""
   },
   "76": {
@@ -3442,7 +3442,7 @@
       }
     ],
     "Title": "COMBUSTION CHALLENGE",
-    "Progress": "Play more games of Combustion!",
+    "Progress": "You've played %p games of Combustion for the season. Play more games of Combustion to complete this challenge!",
     "Locked": ""
   },
   "77": {
@@ -3485,7 +3485,7 @@
       }
     ],
     "Title": "FISSION CHALLENGE",
-    "Progress": "Play more games of Fission!",
+    "Progress": "You've played %p games of Fission for the season. Play more games of Fission to complete this challenge!",
     "Locked": ""
   },
   "78": {
@@ -3528,7 +3528,7 @@
       }
     ],
     "Title": "SURGE CHALLENGE",
-    "Progress": "Play more games of  Surge!",
+    "Progress": "You've played %p games of Surge for the season. Play more games of Surge to complete this challenge!",
     "Locked": ""
   },
   "79": {
@@ -3706,7 +3706,7 @@
       }
     ],
     "Title": "PUBLIC MATCH CHALLENGE",
-    "Progress": "Play more Public Matches!",
+    "Progress": "You've played %p games of pub games for the season.  Play more public matches to complete this challenge!",
     "Locked": ""
   }
 }

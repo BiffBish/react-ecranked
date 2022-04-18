@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import ApproveImagesModeration from "./pages/Moderation/ApproveImagesModeration";
 import Moderator from "./pages/Moderator";
 import Nav from "./components/Nav";
-
+import OasisDashboard from "./pages/OasisDashboard";
 import Team from "./pages/Team";
 
 import AnimateHeight from "react-animate-height";
@@ -24,9 +24,10 @@ import Teams from "./pages/Teams";
 
 import Component from "./pages/Testing";
 import GlobalUserState from "./contexts/GlobalUserState";
-import { ApiCallHelper } from "./helpers/makeApiCall";
+import makeApiCall, { ApiCallHelper } from "./helpers/makeApiCall";
 import AchievementLeaderboard from "./pages/AchievementLeaderboard";
 import Contact from "./pages/Contact";
+import DeveloperGuide from "./pages/DeveloperGuide";
 const PageBody = styled.div`
   position: absolute;
   width: 100%;
@@ -75,11 +76,9 @@ function Routes() {
     }));
     let authorization_token = localStorage.getItem("AUTHORIZATION_TOKEN");
     if (authorization_token) {
-      fetch("https://ecranked.ddns.net/api/v1/user/@me", {
-        headers: { Authorization: authorization_token },
-      })
+      makeApiCall("v1/user/@me")
         .then(async (response) => {
-          let data = await response.json();
+          let data = response.json;
           if (response.status === 200) {
             console.log("#R82", data);
             setGlobalUserState((state) => ({
@@ -125,13 +124,11 @@ function Routes() {
   }, [setGlobalUserState]);
 
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/status", {
-      headers: { Authorization: globalUserState.authorization_token },
-    })
+    fetch("https://ecranked.ddns.net/status")
       .then(async (response) => {
         const data = await response.json();
         if (data.maintenance) {
-          if (localStorage.getItem("MODERATOR") !== "1") {
+          if (localStorage.getItem("MODERATOR") !== "true") {
             alert("The server is down for maintenance. Please visit later");
             window.location.reload(false);
           }
@@ -234,11 +231,22 @@ function Routes() {
           exact
           path={["/contact"]}
           render={(props) => {
-            setBannerHeight(400);
+            setBannerHeight(200);
             setBannerText("Contact");
             return <Contact />;
           }}
         />
+
+        <Route
+          exact
+          path={["/achievementguide"]}
+          render={(props) => {
+            setBannerHeight(200);
+            setBannerText("Guide");
+            return <DeveloperGuide />;
+          }}
+        />
+
         <Route
           exact
           path={["/home", "/"]}
@@ -420,10 +428,88 @@ function Routes() {
             return <Moderator />;
           }}
         />
+        <Route
+          exact
+          path={`/reticle/dashboard`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Reticle Dashboard");
+            return <OasisDashboard />;
+          }}
+        />
+        <Route
+          exact
+          path={`/reticle/dashboard/open`}
+          render={() => {
+            console.log("[23] Open");
+            return <OasisDashboardPopup />;
+          }}
+        />
       </PageBody>
     </Router>
   );
 }
+
+const OasisDashboardPopup = ({}) => {
+  console.log("[23] Running useEffect");
+  const [isEnabled, setIsEnabled] = useState(true);
+
+  useEffect(() => {
+    async function getUser() {
+      const hasPopupsEnabled = await new Promise((resolve, reject) => {
+        console.log("Running Promise");
+        var popupBlockerChecker = {
+          check: function (popup_window) {
+            var _scope = this;
+            if (popup_window) {
+              if (/chrome/.test(navigator.userAgent.toLowerCase())) {
+                setTimeout(function () {
+                  resolve(_scope._is_popup_blocked(_scope, popup_window));
+                }, 200);
+              } else {
+                popup_window.onload = function () {
+                  resolve(_scope._is_popup_blocked(_scope, popup_window));
+                };
+              }
+            } else {
+              _scope._displayError();
+              resolve(false);
+            }
+          },
+          _is_popup_blocked: function (scope, popup_window) {
+            if (popup_window.innerHeight <= 0) {
+              scope._displayError();
+              return false;
+            }
+            return true;
+          },
+          _displayError: function () {
+            alert(
+              "Popup Blocker is enabled! Please add this site to your exception list."
+            );
+          },
+        };
+        let popup = window.open("/reticle/dashboard", "", "popup");
+        popupBlockerChecker.check(popup);
+      });
+      setIsEnabled(hasPopupsEnabled);
+      if (hasPopupsEnabled) {
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
+        window.close();
+        return <Redirect to={"/"} />;
+      }
+    }
+    getUser();
+  }, []);
+  if (isEnabled) return null;
+  return (
+    <div className="rounded border padded centered" style={{ margin: "50px" }}>
+      <h1>Popups are disabled. Please enable them and refresh the page.</h1>
+    </div>
+  );
+};
 
 export default Routes;
 function DiscordOAuthCallback({ callbackCode, onFinish }) {
@@ -441,7 +527,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
           access_token: callbackCode,
         }),
       };
-      fetch("https://ecranked.ddns.net/api/v1/auth/login", requestOptions)
+      fetch("https://ecranked.ddns.net/api/v2/auth/login", requestOptions)
         .then((response) => response.json())
         .then((data) => {
           if (data["token"] === undefined) {
