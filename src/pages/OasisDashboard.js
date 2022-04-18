@@ -522,11 +522,14 @@ export default function OasisDashboard() {
         return;
       }
       if (data.err_code === -6) {
+        console.log("Setting Lobby");
         setCurrentGameState(2);
       }
       console.log("Setting to null no error");
       setGameID(null);
     } catch (e) {
+      console.log("Setting Lobby");
+
       setCurrentGameState(1);
       console.log("Setting to null error");
 
@@ -554,7 +557,7 @@ export default function OasisDashboard() {
   return (
     <div className="padded rounded list" style={{ margin: "20px" }}>
       <h2>Reticle Dashboard</h2>
-      <CurrentGameState state={currentGameState} gameID={gameID} />
+      <CurrentGameState currentGameState={currentGameState} gameID={gameID} />
       <div className="padded horizontal-fill">
         <div className="list">
           <div
