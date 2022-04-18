@@ -417,38 +417,36 @@ export default function OasisDashboard() {
   }, [serverConnected]);
 
   let onConnectionError = () => {
-    console.log("Connection Error", gameID);
-    if (gameID !== null) {
-      client.send(
-        JSON.stringify({
-          command: "kill-game",
-        })
-      );
-      setTimeout(() => {
-        //Find the teamID of the player
-        var client_name = gameData.client_name;
-        var teamID = null;
-
-        gameData.teams.forEach((team, index) => {
-          team.players.forEach((player) => {
-            if (player.name === client_name) {
-              teamID = index;
-            }
+    setGameID((currentgameID) => {
+      console.log("Connection Error", gameID);
+      if (currentgameID !== null) {
+        client.send(
+          JSON.stringify({
+            command: "kill-game",
+          })
+        );
+        setTimeout(() => {
+          //Find the teamID of the player
+          var client_name = gameData.client_name;
+          var teamID = null;
+          gameData.teams.forEach((team, index) => {
+            team.players.forEach((player) => {
+              if (player.name === client_name) {
+                teamID = index;
+              }
+            });
           });
-        });
-        JoinServer(gameID, teamID);
-        console.log("Game crash set id to null");
-        setGameID(null);
-      }, 6000);
-    }
+          JoinServer(currentgameID, teamID);
+          console.log("Game crash set id to null");
+        }, 6000);
+      }
+      return null;
+    });
   };
 
   const handleClientMessage = (message) => {
     console.log("Current SessionID = " + gameID);
-    setGameID((current) => {
-      console.log("InsideSetGameID : " + current);
-      return current;
-    });
+
     try {
       const data = JSON.parse(message.data);
       if (data.version) {
