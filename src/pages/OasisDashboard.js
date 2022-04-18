@@ -434,6 +434,7 @@ export default function OasisDashboard() {
           });
         });
         JoinServer(gameID, teamID);
+        console.log("Game crash set id to null");
         setGameID(null);
       }, 6000);
     }
@@ -468,13 +469,16 @@ export default function OasisDashboard() {
           onConnectionError();
         }
         if (data.sessionid) {
+          console.log("Setting ID to " + data.sessionid);
           setGameID(data.sessionid);
           ParseGameData(data);
           return;
         }
-
+        console.log("Setting to null no error");
         setGameID(null);
       } catch (e) {
+        console.log("Setting to null error");
+
         setGameID(null);
         console.log(e);
       }
