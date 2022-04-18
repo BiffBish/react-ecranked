@@ -225,6 +225,51 @@ const ActiveGames = ({ serverState }) => {
   );
 };
 
+const CurrentGameState = ({ currentGameState = 0, gameID = null }) => {
+  const [gameIDText, setGameIDText] = useState(null);
+  useEffect(() => {
+    setGameIDText(gameID);
+  }, [gameID]);
+  switch (currentGameState) {
+    case 0:
+      return null;
+    case 1:
+      return (
+        <div className="padded rounded horizontal-fill">
+          <h3 className="centered">Transitioning...</h3>
+        </div>
+      );
+    case 2:
+      return (
+        <div className="padded rounded horizontal-fill">
+          <h3 className="centered">In Lobby!</h3>
+        </div>
+      );
+    case 3:
+      return (
+        <div className="padded rounded horizontal-fill">
+          <div
+            className="padded button"
+            onClick={() => {
+              navigator.clipboard.writeText(gameID);
+            }}
+            onMouseEnter={() => {
+              setGameIDText("Click to copy!");
+            }}
+            onMouseLeave={() => {
+              setGameIDText(gameID);
+            }}
+          >
+            {gameIDText}
+          </div>
+          <h3 className="centered">Connected to game!</h3>
+        </div>
+      );
+    default:
+      break;
+  }
+};
+
 export default function OasisDashboard() {
   const JoinGameIDRef = useRef();
 
@@ -233,8 +278,6 @@ export default function OasisDashboard() {
   const [websocket, setWebsocket] = useState(null);
 
   const [showHostGame, setShowHostGame] = useState(false);
-
-  const [gameIDText, setGameIDText] = useState(null);
 
   const [currentServerState, setCurrentServerState] = useState(null);
 
@@ -248,6 +291,12 @@ export default function OasisDashboard() {
   // const [currentInterval, setCurrentInterval] = useState(null);
 
   const [gameID, setGameID] = useState("");
+
+  // 0 = Not in game
+  // 1 = In menu
+  // 2 = In lobby
+  // 3 = In game
+  const [currentGameState, setCurrentGameState] = useState(0);
 
   const pingServer = () => {
     client.send(
@@ -461,18 +510,24 @@ export default function OasisDashboard() {
         setReticlePreferences(data);
       }
       if (data.type === "connection_error") {
+        setCurrentGameState(0);
         onConnectionError();
       }
       if (data.sessionid) {
+        setCurrentGameState(3);
         console.log("Setting ID to " + data.sessionid);
         setGameID(data.sessionid);
         console.log(gameID);
         ParseGameData(data);
         return;
       }
+      if (data.err_code === -6) {
+        setCurrentGameState(2);
+      }
       console.log("Setting to null no error");
       setGameID(null);
     } catch (e) {
+      setCurrentGameState(1);
       console.log("Setting to null error");
 
       setGameID(null);
@@ -495,32 +550,11 @@ export default function OasisDashboard() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    setGameIDText(gameID);
-  }, [gameID]);
+
   return (
     <div className="padded rounded list" style={{ margin: "20px" }}>
       <h2>Reticle Dashboard</h2>
-      {gameID ? (
-        <div className="padded rounded horizontal-fill">
-          <div
-            className="padded button"
-            onClick={() => {
-              navigator.clipboard.writeText(gameID);
-            }}
-            onMouseEnter={() => {
-              setGameIDText("Click to copy!");
-            }}
-            onMouseLeave={() => {
-              setGameIDText(gameID);
-            }}
-          >
-            {gameIDText}
-          </div>
-          <h3 className="centered">Connected to game!</h3>
-        </div>
-      ) : null}
-
+      <CurrentGameState state={currentGameState} gameID={gameID} />
       <div className="padded horizontal-fill">
         <div className="list">
           <div
