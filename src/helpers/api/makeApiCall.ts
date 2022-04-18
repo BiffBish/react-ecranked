@@ -61,9 +61,9 @@ export default function makeApiCall(
         resolve(returnData);
       })
       .catch((error) => {
-        alert(
-          "There was an error. Please contact a moderator immediately. #MakeApiCall36"
-        );
+        // alert(
+        //   "There was an error. Please contact a moderator immediately. #MakeApiCall36"
+        // );
         console.error("There was an error!", error);
         reject(error);
         return;

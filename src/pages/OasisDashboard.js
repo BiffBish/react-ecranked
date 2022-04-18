@@ -452,7 +452,7 @@ export default function OasisDashboard() {
     try {
       const data = JSON.parse(message.data);
       if (data.version) {
-        if (data.version !== "0.3") {
+        if (data.version !== "0.4") {
           alert("Reticle is out of date. Please update to the latest version.");
           window.history.push("/");
         }
