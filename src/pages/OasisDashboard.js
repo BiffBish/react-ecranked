@@ -413,6 +413,32 @@ export default function OasisDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverConnected]);
 
+  let onConnectionError = () => {
+    console.log("Connection Error", gameID);
+    if (gameID !== null) {
+      client.send(
+        JSON.stringify({
+          command: "kill-game",
+        })
+      );
+      setTimeout(() => {
+        //Find the teamID of the player
+        var client_name = gameData.client_name;
+        var teamID = null;
+
+        gameData.teams.forEach((team, index) => {
+          team.players.forEach((player) => {
+            if (player.name === client_name) {
+              teamID = index;
+            }
+          });
+        });
+        JoinServer(gameID, teamID);
+        setGameID(null);
+      }, 6000);
+    }
+  };
+
   useEffect(() => {
     // alert("useEffect");
     // if (websocket === null) {
@@ -439,29 +465,7 @@ export default function OasisDashboard() {
           setReticlePreferences(data);
         }
         if (data.type === "connection_error") {
-          console.log("Connection Error", gameID);
-          if (gameID !== null) {
-            client.send(
-              JSON.stringify({
-                command: "kill-game",
-              })
-            );
-            setTimeout(() => {
-              //Find the teamID of the player
-              var client_name = gameData.client_name;
-              var teamID = null;
-
-              gameData.teams.forEach((team, index) => {
-                team.players.forEach((player) => {
-                  if (player.name === client_name) {
-                    teamID = index;
-                  }
-                });
-              });
-              JoinServer(gameID, teamID);
-              setGameID(null);
-            }, 6000);
-          }
+          onConnectionError();
         }
         if (data.sessionid) {
           setGameID(data.sessionid);
