@@ -476,6 +476,7 @@ export default function OasisDashboard() {
         if (data.sessionid) {
           console.log("Setting ID to " + data.sessionid);
           setGameID(data.sessionid);
+          console.log(gameID);
           ParseGameData(data);
           return;
         }
