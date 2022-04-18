@@ -387,7 +387,7 @@ export default function OasisDashboard() {
 
       if (data.command === "end-game-state") {
         setCurrentServerState((current) => {
-          return current.filter((game) => game.id !== data.payload.id);
+          return current?.filter((game) => game.id !== data.payload.id);
         });
       }
 
