@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import makeApiCall from "../helpers/makeApiCall";
+import { makeApiCall } from "../helpers/api/index";
+
 const ContainerTitle = styled.div`
   font-size: 36px;
   font-weight: 400;
@@ -75,8 +76,6 @@ const AboutStringBox = ({ userData, oculus_id }) => {
     if (currentText.length > 200) {
       return;
     }
-
-    const authToken = localStorage.getItem("AUTHORIZATION_TOKEN");
 
     //Unusual is not a cutie
     makeApiCall("v1/user/" + userData["oculus_id"], "PUT", {

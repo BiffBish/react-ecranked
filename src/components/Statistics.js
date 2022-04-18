@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import disableScroll from "disable-scroll";
-import makeApiCall from "../helpers/makeApiCall";
+import { makeApiCall } from "../helpers/api/index";
 
 // import { SideBySideMagnifier } from "react-image-magnifiers";
 function map_range(value, low1, high1, low2, high2) {

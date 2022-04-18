@@ -9,7 +9,7 @@ import { Statistics } from "../components/Statistics";
 import { RecentGames } from "../components/RecentGames";
 import Achievements from "../components/Achievements";
 import UserPubLeaderboard from "../components/UserPubLeaderboard";
-import makeApiCall from "../helpers/makeApiCall";
+import { makeApiCall } from "../helpers/api/index";
 
 const StatChoiceStyle = styled.div`
   padding: 0px;

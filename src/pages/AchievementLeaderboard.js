@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MasterAchievementBar } from "../components/MasterAchievementBar";
 import { Link } from "react-router-dom";
-import makeApiCall from "../helpers/makeApiCall";
+import { makeApiCall } from "../helpers/api/index";
+
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
 

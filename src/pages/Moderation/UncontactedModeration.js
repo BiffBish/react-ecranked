@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import makeApiCall from "../../helpers/makeApiCall";
+import { makeApiCall } from "../../helpers/api/index";
 function timeDifference(current, previous) {
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import UserButton from "../UserButton";
-import makeApiCall from "../../helpers/makeApiCall";
+import { makeApiCall } from "../../helpers/api/index";
 const ContainerTitle = styled.div`
   font-size: 36px;
   font-weight: 400;

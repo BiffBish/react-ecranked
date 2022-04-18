@@ -1,14 +1,13 @@
-import { useContext, useEffect } from "react";
-import GlobalUserState from "../contexts/GlobalUserState";
-
-var authToken = null;
-export const ApiCallHelper = () => {
-  const [globalUserState] = useContext(GlobalUserState);
-  useEffect(() => {
-    authToken = globalUserState.authorization_token;
-  }, [globalUserState.authorization_token]);
-  return null;
-};
+// import { useContext, useEffect } from "react";
+// import GlobalUserState from "../../contexts/GlobalUserState";
+// var authToken = null;
+// export const ApiCallHelper = () => {
+//   const [globalUserState] = useContext(GlobalUserState);
+//   useEffect(() => {
+//     authToken = globalUserState.authorization_token;
+//   }, [globalUserState.authorization_token]);
+//   return null;
+// };
 
 /**
  *
@@ -27,28 +26,30 @@ export const ApiCallHelper = () => {
  
  */
 export default function makeApiCall(
-  url,
+  url = "",
   method = "GET",
   body = {},
   formData = null
 ) {
   var promise = new Promise((resolve, reject) => {
-    let requestOptions = {
-      method: method,
-      headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN"),
-        "Content-Type": "application/json",
-      },
-    };
+    let bodyData;
 
     if (!(method === "HEAD" || method === "GET")) {
-      requestOptions.body = JSON.stringify(body);
+      bodyData = JSON.stringify(body);
     }
 
     if (formData) {
-      requestOptions.body = formData;
+      bodyData = formData;
     }
-    fetch("https://ecranked.ddns.net/api/" + url, requestOptions)
+    fetch("https://ecranked.ddns.net/api/" + url, {
+      method: method,
+      headers: {
+        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN") ?? "",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: bodyData,
+    })
       .then(async (response) => {
         const data = await response.json();
         console.log(response);

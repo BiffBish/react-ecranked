@@ -7,7 +7,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import GlobalUserState from "../contexts/GlobalUserState";
 import { Link } from "react-router-dom";
-import makeApiCall from "../helpers/makeApiCall";
+import { makeApiCall } from "../helpers/api/index";
+
 const BodyContainer = styled.div`
   margin: auto;
   width: 80%;

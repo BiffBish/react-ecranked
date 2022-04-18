@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 import React, { useState } from "react";
-import makeApiCall from "../../helpers/makeApiCall";
+import { makeApiCall } from "../../helpers/api/index";
 
 function timeDifference(current, previous) {
   var msPerMinute = 60 * 1000;

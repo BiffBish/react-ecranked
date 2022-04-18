@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import makeApiCall from "../helpers/makeApiCall";
+import { makeApiCall } from "../helpers/api/index";
 
 export default function UserButton({ username, oculus_id, className }) {
   const [verifiedName, setVerifiedName] = useState(null);

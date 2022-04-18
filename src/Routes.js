@@ -24,10 +24,12 @@ import Teams from "./pages/Teams";
 
 import Component from "./pages/Testing";
 import GlobalUserState from "./contexts/GlobalUserState";
-import makeApiCall, { ApiCallHelper } from "./helpers/makeApiCall";
+import makeApiCall from "./helpers/api/makeApiCall";
 import AchievementLeaderboard from "./pages/AchievementLeaderboard";
 import Contact from "./pages/Contact";
 import DeveloperGuide from "./pages/DeveloperGuide";
+
+// import { useSelector } from "react-redux";
 const PageBody = styled.div`
   position: absolute;
   width: 100%;
@@ -61,13 +63,17 @@ const UserIcon = styled.img`
 `;
 function Routes() {
   const [globalUserState, setGlobalUserState] = useContext(GlobalUserState);
+  // const userState = useSelector((state) => state.user);
   // const [clientData, setClientData] = React.useState({
   //   oculus_id: localStorage.getItem("OCULUS_ID"),
   //   authorization_token: localStorage.getItem("AUTHORIZATION_TOKEN"),
   //   confirmed_authorized: false,
   //   moderator: localStorage.getItem("MODERATOR"),
   // });
+
   useEffect(() => {
+    makeApiCall("v2/auth/refresh", "POST");
+
     setGlobalUserState((state) => ({
       ...state,
       oculus_id: localStorage.getItem("OCULUS_ID"),
@@ -129,8 +135,8 @@ function Routes() {
         const data = await response.json();
         if (data.maintenance) {
           if (localStorage.getItem("MODERATOR") !== "true") {
-            alert("The server is down for maintenance. Please visit later");
-            window.location.reload(false);
+            // alert("The server is down for maintenance. Please visit later");
+            // window.location.reload(false);
           }
         }
       })
@@ -195,7 +201,7 @@ function Routes() {
   }
   return (
     <Router>
-      <ApiCallHelper />
+      {/* <ApiCallHelper /> */}
       <Nav style={{ height: "10px" }} />
       <PageBody>
         <Banner
@@ -450,7 +456,7 @@ function Routes() {
   );
 }
 
-const OasisDashboardPopup = ({}) => {
+const OasisDashboardPopup = () => {
   console.log("[23] Running useEffect");
   const [isEnabled, setIsEnabled] = useState(true);
 

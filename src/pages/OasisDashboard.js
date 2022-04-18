@@ -234,7 +234,6 @@ export default function OasisDashboard() {
 
   const [showHostGame, setShowHostGame] = useState(false);
 
-  const [gameID, setGameID] = useState(null);
   const [gameIDText, setGameIDText] = useState(null);
 
   const [currentServerState, setCurrentServerState] = useState(null);
@@ -243,7 +242,11 @@ export default function OasisDashboard() {
   const [clientConnected, setClientConnected] = useState(false);
 
   const [reticlePreferences, setReticlePreferences] = useState({});
+
+  const [gameData, setGameData] = useState({});
   // const [currentInterval, setCurrentInterval] = useState(null);
+
+  const [gameID, setGameID] = useState(null);
 
   const pingServer = () => {
     client.send(
@@ -265,12 +268,16 @@ export default function OasisDashboard() {
       setTimeout(() => {
         setInterval(pingServer, 4000);
       }, 4000);
+      if (clientConnected) {
+        //Dummy code
+      }
     };
     serverLive.onopen = () => {
       console.log("Server Connected");
       serverLive.send(JSON.stringify({ command: "get-game-state" }));
       setServerConnected(true);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -304,6 +311,7 @@ export default function OasisDashboard() {
   }, [gameID, serverConnected]);
 
   const ParseGameData = (data) => {
+    setGameData(data);
     var properMapName = data.map_name;
     switch (data.map_name) {
       case "mpl_combat_dyson":
@@ -429,6 +437,30 @@ export default function OasisDashboard() {
         }
         if (data.type === "config") {
           setReticlePreferences(data);
+        }
+        if (data.type === "connection_error") {
+          if (gameID !== null) {
+            client.send(
+              JSON.stringify({
+                command: "kill-game",
+              })
+            );
+            setTimeout(() => {
+              //Find the teamID of the player
+              var client_name = gameData.client_name;
+              var teamID = null;
+
+              gameData.teams.forEach((team, index) => {
+                team.players.forEach((player) => {
+                  if (player.name === client_name) {
+                    teamID = index;
+                  }
+                });
+              });
+              JoinServer(gameID, teamID);
+              setGameID(null);
+            }, 6000);
+          }
         }
         if (data.sessionid) {
           setGameID(data.sessionid);
