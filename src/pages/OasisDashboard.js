@@ -368,6 +368,7 @@ export default function OasisDashboard() {
       return;
     }
     serverLive.onmessage = (message) => {
+      console.log("Current SessionID = " + gameID);
       const data = JSON.parse(message.data);
       if (data.ping) {
         console.log("Heartbeat");
