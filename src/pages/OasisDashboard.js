@@ -443,6 +443,40 @@ export default function OasisDashboard() {
     }
   };
 
+  const handleClientMessage = (message) => {
+    console.log("Current SessionID = " + gameID);
+
+    try {
+      const data = JSON.parse(message.data);
+      if (data.version) {
+        if (data.version !== "0.3") {
+          alert("Reticle is out of date. Please update to the latest version.");
+          window.history.push("/");
+        }
+      }
+      if (data.type === "config") {
+        setReticlePreferences(data);
+      }
+      if (data.type === "connection_error") {
+        onConnectionError();
+      }
+      if (data.sessionid) {
+        console.log("Setting ID to " + data.sessionid);
+        setGameID(data.sessionid);
+        console.log(gameID);
+        ParseGameData(data);
+        return;
+      }
+      console.log("Setting to null no error");
+      setGameID(null);
+    } catch (e) {
+      console.log("Setting to null error");
+
+      setGameID(null);
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     // alert("useEffect");
     // if (websocket === null) {
@@ -454,41 +488,7 @@ export default function OasisDashboard() {
     });
     setWebsocket(client);
 
-    client.onmessage = (message) => {
-      console.log("Current SessionID = " + gameID);
-
-      try {
-        const data = JSON.parse(message.data);
-        if (data.version) {
-          if (data.version !== "0.3") {
-            alert(
-              "Reticle is out of date. Please update to the latest version."
-            );
-            window.history.push("/");
-          }
-        }
-        if (data.type === "config") {
-          setReticlePreferences(data);
-        }
-        if (data.type === "connection_error") {
-          onConnectionError();
-        }
-        if (data.sessionid) {
-          console.log("Setting ID to " + data.sessionid);
-          setGameID(data.sessionid);
-          console.log(gameID);
-          ParseGameData(data);
-          return;
-        }
-        console.log("Setting to null no error");
-        setGameID(null);
-      } catch (e) {
-        console.log("Setting to null error");
-
-        setGameID(null);
-        console.log(e);
-      }
-    };
+    client.onmessage = handleClientMessage;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
