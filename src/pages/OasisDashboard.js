@@ -512,7 +512,9 @@ export default function OasisDashboard() {
       }
       if (data.type === "connection_error") {
         setCurrentGameState(0);
-        onConnectionError();
+        if (reticlePreferences.autojoin !== "false") {
+          onConnectionError();
+        }
       }
       if (data.sessionid) {
         setCurrentGameState(3);
@@ -632,7 +634,30 @@ export default function OasisDashboard() {
         <ActiveGames serverState={currentServerState} />
       </div>
       <div className="horizontal-fill">
-        <div className="padded border button">Autojoin Activated</div>
+        <div
+          className="padded border button"
+          onClick={() => {
+            client.send(
+              JSON.stringify({
+                command: "set-preference",
+                key: "launch-in-popup",
+                value:
+                  reticlePreferences.autojoin === "true" ? "false" : "true",
+              })
+            );
+            setTimeout(() => {
+              client.send(
+                JSON.stringify({
+                  command: "get-config",
+                })
+              );
+            }, 200);
+          }}
+        >
+          {reticlePreferences.autojoin === "true"
+            ? " Autojoin Activated!"
+            : "Autojoin Disabled"}
+        </div>
         <div
           className="padded border button"
           onClick={() => {
