@@ -640,7 +640,7 @@ export default function OasisDashboard() {
             client.send(
               JSON.stringify({
                 command: "set-preference",
-                key: "launch-in-popup",
+                key: "autojoin",
                 value:
                   reticlePreferences.autojoin === "true" ? "false" : "true",
               })
