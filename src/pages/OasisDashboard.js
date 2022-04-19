@@ -184,7 +184,7 @@ const ActiveGame = ({ gameState }) => {
         style={{ gap: "0px" }}
         onClick={() => JoinServer(gameState.id, 0)}
       >
-        Join Blue ({gameState.orangeTeam.length}/4)
+        Join Blue ({gameState.blueTeam.length}/4)
         {gameState.blueTeam.map((player) => (
           <div>{"\n" + player.name}</div>
         ))}
@@ -445,13 +445,14 @@ export default function OasisDashboard() {
         setCurrentServerState((current) => {
           var FoundGame = false;
 
-          var newState = current?.games?.map((game) => {
-            if (game.id === data.payload.id) {
-              FoundGame = true;
-              return data.payload;
-            }
-            return game;
-          });
+          var newState =
+            current?.games?.map((game) => {
+              if (game.id === data.payload.id) {
+                FoundGame = true;
+                return data.payload;
+              }
+              return game;
+            }) ?? [];
 
           if (!FoundGame) {
             newState.push(data.payload);
