@@ -532,6 +532,7 @@ function DiscordOAuthCallback({ callbackCode, onFinish }) {
         body: JSON.stringify({
           access_token: callbackCode,
         }),
+        credentials: 'include',
       };
       fetch("https://ecranked.ddns.net/api/v2/auth/login", requestOptions)
         .then((response) => response.json())
