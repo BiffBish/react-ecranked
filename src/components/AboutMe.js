@@ -337,6 +337,7 @@ const AvatarGuideText = styled.p`
 `;
 const AvatarContainer = styled.div``;
 const AboutAvatar = ({ userData, oculus_id }) => {
+  if (userData == null) return <></>;
   var avatar = userData["avatar"];
 
   // var pending = userData["avatar_pending"];

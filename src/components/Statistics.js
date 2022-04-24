@@ -495,7 +495,7 @@ const Heatmap = ({
     );
   };
 
-  if (userData.heatmap_completed === 1) {
+  if (userData?.heatmap_completed === 1) {
     return (
       <HeatmapStyle>
         <div
