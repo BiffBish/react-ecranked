@@ -101,7 +101,7 @@ const BodyContainer = styled.div`
   min-width: 400px;
   display: flex;
 `;
-export default function UncontactedUsersModeration({}) {
+export default function UncontactedUsersModeration() {
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {

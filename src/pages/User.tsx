@@ -218,7 +218,6 @@ export default function User({ username, setBannerCallback }: userProps) {
         </h3>
         <Achievements
           userData={apiData}
-          screenWidth={windowDimensions.width}
           fetchUserData={fetchUserData}
         />
         {/* <div> */}

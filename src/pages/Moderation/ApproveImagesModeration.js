@@ -118,7 +118,7 @@ const UserLink = styled(NavLink)`
   color: white;
   font-size: 30px;
 `;
-export default function ApproveImagesModeration({}) {
+export default function ApproveImagesModeration() {
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
