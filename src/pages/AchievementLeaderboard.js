@@ -175,7 +175,7 @@ const LeaderboardList = ({ userList, compacted }) => {
 export default function AchievementLeaderboard({
   setBannerCallback,
   limit = 200,
-  surroundID = null,
+  surroundID = "null",
   compacted = true,
 }) {
   console.log("LOADING ACHIEVEMENT LEADERBOARD");

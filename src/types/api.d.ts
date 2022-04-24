@@ -109,7 +109,7 @@ declare namespace Api {
     percent_close_enemy: number;
     total_seconds: number;
     // leaderboard_positions: LeaderboardPositions;
-    // top_loadout: (number | string)[][];
+    top_loadout: [string, number][];
     loadout: { [key: string]: number };
   };
   type User = {
