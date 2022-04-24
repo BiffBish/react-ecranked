@@ -480,7 +480,7 @@ const Heatmap = ({
   //   imageZoomRef?.current?.centerView?.(0.2, 0, 0);
   // }, [imageLoaded]);
   const onHeatmapRequested = () => {
-    makeApiCall("v1/user/" + userData.oculus_id + "/heatmap", "PUT", {}).then(
+    makeApiCall("v1/user/" + userData?.oculus_id + "/heatmap", "PUT", {}).then(
       (response) => {
         if (!response.ok) {
           alert(
@@ -580,7 +580,7 @@ const Heatmap = ({
                     }}
                     src={
                       "https://ecranked.ddns.net/public/" +
-                      userData.oculus_id +
+                      userData?.oculus_id +
                       "/heatmap_" +
                       Images[sharedStates.selectedHeatmap ?? 2].name +
                       "_recent.png"
@@ -625,10 +625,10 @@ const Heatmap = ({
               </HeatmapButtonStyle>
             );
           } else if (
-            localStorage.getItem("OCULUS_ID") == userData["oculus_id"]
+            localStorage.getItem("OCULUS_ID") == userData?.["oculus_id"]
           ) {
             if (
-              userData["heatmap_render_date"] <
+              userData?.["heatmap_render_date"] <
               Math.round(Date.now() / 1000) + 60 * 60 * 24 * 3
             ) {
               return (
@@ -647,7 +647,7 @@ const Heatmap = ({
   } else {
     /* eslint-disable */
     if (
-      localStorage.getItem("OCULUS_ID") == userData["oculus_id"] ||
+      localStorage.getItem("OCULUS_ID") == userData?.["oculus_id"] ||
       localStorage.getItem("MODERATOR") == 1
     ) {
       return (
