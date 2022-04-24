@@ -416,7 +416,7 @@ export const AboutMe = ({ userData }) => {
       <AboutAvatar userData={userData} oculus_id={oculus_id} />
       <footer>
         Joined{" "}
-        {userData.join_date < 1633061708
+        {userData?.join_date ?? 0 < 1633061708
           ? "before ECRanked launched"
           : timeDifference(Date.now(), userData.join_date * 1000)}
       </footer>

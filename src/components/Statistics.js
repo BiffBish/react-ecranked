@@ -74,6 +74,7 @@ const RankingText = styled.p`
 const LoadoutBox = ({ user_id, number, frequency }) => {
   const [ranking, setRanking] = useState(0);
   useEffect(() => {
+    if (!user_id) return;
     makeApiCall(
       "v1/leaderboard/rank/" + user_id + "/loadout/" + number + "/global"
     ).then(({ json }) => {
@@ -922,7 +923,7 @@ export const Statistics = ({ userData }) => {
           <Heatmap userData={userData} />
         </GrowToFullScreen>
         <Loadout
-          user_id={userData["oculus_id"]}
+          user_id={userData?.oculus_id}
           top_loadout={
             userData?.[statChoice]?.["top_loadout"]
               ? userData?.[statChoice]?.["top_loadout"]
