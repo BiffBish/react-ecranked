@@ -55,12 +55,17 @@ const EditButtonStyle = styled.div`
   }
 `;
 const AboutStringBox = ({ userData, oculus_id }) => {
+  const [currentText, setCurrentText] = useState(userData?.about_string);
+  const [editing, setEditing] = useState(false);
+  if (userData == null) {
+    return null;
+  }
   var is_editable = false;
   if (oculus_id == null) {
     is_editable = false;
   }
   // eslint-disable-next-line
-  if (oculus_id == parseInt(userData["oculus_id"])) {
+  if (oculus_id == parseInt(userData?.["oculus_id"] ?? "0")) {
     is_editable = true;
   }
   // eslint-disable-next-line
@@ -69,8 +74,6 @@ const AboutStringBox = ({ userData, oculus_id }) => {
   }
 
   const updateIsEdit = (e, value = "null") => {};
-  const [currentText, setCurrentText] = useState(userData["about_string"]);
-  const [editing, setEditing] = useState(false);
 
   const onClickSubmit = () => {
     if (currentText.length > 200) {

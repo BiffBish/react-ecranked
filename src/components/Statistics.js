@@ -765,7 +765,7 @@ const UserStatsStyle = styled.div`
   gap: 0px 20px;
 `;
 const UserStats = ({ userData, statChoice }) => {
-  const userStats = userData[statChoice];
+  const userStats = userData?.[statChoice];
   return (
     <UserStatsStyle>
       <ContainerTitle>Stats</ContainerTitle>
