@@ -858,7 +858,7 @@
       {
         "CID": "23",
         "Title": "Boost Action",
-        "Description": "Hit top speed of 15m/s (in 1 game)",
+        "Description": "Hit top speed of 10m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "0.25",
         "Extra": "check %'s",
@@ -867,7 +867,7 @@
       {
         "CID": "23",
         "Title": "Regrabby Grabby Grabs",
-        "Description": "Hit top speed of 20m/s (in 1 game)",
+        "Description": "Hit top speed of 15m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "0.5",
         "Extra": "check %'s",
@@ -876,7 +876,7 @@
       {
         "CID": "23",
         "Title": "Terminal Velocity",
-        "Description": "Hit top speed of 25m/s (in 1 game)",
+        "Description": "Hit top speed of 20m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "0.75",
         "Extra": "check %'s",
@@ -885,7 +885,7 @@
       {
         "CID": "23",
         "Title": "Super Ultra Hyper Turbo",
-        "Description": "Hit top speed of 30m/s (in 1 game)",
+        "Description": "Hit top speed of 25m/s (in 1 game)",
         "Timeframe": "In 1 game",
         "Percent": "1",
         "Extra": "check %'s",
@@ -3278,34 +3278,34 @@
       {
         "CID": "73",
         "Title": "Always on the Go",
-        "Description": "Average speed over 2.0m/s (season average)",
+        "Description": "Average speed over 1.5m/s (season average)",
         "Timeframe": "Cumulative",
-        "Percent": "0.5714285714",
+        "Percent": "0.01",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "73",
         "Title": "Fast Times at Robot High",
-        "Description": "Average speed over 2.5m/s (season average)",
+        "Description": "Average speed over 2.0m/s (season average)",
         "Timeframe": "Cumulative",
-        "Percent": "0.7142857143",
+        "Percent": "0.333333",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "73",
         "Title": "Bot Be Nimble, Bot Be Quick",
-        "Description": "Average speed over 3.0m/s (season average)",
+        "Description": "Average speed over 2.5m/s (season average)",
         "Timeframe": "Cumulative",
-        "Percent": "0.8571428571",
+        "Percent": "0.6666666",
         "Extra": "check %'s",
         "Type": "Speed"
       },
       {
         "CID": "73",
         "Title": "Cyberkinetic Enhancements",
-        "Description": "Average speed over 3.5m/s (season average)",
+        "Description": "Average speed over 3.0m/s (season average)",
         "Timeframe": "Cumulative",
         "Percent": "1",
         "Extra": "check %'s",
