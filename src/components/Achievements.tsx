@@ -6,7 +6,7 @@ import { MasterAchievementBar } from "./MasterAchievementBar";
 import AchievementLeaderboard from "../pages/AchievementLeaderboard";
 var achievementFormattingData = require("./AchievementData.json");
 
-function map_range(value, low1, high1, low2, high2, capPercentage = false) {
+function map_range(value: number, low1: number, high1: number, low2: number, high2: number, capPercentage = false) {
   if (capPercentage) {
     return Math.max(
       Math.min(1, low2 + ((high2 - low2) * (value - low1)) / (high1 - low1)),
@@ -16,7 +16,7 @@ function map_range(value, low1, high1, low2, high2, capPercentage = false) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
 
-function round(value, digits = 0) {
+function round(value: number, digits = 0) {
   return Math.round(value * 10 ** digits) / 10 ** digits;
 }
 export const AchievementSize = 40;
@@ -49,13 +49,36 @@ export const LeftAchievementColumn = styled.div`
   flex-direction: column;
 `;
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
+interface AchievementsProps {
+  userData: Api.User | null;
+  fetchUserData: () => void;
+}
+
 export default function Achievements({
   userData,
-  screenWidth,
-  fetchUserData = () => {},
-}) {
+  fetchUserData,
+}: AchievementsProps) {
   const [achievementData, setAchievementData] = useState(undefined);
   const [letOverflow, setLetOverflow] = useState(false);
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     // if (!userData) return null;
@@ -96,6 +119,7 @@ export default function Achievements({
       "pubs",
     ];
 
+
     const todayProgress = [
       /* 0 */ "",
       /* 1 */ "",
@@ -116,10 +140,10 @@ export default function Achievements({
       /* 16 */ userData?.daily_stats?.total_games,
       /* 17 */ round(map_range(userData?.achievements?.[17] ?? 0, 0, 1, 0, 12)),
       /* 18 */ round(map_range(userData?.achievements?.[18] ?? 0, 0, 1, 8, 3)),
-      /* 19 */ userData.daily_stats?.combustion_games +
-        userData?.daily_stats?.dyson_games,
-      /* 20 */ userData?.daily_stats?.fission_games +
-        userData?.daily_stats?.surge_games,
+      /* 19 */ (userData?.daily_stats?.combustion_games ?? 0) +
+      (userData?.daily_stats?.dyson_games ?? 0),
+      /* 20 */ (userData?.daily_stats?.fission_games ?? 0) +
+      (userData?.daily_stats?.surge_games ?? 0),
       /* 21 */ round(
         map_range(userData?.achievements?.[21] ?? 0, 0, 1, 0, 50),
         1
@@ -155,14 +179,14 @@ export default function Achievements({
       /* 42 */ userData?.weekly_stats?.total_games ?? 0,
       /* 43 */ round(
         userData?.weekly_stats?.deaths ??
-          1000000 / userData?.weekly_stats?.total_games ??
-          0,
+        1000000 / (userData?.weekly_stats?.total_games ??
+          0),
         1
       ),
       /* 44 */ (userData?.weekly_stats?.combustion_games ?? 0) +
-        (userData?.weekly_stats?.dyson_games ?? 0),
+      (userData?.weekly_stats?.dyson_games ?? 0),
       /* 45 */ (userData?.weekly_stats?.fission_games ?? 0) +
-        (userData?.weekly_stats?.surge_games ?? 0),
+      (userData?.weekly_stats?.surge_games ?? 0),
       /* 46 */ round(
         (userData?.weekly_stats?.percent_close_mate ?? 0) * 100,
         1
@@ -199,9 +223,9 @@ export default function Achievements({
       /* 67 */ round((userData?.achievements?.[67] ?? 0) * 64),
       /* 68 */ userData?.achievement_stats?.deaths ?? 0,
       /* 69 */ (userData?.achievement_stats?.combustion_games ?? 0) +
-        (userData?.achievement_stats?.dyson_games ?? 0),
+      (userData?.achievement_stats?.dyson_games ?? 0),
       /* 70 */ (userData?.achievement_stats?.fission_games ?? 0) +
-        (userData?.achievement_stats?.surge_games ?? 0),
+      (userData?.achievement_stats?.surge_games ?? 0),
       /* 71 */ round(
         (userData?.achievement_stats?.percent_close_mate ?? 0) * 100,
         1
@@ -211,7 +235,7 @@ export default function Achievements({
         1
       ) + "%",
       /* 73 */ round(userData?.achievement_stats?.average_speed ?? 0, 1) +
-        "m/s",
+      "m/s",
       /* 74 */ round(
         (userData?.achievement_stats?.percent_upsidedown ?? 0) * 100,
         1
@@ -294,12 +318,12 @@ export default function Achievements({
       /* 16 */ (userData?.daily_stats?.total_games ?? 0) / 15,
       /* 17 */ null,
       /* 18 */ null,
-      /* 19 */ (userData?.daily_stats?.combustion_games +
-        userData?.daily_stats?.dyson_games) /
-        8,
-      /* 20 */ (userData.daily_stats?.fission_games +
-        userData?.daily_stats?.surge_games) /
-        8,
+      /* 19 */ ((userData?.daily_stats?.combustion_games ?? 0) +
+        (userData?.daily_stats?.dyson_games ?? 0)) /
+      8,
+      /* 20 */ ((userData.daily_stats?.fission_games ?? 0) +
+        (userData?.daily_stats?.surge_games ?? 0)) /
+      8,
       /* 21 */ null,
       /* 22 */ null,
       /* 23 */ map_range(
@@ -341,10 +365,10 @@ export default function Achievements({
       ) * weeklyOutOf40,
       /* 44 */ ((userData?.weekly_stats?.combustion_games ?? 0) +
         (userData?.weekly_stats?.dyson_games ?? 0)) /
-        50,
+      50,
       /* 45 */ ((userData?.weekly_stats?.fission_games ?? 0) +
         (userData?.weekly_stats?.surge_games ?? 0)) /
-        50,
+      50,
       /* 46 */ map_range(
         userData?.weekly_stats?.percent_close_mate ?? 0,
         0,
@@ -411,10 +435,18 @@ export default function Achievements({
     ];
 
     for (let index = 0; index < 80; index++) {
-      var element = userData?.achievements?.[index];
+      var element = 0
+      if (userData?.achievements == null) { } else {
+        element = userData.achievements[0] as any;
+
+      }
       if (element === undefined) {
         element = 0;
       }
+
+
+
+
       let pubCount = 0;
       if (index > 0) {
         totalPercentage += element;
@@ -960,7 +992,7 @@ export default function Achievements({
             <div style={{ flexBasis: 0, flexGrow: 1.5, display: "flex" }}>
               {userData.oculus_id ? (
                 <AchievementLeaderboard
-                  setBannerCallback={() => {}}
+                  setBannerCallback={() => { }}
                   surroundID={userData.oculus_id}
                   limit={6}
                 />

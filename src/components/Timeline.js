@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { makeApiCall } from "../helpers/api";
 
 const Container = styled.div`
   position: relative;
@@ -393,27 +394,22 @@ const LoadoutImage = ({ number }) => {
     "arcmine.png",
     "instant_repair.png",
   ];
-  const weaponMap = [
-    "pulsar.png",
-    "nova.png",
-    "comet.png",
-    "meteor.png",
-  ];
+  const weaponMap = ["pulsar.png", "nova.png", "comet.png", "meteor.png"];
 
   return (
     <>
       <img
-        src={"/images/icons/"+weaponMap[weapon]}
+        src={"/images/icons/" + weaponMap[weapon]}
         alt={"weapon"}
         style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
       <img
-        src={"/images/icons/"+ordinanceMap[ordinance]}
+        src={"/images/icons/" + ordinanceMap[ordinance]}
         alt={"ordinance"}
         style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
       <img
-        src={"/images/icons/"+tacModMap[tacMod]}
+        src={"/images/icons/" + tacModMap[tacMod]}
         alt={"tacMod"}
         style={{ justifyContent: "center", width: "15px", height: "15px" }}
       ></img>
@@ -449,12 +445,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
     "arcmine.png",
     "instant_repair.png",
   ];
-  const weaponMap = [
-    "pulsar.png",
-    "nova.png",
-    "comet.png",
-    "meteor.png",
-  ];
+  const weaponMap = ["pulsar.png", "nova.png", "comet.png", "meteor.png"];
   const tacModMapName = [
     "Repair Matrix",
     "Threat Scanner",
@@ -473,7 +464,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
     <LoadoutBarSelectedDivStyle onMouseEnter={onHover}>
       <p style={{ margin: "0px" }}>
         <img
-          src={"/images/icons/"+weaponMap[weapon]}
+          src={"/images/icons/" + weaponMap[weapon]}
           alt={"weapon"}
           style={{ justifyContent: "center", width: "40px", height: "40px" }}
         />
@@ -481,7 +472,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
       </p>
       <p style={{ margin: "0px" }}>
         <img
-          src={"/images/icons/"+ordinanceMap[ordinance]}
+          src={"/images/icons/" + ordinanceMap[ordinance]}
           alt={"ordinance"}
           style={{ justifyContent: "center", width: "40px", height: "40px" }}
         />
@@ -489,7 +480,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
       </p>
       <p style={{ margin: "0px" }}>
         <img
-          src={"/images/icons/"+tacModMap[tacMod]}
+          src={"/images/icons/" + tacModMap[tacMod]}
           alt={"tacMod"}
           style={{ justifyContent: "center", width: "40px", height: "40px" }}
         />
@@ -740,20 +731,20 @@ export const Timeline = ({ skimData }) => {
     async function startApiCalls() {
       setUpdatedUsernamesPromises(
         userList.map((user) => {
-          return fetch(
-            "https://ecranked.ddns.net/api/v1/user/" + user["userid"]
-          ).then(async (response) => {
-            const data = await response.json();
-            if (response.status === 404) {
-            } else {
-              if (!response.ok) {
-                // get error message from body or default to response statusText
-                const error = (data && data.message) || response.statusText;
-                return Promise.reject(error);
+          return makeApiCall("api/v1/user/" + user["userid"]).then(
+            async (response) => {
+              const { json } = response;
+              if (response.status === 404) {
+              } else {
+                if (!response.ok) {
+                  // get error message from body or default to response statusText
+                  const error = (json && json.message) || response.statusText;
+                  return Promise.reject(error);
+                }
+                return json;
               }
-              return data;
             }
-          });
+          );
         })
       );
     }

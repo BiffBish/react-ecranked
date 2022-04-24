@@ -7,10 +7,8 @@ import "./style.css";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "./reducers";
 //
-const store = createStore(rootReducer, composeWithDevTools());
-
+import store from "./stores/store";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

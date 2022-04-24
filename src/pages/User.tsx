@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
-import MetaTags from "react-meta-tags";
 import { FailedSearchBar } from "../components/FailedSearch";
 import { AboutMe } from "../components/AboutMe";
 import { Statistics } from "../components/Statistics";
@@ -48,7 +47,11 @@ function getWindowDimensions() {
   };
 }
 
-const StatChoice = ({ currentSelected, onClick }) => {
+interface StatChoiceProps {
+  currentSelected: string;
+  onClick: (option: string) => void;
+}
+const StatChoice = ({ currentSelected, onClick }: StatChoiceProps) => {
   return (
     <StatChoiceStyle>
       <StatChoiceButton
@@ -72,13 +75,20 @@ const StatChoice = ({ currentSelected, onClick }) => {
     </StatChoiceStyle>
   );
 };
+
 const LeftSideStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   flex: 200px 1;
 `;
-const LeftSide = ({ username, replays }) => {
+type LeftSideProps = {
+  username: string;
+  replays: null;
+}
+
+
+const LeftSide = ({ username, replays }: LeftSideProps) => {
   console.log("80 REPLAYS", replays);
   const [selectedOption, setSelectedOption] = React.useState("public_games");
   return (
@@ -90,132 +100,74 @@ const LeftSide = ({ username, replays }) => {
       {selectedOption === "public_games" ? (
         <UserPubLeaderboard oculus_name={username} />
       ) : (
-        <RecentGames replays={replays} />
+        <RecentGames replays={[]} />
       )}
     </LeftSideStyle>
   );
 };
-export default function User({ username, setBannerCallback, subDomain }) {
+
+function getIcon(user: Api.User) {
+  if (user.oculus_name === "BiffBish") return "/images/happy_cubesat.png";
+  if (user.discord_name !== null) return "/images/verified_icon.png";
+  if (user.moderator === true) return "/images/icons/moderator_icon.png";
+  return undefined;
+}
+
+interface userProps {
+  username: string,
+  setBannerCallback: (name: string, icon: string | undefined) => void
+}
+export default function User({ username, setBannerCallback }: userProps) {
+
   const [randomUsernameOverride, setRandomUsernameOverride] =
-    React.useState(null);
+    React.useState<string | null>(null);
+
   if (
     randomUsernameOverride !== null &&
     (username === "random_async" || username === "random")
   ) {
     username = randomUsernameOverride;
   }
+
   if (username === "random") {
     setRandomUsernameOverride("random_async");
     username = "random_async";
     makeApiCall("v1/user/@all")
       .then((response) => {
-        const data = response.json;
+        const data = response.json as Api.User.All;
+
         setRandomUsernameOverride(
           data[Math.floor(Math.random() * data.length)]
         );
       })
-      .catch((error) => {
-        setUserNotFound(true);
-        console.error("There was an error!", error);
-      });
   }
 
   let history = useHistory();
-  const whenSearchSubmit = (text) => {
-    console.log(text);
+  const whenSearchSubmit = (text: string) => {
     history.push("/user/" + text + "/stats");
-    //Change url without reloading: /user/{text}/stats
   };
 
-  const EMPTYREQUEST = {
-    discord_name: null,
-    discord_pfp: null,
-    recent_games: [],
-    about_string: null,
-    stats: {
-      average_speed: 0,
-      average_ping: 0,
-      percent_stopped: 0,
-      percent_upsidedown: 0,
-      total_games: 0,
-      total_deaths: 0,
-      average_deaths: 0,
-      top_loadout: [],
-    },
-    weekly_stats: {
-      average_speed: 0,
-      average_ping: 0,
-      percent_stopped: 0,
-      percent_upsidedown: 0,
-      total_games: 0,
-      total_deaths: 0,
-      average_deaths: 0,
-      top_speed: 0,
-      percent_left: 0,
-      percent_right: 0,
-
-      top_loadout: [],
-    },
-    daily_stats: {
-      average_speed: 0,
-      average_ping: 0,
-      percent_stopped: 0,
-      percent_upsidedown: 0,
-      total_games: 0,
-      total_deaths: 0,
-      average_deaths: 0,
-      top_speed: 0,
-      percent_left: 0,
-      percent_right: 0,
-      top_loadout: [],
-    },
-    test: {},
-  };
-  const [apiData, setApiData] = React.useState(EMPTYREQUEST);
+  const [apiData, setApiData] = React.useState<Api.User | null>(null);
   const [userNotFound, setUserNotFound] = React.useState(false);
 
-  const fetchUserData = () => {
+  function fetchUserData() {
     makeApiCall("v1/user/" + username)
       .then(async (response) => {
-        const data = response.json;
-        console.log("code:" + response.statusCode);
-        if (response.status === 404) {
-          console.error("User not found!");
-          setUserNotFound(true);
-        } else {
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-          if ("oculus_name" in data) {
-            setUserNotFound(false);
-            var iconSrc = null;
-            if (data.discord_name !== null) {
-              iconSrc = "/images/verified_icon.png";
-            }
-            if (data.moderator === true) {
-              iconSrc = "/images/icons/moderator_icon.png";
-            }
-            if (data.oculus_name === "BiffBish") {
-              iconSrc = "/images/happy_cubesat.png";
-            }
-            console.log(data);
-            setBannerCallback(data["oculus_name"], iconSrc);
-            if (username !== data["oculus_name"]) {
-              history.push("/user/" + data["oculus_name"] + "/stats");
-            } else {
-              setApiData(data);
-            }
-          }
-        }
-      })
-      .catch((error) => {
-        setUserNotFound(true);
-        console.error("There was an error!", error);
-      });
-  };
+        const user = response.json as Api.User;
 
+        if (!response.ok) return setUserNotFound(true)
+        setUserNotFound(false)
+
+        setBannerCallback(user.oculus_name, getIcon(user));
+
+        if (username !== user.oculus_name) {
+          history.push("/user/" + user.oculus_name + "/stats");
+        } else {
+          setApiData(user);
+        }
+
+      })
+  }
   useEffect(() => {
     if (username === "random") {
       return;
@@ -223,23 +175,10 @@ export default function User({ username, setBannerCallback, subDomain }) {
     if (username === "random_async") {
       return;
     }
-    fetchUserData();
-
+    fetchUserData()
     // eslint-disable-next-line
   }, [username]);
 
-  // function WhatApiRequest() {
-  //   console.log("APIDATA");
-
-  //   if (userNotFound) {
-  //     return EMPTYREQUEST;
-  //   }
-  //   if (apiData) {
-  //     return apiData;
-  //   }
-
-  //   return EMPTYREQUEST;
-  // }
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
@@ -283,14 +222,15 @@ export default function User({ username, setBannerCallback, subDomain }) {
           fetchUserData={fetchUserData}
         />
         {/* <div> */}
-        <MetaTags>
+        {/* <MetaTags>
           <title>{username}'s Page!</title>
           <meta name="description" content={"Visit " + username + "'s Page!"} />
           <meta property="og:title" content="MyApp" />
           <meta property="og:image" content="path/to/image.jpg" />
-        </MetaTags>
+        </MetaTags> */}
         <div className="horizontal-container">
-          <LeftSide replays={apiData["recent_games"]} username={username} />
+
+          <LeftSide replays={null} username={username} />
           <Statistics userData={apiData} />
 
           <AboutMe userData={apiData} />

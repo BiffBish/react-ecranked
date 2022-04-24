@@ -210,7 +210,12 @@ const FileUploadButton = ({ userData }) => {
 
     formData.append("image", selectedFile);
 
-    makeApiCall("v1/user/" + userData["oculus_id"], "PUT", {}, formData)
+    makeApiCall(
+      "v1/user/" + userData["oculus_id"] + "/avatar",
+      "POST",
+      {},
+      formData
+    )
       .then((result) => {
         console.log("Success:", result.json);
         window.location.reload(false);

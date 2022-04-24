@@ -8,6 +8,7 @@
 //   }, [globalUserState.authorization_token]);
 //   return null;
 // };
+import store from "../../stores/store";
 
 /**
  *
@@ -25,13 +26,25 @@
  * @description Makes an api call to the specified url.
  
  */
+
+type ApiResponse = {
+  status: number;
+  json: Object;
+  ok: boolean;
+};
+const URI =
+  process.env.NODE_ENV === "production"
+    ? "https://ecranked.ddns.net/api/"
+    : "https://localhost/api/";
+
 export default function makeApiCall(
   url = "",
   method = "GET",
   body = {},
   formData = null
-) {
-  var promise = new Promise((resolve, reject) => {
+): Promise<ApiResponse> {
+  const state = store.getState();
+  var promise = new Promise<ApiResponse>((resolve, reject) => {
     let bodyData;
 
     if (!(method === "HEAD" || method === "GET")) {
@@ -41,10 +54,11 @@ export default function makeApiCall(
     if (formData) {
       bodyData = formData;
     }
-    fetch("https://ecranked.ddns.net/api/" + url, {
+
+    fetch(URI + url, {
       method: method,
       headers: {
-        Authorization: localStorage.getItem("AUTHORIZATION_TOKEN") ?? "",
+        Authorization: state?.user?.token ?? "",
         "Content-Type": "application/json",
       },
       credentials: "include",
@@ -57,7 +71,7 @@ export default function makeApiCall(
           status: response.status,
           json: data,
           ok: response.ok,
-        };
+        } as ApiResponse;
         resolve(returnData);
       })
       .catch((error) => {

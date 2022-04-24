@@ -12,7 +12,7 @@ const MakeTeamBoxStyle = styled.div`
   flex: 200px 1;
 `;
 
-export default function MakeTeam({ setBannerCallback, subDomain }) {
+export default function MakeTeam() {
   let history = useHistory();
 
   useEffect(() => {

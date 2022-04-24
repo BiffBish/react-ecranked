@@ -101,11 +101,7 @@ const BodyContainer = styled.div`
   min-width: 400px;
   display: flex;
 `;
-export default function UncontactedUsersModeration({
-  username,
-  setBannerCallback,
-  subDomain,
-}) {
+export default function UncontactedUsersModeration({}) {
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
@@ -120,7 +116,7 @@ export default function UncontactedUsersModeration({
       .catch((error) => {
         console.error("There was an error!", error);
       });
-  }, [username, setBannerCallback]);
+  }, []);
   console.log(unapprovedImages);
   const RemoveUser = (username) => {
     makeApiCall("v1/user/" + username, "PUT", { contacted: 1 });

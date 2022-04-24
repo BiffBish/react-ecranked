@@ -173,9 +173,7 @@ const LeaderboardList = ({ userList, compacted }) => {
   );
 };
 export default function AchievementLeaderboard({
-  leaderboardStatistic,
   setBannerCallback,
-  subDomain,
   limit = 200,
   surroundID = null,
   compacted = true,
@@ -183,26 +181,11 @@ export default function AchievementLeaderboard({
   console.log("LOADING ACHIEVEMENT LEADERBOARD");
   const [apiData, setApiData] = React.useState(null);
   const [sortedApiData, setSortedApiData] = React.useState(null);
-  if (subDomain === undefined) {
-    subDomain = "global";
-  }
+
   setBannerCallback("Challenges Leaderboard");
-  const [randomLoadout, setRandomLoadout] = React.useState(null);
+
   const [startIndex, setStartIndex] = React.useState(0);
 
-  if (
-    leaderboardStatistic === "loadout" &&
-    subDomain === "random" &&
-    randomLoadout === null
-  ) {
-    var randomLoadoutNumber = Math.round(Math.random() * 64);
-    setRandomLoadout(randomLoadoutNumber);
-    subDomain = randomLoadout;
-  }
-
-  if (randomLoadout != null) {
-    subDomain = randomLoadout;
-  }
   useEffect(() => {
     makeApiCall("v1/leaderboard/achievement")
       .then(async (response) => {
@@ -222,7 +205,7 @@ export default function AchievementLeaderboard({
       .catch((error) => {
         console.error("There was an error!", error);
       });
-  }, [leaderboardStatistic, subDomain]);
+  }, []);
 
   useEffect(() => {
     if (!apiData) return;

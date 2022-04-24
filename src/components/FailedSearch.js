@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import AutoComplete from "./AutoComplete";
+import { makeApiCall } from "../helpers/api";
 
 const autoCompleteBox = styled.form`
   border: 1px solid rgb(70, 70, 70);
@@ -63,9 +64,9 @@ export const FailedSearchBar = ({ shown, onFormSubmit }) => {
   const [allUsernames, setAllUsernames] = useState(null);
 
   useEffect(() => {
-    fetch("https://ecranked.ddns.net/api/v1/user/@all")
+    makeApiCall("v1/user/@all")
       .then(async (response) => {
-        const data = await response.json();
+        const { data } = response;
         console.log("allUsernames code:" + response.statusCode);
         if (response.status === 404) {
         } else {

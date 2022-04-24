@@ -74,17 +74,11 @@ const RankingText = styled.p`
 const LoadoutBox = ({ user_id, number, frequency }) => {
   const [ranking, setRanking] = useState(0);
   useEffect(() => {
-    fetch(
-      "https://ecranked.ddns.net/api/v1/leaderboard/rank/" +
-        user_id +
-        "/loadout/" +
-        number +
-        "/global"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setRanking(data[0]["rank"]);
-      });
+    makeApiCall(
+      "v1/leaderboard/rank/" + user_id + "/loadout/" + number + "/global"
+    ).then(({ json }) => {
+      setRanking(json[0]["rank"]);
+    });
   });
 
   const tacNumber = number % 4;

@@ -6,6 +6,7 @@ import styled, { keyframes } from "styled-components";
 import moment from "moment-timezone";
 import { NavLink } from "react-router-dom";
 import Chart from "react-google-charts";
+import { makeApiCall } from "../helpers/api";
 var funFacts = require("../components/FunFacts.json");
 class Timer extends React.Component {
   constructor(props) {
@@ -376,7 +377,37 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
   setReplayTimestamps(newList);
 }
 
-export default function Home({ replays }) {
+export default function Home() {
+  const [replays, setReplays] = React.useState([]);
+  useEffect(() => {
+    makeApiCall("v1/replay/@recent")
+      .then(async (response) => {
+        const data = response.json;
+        console.log("code:" + response.statusCode);
+        if (response.status === 404) {
+          console.error("No recent games found!");
+        } else {
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setReplays(data);
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }, []);
+
+  function WhatApiRequest() {
+    console.log("APIDATA");
+    console.log(apiData);
+    if (apiData) {
+      return apiData;
+    }
+    return [];
+  }
   const [replayAnimationIndex, setReplayAnimationIndex] = useState(0);
   const [funFactIndex, setFunFactIndex] = useState(
     Math.floor(Math.random() * funFacts.length)

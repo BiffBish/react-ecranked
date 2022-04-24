@@ -1,6 +1,6 @@
 // import React, {useState , useRef, useEffect} from 'react'
 import React, { useState } from "react";
-import GlobalUserState from "./contexts/GlobalUserState";
+// import GlobalUserState from "./contexts/GlobalUserState";
 import Routes from "./Routes";
 //import { Button } from "@mui/material";
 
@@ -9,9 +9,9 @@ function App() {
 
   const [state, setState] = useState({});
   return (
-    <GlobalUserState.Provider value={[state, setState]}>
-      <Routes />
-    </GlobalUserState.Provider>
+    // <GlobalUserState.Provider value={[state, setState]}>
+    <Routes />
+    // </GlobalUserState.Provider>
   );
 }
 

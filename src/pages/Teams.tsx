@@ -5,9 +5,11 @@ import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import GlobalUserState from "../contexts/GlobalUserState";
+// import GlobalUserState from "../contexts/GlobalUserState";
 import { Link } from "react-router-dom";
 import { makeApiCall } from "../helpers/api/index";
+import { useSelector } from "react-redux";
+import { State } from "../stores/store";
 
 const BodyContainer = styled.div`
   margin: auto;
@@ -16,44 +18,41 @@ const BodyContainer = styled.div`
 
 export default function Teams() {
   let history = useHistory();
-  const [globalUserState, setGlobalUserState] = useContext(GlobalUserState);
-  // globalUserState.requested_team_id = 1;
-  console.log(globalUserState.authorization_token);
-  console.log(globalUserState.requested_team_id);
-  console.log(globalUserState.team_id);
 
-  // globalUserState.team_id = null;
-  // globalUserState.requested_team_id = null;
+  const userData = useSelector((state: State) => state.user.userData);
 
-  let canJoin =
-    globalUserState.authorization_token &&
-    !globalUserState.requested_team_id &&
-    !globalUserState.team_id;
-  let [teamList, setTeamList] = useState([]);
+  let canJoin = true;
+  let showRequestButtons = false;
+  if (userData) {
+    canJoin =
+      !userData.requested_team_id &&
+      !userData.team_id;
+
+    showRequestButtons = userData.requested_team_id != null
+  }
+
+
+
+  let [teamList, setTeamList] = useState<Api.Team.All>([]);
   useEffect(() => {
     makeApiCall("v1/team/@all")
       .then((response) => {
-        console.log(response);
-        setTeamList(response.json);
+        let json = response.json as Api.Team.All;
+        setTeamList(json);
       })
-      .catch((error) => {});
   }, []);
 
-  const JoinTeam = (teamname) => {
+  const JoinTeam = (teamname: string) => {
     makeApiCall("v1/team/" + teamname + "/request_join", "POST").then(() => {
-      window.location.reload(false);
+      window.location.reload();
     });
   };
-  const CancelTeam = (teamname) => {
+  const CancelTeam = (teamname: string) => {
     makeApiCall("v1/team/" + teamname + "/cancel_join", "POST").then(() => {
-      window.location.reload(false);
+      window.location.reload();
     });
   };
-  let showRequestButtons =
-    globalUserState.team_id === null && globalUserState.authorization_token;
 
-  let isRequesting = globalUserState.requesting_team_id !== null;
-  console.log(globalUserState.requested_team_id);
   return (
     <>
       <p style={{ color: "white", fontSize: "15px" }}>
@@ -71,10 +70,10 @@ export default function Teams() {
               </Link>
             ) : null}
 
-            {teamList.slice(0, 200).map((teamData) => {
+            {teamList.slice(0, 200).map((teamData: Api.Team.SimpleTeam) => {
               let disabled = false;
               if (!canJoin) disabled = true;
-              if (teamData.id == globalUserState.requested_team_id)
+              if (teamData.id == userData?.requested_team_id)
                 disabled = false;
               return (
                 <div className="button-container">
@@ -100,7 +99,7 @@ export default function Teams() {
                         CancelTeam(teamData.name);
                       }}
                     >
-                      {teamData.id == globalUserState.requested_team_id
+                      {teamData.id == userData?.requested_team_id
                         ? "Cancel Request"
                         : "Request To join"}
                     </div>

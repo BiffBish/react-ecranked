@@ -118,11 +118,7 @@ const UserLink = styled(NavLink)`
   color: white;
   font-size: 30px;
 `;
-export default function ApproveImagesModeration({
-  username,
-  setBannerCallback,
-  subDomain,
-}) {
+export default function ApproveImagesModeration({}) {
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
@@ -132,32 +128,11 @@ export default function ApproveImagesModeration({
           const json = response.json;
           setUnapprovedImages(json);
         }
-        // const data = await response.json();
-        // console.log("code:" + response.statusCode);
-        // if (response.status === 404) {
-        //   console.error("User not found!");
-        //   setUserNotFound(true);
-        // } else {
-        //   if (!response.ok) {
-        //     // get error message from body or default to response statusText
-        //     const error = (data && data.message) || response.statusText;
-        //     return Promise.reject(error);
-        //   }
-        //   if ("oculus_name" in data) {
-        //     setUserNotFound(false);
-        //     setBannerCallback(data["oculus_name"]);
-        //     console.log(data["oculus_name"]);
-        //     setApiData(data);
-        //   } else {
-        //     setBannerCallback("Unknown");
-        //     setUserNotFound(true);
-        //   }
-        // }
       })
       .catch((error) => {
         console.error("There was an error!", error);
       });
-  }, [username, setBannerCallback]);
+  }, []);
   console.log(unapprovedImages);
   return (
     <>
