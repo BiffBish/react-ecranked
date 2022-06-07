@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 
 import styled from "styled-components";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
+import { w3cwebsocket, w3cwebsocket as W3CWebSocket } from "websocket";
 const AutoCompleteInput = styled.input`
   background-color: transparent;
   // border: none;
@@ -171,8 +171,8 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
 
 
 
-function JoinServer(client: W3CWebSocket, sessionID: string, teamID: number) {
-  client.send(
+function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
+  client?.send(
     JSON.stringify({
       command: "join-server",
       session_id: sessionID,
@@ -264,7 +264,7 @@ type SocketMessage = SocketUpdateData | SocketDisconnectData | SocketGetStateDat
 
 interface ActiveGameProps {
   gameState: GameState
-  client: W3CWebSocket
+  client: W3CWebSocket | null
 }
 
 
@@ -315,7 +315,7 @@ const ActiveGame = ({ client, gameState }: ActiveGameProps) => {
 
 interface ActiveGamesProps {
   serverState: RawServerState
-  client: W3CWebSocket
+  client: W3CWebSocket | null
 }
 const ActiveGames = ({ client, serverState }: ActiveGamesProps) => {
   //Turn the raw serverState into a list of gameStates
@@ -416,16 +416,33 @@ export default function OasisDashboard() {
   const clientIP = "192.168.50.105:13113"
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [client, setClient] = useState(
-    new W3CWebSocket("ws://" + clientIP)
+  const [client, setClient] = useState<W3CWebSocket | null>(
+    null
   )
+  if (client == null) {
+    try {
+
+      setClient(
+        new W3CWebSocket("ws://" + clientIP)
+      )
+    } catch (error) {
+
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [serverLive, setServerLive] = useState(
-    new W3CWebSocket(
-      "wss://ecranked.ddns.net/websockets?state=activeGames"
-    )
+  const [serverLive, setServerLive] = useState<W3CWebSocket | null>(
+    null
   )
+
+  if (serverLive == null) {
+    try {
+      setServerLive(new W3CWebSocket("wss://ecranked.ddns.net/websockets?state=activeGames"))
+    } catch (error) {
+
+    }
+  }
+
   const JoinGameIDRef = useRef();
 
   const [gameIDInput, setGameIDInput] = useState("");
@@ -461,7 +478,7 @@ export default function OasisDashboard() {
   const [currentGameState, setCurrentGameState] = useState(0);
 
   const pingServer = () => {
-    client.send(
+    client?.send(
       JSON.stringify({
         command: "get-session",
       })
@@ -469,15 +486,17 @@ export default function OasisDashboard() {
   };
 
   useEffect(() => {
+    if (client == null) return
+    if (serverLive == null) return
     client.onerror = (error) => {
       console.error(error);
     };
     client.onopen = () => {
       console.log("WebSocket Client Connected");
-      client.send(JSON.stringify({ command: "get-version" }));
+      client?.send(JSON.stringify({ command: "get-version" }));
       setClientConnected(true);
       setTimeout(() => {
-        client.send(JSON.stringify({ command: "get-config" }));
+        client?.send(JSON.stringify({ command: "get-config" }));
       }, 400);
 
       setTimeout(() => {
@@ -496,6 +515,8 @@ export default function OasisDashboard() {
   }, []);
 
   useEffect(() => {
+    if (serverLive == null) return
+
     if (!serverConnected) {
       return;
     }
@@ -517,7 +538,7 @@ export default function OasisDashboard() {
     //Set game start time to current time in seconds
     setGameStartTime(Math.floor(Date.now() / 1000));
     if (gameID === null) {
-      serverLive.send(
+      serverLive?.send(
         JSON.stringify({
           command: "end-game-state",
         })
@@ -527,6 +548,7 @@ export default function OasisDashboard() {
   }, [gameID, serverConnected]);
 
   const ParseGameData = (data: any) => {
+
     setGameData(data);
     var properMapName = data.map_name;
     switch (data.map_name) {
@@ -571,7 +593,7 @@ export default function OasisDashboard() {
       startTime: gameStartTime,
     };
 
-    serverLive.send(
+    serverLive?.send(
       JSON.stringify({
         command: "update-game-state",
         payload: gameData,
@@ -583,6 +605,8 @@ export default function OasisDashboard() {
     if (!serverConnected) {
       return;
     }
+    if (serverLive == null) return
+
     serverLive.onmessage = (message) => {
       let data = JSON.parse(message.data as string) as SocketMessage;
       // @ts-ignore
@@ -658,7 +682,7 @@ export default function OasisDashboard() {
     setGameID((currentgameID) => {
       console.log("Connection Error", gameID);
       if (currentgameID !== null) {
-        client.send(
+        client?.send(
           JSON.stringify({
             command: "kill-game",
           })
@@ -741,7 +765,7 @@ export default function OasisDashboard() {
     setWebsocket(client);
 
     // @ts-ignore
-    client.onmessage = handleClientMessage;
+    client?.onmessage = handleClientMessage;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -827,7 +851,7 @@ export default function OasisDashboard() {
         <div
           className="padded border button"
           onClick={() => {
-            client.send(
+            client?.send(
               JSON.stringify({
                 command: "set-preference",
                 key: "autojoin",
@@ -836,7 +860,7 @@ export default function OasisDashboard() {
               })
             );
             setTimeout(() => {
-              client.send(
+              client?.send(
                 JSON.stringify({
                   command: "get-config",
                 })
@@ -855,7 +879,7 @@ export default function OasisDashboard() {
             if ((exePath === "" || exePath == null || exePath === undefined)) {
               return;
             }
-            client.send(
+            client?.send(
               JSON.stringify({
                 command: "set-preference",
                 key: "executable-path",
@@ -863,7 +887,7 @@ export default function OasisDashboard() {
               })
             );
             setTimeout(() => {
-              client.send(
+              client?.send(
                 JSON.stringify({
                   command: "get-config",
                 })
@@ -876,7 +900,7 @@ export default function OasisDashboard() {
         <div
           className="padded border button"
           onClick={() => {
-            client.send(
+            client?.send(
               JSON.stringify({
                 command: "set-preference",
                 key: "launch-in-popup",
@@ -887,7 +911,7 @@ export default function OasisDashboard() {
               })
             );
             setTimeout(() => {
-              client.send(
+              client?.send(
                 JSON.stringify({
                   command: "get-config",
                 })
@@ -902,7 +926,7 @@ export default function OasisDashboard() {
         <div
           className="padded border button"
           onClick={() => {
-            client.send(JSON.stringify({ command: "shutdown" }));
+            client?.send(JSON.stringify({ command: "shutdown" }));
             //Wait a second before closing the window
             setTimeout(() => {
               window.close();
