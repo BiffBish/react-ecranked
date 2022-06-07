@@ -764,6 +764,8 @@ export default function OasisDashboard() {
     });
     setWebsocket(client);
 
+    if (client === null) return;
+
     // @ts-ignore
     client.onmessage = handleClientMessage;
 
