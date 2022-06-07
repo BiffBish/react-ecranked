@@ -419,30 +419,32 @@ export default function OasisDashboard() {
   const [client, setClient] = useState<W3CWebSocket | null>(
     null
   )
-  if (client == null) {
-    try {
-
-      setClient(
-        new W3CWebSocket("ws://" + clientIP)
-      )
-    } catch (error) {
-
-    }
-  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [serverLive, setServerLive] = useState<W3CWebSocket | null>(
     null
   )
 
-  if (serverLive == null) {
+  useEffect(() => {
+    try {
+      fetch("http://" + clientIP)
+    } catch (e) {
+      console.log(e)
+    }
+    try {
+
+      setClient(
+        new W3CWebSocket("ws://" + clientIP)
+      )
+    } catch (error) {
+      console.log(error)
+    }
     try {
       setServerLive(new W3CWebSocket("wss://ecranked.ddns.net/websockets?state=activeGames"))
     } catch (error) {
 
     }
-  }
-
+  }, [])
   const JoinGameIDRef = useRef();
 
   const [gameIDInput, setGameIDInput] = useState("");
