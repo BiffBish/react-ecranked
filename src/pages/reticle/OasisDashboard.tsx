@@ -427,12 +427,6 @@ export default function OasisDashboard() {
 
   useEffect(() => {
     try {
-      fetch("http://" + clientIP)
-    } catch (e) {
-      console.log(e)
-    }
-    try {
-
       setClient(
         new W3CWebSocket("ws://" + clientIP)
       )
@@ -442,14 +436,13 @@ export default function OasisDashboard() {
     try {
       setServerLive(new W3CWebSocket("wss://ecranked.ddns.net/websockets?state=activeGames"))
     } catch (error) {
-
+      console.log(error)
     }
   }, [])
   const JoinGameIDRef = useRef();
 
   const [gameIDInput, setGameIDInput] = useState("");
 
-  const [websocket, setWebsocket] = useState<W3CWebSocket | null>(null);
 
   const [showHostGame, setShowHostGame] = useState(false);
 
@@ -488,31 +481,34 @@ export default function OasisDashboard() {
   };
 
   useEffect(() => {
-    if (client == null) return
-    if (serverLive == null) return
-    client.onerror = (error) => {
-      console.error(error);
-    };
-    client.onopen = () => {
-      console.log("WebSocket Client Connected");
-      client?.send(JSON.stringify({ command: "get-version" }));
-      setClientConnected(true);
-      setTimeout(() => {
-        client?.send(JSON.stringify({ command: "get-config" }));
-      }, 400);
+    if (client) {
+      client.onerror = (error) => {
+        console.error(error);
+      };
+      client.onopen = () => {
+        console.log("WebSocket Client Connected");
+        client?.send(JSON.stringify({ command: "get-version" }));
+        setClientConnected(true);
+        setTimeout(() => {
+          client?.send(JSON.stringify({ command: "get-config" }));
+        }, 400);
 
-      setTimeout(() => {
-        setInterval(pingServer, 4000);
-      }, 4000);
-      if (clientConnected) {
-        //Dummy code
-      }
-    };
-    serverLive.onopen = () => {
-      console.log("Server Connected");
-      serverLive.send(JSON.stringify({ command: "get-game-state" }));
-      setServerConnected(true);
-    };
+        setTimeout(() => {
+          setInterval(pingServer, 4000);
+        }, 4000);
+        if (clientConnected) {
+          //Dummy code
+        }
+      };
+    }
+
+    if (serverLive) {
+      serverLive.onopen = () => {
+        console.log("Server Connected");
+        serverLive.send(JSON.stringify({ command: "get-game-state" }));
+        setServerConnected(true);
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -550,7 +546,6 @@ export default function OasisDashboard() {
   }, [gameID, serverConnected]);
 
   const ParseGameData = (data: any) => {
-
     setGameData(data);
     var properMapName = data.map_name;
     switch (data.map_name) {
@@ -764,7 +759,6 @@ export default function OasisDashboard() {
       ev.preventDefault();
       return (ev.returnValue = "Are you sure you want to close?");
     });
-    setWebsocket(client);
 
     if (client === null) return;
 
@@ -788,8 +782,8 @@ export default function OasisDashboard() {
           >
             <p>Host Game</p>
           </div>
-          {showHostGame && websocket ? (
-            <HostGameOptions websocket={websocket} />
+          {showHostGame && client ? (
+            <HostGameOptions websocket={client} />
           ) : (
             <div></div>
           )}
