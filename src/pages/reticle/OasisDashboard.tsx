@@ -766,7 +766,7 @@ export default function OasisDashboard() {
     client.onmessage = handleClientMessage;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [client]);
 
   return (
     <div className="padded rounded list" style={{ margin: "20px" }}>
