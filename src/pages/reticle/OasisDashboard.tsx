@@ -765,7 +765,7 @@ export default function OasisDashboard() {
     setWebsocket(client);
 
     // @ts-ignore
-    client?.onmessage = handleClientMessage;
+    client.onmessage = handleClientMessage;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
