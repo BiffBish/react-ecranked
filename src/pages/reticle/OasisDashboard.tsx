@@ -170,7 +170,8 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
 };
 
 
-const client = new W3CWebSocket("ws://127.0.0.1:13113");
+const clientIP = "192.168.50.105:13113"
+const client = new W3CWebSocket("ws://" + clientIP);
 
 const serverLive = new W3CWebSocket(
   "wss://ecranked.ddns.net/websockets?state=activeGames"
