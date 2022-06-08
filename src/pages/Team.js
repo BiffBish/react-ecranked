@@ -125,12 +125,12 @@ export default function Team({ teamname, setBannerCallback, subDomain }) {
           teamNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
-        <MetaTags>
+        {/* <MetaTags>
           <title>{teamname}'s Page!</title>
           <meta name="description" content={"Visit " + teamname + "'s Page!"} />
           <meta property="og:title" content="MyApp" />
           <meta property="og:image" content="path/to/image.jpg" />
-        </MetaTags>
+        </MetaTags> */}
         <AboutTeam teamData={apiData} />
         <UserTeamList teamData={apiData} />
       </TeamBody>
