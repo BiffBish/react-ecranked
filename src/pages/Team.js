@@ -10,6 +10,7 @@ import UserPubLeaderboard from "../components/UserPubLeaderboard";
 import { AboutTeam } from "../components/team/AboutTeam";
 import { UserTeamList } from "../components/team/UserTeamList";
 import { useState } from "react";
+import { makeApiCall } from "../helpers/api";
 const TeamBody = styled.div`
   display: flex;
   align-items: stretch;
