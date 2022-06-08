@@ -32,10 +32,12 @@ type ApiResponse = {
   json: Object;
   ok: boolean;
 };
-const URI =
-  process.env.NODE_ENV === "production"
-    ? "https://ecranked.ddns.net/api/"
-    : "https://localhost/api/";
+// const URI =
+//   process.env.NODE_ENV === "production"
+//     ? "https://ecranked.ddns.net/api/"
+//     : "https://localhost/api/";
+
+const URI = "https://ecranked.ddns.net/api/";
 
 export default function makeApiCall(
   url = "",

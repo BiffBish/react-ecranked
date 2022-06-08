@@ -334,8 +334,17 @@ function Routes() {
           exact
           path={`/reticle/dashboard/open`}
           render={() => {
-            console.log("[23] Open");
+            setBannerHeight(100);
+            setBannerText("Redirecting");
             return <OasisDashboardPopup />;
+          }}
+        />
+        <Route
+          exact
+          path={`/reticle/join/:id`}
+          render={(props) => {
+            console.log("[23] Open");
+            return <OasisDashboard joinCode={props.match.params.id} />;
           }}
         />
       </PageBody>
