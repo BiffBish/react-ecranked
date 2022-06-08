@@ -405,7 +405,7 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
                 teamID: 0,
               }, 5)
 
-              navigator.clipboard.writeText("http://localhost:3000/reticle/join/" + code);
+              navigator.clipboard.writeText("https://ecranked.com/reticle/join/" + code);
 
               // navigator.clipboard.writeText(gameID ?? "");
             }}
