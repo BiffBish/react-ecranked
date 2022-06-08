@@ -405,7 +405,7 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
                 teamID: 0,
               }, 5)
 
-              navigator.clipboard.writeText("https://ecranked.com/reticle/join/" + code);
+              navigator.clipboard.writeText("https://ecranked.comF/reticle/join/" + code);
 
               // navigator.clipboard.writeText(gameID ?? "");
             }}
@@ -754,7 +754,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     try {
       const data = JSON.parse(message.data);
       if (data.version) {
-        if (data.version !== "0.4") {
+        if (data.version !== "0.4.2") {
           alert("Reticle is out of date. Please update to the latest version.");
           // @ts-ignore
           window.history.push("/");
