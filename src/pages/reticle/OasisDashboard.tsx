@@ -534,8 +534,8 @@ interface OasisDashboardProps {
   joinCode?: string;
 }
 export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
-  const clientIP = "192.168.50.105:13113"
-  // const clientIP = "127.0.0.1:13113"
+  // const clientIP = "192.168.50.105:13113"
+  const clientIP = "127.0.0.1:13113"
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [client, setClient] = useState<W3CWebSocket | null>(
