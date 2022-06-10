@@ -621,6 +621,8 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         }
       )
     }
+    console.log(_gameData)
+    console.log(gameHistory)
   }, [currentGameState]);
 
   useEffect(() => {
@@ -947,17 +949,20 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
                   reticlePreferences
                   value={gameIDInput}
                   onChange={(e) => setGameIDInput(e.target.value)}
-                // onFocus={() => {
-                //   setShowOptions(true);
-                //   textInput.current.value = "";
-                //   setCurrentText("");
-                // }}
-                // onBlur={() => {
-                //   setShowOptions(false);
-                // }}
                 />
-                <div className="padded rounded button" style={{ flexGrow: "0.2" }}>
-                  <p>Join Game</p>
+                <div className="padded rounded button" style={{ flexGrow: "0.2" }} onClick={
+                  () => {
+                    JoinServer(client, gameIDInput, 1);
+                  }
+                }>
+                  <p>Join Orange</p>
+                </div>
+                <div className="padded rounded button" style={{ flexGrow: "0.2" }} onClick={
+                  () => {
+                    JoinServer(client, gameIDInput, 0);
+                  }
+                }>
+                  <p>Join Blue</p>
                 </div>
               </div>
               <ActiveGames client={client} serverState={currentServerState} />
@@ -1087,7 +1092,7 @@ const GameHistory = ({ history }: any) => {
                 {game.sessionid}
               </div>
               {/* <div className="button">Orange</div> */}
-              <div className="button">Gamey</div>
+              <div className="button">Game</div>
             </div>
           );
         }
