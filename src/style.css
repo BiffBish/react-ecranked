@@ -2,6 +2,10 @@
   border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
 }
+.border {
+  border: 1px solid rgb(70, 70, 70);
+  overflow: hidden;
+}
 
 .rounded {
   border: 1px solid rgb(70, 70, 70);
@@ -27,6 +31,7 @@ p {
 div {
   color: white;
 }
+
 /* h3 {
   font-size: 30px;
   font-weight: 400;
@@ -126,11 +131,12 @@ h2 {
   text-decoration: none;
   color: white;
   line-height: 0;
-  font-size: 15px;
+  /* font-size: 15px; */
   line-height: 1.5;
 }
 
 .button {
+    background-color: #222;
   display: flex;
   align-items: center;
   /* background-color: #333; */
@@ -139,7 +145,7 @@ h2 {
   text-decoration: none;
   color: white;
   line-height: 0;
-  font-size: 15px;
+  /* font-size: 15px; */
   line-height: 1.5;
   cursor: pointer;
   animation: FadeIn 0.2s;
@@ -199,7 +205,7 @@ h3 {
   text-decoration: none;
   color: white;
   line-height: 0;
-  font-size: 15px;
+  /* font-size: 15px; */
   line-height: 1.5;
   cursor: not-allowed;
   animation: FadeIn 0.2s;
@@ -252,6 +258,9 @@ h3 {
 .border{
     border: 1px solid rgb(70, 70, 70);
 }
+.border-thick{
+    border: 4px solid rgb(70, 70, 70);
+}
 
 @keyframes FadeIn {
   0% {
@@ -260,4 +269,22 @@ h3 {
   100% {
     opacity: 1;
   }
+}
+.no-gap {
+  gap: 0px;
+}
+.double-font {
+  font-size: 2em;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'topbar topbar'
+    'left right'
+    'bottombar bottombar';
+  gap: 4px;
+  background-color: rgb(70, 70, 70);
+  
+  padding: 4px;
 }

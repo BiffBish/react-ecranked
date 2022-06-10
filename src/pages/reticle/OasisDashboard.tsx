@@ -5,6 +5,28 @@ import styled from "styled-components";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { makeApiCall } from "../../helpers/api";
 
+function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
+  client?.send(
+    JSON.stringify({
+      command: "join-server",
+      session_id: sessionID,
+      lobby_team: teamID,
+    })
+  );
+}
+
+const shortenData = async (data: any, length: number): Promise<string> => {
+  const response = await makeApiCall("v2/shorten/new/" + length, "POST", data) as { json: any }
+  console.log(response.json)
+  return response.json.data
+}
+const getShortenedData = async (code: string): Promise<any> => {
+  const response = await makeApiCall("v2/shorten/" + code, "GET") as { json: any }
+  return response.json.data
+}
+
+
+
 const AutoCompleteInput = styled.input`
   background-color: transparent;
   // border: none;
@@ -21,15 +43,17 @@ interface RadioSwitchProps {
   label: string
   value?: (string | number)
   setCurrent: (value: string | number) => void
-  current: string | number
+  current: string | number,
+  buttonStyle?: React.CSSProperties
+  buttonClassName?: string
 }
-const RadioSwitch = ({ label, value, current, setCurrent }: RadioSwitchProps) => {
+const RadioSwitch = ({ label, value, current, setCurrent, buttonStyle, buttonClassName }: RadioSwitchProps) => {
   if (value === undefined) {
     value = label;
   }
   return (
     <div
-      className="rounded button padded"
+      className={"rounded button padded" + (buttonClassName ? " " + buttonClassName : "")}
       onClick={() => {
         if (value === undefined) {
           setCurrent(label);
@@ -39,6 +63,7 @@ const RadioSwitch = ({ label, value, current, setCurrent }: RadioSwitchProps) =>
       }}
       style={{
         backgroundColor: current === value ? "#444" : undefined,
+        ...buttonStyle,
       }}
     >
       {label}
@@ -70,118 +95,222 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
     );
   }
   return (
-    <div className="list rounded padded">
-      <div className="centered">Map</div>
-      <div className="horizontal-fill">
-        <RadioSwitch
-          label={"Dyson"}
-          value={"mpl_combat_dyson"}
-          current={gameName}
-          setCurrent={setGameName}
-        />
-        <RadioSwitch
-          label={"Combustion"}
-          value={"mpl_combat_combustion"}
-          current={gameName}
-          setCurrent={setGameName}
-        />
-        <RadioSwitch
-          label={"Fission"}
-          value={"mpl_combat_fission"}
-          current={gameName}
-          setCurrent={setGameName}
-        />
-        <RadioSwitch
-          label={"Surge"}
-          value={"mpl_combat_gauss"}
-          current={gameName}
-          setCurrent={setGameName}
-        />
+    <div className="horizontal-fill border-thick padded">
+      <div className="list no-gap" >
+        <div className="centered">Map</div>
+        <div className="grid-container">
+          <RadioSwitch
+            label={"Dyson"}
+            value={"mpl_combat_dyson"}
+            current={gameName}
+            setCurrent={setGameName}
+            buttonStyle={{
+              borderRadius: "0px", border: "none"
+
+            }}
+          />
+          <RadioSwitch
+            label={"Combustion"}
+            value={"mpl_combat_combustion"}
+            current={gameName}
+            setCurrent={setGameName}
+
+            buttonStyle={{
+              borderRadius: "0px", border: "none"
+
+            }}
+          />
+          <RadioSwitch
+            label={"Fission"}
+            value={"mpl_combat_fission"}
+            current={gameName}
+            setCurrent={setGameName}
+            buttonStyle={{
+              borderRadius: "0px", border: "none"
+
+            }}
+          />
+          <RadioSwitch
+            label={"Surge"}
+            value={"mpl_combat_gauss"}
+            current={gameName}
+            setCurrent={setGameName}
+            buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+          <div
+            className="button padded"
+            style={{
+              gridArea: "bottombar"
+            }}
+            onClick={async () => {
+              //Do this animation 10 times
+              for (let i = 0; i < 20; i++) {
+                //Do a little animation that randomly selects a map
+                const maps = ["mpl_combat_dyson", "mpl_combat_combustion", "mpl_combat_fission", "mpl_combat_gauss"];
+                const randomMap = maps[Math.floor(Math.random() * maps.length)];
+                setGameName(randomMap);
+                //Wait a little bit. have it slow down a little bit
+                const waitTime = i;
+                await new Promise(resolve => setTimeout(resolve, waitTime * 10));
+              }
+            }}
+          >
+            Random
+          </div>
+        </div>
       </div>
-      <div className="centered">Region</div>
+      <div className="list no-gap">
+        <div className="centered">Region</div>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "auto auto auto",
+          // grid-template-areas:
+          //   'topbar topbar'
+          //   'left right'
+          //   'bottombar bottombar';
+          gap: "4px",
+          backgroundColor: "rgb(70, 70, 70)",
 
-      <div className="horizontal-fill">
-        <RadioSwitch
-          label={"usw"}
-          current={gameRegion}
-          setCurrent={setGameRegion}
-        />
-        <RadioSwitch
-          label={"usc"}
-          current={gameRegion}
-          setCurrent={setGameRegion}
-        />
-        <RadioSwitch
-          label={"uscn"}
-          current={gameRegion}
-          setCurrent={setGameRegion}
-        />
-        <RadioSwitch
-          label={"use"}
-          current={gameRegion}
-          setCurrent={setGameRegion}
-        />
-        <RadioSwitch
-          label={"euw"}
-          current={gameRegion}
-          setCurrent={setGameRegion}
-        />
-        <RadioSwitch
-          label={"jp"}
-          current={gameRegion}
-          setCurrent={setGameRegion}
-        />
-        <RadioSwitch
-          label={"aus"}
-          current={gameRegion}
-          setCurrent={setGameRegion}
-        />
+          padding: "4px",
+        }}>
+
+          <RadioSwitch
+            label={"usw"}
+            current={gameRegion}
+            setCurrent={setGameRegion} buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+          <RadioSwitch
+            label={"usc"}
+            current={gameRegion}
+            setCurrent={setGameRegion} buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+          <RadioSwitch
+            label={"uscn"}
+            current={gameRegion}
+            setCurrent={setGameRegion} buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+          <RadioSwitch
+            label={"use"}
+            current={gameRegion}
+            setCurrent={setGameRegion} buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+          <RadioSwitch
+            label={"euw"}
+            current={gameRegion}
+            setCurrent={setGameRegion} buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+          <RadioSwitch
+            label={"jp"}
+            current={gameRegion}
+            setCurrent={setGameRegion} buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+          <RadioSwitch
+            label={"aus"}
+            current={gameRegion}
+            setCurrent={setGameRegion}
+            buttonStyle={{
+              borderRadius: "0px",
+              border: "none"
+            }}
+          />
+        </div>
+
       </div>
+      <div className="list no-gap">
+        <div className="centered">Team</div>
 
-      <div className="centered">Team</div>
+        <div className="grid-container">
+          <RadioSwitch
+            label={"Spectate"}
+            value={2}
+            current={gameTeam}
+            setCurrent={setGameTeam}
+            buttonStyle={{
+              borderRadius: "0px",
+              gridArea: "topbar", border: "none"
 
-      <div className="horizontal-fill">
-        <RadioSwitch
-          label={"Blue Team"}
-          value={0}
-          current={gameTeam}
-          setCurrent={setGameTeam}
-        />
-        <RadioSwitch
-          label={"Orange Team"}
-          value={1}
-          current={gameTeam}
-          setCurrent={setGameTeam}
-        />
-        <RadioSwitch
-          label={"Spectate"}
-          value={2}
-          current={gameTeam}
-          setCurrent={setGameTeam}
-        />
+            }}
+          />
+          <RadioSwitch
+            label={"Blue"}
+            value={0}
+            current={gameTeam}
+            setCurrent={setGameTeam}
+            buttonStyle={{
+              borderRadius: "0px",
+              gridArea: "left", border: "none"
+
+            }}
+          />
+          <RadioSwitch
+            label={"Orange"}
+            value={1}
+            current={gameTeam}
+            setCurrent={setGameTeam}
+            buttonStyle={{
+              borderRadius: "0px",
+              gridArea: "right", border: "none"
+
+            }}
+          />
+          <div
+            className="button padded"
+            style={{
+              gridArea: "bottombar", border: "none"
+            }}
+            onClick={async () => {
+              //Do this animation 10 times
+              for (let i = 0; i < 20; i++) {
+                //Do a little animation that randomly selects a map
+                const maps = [0, 1];
+                const randomMap = maps[Math.floor(Math.random() * maps.length)];
+                setGameTeam(randomMap);
+                //Wait a little bit. have it slow down a little bit
+                const waitTime = i;
+                await new Promise(resolve => setTimeout(resolve, waitTime * 10));
+              }
+            }}
+          >
+            Random
+
+
+          </div>
+
+        </div>
       </div>
-
-      <div className="centered"></div>
-
-      <div className="horizontal-fill">
+      <div className="list no-gap">
         <div className="rounded button padded" onClick={onSubmit}>
           Launch
         </div>
       </div>
+
     </div>
   );
 };
 
 
-function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
-  client?.send(
-    JSON.stringify({
-      command: "join-server",
-      session_id: sessionID,
-      lobby_team: teamID,
-    })
-  );
-}
+
 
 
 interface GameState {
@@ -192,12 +321,6 @@ interface GameState {
   startTime: number;
   reportingSocketIDs: string[];
 }
-
-
-// Generated by https://quicktype.io
-
-
-
 
 interface RawServerWebsocketState {
   id: string;
@@ -213,12 +336,9 @@ interface State {
   reportingSocketID: string;
 }
 
-
 interface RawServerState {
   sockets: RawServerWebsocketState[]
 }
-
-
 
 interface ETeam {
   id: number;
@@ -226,34 +346,20 @@ interface ETeam {
 }
 
 
-
-
-
-// Generated by https://quicktype.io
-
-
 interface SocketGetStateData {
   command: "get-game-state",
   payload: RawServerWebsocketState[]
 }
-
-
 interface SocketDisconnectData {
   command: "socket-disconnected";
   payload: {
     id: string
   };
 }
-
-
-
-// Generated by https://quicktype.io
-
 interface SocketUpdateData {
   command: "socket-updated";
   payload: SocketUpdatePayload;
 }
-
 interface SocketUpdatePayload {
   id: string;
   blueTeam: ETeam[];
@@ -262,28 +368,16 @@ interface SocketUpdatePayload {
   startTime: number;
   reportingSocketID: string;
 }
-
 type SocketMessage = SocketUpdateData | SocketDisconnectData | SocketGetStateData;
 
 
 
-const shortenData = async (data: any, length: number): Promise<string> => {
-  const response = await makeApiCall("v2/shorten/new/" + length, "POST", data) as { json: any }
-  console.log(response.json)
-  return response.json.data
-}
-
-const getShortenedData = async (code: string): Promise<any> => {
-  const response = await makeApiCall("v2/shorten/" + code, "GET") as { json: any }
-  return response.json.data
-}
 
 
 interface ActiveGameProps {
   client: W3CWebSocket | null;
   gameState: GameState
 }
-
 const ActiveGame = ({ client, gameState }: ActiveGameProps) => {
   return (
     <div className="horizontal-fill">
@@ -328,6 +422,7 @@ const ActiveGame = ({ client, gameState }: ActiveGameProps) => {
     </div>
   );
 };
+
 
 interface ActiveGamesProps {
   serverState: RawServerState
@@ -425,6 +520,7 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
       return null;
   }
 };
+
 interface reticlePreferencesInterface {
   executable_path: string;
   autojoin: string;
@@ -438,8 +534,8 @@ interface OasisDashboardProps {
   joinCode?: string;
 }
 export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
-  // const clientIP = "192.168.50.105:13113"
-  const clientIP = "127.0.0.1:13113"
+  const clientIP = "192.168.50.105:13113"
+  // const clientIP = "127.0.0.1:13113"
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [client, setClient] = useState<W3CWebSocket | null>(
@@ -466,6 +562,8 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     }
   }, [])
 
+
+  const [gameHistory, setGameHistory] = useState<any[]>([]);
 
   const JoinGameIDRef = useRef();
 
@@ -500,6 +598,8 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
   // 3 = In game
   const [currentGameState, setCurrentGameState] = useState(0);
 
+  const [currentMenuState, setCurrentMenuState] = useState<number | string>("");
+
   const pingServer = () => {
     client?.send(
       JSON.stringify({
@@ -509,7 +609,19 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
   };
 
 
-
+  //Everytime the gameState updates from the server, update the gameHistory
+  useEffect(() => {
+    if (currentGameState === 3) {
+      setGameHistory(
+        (current) => {
+          return [
+            ...current,
+            _gameData
+          ]
+        }
+      )
+    }
+  }, [currentGameState]);
 
   useEffect(() => {
     console.log("client", client, client?.readyState, "server", serverLive?.readyState)
@@ -574,8 +686,8 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverConnected, serverLive]);
 
-  const [gameStartTime, setGameStartTime] = useState(0);
 
+  const [gameStartTime, setGameStartTime] = useState(0);
   useEffect(() => {
     if (!serverConnected) return
     if (!serverLive) return
@@ -808,83 +920,67 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
   }, [client]);
 
   return (
-    <div className="padded rounded list" style={{ margin: "20px" }}>
-      <h2>Reticle Dashboard</h2>
+    <div className="list" style={{ margin: "20px" }}>
       <CurrentGameState currentGameState={currentGameState} gameID={gameID} />
+      <div className="padded list">
+        <div className="horizontal-fill">
+          <RadioSwitch label="Queue" current={currentMenuState} setCurrent={setCurrentMenuState} buttonClassName="border-thick" />
+          <RadioSwitch label="Join" current={currentMenuState} setCurrent={setCurrentMenuState} buttonClassName="border-thick" />
+          <RadioSwitch label="Host" current={currentMenuState} setCurrent={setCurrentMenuState} buttonClassName="border-thick" />
+        </div>
+        {
+          currentMenuState === "Queue" ? (
+
+            <GameHistory history={gameHistory} />
+          ) : null
+        }
+        {
+          currentMenuState === "Join" ? (
+            <div className="padded horizontal-fill">
+              <div className="horizontal-fill">
+                <AutoCompleteInput
+                  className="padded rounded"
+                  // @ts-ignore
+                  ref={JoinGameIDRef}
+                  id="AutoCompleteInputInput"
+                  type="text"
+                  reticlePreferences
+                  value={gameIDInput}
+                  onChange={(e) => setGameIDInput(e.target.value)}
+                // onFocus={() => {
+                //   setShowOptions(true);
+                //   textInput.current.value = "";
+                //   setCurrentText("");
+                // }}
+                // onBlur={() => {
+                //   setShowOptions(false);
+                // }}
+                />
+                <div className="padded rounded button" style={{ flexGrow: "0.2" }}>
+                  <p>Join Game</p>
+                </div>
+              </div>
+              <ActiveGames client={client} serverState={currentServerState} />
+            </div>
+
+          ) : null
+        }
+        {
+          currentMenuState === "Host" && websocket ? (
+            <HostGameOptions websocket={websocket} />
+          ) : null
+        }
+      </div>
+
       <div className="padded horizontal-fill">
         <div className="list">
-          <div
-            className="padded rounded button"
-            onClick={() => {
-              setShowHostGame((current) => !current);
-            }}
-          >
-            <p>Host Game</p>
-          </div>
-          {showHostGame && websocket ? (
-            <HostGameOptions websocket={websocket} />
-          ) : (
-            <div></div>
-          )}
-          <div className="horizontal-fill">
-            <AutoCompleteInput
-              className="padded rounded"
-              // @ts-ignore
-              ref={JoinGameIDRef}
-              id="AutoCompleteInputInput"
-              type="text"
-              reticlePreferences
-              value={gameIDInput}
-              onChange={(e) => setGameIDInput(e.target.value)}
-            // onFocus={() => {
-            //   setShowOptions(true);
-            //   textInput.current.value = "";
-            //   setCurrentText("");
-            // }}
-            // onBlur={() => {
-            //   setShowOptions(false);
-            // }}
-            />
-            <div className="padded rounded button" style={{ flexGrow: "0.2" }}>
-              <p>Join Game</p>
-            </div>
-          </div>
 
-          <div className="list" style={{ gap: 0 }}>
-            <p>Game History</p>
-            <div className="border horizontal-fill">
-              <div className="button" style={{ flexGrow: 0.5 }}>
-                42 minuets ago
-              </div>
-              <div className="button">Orange</div>
-              <div className="button">Social Lobby</div>
-            </div>
-            <div className="border  horizontal-fill">
-              <div className="button" style={{ flexGrow: 0.5 }}>
-                24 minuets ago
-              </div>
-              <div className="button"></div>
-              <div className="button">Social Lobby</div>
-            </div>
-            <div className="border horizontal-fill">
-              <div className="button" style={{ flexGrow: 0.5 }}>
-                16 minuets ago
-              </div>
-              <div className="button">Blue Team</div>
-              <div className="button">Dyson Game</div>
-            </div>
-            <div className="border  horizontal-fill">
-              <div className="button" style={{ flexGrow: 0.5 }}>
-                3 minuets ago
-              </div>
-              <div className="button"></div>
-              <div className="button">Social Lobby</div>
-            </div>
-          </div>
+
+
+
         </div>
-        <ActiveGames client={client} serverState={currentServerState} />
       </div>
-      <div className="horizontal-fill">
+      <div className="horizontal-fill no-gap">
         <div
           className="padded border button"
           onClick={() => {
@@ -976,3 +1072,55 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     </div>
   );
 }
+
+const GameHistory = ({ history }: any) => {
+
+
+  return (
+
+    <div className="list" style={{ gap: 0 }}>
+      {
+        history.map((game: any) => {
+          return (
+            <div className="border-thick horizontal-fill">
+              <div className="button" style={{ flexGrow: 0.5 }}>
+                {game.sessionid}
+              </div>
+              {/* <div className="button">Orange</div> */}
+              <div className="button">Gamey</div>
+            </div>
+          );
+        }
+        )
+      }
+    </div>
+  )
+
+
+
+  //   < p > Game History</p >
+
+  //   <div className="border-thick  horizontal-fill">
+  //     <div className="button" style={{ flexGrow: 0.5 }}>
+  //       24 minuets ago
+  //     </div>
+  //     <div className="button"></div>
+  //     <div className="button">Social Lobby</div>
+  //   </div>
+  //   <div className="border-thick horizontal-fill">
+  //     <div className="button" style={{ flexGrow: 0.5 }}>
+  //       16 minuets ago
+  //     </div>
+  //     <div className="button">Blue Team</div>
+  //     <div className="button">Dyson Game</div>
+  //   </div>
+  //   <div className="border-thick  horizontal-fill">
+  //     <div className="button" style={{ flexGrow: 0.5 }}>
+  //       3 minuets ago
+  //     </div>
+  //     <div className="button"></div>
+  //     <div className="button">Social Lobby</div>
+  //   </div>
+  // </div >;
+}
+

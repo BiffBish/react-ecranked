@@ -78,7 +78,7 @@ const LoadoutBox = ({ user_id, number, frequency }) => {
     makeApiCall(
       "v1/leaderboard/rank/" + user_id + "/loadout/" + number + "/global"
     ).then(({ json }) => {
-      setRanking(json[0]["rank"]);
+      setRanking(json["rank"]);
     });
   });
 
