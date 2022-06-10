@@ -1088,7 +1088,14 @@ const GameHistory = ({ history }: any) => {
         history.map((game: any) => {
           return (
             <div className="border-thick horizontal-fill">
-              <div className="button" style={{ flexGrow: 0.5 }}>
+              <div className="button" style={{ flexGrow: 0.5 }} onClick={
+                () => {
+                  //Copy the game ID to the clipboard
+                  navigator.clipboard.writeText(game.sessionid);
+
+                  alert("Copied to clipboard");
+                }
+              }>
                 {game.sessionid}
               </div>
               {/* <div className="button">Orange</div> */}
