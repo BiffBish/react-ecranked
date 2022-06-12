@@ -4,7 +4,6 @@ import styled from "styled-components";
 import React, { useEffect } from "react";
 
 import { useHistory } from "react-router-dom";
-import MetaTags from "react-meta-tags";
 import { useState } from "react";
 
 const MakeTeamBoxStyle = styled.div`
@@ -154,12 +153,9 @@ export default function MakeTeam() {
           Create Team!
         </div>
       </MakeTeamBoxStyle>
-      <MetaTags>
+      {/* <MetaTags>
         <title>Create a team!</title>
-        {/* <meta name="description" content={"Visit " + teamname + "'s Page!"} />
-          <meta property="og:title" content="MyApp" />
-          <meta property="og:image" content="path/to/image.jpg" /> */}
-      </MetaTags>
+      </MetaTags> */}
       {/* </TeamBody> */}
     </>
   );

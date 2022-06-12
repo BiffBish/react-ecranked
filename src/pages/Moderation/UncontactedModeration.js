@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { makeApiCall } from "../../helpers/api/index";
+import { Moderator } from "@ecranked/api";
+
 function timeDifference(current, previous) {
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;
@@ -101,25 +102,17 @@ const BodyContainer = styled.div`
   min-width: 400px;
   display: flex;
 `;
-export default function UncontactedUsersModeration({}) {
+export default function UncontactedUsersModeration() {
   const [unapprovedImages, setUnapprovedImages] = React.useState([]);
 
   useEffect(() => {
-    makeApiCall("v1/moderator/uncontactedusers")
-      .then(async (response) => {
-        if (response.status === 200) {
-          const json = response.json;
-          console.log(json[0]);
-          setUnapprovedImages(json);
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    Moderator.getUnconcactedUsers().then((res) => {
+      setUnapprovedImages(res);
+    });
   }, []);
   console.log(unapprovedImages);
   const RemoveUser = (username) => {
-    makeApiCall("v1/user/" + username, "PUT", { contacted: 1 });
+    // makeApiCall("v1/user/" + username, "PUT", { contacted: 1 });
   };
   return (
     <BodyContainer>

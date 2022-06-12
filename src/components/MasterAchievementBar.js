@@ -46,7 +46,6 @@ export const MasterAchievementBar = ({
   }
 
   let TotalPercent = Math.round(totalPercent * 10000) / 100;
-  console.log("#50", TotalPercent, TotalPercent === NaN);
   if (isNaN(TotalPercent)) {
     TotalPercent = 0;
   }

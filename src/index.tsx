@@ -4,9 +4,7 @@ import App from "./App";
 import "./index.css";
 import "./style.css";
 
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { composeWithDevTools } from "redux-devtools-extension";
 //
 import store from "./stores/store";
 ReactDOM.render(

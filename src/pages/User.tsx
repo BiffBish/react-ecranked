@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 
-import { useHistory } from "react-router-dom";
 import { FailedSearchBar } from "../components/FailedSearch";
 import { AboutMe } from "../components/AboutMe";
 import { Statistics } from "../components/Statistics";
 import { RecentGames } from "../components/RecentGames";
 import Achievements from "../components/Achievements";
 import UserPubLeaderboard from "../components/UserPubLeaderboard";
-import { makeApiCall } from "../helpers/api/index";
+import * as API from "@ecranked/api";
 
 const StatChoiceStyle = styled.div`
   padding: 0px;
@@ -31,7 +30,7 @@ const StatChoiceButton = styled.div`
   flex-grow: 1;
   text-align: center;
   height: 20px;
-  &:hover {
+  &:hover {achievementData
     background-color: #555;
     color: #000;
   }
@@ -82,14 +81,13 @@ const LeftSideStyle = styled.div`
   gap: 10px;
   flex: 200px 1;
 `;
+
 type LeftSideProps = {
-  username: string;
-  replays: null;
+  user: API.User | null
 }
 
 
-const LeftSide = ({ username, replays }: LeftSideProps) => {
-  console.log("80 REPLAYS", replays);
+const LeftSide = ({ user }: LeftSideProps) => {
   const [selectedOption, setSelectedOption] = React.useState("public_games");
   return (
     <LeftSideStyle>
@@ -98,15 +96,15 @@ const LeftSide = ({ username, replays }: LeftSideProps) => {
         onClick={setSelectedOption}
       ></StatChoice>
       {selectedOption === "public_games" ? (
-        <UserPubLeaderboard oculus_name={username} />
+        <UserPubLeaderboard oculus_name={user?.oculus_name} />
       ) : (
-        <RecentGames replays={[]} />
+        <RecentGames replays={user?.recent_games ?? []} />
       )}
     </LeftSideStyle>
   );
 };
 
-function getIcon(user: Api.User) {
+function getIcon(user: API.User) {
   if (user.oculus_name === "BiffBish") return "/images/happy_cubesat.png";
   if (user.discord_name !== null) return "/images/verified_icon.png";
   if (user.moderator === true) return "/images/icons/moderator_icon.png";
@@ -117,6 +115,9 @@ interface userProps {
   username: string,
   setBannerCallback: (name: string, icon: string | undefined) => void
 }
+
+
+
 export default function User({ username, setBannerCallback }: userProps) {
 
   const [randomUsernameOverride, setRandomUsernameOverride] =
@@ -132,41 +133,49 @@ export default function User({ username, setBannerCallback }: userProps) {
   if (username === "random") {
     setRandomUsernameOverride("random_async");
     username = "random_async";
-    makeApiCall("v1/user/@all")
-      .then((response) => {
-        const data = response.json as Api.User.All;
-
+    API.User.fetchAll().then(
+      allUsernames => {
         setRandomUsernameOverride(
-          data[Math.floor(Math.random() * data.length)]
+          allUsernames[Math.floor(Math.random() * allUsernames.length)]
         );
-      })
+      }
+    )
+
   }
 
-  let history = useHistory();
-  const whenSearchSubmit = (text: string) => {
-    history.push("/user/" + text + "/stats");
-  };
 
-  const [apiData, setApiData] = React.useState<Api.User | null>(null);
-  const [userNotFound, setUserNotFound] = React.useState(false);
+
+
+  const { user, isLoading } = API.useUser(username)
+
+  const [failedToLoad, setFailedToLoad] = useState(false);
+
+  useEffect(() => {
+    if (user === null && !isLoading) {
+      setFailedToLoad(true);
+    } else {
+      setFailedToLoad(false);
+    }
+  }, [user, isLoading]);
+
+
+
+  // if (user && username !== user?.oculus_name) {
+  //   history.push("/user/" + user?.oculus_name + "/stats");
+  // }
+
+  useEffect(() => {
+    if (user !== null) {
+      setBannerCallback(user.oculus_name, getIcon(user));
+    }
+  }, [user, setBannerCallback]);
+
 
   function fetchUserData() {
-    makeApiCall("v1/user/" + username)
-      .then(async (response) => {
-        const user = response.json as Api.User;
-
-        if (!response.ok) return setUserNotFound(true)
-        setUserNotFound(false)
-
-        setBannerCallback(user.oculus_name, getIcon(user));
-
-        if (username !== user.oculus_name) {
-          history.push("/user/" + user.oculus_name + "/stats");
-        } else {
-          setApiData(user);
-        }
-
-      })
+    // if (!user) return
+    // if (username !== user?.oculus_name) {
+    //   history.push("/user/" + user?.oculus_name + "/stats");
+    // }
   }
   useEffect(() => {
     if (username === "random") {
@@ -191,15 +200,14 @@ export default function User({ username, setBannerCallback }: userProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  console.log("userNotFound", userNotFound);
   return (
     <>
-      <FailedSearchBar shown={userNotFound} onFormSubmit={whenSearchSubmit} />
+      <FailedSearchBar shown={failedToLoad} />
 
       <div
         className="list padded"
         style={
-          userNotFound ? { height: "0px", margin: "0px", opacity: "0%" } : {}
+          failedToLoad ? { height: "0px", margin: "0px", opacity: "0%" } : {}
         }
       >
         <h3
@@ -214,11 +222,12 @@ export default function User({ username, setBannerCallback }: userProps) {
             lineHeight: "10px",
           }}
         >
-          --- FLAMINGO CHALLENGE ---
+          {/* --- FLAMINGO CHALLENGE --- */}
+          {isLoading}
         </h3>
         <Achievements
-          userData={apiData}
-          screenWidth={windowDimensions.width}
+          userData={user}
+          // screenWidth={windowDimensions.width}
           fetchUserData={fetchUserData}
         />
         {/* <div> */}
@@ -230,10 +239,10 @@ export default function User({ username, setBannerCallback }: userProps) {
         </MetaTags> */}
         <div className="horizontal-container">
 
-          <LeftSide replays={null} username={username} />
-          <Statistics userData={apiData} />
+          <LeftSide user={user} />
+          <Statistics userData={user} />
 
-          <AboutMe userData={apiData} />
+          <AboutMe user={user} />
         </div>
       </div>
     </>

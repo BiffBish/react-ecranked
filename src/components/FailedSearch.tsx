@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import AutoComplete from "./AutoComplete";
-import { makeApiCall } from "../helpers/api";
+import { useHistory } from "react-router-dom";
+import { User } from "@ecranked/api";
 
 const autoCompleteBox = styled.form`
   border: 1px solid rgb(70, 70, 70);
@@ -60,28 +61,22 @@ const FailedSearchBarTitleStyle = styled.h2`
   color: #fff;
   line-height: 1;
 `;
-export const FailedSearchBar = ({ shown, onFormSubmit }) => {
-  const [allUsernames, setAllUsernames] = useState(null);
+interface FailedSearchBarProps {
+  shown: boolean
+}
+export const FailedSearchBar = ({ shown }: FailedSearchBarProps) => {
+  const [allUsernames, setAllUsernames] = useState<string[]>([]);
+  let history = useHistory();
+
+  const onFormSubmit = (text: string) => {
+    history.push("/user/" + text + "/stats");
+  };
 
   useEffect(() => {
-    makeApiCall("v1/user/@all")
-      .then(async (response) => {
-        const { data } = response;
-        console.log("allUsernames code:" + response.statusCode);
-        if (response.status === 404) {
-        } else {
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-          console.log(data);
-          setAllUsernames(data);
-        }
-      })
-      .catch((error) => {
-        console.error("SetAllUsernames => There was an error!", error);
-      });
+    User.fetchAll().then((users) => {
+      setAllUsernames(users);
+    }
+    );
   }, []);
 
   return (
@@ -89,15 +84,15 @@ export const FailedSearchBar = ({ shown, onFormSubmit }) => {
       style={
         shown
           ? {
-              height: `600px`,
-              border: "1px solid #fff",
-              margin: "10px 10px 0px",
-            }
+            height: `600px`,
+            border: "1px solid #fff",
+            margin: "10px 10px 0px",
+          }
           : {
-              height: `0px`,
-              border: "0px solid #222",
-              margin: "0px 10px 0px",
-            }
+            height: `0px`,
+            border: "0px solid #222",
+            margin: "0px 10px 0px",
+          }
       }
     >
       <FailedSearchBarTitleStyle>Could not find user</FailedSearchBarTitleStyle>

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { State } from "../stores/store";
 import styled from "styled-components";
 import AnimateHeight from "react-animate-height";
 
+import { State } from "./../stores/store"
 const BannerStyle = styled(AnimateHeight)`
   text-align: center;
   /* Accent / Default */

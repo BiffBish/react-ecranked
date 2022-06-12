@@ -1,5 +1,4 @@
 // import React, {useState , useRef, useEffect} from 'react'
-import React, { useState } from "react";
 // import GlobalUserState from "./contexts/GlobalUserState";
 import Routes from "./Routes";
 //import { Button } from "@mui/material";
@@ -7,7 +6,6 @@ import Routes from "./Routes";
 function App() {
   // const history = React.useHistory();
 
-  const [state, setState] = useState({});
   return (
     // <GlobalUserState.Provider value={[state, setState]}>
     <Routes />

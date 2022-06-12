@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { makeApiCall } from "../helpers/api";
 
 const Container = styled.div`
   position: relative;
@@ -731,20 +730,9 @@ export const Timeline = ({ skimData }) => {
     async function startApiCalls() {
       setUpdatedUsernamesPromises(
         userList.map((user) => {
-          return makeApiCall("api/v1/user/" + user["userid"]).then(
-            async (response) => {
-              const { json } = response;
-              if (response.status === 404) {
-              } else {
-                if (!response.ok) {
-                  // get error message from body or default to response statusText
-                  const error = (json && json.message) || response.statusText;
-                  return Promise.reject(error);
-                }
-                return json;
-              }
-            }
-          );
+          return User.fetch(user.userid).then((json) => {
+            return json;
+          });
         })
       );
     }

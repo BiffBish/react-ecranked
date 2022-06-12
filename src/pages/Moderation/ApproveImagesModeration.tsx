@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { makeApiCall } from "../../helpers/api/index";
+import { Moderator, User } from "@ecranked/api";
 
 const EditButtonsStyle = styled.div`
   padding: 10px;
@@ -27,20 +27,18 @@ const EditButtonStyle = styled.div`
     color: #000;
   }
 `;
-const ModeratorAvatarControls = ({ oculus_id }) => {
-  const onApprove = () => {
-    makeApiCall("v1/user" + oculus_id + "/avatar", "PUT", {
-      approve: true,
-    }).then((data) => {
-      window.location.reload(false);
-    });
+interface ModeratorAvatarControlsProps {
+  oculus_id: string
+}
+const ModeratorAvatarControls = ({ oculus_id }: ModeratorAvatarControlsProps) => {
+
+
+  const onApprove = async () => {
+    (await User.fetch(oculus_id)).approveAvatar().then(() => { });
   };
-  const onRemove = () => {
-    makeApiCall("v1/user" + oculus_id + "/avatar", "PUT", {
-      approve: false,
-    }).then((data) => {
-      window.location.reload(false);
-    });
+  const onRemove = async () => {
+    (await User.fetch(oculus_id)).removeAvatar();
+
   };
   return (
     <EditButtonsStyle>
@@ -50,7 +48,10 @@ const ModeratorAvatarControls = ({ oculus_id }) => {
   );
 };
 
-const AvatarControls = ({ oculus_id }) => {
+interface AvatarControlsProps {
+  oculus_id: string
+}
+const AvatarControls = ({ oculus_id }: AvatarControlsProps) => {
   // eslint-disable-next-line
   // var pending = userData["avatar_pending"];
 
@@ -68,7 +69,11 @@ const AvatarStyle = styled.img`
   overflow: hidden;
 `;
 
-const AboutAvatar = ({ avatar, oculus_id }) => {
+interface AboutAvatarProps {
+  avatar: string,
+  oculus_id: string
+}
+const AboutAvatar = ({ avatar, oculus_id }: AboutAvatarProps) => {
   console.log("AVATAR " + avatar);
   return (
     <>
@@ -118,20 +123,23 @@ const UserLink = styled(NavLink)`
   color: white;
   font-size: 30px;
 `;
-export default function ApproveImagesModeration({}) {
-  const [unapprovedImages, setUnapprovedImages] = React.useState([]);
+export default function ApproveImagesModeration() {
+  const [unapprovedImages, setUnapprovedImages] = React.useState<
+    {
+      oculus_id: string;
+      avatar: string;
+      oculus_name: string;
+    }[]
+  >([]);
 
   useEffect(() => {
-    makeApiCall("v1/moderator/unapprovedimages")
-      .then(async (response) => {
-        if (response.status === 200) {
-          const json = response.json;
-          setUnapprovedImages(json);
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    Moderator.getUnapprovedImages().then(images => {
+      setUnapprovedImages(images as {
+        oculus_id: string;
+        avatar: string;
+        oculus_name: string;
+      }[]);
+    });
   }, []);
   console.log(unapprovedImages);
   return (

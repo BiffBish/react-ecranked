@@ -4,9 +4,64 @@ import { AchievementHeaderButton } from "./achievements/AchievementHeaderButton"
 import { AchievementLoadoutStats } from "./achievements/AchievementLoadoutStats";
 import { MasterAchievementBar } from "./MasterAchievementBar";
 import AchievementLeaderboard from "../pages/AchievementLeaderboard";
-var achievementFormattingData = require("./AchievementData.json");
+import { User } from "@ecranked/api";
 
-function map_range(value: number, low1: number, high1: number, low2: number, high2: number, capPercentage = false) {
+type achievementDataType = {
+  id: number;
+  value: number;
+  locked: boolean;
+  formatting: achievementFormattingDataSegment;
+  pubCount: number;
+  icon: string;
+  todayValue: number | null;
+  todayProgress: number | null;
+  inProgress: boolean;
+
+  pubRequirement: number | null;
+};
+
+type exportAchievementDataType = {
+  achievements: {
+    [index: number]: achievementDataType;
+  };
+
+  totalPercentage: number;
+  communityTotal: number;
+  dailyTotal: number;
+  weeklyTotal: number;
+  seasonTotal: number;
+
+  oculus_id: string | null;
+};
+type achievementFormattingDataPart = {
+  CID: string;
+  Title: string;
+  Description: string;
+  Timeframe: string;
+  Percent: string;
+  Extra: string;
+  Type: string;
+};
+
+type achievementFormattingDataSegment = {
+  parts: achievementFormattingDataPart[];
+  Title: string;
+  Progress: string;
+  Locked: string;
+};
+
+var achievementFormattingData = require("./AchievementData.json") as {
+  [key: string]: achievementFormattingDataSegment;
+};
+
+function map_range(
+  value: number,
+  low1: number,
+  high1: number,
+  low2: number,
+  high2: number,
+  capPercentage = false
+) {
   if (capPercentage) {
     return Math.max(
       Math.min(1, low2 + ((high2 - low2) * (value - low1)) / (high1 - low1)),
@@ -58,7 +113,7 @@ function getWindowDimensions() {
 }
 
 interface AchievementsProps {
-  userData: Api.User | null;
+  userData: User | null;
   fetchUserData: () => void;
 }
 
@@ -66,7 +121,7 @@ export default function Achievements({
   userData,
   fetchUserData,
 }: AchievementsProps) {
-  const [achievementData, setAchievementData] = useState(undefined);
+  const [achievementData, setAchievementData] = useState<exportAchievementDataType | null>(null);
   const [letOverflow, setLetOverflow] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
@@ -81,10 +136,10 @@ export default function Achievements({
   }, []);
 
   useEffect(() => {
+    if (!userData?.achievements) return
     // if (!userData) return null;
     // if (!userData.achievements) return null;
 
-    const exportAchievementData = {};
     var totalPercentage = 0;
     var communityTotal = 0;
 
@@ -119,25 +174,24 @@ export default function Achievements({
       "pubs",
     ];
 
-
     const todayProgress = [
-      /* 0 */ "",
-      /* 1 */ "",
-      /* 2 */ "",
-      /* 3 */ "",
-      /* 4 */ "",
-      /* 5 */ userData?.daily_stats?.total_games,
-      /* 6 */ userData?.daily_stats?.total_games,
-      /* 7 */ userData?.daily_stats?.total_games,
-      /* 8 */ userData?.daily_stats?.total_games,
-      /* 9 */ userData?.daily_stats?.total_games,
-      /* 10 */ userData?.daily_stats?.total_games,
-      /* 11 */ userData?.daily_stats?.total_games,
-      /* 12 */ userData?.daily_stats?.total_games,
-      /* 13 */ userData?.daily_stats?.total_games,
-      /* 14 */ userData?.daily_stats?.total_games,
-      /* 15 */ userData?.daily_stats?.total_games,
-      /* 16 */ userData?.daily_stats?.total_games,
+      /* 0 */ null,
+      /* 1 */ null,
+      /* 2 */ null,
+      /* 3 */ null,
+      /* 4 */ null,
+      /* 5 */ userData?.daily_stats?.total_games ?? 0,
+      /* 6 */ userData?.daily_stats?.total_games ?? 0,
+      /* 7 */ userData?.daily_stats?.total_games ?? 0,
+      /* 8 */ userData?.daily_stats?.total_games ?? 0,
+      /* 9 */ userData?.daily_stats?.total_games ?? 0,
+      /* 10 */ userData?.daily_stats?.total_games ?? 0,
+      /* 11 */ userData?.daily_stats?.total_games ?? 0,
+      /* 12 */ userData?.daily_stats?.total_games ?? 0,
+      /* 13 */ userData?.daily_stats?.total_games ?? 0,
+      /* 14 */ userData?.daily_stats?.total_games ?? 0,
+      /* 15 */ userData?.daily_stats?.total_games ?? 0,
+      /* 16 */ userData?.daily_stats?.total_games ?? 0,
       /* 17 */ round(map_range(userData?.achievements?.[17] ?? 0, 0, 1, 0, 12)),
       /* 18 */ round(map_range(userData?.achievements?.[18] ?? 0, 0, 1, 8, 3)),
       /* 19 */ (userData?.daily_stats?.combustion_games ?? 0) +
@@ -179,8 +233,7 @@ export default function Achievements({
       /* 42 */ userData?.weekly_stats?.total_games ?? 0,
       /* 43 */ round(
         userData?.weekly_stats?.deaths ??
-        1000000 / (userData?.weekly_stats?.total_games ??
-          0),
+        1000000 / (userData?.weekly_stats?.total_games ?? 0),
         1
       ),
       /* 44 */ (userData?.weekly_stats?.combustion_games ?? 0) +
@@ -245,7 +298,7 @@ export default function Achievements({
       /* 77 */ userData?.achievement_stats?.fission_games ?? 0,
       /* 78 */ userData?.achievement_stats?.surge_games ?? 0,
       /* 79 */ userData?.achievement_stats?.total_games ?? 0,
-    ];
+    ] as (number | null)[];
 
     // const todayValue = [
     //   /* 0 */ "",
@@ -298,11 +351,11 @@ export default function Achievements({
     );
 
     const todayValue = [
-      /* 0 */ "",
-      /* 1 */ "",
-      /* 2 */ "",
-      /* 3 */ "",
-      /* 4 */ "",
+      /* 0 */ null,
+      /* 1 */ null,
+      /* 2 */ null,
+      /* 3 */ null,
+      /* 4 */ null,
 
       /* 5 */ (userData?.daily_stats?.total_games ?? 0) / 15,
       /* 6 */ (userData?.daily_stats?.total_games ?? 0) / 15,
@@ -321,7 +374,7 @@ export default function Achievements({
       /* 19 */ ((userData?.daily_stats?.combustion_games ?? 0) +
         (userData?.daily_stats?.dyson_games ?? 0)) /
       8,
-      /* 20 */ ((userData.daily_stats?.fission_games ?? 0) +
+      /* 20 */ ((userData?.daily_stats?.fission_games ?? 0) +
         (userData?.daily_stats?.surge_games ?? 0)) /
       8,
       /* 21 */ null,
@@ -434,55 +487,67 @@ export default function Achievements({
       /* 79 */ null,
     ];
 
-    for (let index = 0; index < 80; index++) {
-      var element = 0
-      if (userData?.achievements == null) { } else {
-        element = userData.achievements[0] as any;
 
-      }
-      if (element === undefined) {
-        element = 0;
-      }
+    const exportAchievementData = {
+      achievements: [],
 
+      totalPercentage: 0,
 
+      communityTotal: 0,
+      dailyTotal: 0,
+      weeklyTotal: 0,
+      seasonTotal: 0,
 
+      oculus_id: null,
+    } as exportAchievementDataType;
+    if (userData?.achievements) {
+      Object.entries(userData.achievements).forEach(([key, value]) => {
+        let index = parseInt(key)
+        if (index === 80) return
+        var element = value;
 
-      let pubCount = 0;
-      if (index > 0) {
-        totalPercentage += element;
-      }
-      if (index < 1) {
-      } else if (index < 5) {
-        communityTotal += element;
-      } else if (index < 29) {
-        dailyTotal += element;
-      } else if (index < 54) {
-        weeklyTotal += element;
-        pubCount = userData?.weekly_stats?.total_games ?? 0;
-      } else if (index < 79) {
-        seasonTotal += element;
-        pubCount = userData?.achievement_stats?.total_games ?? 0;
-      }
+        let pubCount = 0;
+        if (index > 0) {
+          totalPercentage += element;
+        }
+        if (index < 1) {
+        } else if (index < 5) {
+          communityTotal += element;
+        } else if (index < 30) {
+          dailyTotal += element;
+        } else if (index < 55) {
+          weeklyTotal += element;
+          pubCount = userData?.weekly_stats?.total_games ?? 0;
+        } else if (index < 80) {
+          seasonTotal += element;
+          pubCount = userData?.achievement_stats?.total_games ?? 0;
+        }
 
-      let chosenIcon = "community";
-      if (index > 4) {
-        chosenIcon = achievementIcons[(index - 5) % 25];
-      }
-      let achievementData = {
-        id: index,
-        value: element,
-        locked: false,
-        formatting: { ...achievementFormattingData[index] },
-        pubCount: pubCount,
-        icon: chosenIcon,
-        todayValue: todayValue[index],
-        todayProgress: todayProgress[index],
-      };
-      // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayValues[index]);
-      achievementData.formatting.Progress =
-        achievementData.formatting.Progress.replace("%p", todayProgress[index]);
-      // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p");
-      exportAchievementData[index] = { ...achievementData };
+        let chosenIcon = "community";
+        if (index > 4) {
+          chosenIcon = achievementIcons[(index - 5) % 25];
+        }
+
+        let achievementData = {
+          id: index,
+          value: element,
+          locked: false,
+          formatting: { ...achievementFormattingData[index] },
+          pubCount: pubCount,
+          icon: chosenIcon,
+          todayValue: todayValue[index],
+          todayProgress: todayProgress[index],
+          pubRequirement: null,
+        } as achievementDataType;
+        // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayValues[index]);
+        achievementData.formatting.Progress =
+          achievementData.formatting.Progress.replace(
+            "%p",
+            todayProgress[index]?.toString() ?? "0"
+          );
+        // achievementData.formatting.Progress = achievementData.inProgressormatting.Progress.replace("%p");
+        exportAchievementData.achievements[index] = { ...achievementData };
+      });
     }
 
     exportAchievementData.totalPercentage = totalPercentage / 79;
@@ -490,42 +555,41 @@ export default function Achievements({
     exportAchievementData.dailyTotal = dailyTotal / 79;
     exportAchievementData.weeklyTotal = weeklyTotal / 79;
     exportAchievementData.seasonTotal = seasonTotal / 79;
-    exportAchievementData.oculus_id = userData?.achievements?.oculus_id ?? null;
+    exportAchievementData.oculus_id = userData?.oculus_id ?? null;
+
+    const achievementData = exportAchievementData.achievements;
+
     if (userData && userData.daily_stats && userData.daily_stats.top_loadout) {
       userData.daily_stats.top_loadout.every((element) => {
         if (element[1] < 0.01) return false;
         let loadoutNumber = parseInt(element[0]);
 
-        if (loadoutNumber >> 4 !== 0) exportAchievementData[5].locked = true;
-        else exportAchievementData[5].inProgress = true;
-        if (loadoutNumber >> 4 !== 1) exportAchievementData[6].locked = true;
-        else exportAchievementData[6].inProgress = true;
-        if (loadoutNumber >> 4 !== 2) exportAchievementData[7].locked = true;
-        else exportAchievementData[7].inProgress = true;
-        if (loadoutNumber >> 4 !== 3) exportAchievementData[8].locked = true;
-        else exportAchievementData[8].inProgress = true;
+        if (loadoutNumber >> 4 !== 0) achievementData[5].locked = true;
+        else achievementData[5].inProgress = true;
+        if (loadoutNumber >> 4 !== 1) achievementData[6].locked = true;
+        else achievementData[6].inProgress = true;
+        if (loadoutNumber >> 4 !== 2) achievementData[7].locked = true;
+        else achievementData[7].inProgress = true;
+        if (loadoutNumber >> 4 !== 3) achievementData[8].locked = true;
+        else achievementData[8].inProgress = true;
 
-        if (((loadoutNumber >> 2) & 3) !== 0)
-          exportAchievementData[9].locked = true;
-        else exportAchievementData[9].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 1)
-          exportAchievementData[10].locked = true;
-        else exportAchievementData[10].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 2)
-          exportAchievementData[11].locked = true;
-        else exportAchievementData[11].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 3)
-          exportAchievementData[12].locked = true;
-        else exportAchievementData[12].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 0) achievementData[9].locked = true;
+        else achievementData[9].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 1) achievementData[10].locked = true;
+        else achievementData[10].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 2) achievementData[11].locked = true;
+        else achievementData[11].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 3) achievementData[12].locked = true;
+        else achievementData[12].inProgress = true;
 
-        if ((loadoutNumber & 3) !== 0) exportAchievementData[13].locked = true;
-        else exportAchievementData[13].inProgress = true;
-        if ((loadoutNumber & 3) !== 1) exportAchievementData[14].locked = true;
-        else exportAchievementData[14].inProgress = true;
-        if ((loadoutNumber & 3) !== 2) exportAchievementData[15].locked = true;
-        else exportAchievementData[15].inProgress = true;
-        if ((loadoutNumber & 3) !== 3) exportAchievementData[16].locked = true;
-        else exportAchievementData[16].inProgress = true;
+        if ((loadoutNumber & 3) !== 0) achievementData[13].locked = true;
+        else achievementData[13].inProgress = true;
+        if ((loadoutNumber & 3) !== 1) achievementData[14].locked = true;
+        else achievementData[14].inProgress = true;
+        if ((loadoutNumber & 3) !== 2) achievementData[15].locked = true;
+        else achievementData[15].inProgress = true;
+        if ((loadoutNumber & 3) !== 3) achievementData[16].locked = true;
+        else achievementData[16].inProgress = true;
 
         return true;
       });
@@ -538,58 +602,59 @@ export default function Achievements({
         numOfLoadouts++;
         let loadoutNumber = parseInt(element[0]);
 
-        if (loadoutNumber >> 4 !== 0) exportAchievementData[30].locked = true;
-        else exportAchievementData[30].inProgress = true;
-        if (loadoutNumber >> 4 !== 1) exportAchievementData[31].locked = true;
-        else exportAchievementData[31].inProgress = true;
-        if (loadoutNumber >> 4 !== 2) exportAchievementData[32].locked = true;
-        else exportAchievementData[32].inProgress = true;
-        if (loadoutNumber >> 4 !== 3) exportAchievementData[33].locked = true;
-        else exportAchievementData[33].inProgress = true;
+        if (loadoutNumber >> 4 !== 0) achievementData[30].locked = true;
+        else achievementData[30].inProgress = true;
+        if (loadoutNumber >> 4 !== 1) achievementData[31].locked = true;
+        else achievementData[31].inProgress = true;
+        if (loadoutNumber >> 4 !== 2) achievementData[32].locked = true;
+        else achievementData[32].inProgress = true;
+        if (loadoutNumber >> 4 !== 3) achievementData[33].locked = true;
+        else achievementData[33].inProgress = true;
 
-        if (((loadoutNumber >> 2) & 3) !== 0)
-          exportAchievementData[34].locked = true;
-        else exportAchievementData[34].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 1)
-          exportAchievementData[35].locked = true;
-        else exportAchievementData[35].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 2)
-          exportAchievementData[36].locked = true;
-        else exportAchievementData[36].inProgress = true;
-        if (((loadoutNumber >> 2) & 3) !== 3)
-          exportAchievementData[37].locked = true;
-        else exportAchievementData[37].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 0) achievementData[34].locked = true;
+        else achievementData[34].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 1) achievementData[35].locked = true;
+        else achievementData[35].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 2) achievementData[36].locked = true;
+        else achievementData[36].inProgress = true;
+        if (((loadoutNumber >> 2) & 3) !== 3) achievementData[37].locked = true;
+        else achievementData[37].inProgress = true;
 
-        if ((loadoutNumber & 3) !== 0) exportAchievementData[38].locked = true;
-        else exportAchievementData[38].inProgress = true;
-        if ((loadoutNumber & 3) !== 1) exportAchievementData[39].locked = true;
-        else exportAchievementData[39].inProgress = true;
-        if ((loadoutNumber & 3) !== 2) exportAchievementData[40].locked = true;
-        else exportAchievementData[40].inProgress = true;
-        if ((loadoutNumber & 3) !== 3) exportAchievementData[41].locked = true;
-        else exportAchievementData[41].inProgress = true;
+        if ((loadoutNumber & 3) !== 0) achievementData[38].locked = true;
+        else achievementData[38].inProgress = true;
+        if ((loadoutNumber & 3) !== 1) achievementData[39].locked = true;
+        else achievementData[39].inProgress = true;
+        if ((loadoutNumber & 3) !== 2) achievementData[40].locked = true;
+        else achievementData[40].inProgress = true;
+        if ((loadoutNumber & 3) !== 3) achievementData[41].locked = true;
+        else achievementData[41].inProgress = true;
 
         return true;
       });
       if (numOfLoadouts > 1) {
-        exportAchievementData[42].locked = true;
+        achievementData[42].locked = true;
       }
     }
 
-    exportAchievementData[43].pubRequirement = 40;
-    exportAchievementData[46].pubRequirement = 40;
-    exportAchievementData[47].pubRequirement = 40;
-    exportAchievementData[48].pubRequirement = 40;
-    exportAchievementData[49].pubRequirement = 40;
+    achievementData[43].pubRequirement = 40;
+    achievementData[46].pubRequirement = 40;
+    achievementData[47].pubRequirement = 40;
+    achievementData[48].pubRequirement = 40;
+    achievementData[49].pubRequirement = 40;
 
-    exportAchievementData[71].pubRequirement = 200;
-    exportAchievementData[72].pubRequirement = 200;
-    exportAchievementData[73].pubRequirement = 200;
-    exportAchievementData[74].pubRequirement = 200;
+    achievementData[71].pubRequirement = 200;
+    achievementData[72].pubRequirement = 200;
+    achievementData[73].pubRequirement = 200;
+    achievementData[74].pubRequirement = 200;
 
-    exportAchievementData[30].todayValueText = "";
+    // achievementData[30].todayValueText = "";
 
-    function setMessage(achievementData, timeframe, word, otherWordList) {
+    function setMessage(
+      achievementData: achievementDataType,
+      timeframe: string,
+      word: string,
+      otherWordList: any[]
+    ) {
       const id = achievementData.id;
       if (timeframe === "week") timeframe = "this week";
       if (timeframe === "day") timeframe = "today";
@@ -617,7 +682,7 @@ export default function Achievements({
         if (timeframe === "this week") timeframe = "This week";
         if (timeframe === "today") timeframe = "Today";
 
-        if (achievementData.todayProgress < achievementData.value) {
+        if (achievementData.todayProgress ?? 0 < achievementData.value) {
           achievementData.formatting.Progress =
             "You are currently only using " +
             word +
@@ -655,118 +720,120 @@ export default function Achievements({
     let dailyWeaponsList = [];
     let dailyOrdsList = [];
     let dailyTechsList = [];
-    if (exportAchievementData[5].inProgress) dailyWeaponsList.push("pulsar");
-    if (exportAchievementData[6].inProgress) dailyWeaponsList.push("nova");
-    if (exportAchievementData[7].inProgress) dailyWeaponsList.push("comet");
-    if (exportAchievementData[8].inProgress) dailyWeaponsList.push("meteor");
-    if (exportAchievementData[9].inProgress) dailyOrdsList.push("detonator");
-    if (exportAchievementData[10].inProgress) dailyOrdsList.push("stun field");
-    if (exportAchievementData[11].inProgress) dailyOrdsList.push("arc mine");
-    if (exportAchievementData[12].inProgress)
+    if (achievementData[5].inProgress) dailyWeaponsList.push("pulsar");
+    if (achievementData[6].inProgress) dailyWeaponsList.push("nova");
+    if (achievementData[7].inProgress) dailyWeaponsList.push("comet");
+    if (achievementData[8].inProgress) dailyWeaponsList.push("meteor");
+    if (achievementData[9].inProgress) dailyOrdsList.push("detonator");
+    if (achievementData[10].inProgress) dailyOrdsList.push("stun field");
+    if (achievementData[11].inProgress) dailyOrdsList.push("arc mine");
+    if (achievementData[12].inProgress)
       dailyOrdsList.push("instant repair");
-    if (exportAchievementData[13].inProgress)
+    if (achievementData[13].inProgress)
       dailyTechsList.push("repair matrix");
-    if (exportAchievementData[14].inProgress)
+    if (achievementData[14].inProgress)
       dailyTechsList.push("threat scanner");
-    if (exportAchievementData[15].inProgress)
+    if (achievementData[15].inProgress)
       dailyTechsList.push("energy barrier");
-    if (exportAchievementData[16].inProgress)
+    if (achievementData[16].inProgress)
       dailyTechsList.push("phase shift");
 
     let weeklyWeaponsList = [];
     let weeklyOrdsList = [];
     let weeklyTechsList = [];
-    if (exportAchievementData[30].inProgress) weeklyWeaponsList.push("pulsar");
-    if (exportAchievementData[31].inProgress) weeklyWeaponsList.push("nova");
-    if (exportAchievementData[32].inProgress) weeklyWeaponsList.push("comet");
-    if (exportAchievementData[33].inProgress) weeklyWeaponsList.push("meteor");
-    if (exportAchievementData[34].inProgress) weeklyOrdsList.push("detonator");
-    if (exportAchievementData[35].inProgress) weeklyOrdsList.push("stun field");
-    if (exportAchievementData[36].inProgress) weeklyOrdsList.push("arc mine");
-    if (exportAchievementData[37].inProgress)
+    if (achievementData[30].inProgress) weeklyWeaponsList.push("pulsar");
+    if (achievementData[31].inProgress) weeklyWeaponsList.push("nova");
+    if (achievementData[32].inProgress) weeklyWeaponsList.push("comet");
+    if (achievementData[33].inProgress) weeklyWeaponsList.push("meteor");
+    if (achievementData[34].inProgress) weeklyOrdsList.push("detonator");
+    if (achievementData[35].inProgress) weeklyOrdsList.push("stun field");
+    if (achievementData[36].inProgress) weeklyOrdsList.push("arc mine");
+    if (achievementData[37].inProgress)
       weeklyOrdsList.push("instant repair");
-    if (exportAchievementData[38].inProgress)
+    if (achievementData[38].inProgress)
       weeklyTechsList.push("repair matrix");
-    if (exportAchievementData[39].inProgress)
+    if (achievementData[39].inProgress)
       weeklyTechsList.push("threat scanner");
-    if (exportAchievementData[40].inProgress)
+    if (achievementData[40].inProgress)
       weeklyTechsList.push("energy barrier");
-    if (exportAchievementData[41].inProgress)
+    if (achievementData[41].inProgress)
       weeklyTechsList.push("phase shift");
 
-    setMessage(exportAchievementData[30], "week", "pulsar", weeklyWeaponsList);
-    setMessage(exportAchievementData[31], "week", "nova", weeklyWeaponsList);
-    setMessage(exportAchievementData[32], "week", "comet", weeklyWeaponsList);
-    setMessage(exportAchievementData[33], "week", "meteor", weeklyWeaponsList);
-    setMessage(exportAchievementData[34], "week", "detonator", weeklyOrdsList);
-    setMessage(exportAchievementData[35], "week", "stun field", weeklyOrdsList);
-    setMessage(exportAchievementData[36], "week", "arc mine", weeklyOrdsList);
+    setMessage(achievementData[30], "week", "pulsar", weeklyWeaponsList);
+    setMessage(achievementData[31], "week", "nova", weeklyWeaponsList);
+    setMessage(achievementData[32], "week", "comet", weeklyWeaponsList);
+    setMessage(achievementData[33], "week", "meteor", weeklyWeaponsList);
+    setMessage(achievementData[34], "week", "detonator", weeklyOrdsList);
+    setMessage(achievementData[35], "week", "stun field", weeklyOrdsList);
+    setMessage(achievementData[36], "week", "arc mine", weeklyOrdsList);
     setMessage(
-      exportAchievementData[37],
+      achievementData[37],
       "week",
       "instant repair",
       weeklyOrdsList
     );
     setMessage(
-      exportAchievementData[38],
+      achievementData[38],
       "week",
       "repair matrix",
       weeklyTechsList
     );
     setMessage(
-      exportAchievementData[39],
+      achievementData[39],
       "week",
       "threat scanner",
       weeklyTechsList
     );
     setMessage(
-      exportAchievementData[40],
+      achievementData[40],
       "week",
       "energy barrier",
       weeklyTechsList
     );
     setMessage(
-      exportAchievementData[41],
+      achievementData[41],
       "week",
       "phase shift",
       weeklyTechsList
     );
 
-    setMessage(exportAchievementData[5], "day", "pulsar", dailyWeaponsList);
-    setMessage(exportAchievementData[6], "day", "nova", dailyWeaponsList);
-    setMessage(exportAchievementData[7], "day", "comet", dailyWeaponsList);
-    setMessage(exportAchievementData[8], "day", "meteor", dailyWeaponsList);
-    setMessage(exportAchievementData[9], "day", "detonator", dailyOrdsList);
-    setMessage(exportAchievementData[10], "day", "stun field", dailyOrdsList);
-    setMessage(exportAchievementData[11], "day", "arc mine", dailyOrdsList);
+    setMessage(achievementData[5], "day", "pulsar", dailyWeaponsList);
+    setMessage(achievementData[6], "day", "nova", dailyWeaponsList);
+    setMessage(achievementData[7], "day", "comet", dailyWeaponsList);
+    setMessage(achievementData[8], "day", "meteor", dailyWeaponsList);
+    setMessage(achievementData[9], "day", "detonator", dailyOrdsList);
+    setMessage(achievementData[10], "day", "stun field", dailyOrdsList);
+    setMessage(achievementData[11], "day", "arc mine", dailyOrdsList);
     setMessage(
-      exportAchievementData[12],
+      achievementData[12],
       "day",
       "instant repair",
       dailyOrdsList
     );
     setMessage(
-      exportAchievementData[13],
+      achievementData[13],
       "day",
       "repair matrix",
       dailyTechsList
     );
     setMessage(
-      exportAchievementData[14],
+      achievementData[14],
       "day",
       "threat scanner",
       dailyTechsList
     );
     setMessage(
-      exportAchievementData[15],
+      achievementData[15],
       "day",
       "energy barrier",
       dailyTechsList
     );
-    setMessage(exportAchievementData[16], "day", "phase shift", dailyTechsList);
+    setMessage(achievementData[16], "day", "phase shift", dailyTechsList);
 
     setAchievementData(exportAchievementData);
-  }, [userData, userData.weekly_stats]);
+    console.log("124", exportAchievementData)
+
+  }, [userData]);
 
   const [wantFAQ, setWantFAQ] = useState(false);
   const [hasFAQ, setHasFAQ] = useState(false);
@@ -777,7 +844,7 @@ export default function Achievements({
     useState("daily");
 
   useEffect(() => {
-    function delay(time) {
+    function delay(time: number) {
       return new Promise((resolve) => setTimeout(resolve, time));
     }
     if (!fullView) return;
@@ -792,7 +859,7 @@ export default function Achievements({
   }, [wantFAQ]);
 
   useEffect(() => {
-    function delay(time) {
+    function delay(time: number) {
       return new Promise((resolve) => setTimeout(resolve, time));
     }
     // if (!fullView) return;
@@ -807,6 +874,9 @@ export default function Achievements({
     }
     FAQAnimation();
   }, [fullView]);
+
+  // screenWidth = getWindowDimensions();
+  console.log("882", achievementData)
   return (
     <div
       className="padded rounded list"
@@ -841,13 +911,13 @@ export default function Achievements({
             totalPercent={achievementData?.totalPercentage ?? 0}
             // Percentage={achievementData.values["63"]}
             Title={""}
-            Height={"50px"}
+            Height={50}
             EnableBorder={true}
             clickMe={true}
           />
         </div>
       </div>
-      {screenWidth < 700 ? (
+      {windowDimensions.width < 700 ? (
         <div>
           Challenges cannot be viewed on mobile. Please move to a desktop
         </div>
@@ -983,14 +1053,14 @@ export default function Achievements({
                 userData={userData}
                 selectedAchievementType={selectedAchievementType}
                 achievementsData={achievementData}
-                setWantFAQ={setWantFAQ}
+                setWantFAQ={setWantFAQ as () => void}
                 onRefresh={fetchUserData}
               />
             </div>
           </div>
-          {screenWidth < 1000 ? null : (
+          {windowDimensions.width < 1000 ? null : (
             <div style={{ flexBasis: 0, flexGrow: 1.5, display: "flex" }}>
-              {userData.oculus_id ? (
+              {userData?.oculus_id ? (
                 <AchievementLeaderboard
                   setBannerCallback={() => { }}
                   surroundID={userData.oculus_id}

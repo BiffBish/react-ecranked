@@ -1,3 +1,6 @@
 {
-  "cSpell.words": ["Interactable", "Ratelimit"]
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#8c00ff8d",
+    
+  }
 }
