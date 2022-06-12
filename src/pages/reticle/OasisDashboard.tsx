@@ -403,7 +403,6 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
       );
     default:
       return null;
-      break;
   }
 };
 interface reticlePreferencesInterface {
@@ -433,7 +432,7 @@ export default function OasisDashboard() {
     executable_path: "",
   });
 
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [gameData, setGameData] = useState<any>({});
   // const [currentInterval, setCurrentInterval] = useState(null);
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
+import { User as UserAPI } from "@ecranked/api";
 const Container = styled.div`
   position: relative;
   padding: 10px 10px 10px;
@@ -730,7 +730,7 @@ export const Timeline = ({ skimData }) => {
     async function startApiCalls() {
       setUpdatedUsernamesPromises(
         userList.map((user) => {
-          return User.fetch(user.userid).then((json) => {
+          return UserAPI.fetch(user.userid).then((json) => {
             return json;
           });
         })
