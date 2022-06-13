@@ -341,14 +341,14 @@ const GetDeathPoints = ({ user, api_data }) => {
       // endFrame = 600;
       width = (endFrame - startFrame) / totalFrames;
 
-      const transformPercentageHorisontal =
+      const transformPercentageHorizontal =
         (startFrame / totalFrames) * 100 * (1 / width);
 
       TotalListOfElements.push(
         <DeathBar
           style={{
             width: `${width * 100}%`,
-            transform: `translate(${transformPercentageHorisontal}%,0%)`,
+            transform: `translate(${transformPercentageHorizontal}%,0%)`,
           }}
         />
       );
@@ -488,7 +488,7 @@ const LoadoutBarSelected = ({ number, onHover }) => {
     </LoadoutBarSelectedDivStyle>
   );
 };
-const LoadoutBarItem = ({ width, transformHorisontal, loadoutNumber }) => {
+const LoadoutBarItem = ({ width, transformHorizontal, loadoutNumber }) => {
   const [onHovered, setOnHovered] = useState(false);
   var HoveredObject = null;
 
@@ -507,7 +507,7 @@ const LoadoutBarItem = ({ width, transformHorisontal, loadoutNumber }) => {
       // style={{ width: `${width * 100}%` }}
       style={{
         width: `${width * 100}%`,
-        left: `${transformHorisontal}%`,
+        left: `${transformHorizontal}%`,
       }}
       onMouseEnter={() => {
         console.log("Twe");
@@ -536,12 +536,12 @@ const LoadoutBar = ({ user, api_data }) => {
     }
     const totalFrames = api_data["frames"];
     const width = (endFrame - startFrame) / totalFrames;
-    const transformPercentageHorisontal = (startFrame / totalFrames) * 100;
+    const transformPercentageHorizontal = (startFrame / totalFrames) * 100;
 
     LoadoutBarItems.push(
       <LoadoutBarItem
         width={width}
-        transformHorisontal={transformPercentageHorisontal}
+        transformHorizontal={transformPercentageHorizontal}
         loadoutNumber={user["framestamps"]["loadout"][index][1]}
       />
     );

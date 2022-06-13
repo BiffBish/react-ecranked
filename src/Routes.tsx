@@ -138,7 +138,6 @@ function Routes() {
               <div style={{ padding: "10px 100px" }}>
                 <AchievementLeaderboard
                   setBannerCallback={setBannerTextCallback}
-                  surroundID={null}
                 />
               </div>
             );

@@ -2,5 +2,9 @@
   "workbench.colorCustomizations": {
     "statusBar.background": "#8c00ff8d",
     
-  }
+  },
+  "cSpell.words": [
+    "cwebsocket",
+    "uscn"
+  ]
 }

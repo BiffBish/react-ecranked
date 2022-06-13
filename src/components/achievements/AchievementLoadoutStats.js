@@ -334,8 +334,6 @@ const SegmentedLProgressBar = ({
     };
   }, []);
   if (!achievementData) return null;
-  var locked = achievementData.locked;
-  var completed = false;
 
   function onClicked() {
     eventBus.dispatch("closeAll", { message: null });

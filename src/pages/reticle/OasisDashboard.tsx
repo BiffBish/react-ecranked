@@ -556,7 +556,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
 
   const [websocket, setWebsocket] = useState<W3CWebSocket | null>(null);
 
-  const [showHostGame, setShowHostGame] = useState(false);
+  // const [showHostGame, setShowHostGame] = useState(false);
 
   const [currentServerState, setCurrentServerState] = useState<RawServerState>({
     sockets: [],
@@ -608,6 +608,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     }
     console.log(_gameData)
     console.log(gameHistory)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentGameState]);
 
   useEffect(() => {
