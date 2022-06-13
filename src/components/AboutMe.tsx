@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { makeApiCall } from "../helpers/api/index";
+import { useMe, User } from "@ecranked/api";
 
 const ContainerTitle = styled.div`
   font-size: 36px;
@@ -54,40 +54,37 @@ const EditButtonStyle = styled.div`
     color: #000;
   }
 `;
-const AboutStringBox = ({ userData, oculus_id }) => {
-  const [currentText, setCurrentText] = useState(userData?.about_string);
-  const [editing, setEditing] = useState(false);
-  if (userData == null) {
-    return null;
-  }
+interface AboutStringBoxProps {
+  user: User | null
+}
+const AboutStringBox = ({ user }: AboutStringBoxProps) => {
+  const { me } = useMe();
+
   var is_editable = false;
-  if (oculus_id == null) {
+  if (me == null) {
     is_editable = false;
-  }
-  // eslint-disable-next-line
-  if (oculus_id == parseInt(userData?.["oculus_id"] ?? "0")) {
+  } else if (me?.oculus_id === user?.oculus_id) {
     is_editable = true;
   }
-  // eslint-disable-next-line
-  if (localStorage.getItem("MODERATOR") == 1) {
+  if (me?.moderator) {
     is_editable = true;
   }
 
-  const updateIsEdit = (e, value = "null") => {};
 
-  const onClickSubmit = () => {
+  const [currentText, setCurrentText] = useState<string>(user?.about_string ?? "");
+
+  const [isEditing, setIsEditing] = useState(false);
+
+
+  const onClickSubmit = async () => {
     if (currentText.length > 200) {
       return;
     }
-
-    //Unusual is not a cutie
-    makeApiCall("v1/user/" + userData["oculus_id"], "PUT", {
-      about_string: currentText,
-    }).then((_) => {
-      window.location.reload(false);
-    });
+    await user?.setAboutString(currentText);
+    setIsEditing(false);
   };
-  if (editing) {
+
+  if (isEditing) {
     return (
       <>
         <textarea
@@ -103,16 +100,15 @@ const AboutStringBox = ({ userData, oculus_id }) => {
             minWidth: "120px",
             // f: "Montserrat", sans-serif,
           }}
-          type="textarea"
+          // type="textarea"
           name="userName"
           value={currentText}
           onChange={(e) => setCurrentText(e.target.value)}
-          onBlur={updateIsEdit}
         />
         <EditButtonsStyle>
           <EditButtonStyle
             onClick={() => {
-              setEditing(false);
+              setIsEditing(false);
             }}
           >
             Discard
@@ -124,14 +120,14 @@ const AboutStringBox = ({ userData, oculus_id }) => {
     );
   } else {
     if (is_editable) {
-      if (userData["about_string"] == null) {
+      if (user?.about_string == null) {
         return (
           <>
             <EditButtonStyle
               style={{ color: "white" }}
               onClick={() => {
-                setCurrentText(userData["about_string"]);
-                setEditing(true);
+                setCurrentText(user?.about_string ?? "");
+                setIsEditing(true);
               }}
             >
               Click here to enter some text about yourself!
@@ -142,12 +138,12 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"]}
+              {user?.about_string}
             </div>
             <EditButtonStyle
               onClick={() => {
-                setCurrentText(userData["about_string"]);
-                setEditing(true);
+                setCurrentText(user?.about_string ?? "");
+                setIsEditing(true);
               }}
             >
               Edit
@@ -156,11 +152,11 @@ const AboutStringBox = ({ userData, oculus_id }) => {
         );
       }
     } else {
-      if (oculus_id == null) {
+      if (me == null) {
         return (
           <>
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {userData["about_string"]}
+              {user?.about_string}
             </div>
             <EditTextButtonStyle>
               Login to change your aboutMe
@@ -170,13 +166,14 @@ const AboutStringBox = ({ userData, oculus_id }) => {
       } else {
         return (
           <>
-            <div>{userData["about_string"]}</div>
+            <div>{user?.about_string}</div>
           </>
         );
       }
     }
   }
 };
+
 const AvatarStyle = styled.img`
   // min-height: 100%;
   width: 100%;
@@ -201,31 +198,46 @@ const SubmitButton = styled.button`
     color: #000;
   }
 `;
-const FileUploadButton = ({ userData }) => {
-  const [selectedFile, setSelectedFile] = useState();
+interface FileUploadButtonProps {
+  user: User | null
+}
+const FileUploadButton = ({ user }: FileUploadButtonProps) => {
+  // return (
+  //   <div>
+  //     Disabled Temporaralily
+  //   </div>
+  // );
 
-  const changeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
+
+
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile(event?.target?.files?.[0] ?? null);
   };
 
   const handleSubmission = () => {
-    const formData = new FormData();
+    if (!selectedFile) return
+    if (!user) return
 
-    formData.append("image", selectedFile);
+    user.setAvatar(selectedFile).then(() => {
+      setSelectedFile(null);
+    });
 
-    makeApiCall(
-      "v1/user/" + userData["oculus_id"] + "/avatar",
-      "POST",
-      {},
-      formData
-    )
-      .then((result) => {
-        console.log("Success:", result.json);
-        window.location.reload(false);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    // makeApiCall(
+    //   "v1/user/" + user["oculus_id"] + "/avatar",
+    //   "POST",
+    //   {},
+    //   formData
+    // )
+    //   .then((result) => {
+    //     console.log("Success:", result.json);
+    //     window.location.reload(false);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
   };
 
   return (
@@ -238,21 +250,26 @@ const FileUploadButton = ({ userData }) => {
     </div>
   );
 };
-const ModeratorAvatarControls = ({ userData }) => {
-  const onApprove = () => {
-    makeApiCall("v1/user/" + userData["oculus_id"] + "/avatar", "PUT", {
-      approved: true,
-    }).then((_) => {
-      window.location.reload(false);
-    });
+interface ModeratorAvatarControlsProps {
+  user: User | null
+}
+const ModeratorAvatarControls = ({ user }: ModeratorAvatarControlsProps) => {
+
+  const onApprove = async () => {
+    try {
+      user?.approveAvatar();
+    } catch (e) {
+      console.log(e);
+    }
   };
-  const onRemove = () => {
-    makeApiCall("v1/user/" + userData["oculus_id"] + "/avatar", "PUT", {
-      approved: false,
-    }).then((_) => {
-      window.location.reload(false);
-    });
+  const onRemove = async () => {
+    try {
+      user?.removeAvatar();
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   return (
     <EditButtonsStyle>
       <p style={{ width: "100%", textAlign: "center", margin: "0" }}>
@@ -261,7 +278,7 @@ const ModeratorAvatarControls = ({ userData }) => {
       </p>
       <EditButtonStyle onClick={onRemove}>Remove</EditButtonStyle>
 
-      {userData["avatar_pending"] ? (
+      {!user?.avatar_approved ? (
         <EditButtonStyle onClick={onApprove}>Approve</EditButtonStyle>
       ) : (
         <></>
@@ -269,20 +286,39 @@ const ModeratorAvatarControls = ({ userData }) => {
     </EditButtonsStyle>
   );
 };
-const AvatarControls = ({ moderator, userData, oculus_id }) => {
+
+
+interface AvatarControlsProps {
+  user: User | null
+}
+const AvatarControls = ({ user }: AvatarControlsProps) => {
+
+  const { me } = useMe()
+
   // eslint-disable-next-line
-  var ownPage = oculus_id == userData["oculus_id"];
-  var avatar = userData["avatar"];
+  var ownPage = false;
+  if (me !== null && user !== null) {
+    ownPage = (me.oculus_id === user.oculus_id);
+  }
+  if (me === null || user === null) {
+    ownPage = false;
+  }
+
+  var avatar = user?.avatar;
+
+
+
+
   // var pending = userData["avatar_pending"];
   return (
     <>
-      {moderator && avatar ? (
-        <ModeratorAvatarControls userData={userData} />
+      {me?.moderator && avatar ? (
+        <ModeratorAvatarControls user={user} />
       ) : (
         <> </>
       )}
       <div>
-        {avatar && userData["avatar_pending"] ? (
+        {avatar && !user?.avatar_approved ? (
           <>
             <AvatarGuideText>
               Your picture is currently pending approval by a moderator. It is
@@ -307,7 +343,7 @@ const AvatarControls = ({ moderator, userData, oculus_id }) => {
               approved by moderator.
             </AvatarGuideText>
             <div>
-              <FileUploadButton userData={userData} />
+              <FileUploadButton user={user} />
             </div>
           </>
         ) : (
@@ -320,7 +356,7 @@ const AvatarControls = ({ moderator, userData, oculus_id }) => {
               still be pending until a moderator approves of it
             </AvatarGuideText>
             <div>
-              <FileUploadButton userData={userData} />
+              <FileUploadButton user={user} />
             </div>
           </>
         ) : (
@@ -336,18 +372,16 @@ const AvatarGuideText = styled.p`
   color: rgb(170, 170, 170);
 `;
 const AvatarContainer = styled.div``;
-const AboutAvatar = ({ userData, oculus_id }) => {
-  if (userData == null) return <></>;
-  var avatar = userData["avatar"];
+
+interface AboutAvatarProps {
+  user: User | null
+}
+const AboutAvatar = ({ user }: AboutAvatarProps) => {
+  var avatar = user?.avatar
 
   // var pending = userData["avatar_pending"];
-  var isModerator = false;
 
-  // eslint-disable-next-line
-  if (localStorage.getItem("MODERATOR") == 1) {
-    isModerator = true;
-  }
-  console.log(userData);
+  console.log("User Data updated", user?.avatar)
   if (avatar) {
     return (
       <>
@@ -367,9 +401,7 @@ const AboutAvatar = ({ userData, oculus_id }) => {
                   <EditButtonStyle onClick={onClickSubmit}>Save</EditButtonStyle>
                 </EditButtonsStyle> */}
         <AvatarControls
-          moderator={isModerator}
-          userData={userData}
-          oculus_id={oculus_id}
+          user={user}
         />
       </>
     );
@@ -377,15 +409,14 @@ const AboutAvatar = ({ userData, oculus_id }) => {
     return (
       <>
         <AvatarControls
-          moderator={isModerator}
-          userData={userData}
-          oculus_id={oculus_id}
+          user={user}
         />
       </>
     );
   }
 };
-function timeDifference(current, previous) {
+
+function timeDifference(current: number, previous: number) {
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;
   var msPerDay = msPerHour * 24;
@@ -408,22 +439,33 @@ function timeDifference(current, previous) {
     return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
   }
 }
-export const AboutMe = ({ userData }) => {
-  const oculus_id = localStorage.getItem("OCULUS_ID");
+
+interface AboutMeProps {
+  user: User | null
+}
+export const AboutMe = ({ user }: AboutMeProps) => {
   // var iconSrc = null;
+
+  let footerText = "";
+
+  if (user) {
+    if (user.join_date ?? 0 < 1633061708) {
+      footerText = "Joined before ECRanked launched"
+    }
+    else {
+      footerText = "Joined " + timeDifference(Date.now(), user.join_date ?? 0 * 1000)
+    }
+  }
   return (
     <AboutMeStyle>
       <div>
         <ContainerTitle>About Me</ContainerTitle>
       </div>
-      <AboutStringBox userData={userData} oculus_id={oculus_id} />
-      <AboutAvatar userData={userData} oculus_id={oculus_id} />
+      <AboutStringBox user={user} />
+      <AboutAvatar user={user} />
       <footer>
-        Joined{" "}
-        {userData?.join_date ?? 0 < 1633061708
-          ? "before ECRanked launched"
-          : timeDifference(Date.now(), userData.join_date * 1000)}
-      </footer>
-    </AboutMeStyle>
+        {footerText}
+      </footer >
+    </AboutMeStyle >
   );
 };

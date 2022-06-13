@@ -3,8 +3,7 @@ import { useRef, useEffect } from "react";
 import useState from 'react-usestateref';
 import styled from "styled-components";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { makeApiCall } from "../../helpers/api";
-
+import { Shortener } from "@ecranked/api"
 function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
   client?.send(
     JSON.stringify({
@@ -14,18 +13,6 @@ function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: numb
     })
   );
 }
-
-const shortenData = async (data: any, length: number): Promise<string> => {
-  const response = await makeApiCall("v2/shorten/new/" + length, "POST", data) as { json: any }
-  console.log(response.json)
-  return response.json.data
-}
-const getShortenedData = async (code: string): Promise<any> => {
-  const response = await makeApiCall("v2/shorten/" + code, "GET") as { json: any }
-  return response.json.data
-}
-
-
 
 const AutoCompleteInput = styled.input`
   background-color: transparent;
@@ -495,14 +482,12 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
           <div
             className="padded button"
             onClick={async () => {
-              let code = await shortenData({
+              let code = await Shortener.shortenData({
                 sessionID: gameID,
                 teamID: 0,
-              }, 5)
+              })
 
               navigator.clipboard.writeText("<reticle://join/" + code + ">");
-
-              // navigator.clipboard.writeText(gameID ?? "");
             }}
             onMouseEnter={() => {
               setGameIDText("Click to copy!");
@@ -635,7 +620,10 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         console.log("WebSocket Client Connected");
 
         if (joinCode) {
-          getShortenedData(joinCode).then((data) => {
+          Shortener.getShortenedData<{
+            sessionID: string,
+            teamID: number
+          }>(joinCode).then((data) => {
             JoinServer(client, data.sessionID, data.teamID);
             //Close the page
             window.close();

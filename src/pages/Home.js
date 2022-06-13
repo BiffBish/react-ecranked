@@ -1,92 +1,12 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import moment from "moment-timezone";
 import { NavLink } from "react-router-dom";
 import Chart from "react-google-charts";
-import { makeApiCall } from "../helpers/api";
+import { Replay } from "@ecranked/api";
+
 var funFacts = require("../components/FunFacts.json");
-class Timer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      seconds: parseInt(props.startTimeInSeconds, 10) || 0,
-    };
-  }
-
-  tick() {
-    this.setState((state) => ({
-      seconds: state.seconds + 1,
-    }));
-  }
-
-  componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-  MModeTimer() {
-    // CountdownTarget = 1647365400;
-
-    var currentTime = new Date().getTime() / 1000;
-    var timeRemaining = 1647365400 - currentTime;
-    var minute = 60;
-    var hour = 60 * 60;
-    var day = 60 * 60 * 24;
-    var dayFloor = Math.floor(timeRemaining / day);
-    var hourFloor = Math.floor((timeRemaining - dayFloor * day) / hour);
-    var minuteFloor = Math.floor(
-      (timeRemaining - dayFloor * day - hourFloor * hour) / minute
-    );
-    var secondFloor = Math.floor(
-      timeRemaining - dayFloor * day - hourFloor * hour - minuteFloor * minute
-    );
-    var countdownCompleted = "Completed";
-
-    if (secondFloor <= 0 && minuteFloor <= 0) {
-      // window.location.reload(true);
-      // clearInterval(MModeTimer);
-      // document.getElementById("haha").innerHTML = countdownCompleted;
-    } else {
-      if (1647365400 > currentTime) {
-        return (
-          dayFloor +
-          " Days " +
-          hourFloor +
-          " Hours " +
-          minuteFloor +
-          " Minutes " +
-          secondFloor +
-          " Seconds "
-        );
-      }
-    }
-  }
-  formatTime(secs) {
-    let hours = Math.floor(secs / 3600);
-    let minutes = Math.floor(secs / 60) % 60;
-    let seconds = secs % 60;
-    return [hours, minutes, seconds]
-      .map((v) => ("" + v).padStart(2, "0"))
-      .filter((v, i) => v !== "00" || i > 0)
-      .join(":");
-  }
-
-  render() {
-    return (
-      <div
-        className="rounded"
-        style={{ textAlign: "center", height: "64px", padding: "auto" }}
-      >
-        <h3>{this.MModeTimer()}</h3>
-      </div>
-    );
-  }
-}
 const RecentGameFadeIN = keyframes`
     from {
       opacity: 0;
@@ -135,12 +55,6 @@ const ContainerTitle = styled.h2`
   flex: 0 0 100%;
   color: #fff;
 `;
-const PageContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  flex-wrap: wrap-reverse;
-`;
 const AboutContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -157,28 +71,6 @@ const AboutPage = styled.div`
   padding: 20px;
 `;
 
-const AboutPageButton = styled.div`
-  flex: 100px 2;
-  background-color: #222;
-  color: white;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  color: #fff;
-  background-color: #222;
-  padding: 12px 24px;
-  font-size: 18px;
-  font-weight: 200;
-  float: left;
-  text-decoration: none;
-  &:hover {
-    background-color: #555;
-    color: #000;
-  }
-  transition-duration: 0.1s;
-  cursor: pointer;
-`;
 const ContributorLink = styled(NavLink)`
   text-decoration: none;
   color: white;
@@ -207,7 +99,6 @@ const chartOptions = {
   //   // maxValue: 1,
   // },
 };
-const RecentGames = ({ replays }) => {};
 
 function SortDataToBins(data, setReplayTimestamps, NumOfDays) {
   var todayDateTime = Math.round(Date.now() / 1000);
@@ -380,39 +271,18 @@ function SortReplayDataToBins(data, setReplayTimestamps, NumOfDays) {
 export default function Home() {
   const [replays, setReplays] = React.useState([]);
   useEffect(() => {
-    makeApiCall("v1/replay/@recent")
-      .then(async (response) => {
-        const data = response.json;
-        console.log("code:" + response.statusCode);
-        if (response.status === 404) {
-          console.error("No recent games found!");
-        } else {
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-          setReplays(data);
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    Replay.getRecent().then((data) => {
+      setReplays(data);
+    });
   }, []);
 
-  function WhatApiRequest() {
-    console.log("APIDATA");
-    console.log(apiData);
-    if (apiData) {
-      return apiData;
-    }
-    return [];
-  }
   const [replayAnimationIndex, setReplayAnimationIndex] = useState(0);
-  const [funFactIndex, setFunFactIndex] = useState(
-    Math.floor(Math.random() * funFacts.length)
-  );
 
+  // const getRandomValue = () => {
+  // return ;
+  // };
+  // const [funFactIndex] = useMemo(() => 0, []);
+  const [funFactIndex] = useState(Math.floor(Math.random() * funFacts.length));
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   useEffect(() => {
@@ -432,7 +302,6 @@ export default function Home() {
   }
   const [replayTimestamps, setReplayTimestamps] = useState([]);
   const [newUsers, setNewUsers] = useState([]);
-  const [replayData, setReplayData] = useState([]);
 
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/replay/@timestamps")
@@ -444,9 +313,7 @@ export default function Home() {
   useEffect(() => {
     fetch("https://ecranked.ddns.net/api/v1/replay/@all")
       .then((response) => response.json())
-      .then((data) => {
-        setReplayData(data);
-      });
+      .then((data) => {});
   }, []);
   useEffect(() => {
     if (localStorage.getItem("MODERATOR") === "1") {

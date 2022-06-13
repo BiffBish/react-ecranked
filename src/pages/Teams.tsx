@@ -1,15 +1,13 @@
 /* eslint-disable */
 
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 // import GlobalUserState from "../contexts/GlobalUserState";
 import { Link } from "react-router-dom";
-import { makeApiCall } from "../helpers/api/index";
-import { useSelector } from "react-redux";
-import { State } from "../stores/store";
+import { Team, useMe } from "@ecranked/api";
 
 const BodyContainer = styled.div`
   margin: auto;
@@ -19,39 +17,42 @@ const BodyContainer = styled.div`
 export default function Teams() {
   let history = useHistory();
 
-  const userData = useSelector((state: State) => state.user.userData);
+  const { me } = useMe()
 
   let canJoin = true;
   let showRequestButtons = false;
-  if (userData) {
+  if (me) {
     canJoin =
-      !userData.requested_team_id &&
-      !userData.team_id;
+      !me?.requested_team_ids &&
+      !me?.team_id;
 
-    showRequestButtons = userData.requested_team_id != null
+    showRequestButtons = me?.requested_team_ids != null
   }
 
 
 
-  let [teamList, setTeamList] = useState<Api.Team.All>([]);
+  let [teamList, setTeamList] = useState<{
+    name: string;
+    id: number;
+    member_count: number;
+    requesting_count: number;
+  }[]>([]);
   useEffect(() => {
-    makeApiCall("v1/team/@all")
-      .then((response) => {
-        let json = response.json as Api.Team.All;
-        setTeamList(json);
-      })
+    Team.fetchAll().then(setTeamList);
   }, []);
 
-  const JoinTeam = (teamname: string) => {
-    makeApiCall("v1/team/" + teamname + "/request_join", "POST").then(() => {
-      window.location.reload();
-    });
-  };
-  const CancelTeam = (teamname: string) => {
-    makeApiCall("v1/team/" + teamname + "/cancel_join", "POST").then(() => {
-      window.location.reload();
-    });
-  };
+
+  // const JoinTeam = (teamname: string) => {
+
+  //   makeApiCall("v1/team/" + teamname + "/request_join", "POST").then(() => {
+  //     window.location.reload();
+  //   });
+  // };
+  // const CancelTeam = (teamname: string) => {
+  //   makeApiCall("v1/team/" + teamname + "/cancel_join", "POST").then(() => {
+  //     window.location.reload();
+  //   });
+  // };
 
   return (
     <>
@@ -70,11 +71,11 @@ export default function Teams() {
               </Link>
             ) : null}
 
-            {teamList.slice(0, 200).map((teamData: Api.Team.SimpleTeam) => {
-              let disabled = false;
-              if (!canJoin) disabled = true;
-              if (teamData.id == userData?.requested_team_id)
-                disabled = false;
+            {teamList.slice(0, 200).map((teamData) => {
+              // let disabled = false;
+              // if (!canJoin) disabled = true;
+              // if (teamData.id == userData?.requested_team_id)
+              //   disabled = false;
               return (
                 <div className="button-container">
                   <NavLink
@@ -88,7 +89,7 @@ export default function Teams() {
                     {"Members: "}
                     {teamData.member_count}{" "}
                   </div>
-                  {showRequestButtons ? (
+                  {/* {showRequestButtons ? (
                     <div
                       className={
                         "rounded " + (disabled ? "disabled-button" : "button")
@@ -103,7 +104,7 @@ export default function Teams() {
                         ? "Cancel Request"
                         : "Request To join"}
                     </div>
-                  ) : null}
+                  ) : null} */}
                   {/* <div
                     className={
                       "rounded " + (canJoin ? "button" : "disabled-button")

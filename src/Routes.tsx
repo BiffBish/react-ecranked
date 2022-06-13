@@ -22,7 +22,6 @@ import MakeTeam from "./pages/MakeTeam";
 import Teams from "./pages/Teams";
 
 import Component from "./pages/Testing";
-import makeApiCall from "./helpers/api/makeApiCall";
 import AchievementLeaderboard from "./pages/AchievementLeaderboard";
 import Contact from "./pages/Contact";
 import DeveloperGuide from "./pages/DeveloperGuide";
@@ -32,7 +31,7 @@ import { OasisDashboardPopup } from "./pages/reticle/OasisDashboardPopup";
 import { useDispatch } from "react-redux";
 import { setHeight, setIconSrc, setText } from "./stores/banner";
 import { Banner } from "./components/Banner";
-import { setToken, setUser, setUserData } from "./stores/user";
+import api from "./api";
 
 const PageBody = styled.div`
   position: absolute;
@@ -49,33 +48,7 @@ function Routes() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    async function authentication() {
-      const { token } = (await makeApiCall("v2/auth/refresh", "POST")).json as { token: string };
-      dispatch(setToken(token));
-      const response = await makeApiCall("v1/user/@me")
-      let data = response.json as Api.User;
-      if (response.ok) {
-        dispatch(setUser(
-          {
-            oculus_id: data.oculus_id,
-            moderator: data.moderator,
-            oculus_name: data.oculus_name,
-          }
-        ));
-        dispatch(setUserData(
-          data
-        ));
-      } else {
-        // alert(
-        //   "You have been logged out. Please log back in or contact a moderator if the problem persists."
-        // );
-        // localStorage.removeItem("AUTHORIZATION_TOKEN");
-        // localStorage.removeItem("OCULUS_ID");
-        // localStorage.removeItem("MODERATOR");
-        // window.location.reload();
-      }
-    }
-    authentication();
+    api.refreshToken()
   }, [dispatch]);
 
   useEffect(() => {
@@ -165,6 +138,7 @@ function Routes() {
               <div style={{ padding: "10px 100px" }}>
                 <AchievementLeaderboard
                   setBannerCallback={setBannerTextCallback}
+                  surroundID={null}
                 />
               </div>
             );
@@ -200,7 +174,7 @@ function Routes() {
               <Team
                 teamname={props.match.params.name}
                 setBannerCallback={setBannerTextCallback}
-                subDomain={props.match.params.subDomain}
+              // subDomain={props.match.params.subDomain}
               />
             );
           }}
@@ -230,15 +204,12 @@ function Routes() {
           path={`/leaderboard/:leaderboardStatistic/:subDomain`}
           render={(props) => {
             setBannerHeight(100);
-            const setBannerTextCallback = (username: string) => {
-              console.log(username);
-              setBannerText(username);
-            };
             console.log("Leaderboard");
+            setBannerText("Leaderboard");
+
             return (
               <Leaderboard
                 leaderboardStatistic={props.match.params.leaderboardStatistic}
-                setBannerCallback={setBannerTextCallback}
                 subDomain={props.match.params.subDomain}
               />
             );

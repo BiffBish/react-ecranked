@@ -4,6 +4,7 @@ import { AchievementHeaderButton } from "./achievements/AchievementHeaderButton"
 import { AchievementLoadoutStats } from "./achievements/AchievementLoadoutStats";
 import { MasterAchievementBar } from "./MasterAchievementBar";
 import AchievementLeaderboard from "../pages/AchievementLeaderboard";
+import { User } from "@ecranked/api";
 
 type achievementDataType = {
   id: number;
@@ -112,7 +113,7 @@ function getWindowDimensions() {
 }
 
 interface AchievementsProps {
-  userData: Api.User | null;
+  userData: User | null;
   fetchUserData: () => void;
 }
 
@@ -135,6 +136,7 @@ export default function Achievements({
   }, []);
 
   useEffect(() => {
+    if (!userData?.achievements) return
     // if (!userData) return null;
     // if (!userData.achievements) return null;
 
@@ -498,58 +500,54 @@ export default function Achievements({
 
       oculus_id: null,
     } as exportAchievementDataType;
+    if (userData?.achievements) {
+      Object.entries(userData.achievements).forEach(([key, value]) => {
+        let index = parseInt(key)
+        if (index === 80) return
+        var element = value;
 
-    for (let index = 0; index < 80; index++) {
-      var element = 0;
-      if (userData?.achievements == null) {
-      } else {
-        element = userData.achievements[0] as any;
-      }
-      if (element === undefined) {
-        element = 0;
-      }
+        let pubCount = 0;
+        if (index > 0) {
+          totalPercentage += element;
+        }
+        if (index < 1) {
+        } else if (index < 5) {
+          communityTotal += element;
+        } else if (index < 30) {
+          dailyTotal += element;
+        } else if (index < 55) {
+          weeklyTotal += element;
+          pubCount = userData?.weekly_stats?.total_games ?? 0;
+        } else if (index < 80) {
+          seasonTotal += element;
+          pubCount = userData?.achievement_stats?.total_games ?? 0;
+        }
 
-      let pubCount = 0;
-      if (index > 0) {
-        totalPercentage += element;
-      }
-      if (index < 1) {
-      } else if (index < 5) {
-        communityTotal += element;
-      } else if (index < 29) {
-        dailyTotal += element;
-      } else if (index < 54) {
-        weeklyTotal += element;
-        pubCount = userData?.weekly_stats?.total_games ?? 0;
-      } else if (index < 79) {
-        seasonTotal += element;
-        pubCount = userData?.achievement_stats?.total_games ?? 0;
-      }
+        let chosenIcon = "community";
+        if (index > 4) {
+          chosenIcon = achievementIcons[(index - 5) % 25];
+        }
 
-      let chosenIcon = "community";
-      if (index > 4) {
-        chosenIcon = achievementIcons[(index - 5) % 25];
-      }
-
-      let achievementData = {
-        id: index,
-        value: element,
-        locked: false,
-        formatting: { ...achievementFormattingData[index] },
-        pubCount: pubCount,
-        icon: chosenIcon,
-        todayValue: todayValue[index],
-        todayProgress: todayProgress[index],
-        pubRequirement: null,
-      } as achievementDataType;
-      // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayValues[index]);
-      achievementData.formatting.Progress =
-        achievementData.formatting.Progress.replace(
-          "%p",
-          todayProgress[index]?.toString() ?? "0"
-        );
-      // achievementData.formatting.Progress = achievementData.inProgressormatting.Progress.replace("%p");
-      exportAchievementData.achievements[index] = { ...achievementData };
+        let achievementData = {
+          id: index,
+          value: element,
+          locked: false,
+          formatting: { ...achievementFormattingData[index] },
+          pubCount: pubCount,
+          icon: chosenIcon,
+          todayValue: todayValue[index],
+          todayProgress: todayProgress[index],
+          pubRequirement: null,
+        } as achievementDataType;
+        // achievementData.formatting.Progress = achievementData.formatting.Progress.replace("%p", todayValues[index]);
+        achievementData.formatting.Progress =
+          achievementData.formatting.Progress.replace(
+            "%p",
+            todayProgress[index]?.toString() ?? "0"
+          );
+        // achievementData.formatting.Progress = achievementData.inProgressormatting.Progress.replace("%p");
+        exportAchievementData.achievements[index] = { ...achievementData };
+      });
     }
 
     exportAchievementData.totalPercentage = totalPercentage / 79;
@@ -833,6 +831,7 @@ export default function Achievements({
     setMessage(achievementData[16], "day", "phase shift", dailyTechsList);
 
     setAchievementData(exportAchievementData);
+    // console.log("124", exportAchievementData)
   }, [userData]);
 
   const [wantFAQ, setWantFAQ] = useState(false);
@@ -876,6 +875,7 @@ export default function Achievements({
   }, [fullView]);
 
   // screenWidth = getWindowDimensions();
+  // console.log("882", achievementData)
   return (
     <div
       className="padded rounded list"
@@ -910,7 +910,7 @@ export default function Achievements({
             totalPercent={achievementData?.totalPercentage ?? 0}
             // Percentage={achievementData.values["63"]}
             Title={""}
-            // Height={"50px"}
+            Height={50}
             EnableBorder={true}
             clickMe={true}
           />

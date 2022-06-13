@@ -323,6 +323,10 @@ const SegmentedLProgressBar = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [clicked, setClicked] = useState(false);
+
+  var locked = achievementData?.locked;
+  var completed = false;
+
   useEffect(() => {
     eventBus.on("closeAll", (data) => setClicked(false));
     return () => {
@@ -334,7 +338,6 @@ const SegmentedLProgressBar = ({
   var completed = false;
 
   function onClicked() {
-    console.log("applying");
     eventBus.dispatch("closeAll", { message: null });
     setClicked(!clicked);
   }
@@ -366,7 +369,7 @@ const SegmentedLProgressBar = ({
     (achievementData?.icon ?? "pulsar") +
     (achievementData?.inProgress ? "_" + type : "") +
     ".png";
-  var showWhite = achievementData.value > achievementData.todayValue;
+  var showWhite = achievementData?.value > achievementData?.todayValue;
 
   if (locked) {
     showWhite = false;
@@ -610,7 +613,6 @@ const LoadoutBarItem = ({
       }}
       className="rounded list hoverable"
       onMouseEnter={() => {
-        console.log("Twe");
         setOnHovered(true);
         setHovered(true);
       }}
@@ -719,7 +721,6 @@ export const AchievementLoadoutStats = ({
       </AchievementPopupStyle>
     );
   };
-  console.log("#788", achievementsData);
 
   if (selectedAchievementType === "daily") {
     return (
@@ -747,7 +748,7 @@ export const AchievementLoadoutStats = ({
         <div className="container">
           <div className="wide-gap horizontal-container">
             <div className="list grow">
-              {Object.values(achievementsData)
+              {Object.values(achievementsData.achievements)
                 .slice(5, 17)
                 .map((element, index) => {
                   return (
@@ -761,7 +762,7 @@ export const AchievementLoadoutStats = ({
                 })}
             </div>
             <div className="list grow">
-              {Object.values(achievementsData)
+              {Object.values(achievementsData.achievements)
                 .slice(17, 29)
                 .map((element, index) => {
                   return (

@@ -193,7 +193,6 @@ export default function UserPubLeaderboard({ oculus_name }) {
       apiData.slice(LeaderboardPosition, LeaderboardPosition + 10)
     );
   }, [apiData, oculus_name]);
-  console.log("LEADERBOARD", apiData);
   return (
     <LeaderboardList userList={displayData} username={oculus_name} />
     // <>

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MasterAchievementBar } from "../components/MasterAchievementBar";
 import { Link } from "react-router-dom";
-import { makeApiCall } from "../helpers/api/index";
+import { Leaderboard } from "@ecranked/api";
 
 // import AutoComplete from "../components/AutoComplete";
 // import moment from "moment-timezone";
@@ -187,20 +187,9 @@ export default function AchievementLeaderboard({
   const [startIndex, setStartIndex] = React.useState(0);
 
   useEffect(() => {
-    makeApiCall("v1/leaderboard/achievement")
-      .then(async (response) => {
-        const data = response.json;
-        console.log("code:" + response.statusCode);
-        if (response.status === 404) {
-          console.error("User not found!");
-        } else {
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-          setApiData(data);
-        }
+    Leaderboard.getAchievements()
+      .then((data) => {
+        setApiData(data);
       })
       .catch((error) => {
         console.error("There was an error!", error);

@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import AutoComplete from "./AutoComplete";
-import { useSelector } from "react-redux";
-import { State } from "../stores/store";
 import { ButtonLink, LogoutButton, TopBarLink, TopBarLinksMobile, LinkLikeButtonStyle } from "./TopBarLinksDesktop";
-import makeApiCall from "../helpers/api/makeApiCall";
+import { useMe, User, Team } from "@ecranked/api";
+import api from "../api";
 // import GlobalUserState from "../contexts/GlobalUserState";
 export const TopBarLinksDesktop = styled.div`
   width: 100%;
@@ -60,18 +59,18 @@ const autoCompleteOptionDiv = styled.div`
   transition-duration: 0.1s;
 `;
 const AuthorizeButton = (): JSX.Element => {
-  const { oculus_id, isLoading } = useSelector((state: State) => state.user);
+  const { me, isLoading } = useMe();
 
-
-  const logout = () => {
-
+  const logout = async () => {
+    await api.logout()
     window.location.reload();
+
   };
   // console.log(userData.authorization_token);
   var buttonText = "Login";
   if (isLoading) buttonText = "Loading...";
-  if (oculus_id) buttonText = "Logout";
-  if (!oculus_id) {
+  if (me?.oculus_id) buttonText = "Logout (" + me.oculus_name + ")";
+  if (!me?.oculus_id) {
     return (
       <ButtonLink
         style={{ float: "right" }}
@@ -107,7 +106,7 @@ function getWindowDimensions() {
 }
 
 export default function Nav() {
-  const user = useSelector((state: State) => state.user);
+  const { me } = useMe();
   // const [globalUserState] = useContext(GlobalUserState);
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
@@ -128,21 +127,16 @@ export default function Nav() {
 
 
   useEffect(() => {
-    makeApiCall("v1/user/@all")
-      .then((response) => {
-        const data = response.json as string[];
-        setAllUsernames(data);
-      })
+    User.fetchAll().then((response) => {
+      setAllUsernames(response);
+    })
       .catch((error) => {
         console.error("SetAllUsernames => There was an error!", error);
       });
   }, []);
   useEffect(() => {
-    makeApiCall("v1/team/@all")
-      .then((response) => {
-        const data = response.json as {
-          name: string;
-        }[];
+    Team.fetchAll()
+      .then((data) => {
         setAllTeams(data.map((element) => element.name));
       })
       .catch((error) => {
@@ -230,7 +224,7 @@ export default function Nav() {
               <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
               <TopBarLink link="/Changelog" text="Changelog" />
 
-              {user.moderator ? (
+              {me?.moderator ? (
                 <TopBarLink
                   link="/Moderator/UnapprovedImages"
                   text="Moderator"

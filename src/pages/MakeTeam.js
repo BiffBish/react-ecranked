@@ -155,9 +155,6 @@ export default function MakeTeam() {
       </MakeTeamBoxStyle>
       {/* <MetaTags>
         <title>Create a team!</title>
-        {/* <meta name="description" content={"Visit " + teamname + "'s Page!"} />
-          <meta property="og:title" content="MyApp" />
-          <meta property="og:image" content="path/to/image.jpg" /> * / }
       </MetaTags> */}
       {/* </TeamBody> */}
     </>
