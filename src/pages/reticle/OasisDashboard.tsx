@@ -776,6 +776,7 @@ const QueuePage = ({ queues }: QueueProps) => {
       <div className="horizontal-fill">
         {selectedQueue.can_leave ? <div className="button" onClick={async () => { await selectedQueue.leave() }}>Leave</div> : null}
         {selectedQueue.can_delete ? <div className="button" onClick={async () => { await selectedQueue.delete() }}>Delete Queue</div> : null}
+        <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Join" />
       </div>
       <div className="horizontal-fill">
         <div className="list">
