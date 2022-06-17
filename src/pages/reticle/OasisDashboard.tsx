@@ -3,7 +3,9 @@ import { useRef, useEffect } from "react";
 import useState from 'react-usestateref';
 import styled from "styled-components";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { Shortener } from "@ecranked/api"
+import { Queue as APIQueue, Shortener, QueueUser as APIQueueUser, useMe } from "@ecranked/api"
+
+// import api from "../../api";
 function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
   client?.send(
     JSON.stringify({
@@ -80,6 +82,20 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
         lobby_team: gameTeam,
       })
     );
+  }
+  function onSubmitQueue() {
+    if (gameName === "" || gameRegion === "" || gameTeam === "") {
+      alert("Please fill out all fields");
+      return;
+    }
+    APIQueue.makeNew(
+      {
+        map_name: gameName + "",
+        region: gameRegion + "",
+        game_rules: "{}",
+        live_only: false,
+        public: false,
+      });
   }
   return (
     <div className="horizontal-fill border-thick padded">
@@ -289,6 +305,9 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
       <div className="list no-gap">
         <div className="rounded button padded" onClick={onSubmit}>
           Launch
+        </div>
+        <div className="rounded button padded" onClick={onSubmitQueue}>
+          Make Queue
         </div>
       </div>
 
@@ -513,19 +532,290 @@ interface reticlePreferencesInterface {
 }
 
 
-
+interface ClientActionsProps {
+  client: W3CWebSocket | null;
+  reticlePreferences: reticlePreferencesInterface;
+  clientConnected: boolean;
+}
+const ClientActions = ({ client, reticlePreferences, clientConnected }: ClientActionsProps) => {
+  if (!clientConnected) {
+    return <div className="padded border button">
+      Connecting to reticle instance...
+    </div>;
+  }
+  return (
+    <>
+      <div
+        className="padded border button"
+        onClick={() => {
+          client?.send(
+            JSON.stringify({
+              command: "set-preference",
+              key: "autojoin",
+              value:
+                reticlePreferences.autojoin === "true" ? "false" : "true",
+            })
+          );
+          setTimeout(() => {
+            client?.send(
+              JSON.stringify({
+                command: "get-config",
+              })
+            );
+          }, 200);
+        }}
+      >
+        {reticlePreferences.autojoin === "true"
+          ? " Autojoin Activated!"
+          : "Autojoin Disabled"}
+      </div>
+      <div
+        className="padded border button"
+        onClick={() => {
+          var exePath = prompt("Please enter your echoVR executable path");
+          if ((exePath === "" || exePath == null || exePath === undefined)) {
+            return;
+          }
+          client?.send(
+            JSON.stringify({
+              command: "set-preference",
+              key: "executable-path",
+              value: exePath,
+            })
+          );
+          setTimeout(() => {
+            client?.send(
+              JSON.stringify({
+                command: "get-config",
+              })
+            );
+          }, 1000);
+        }}
+      >
+        {reticlePreferences.executable_path}
+      </div>
+      <div
+        className="padded border button"
+        onClick={() => {
+          client?.send(
+            JSON.stringify({
+              command: "set-preference",
+              key: "launch-in-popup",
+              value:
+                reticlePreferences.launch_in_popup === "true"
+                  ? "false"
+                  : "true",
+            })
+          );
+          setTimeout(() => {
+            client?.send(
+              JSON.stringify({
+                command: "get-config",
+              })
+            );
+          }, 200);
+        }}
+      >
+        {reticlePreferences.launch_in_popup === "true"
+          ? " Launching In Popup!"
+          : "Not launching in popup"}
+      </div>
+      <div
+        className="padded border button"
+        onClick={() => {
+          client?.send(JSON.stringify({ command: "shutdown" }));
+          //Wait a second before closing the window
+          setTimeout(() => {
+            window.close();
+          }, 1000);
+        }}
+      >
+        Shutdown Reticle
+      </div>
+    </>
+  )
+}
 
 interface OasisDashboardProps {
   joinCode?: string;
 }
+
+
+interface QueuesProps {
+  queues: APIQueue[]
+}
+const Queues = ({ queues }: QueuesProps) => {
+  console.log(queues)
+  return (
+    <div className="padded rounded list">
+      <h2>Join a queue!</h2>
+      {queues.map((queue) => {
+        return (
+          <div className="border-thick  horizontal-fill">
+
+            <div className="padded">
+              <h3>{queue.id}</h3>
+            </div>
+            <div className="padded">
+              <h3>{queue.isJoined ? "True" : "False"}</h3>
+            </div>
+            <div className="rounded button padded" onClick={async () => { await queue.join() }}>
+              Join
+            </div>
+          </div>)
+      }
+      )}
+    </div>
+  );
+};
+
+
+interface QueueProps {
+  queues: APIQueue[]
+}
+
+
+const QueueUser = ({ user, queue }: { user: APIQueueUser, queue: APIQueue }) => {
+  return (
+    <div className="horizontal-fill">
+      <div className="padded rounded border-thick">
+        <h3>{user.oculus_name}</h3>
+      </div>
+      {/* <div className="padded">
+        <h3>{user.isJoined ? "True" : "False"}</h3>
+      </div> */}
+      {
+        user.can_kick ?
+          <div className="padded rounded border-thick button" onClick={async () => { await queue.kick(user.oculus_id) }}>
+            Kick
+          </div>
+          : null
+      }
+    </div>
+  );
+}
+
+
+const LinkButton = ({ queue, linkCode, team }: {
+  queue: APIQueue,
+  linkCode: string | null,
+  team: string
+}) => {
+
+  const [hover, setHover] = useState<boolean>(false);
+  if (!queue.isAdmin) return null;
+
+  if (linkCode) {
+    return (
+      <div className="border centered button" onClick={async () => {
+        navigator.clipboard.writeText("<reticle://" + linkCode + ">");
+      }} onMouseEnter={
+        () => {
+          setHover(true);
+        }
+      } onMouseLeave={
+        () => {
+          setHover(false);
+        }
+
+      }>
+        <p>{hover ? "<reticle://" + linkCode + ">" : "Click to copy join-link"}</p>
+      </div >
+    );
+  }
+
+  return (
+    <p className="border centered button" onClick={
+      async () => {
+        let teamName: "orange" | "blue" | "spectate" | "any" = "any";
+        switch (team) {
+          case "Orange":
+            teamName = "orange";
+            break;
+          case "Blue":
+            teamName = "blue";
+            break;
+          case "Spectator":
+            teamName = "spectate";
+            break;
+          case "Join":
+            teamName = "any";
+            break;
+        }
+
+        queue.makeInviteLink(teamName);
+      }
+
+
+    }> {" "}🔗 Generate {team} link</p>
+  )
+}
+
+const QueuePage = ({ queues }: QueueProps) => {
+
+  //filter the queues by if the user has joined it
+  const joinedQueues = queues.filter((queue) => {
+    return queue.isJoined;
+  })
+
+
+  if (joinedQueues.length === 0) {
+    return <Queues queues={queues} />
+  }
+
+  // const joinedLiveQueues = joinedQueues.filter((queue) => {
+  //   return queue.live_only;
+  // })
+
+  const selectedQueue = joinedQueues[0];
+
+  return (
+    <div className="padded rounded list border-thick">
+      <h2>Queue</h2>
+      <h3>{selectedQueue.id}</h3>
+      <div className="horizontal-fill">
+        {selectedQueue.can_leave ? <div className="button" onClick={async () => { await selectedQueue.leave() }}>Leave</div> : null}
+        {selectedQueue.can_delete ? <div className="button" onClick={async () => { await selectedQueue.delete() }}>Delete Queue</div> : null}
+      </div>
+      <div className="horizontal-fill">
+        <div className="list">
+          <h3 className="rounded padded border-thick horizontal-fill"><h3>Blue Team</h3> <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Blue" /></h3>
+
+          {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} />)}
+          {selectedQueue.can_join_blue ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("blue") }}>+ Join team</div> : null}
+        </div>
+        <div className="list">
+          <h3 className="rounded padded border-thick horizontal-fill"><h3>Spectator Team</h3> <LinkButton linkCode={selectedQueue.spectate_link} queue={selectedQueue} team="Spectator" /></h3>
+
+          {selectedQueue.spectate_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} />)}
+          {selectedQueue.can_join_spectate ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("spectate") }}>+ Join team</div> : null}
+
+        </div>
+        <div className="list">
+          <h3 className="rounded padded border-thick horizontal-fill"><h3>Orange Team</h3> <LinkButton linkCode={selectedQueue.orange_link} queue={selectedQueue} team="Orange" /></h3>
+
+          {selectedQueue.orange_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} />)}
+          {selectedQueue.can_join_orange ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("orange") }}>+ Join team</div> : null}
+
+        </div>
+      </div >
+    </div >
+  )
+}
+
+
+
+
 export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
   // const clientIP = "192.168.50.105:13113"
   const clientIP = "127.0.0.1:13113"
-
+  const { me } = useMe()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [client, setClient] = useState<W3CWebSocket | null>(
     null
   )
+
+
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [serverLive, setServerLive] = useState<W3CWebSocket | null>(
@@ -611,6 +901,37 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentGameState]);
 
+
+
+
+  useEffect(() => {
+    if (joinCode && me) {
+      console.log("Getting code", joinCode)
+      Shortener.getShortenedQueueInvite(joinCode).then((invite) => {
+        console.log("Got code", invite)
+        if (!invite) {
+          alert("Invalid invite code")
+          return;
+        }
+        APIQueue.fetch(invite.queue_id).then((queue) => {
+          console.log("Queue", queue)
+          if (!queue) {
+            alert("Invalid queue")
+
+            return;
+          }
+          let inviteTeam = invite.type
+          if (inviteTeam === "any") {
+            inviteTeam = "spectate"
+          }
+          queue.joinWithCode(invite.code, inviteTeam).then(() => {
+            alert("Joined queue")
+          })
+
+        });
+      });
+    }
+  }, [joinCode, me])
   useEffect(() => {
     console.log("client", client, client?.readyState, "server", serverLive?.readyState)
     if (client) {
@@ -621,18 +942,46 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         console.log("WebSocket Client Connected");
 
         if (joinCode) {
-          Shortener.getShortenedData<{
-            sessionID: string,
-            teamID: number
-          }>(joinCode).then((data) => {
-            JoinServer(client, data.sessionID, data.teamID);
-            //Close the page
-            window.close();
-          })
+          console.log("Getting code", joinCode)
+          Shortener.getShortenedQueueInvite(joinCode).then((invite) => {
+            console.log("Got code", invite)
+            if (!invite) {
+              alert("Invalid invite code")
+              return;
+            }
+            APIQueue.fetch(invite.queue_id).then((queue) => {
+              console.log("Queue", queue)
+              if (!queue) {
+                alert("Invalid queue")
+
+                return;
+              }
+              let inviteTeam = invite.type
+              if (inviteTeam === "any") {
+                inviteTeam = "spectate"
+              }
+              queue.joinWithCode(joinCode, inviteTeam).then(() => {
+                alert("Joined queue")
+              })
+
+            });
+          });
+
+
+          // Shortener.getShortenedData<{
+          //   sessionID: string,
+          //   teamID: number
+          // }>(joinCode).then((data) => {
+          //   if (!data) {
+          //     alert("Invalid join code")
+          //     window.close();
+          //     return
+          //   }
+          //   JoinServer(client, data.sessionID, data.teamID);
+          //   //Close the page
+          //   window.close();
+          // });
         }
-
-
-
         // if (joinSession !== null) {
         //   if (client) {
         //     JoinServer(client, , parseInt(query.get("joinTeam") ?? "2"));
@@ -676,7 +1025,6 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverConnected, serverLive]);
-
 
   const [gameStartTime, setGameStartTime] = useState(0);
   useEffect(() => {
@@ -910,6 +1258,17 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
+  const { all: queues, isLoading: AllQueuesLoading } = APIQueue.useAll()
+
+  useEffect(() => {
+    if (!AllQueuesLoading) {
+      if (queues.find(queue => queue.isJoined)) {
+        setCurrentMenuState("Queue");
+      }
+    }
+  }, [AllQueuesLoading, queues]);
+  // const {me} = useMe()
+
   return (
     <div className="list" style={{ margin: "20px" }}>
       <CurrentGameState currentGameState={currentGameState} gameID={gameID} />
@@ -921,8 +1280,10 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         </div>
         {
           currentMenuState === "Queue" ? (
-
-            <GameHistory history={gameHistory} />
+            <>
+              <QueuePage queues={queues} />
+              <GameHistory history={gameHistory} />
+            </>
           ) : null
         }
         {
@@ -975,93 +1336,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         </div>
       </div>
       <div className="horizontal-fill no-gap">
-        <div
-          className="padded border button"
-          onClick={() => {
-            client?.send(
-              JSON.stringify({
-                command: "set-preference",
-                key: "autojoin",
-                value:
-                  reticlePreferences.autojoin === "true" ? "false" : "true",
-              })
-            );
-            setTimeout(() => {
-              client?.send(
-                JSON.stringify({
-                  command: "get-config",
-                })
-              );
-            }, 200);
-          }}
-        >
-          {reticlePreferences.autojoin === "true"
-            ? " Autojoin Activated!"
-            : "Autojoin Disabled"}
-        </div>
-        <div
-          className="padded border button"
-          onClick={() => {
-            var exePath = prompt("Please enter your echoVR executable path");
-            if ((exePath === "" || exePath == null || exePath === undefined)) {
-              return;
-            }
-            client?.send(
-              JSON.stringify({
-                command: "set-preference",
-                key: "executable-path",
-                value: exePath,
-              })
-            );
-            setTimeout(() => {
-              client?.send(
-                JSON.stringify({
-                  command: "get-config",
-                })
-              );
-            }, 1000);
-          }}
-        >
-          {reticlePreferences.executable_path}
-        </div>
-        <div
-          className="padded border button"
-          onClick={() => {
-            client?.send(
-              JSON.stringify({
-                command: "set-preference",
-                key: "launch-in-popup",
-                value:
-                  reticlePreferences.launch_in_popup === "true"
-                    ? "false"
-                    : "true",
-              })
-            );
-            setTimeout(() => {
-              client?.send(
-                JSON.stringify({
-                  command: "get-config",
-                })
-              );
-            }, 200);
-          }}
-        >
-          {reticlePreferences.launch_in_popup === "true"
-            ? " Launching In Popup!"
-            : "Not launching in popup"}
-        </div>
-        <div
-          className="padded border button"
-          onClick={() => {
-            client?.send(JSON.stringify({ command: "shutdown" }));
-            //Wait a second before closing the window
-            setTimeout(() => {
-              window.close();
-            }, 1000);
-          }}
-        >
-          Shutdown Reticle
-        </div>
+        <ClientActions client={client} reticlePreferences={reticlePreferences} clientConnected={clientConnected} />
       </div>
     </div>
   );
@@ -1124,4 +1399,3 @@ const GameHistory = ({ history }: any) => {
   //   </div>
   // </div >;
 }
-
