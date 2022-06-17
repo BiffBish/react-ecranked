@@ -671,7 +671,7 @@ const Queues = ({ queues }: QueuesProps) => {
 
 
 interface QueueProps {
-  queues: APIQueue[]
+  queue: APIQueue
 }
 
 
@@ -751,23 +751,8 @@ const LinkButton = ({ queue, linkCode, team }: {
   )
 }
 
-const QueuePage = ({ queues }: QueueProps) => {
+const QueuePage = ({ queue: selectedQueue }: QueueProps) => {
 
-  //filter the queues by if the user has joined it
-  const joinedQueues = queues.filter((queue) => {
-    return queue.isJoined;
-  })
-
-
-  if (joinedQueues.length === 0) {
-    return <Queues queues={queues} />
-  }
-
-  // const joinedLiveQueues = joinedQueues.filter((queue) => {
-  //   return queue.live_only;
-  // })
-
-  const selectedQueue = joinedQueues[0];
 
   return (
     <div className="padded rounded list border-thick">
@@ -922,11 +907,29 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
             return;
           }
           let inviteTeam = invite.type
+
+          switch (inviteTeam) {
+            case "blue":
+              queue.setBlueCode(invite.code)
+              break;
+            case "orange":
+              queue.setOrangeCode(invite.code)
+              break;
+            case "spectate":
+              queue.setSpectateCode(invite.code)
+              break;
+            case "any":
+              queue.setAnyCode(invite.code)
+              break;
+            default:
+              break;
+          }
+
           if (inviteTeam === "any") {
             inviteTeam = "spectate"
           }
           queue.joinWithCode(invite.code, inviteTeam).then(() => {
-            alert("Joined queue")
+            // setSelectedQueue(queue)
           })
 
         });
@@ -1261,14 +1264,18 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
 
   const { all: queues, isLoading: AllQueuesLoading } = APIQueue.useAll()
 
+  const [selectedQueue, setSelectedQueue] = useState<APIQueue | null>(null)
   useEffect(() => {
-    if (!AllQueuesLoading) {
+    if (!AllQueuesLoading && selectedQueue === null) {
       if (queues.find(queue => queue.isJoined)) {
         setCurrentMenuState("Queue");
+        setSelectedQueue(queues.find(queue => queue.isJoined) ?? null);
       }
     }
   }, [AllQueuesLoading, queues]);
   // const {me} = useMe()
+
+
 
   return (
     <div className="list" style={{ margin: "20px" }}>
@@ -1282,7 +1289,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         {
           currentMenuState === "Queue" ? (
             <>
-              <QueuePage queues={queues} />
+              {selectedQueue ? <QueuePage queue={selectedQueue} /> : <Queues queues={queues} />}
               <GameHistory history={gameHistory} />
             </>
           ) : null
