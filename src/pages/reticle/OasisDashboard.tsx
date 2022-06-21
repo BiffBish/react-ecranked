@@ -726,7 +726,7 @@ const LinkButton = ({ queue, linkCode, team }: {
         }
 
       }>
-        <p>{hover ? "<reticle://" + linkCode + ">" : "Click to copy join-link"}</p>
+        <p>{hover ? "<reticle://join" + linkCode + ">" : "Click to copy join-link"}</p>
       </div >
     );
   }
