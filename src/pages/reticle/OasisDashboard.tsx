@@ -820,7 +820,7 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
     if (selectedQueue.spectate_users.find((user) => user.oculus_id === me?.oculus_id)) {
       team = 2;
     }
-
+    setWaitingForGameID(true)
     client?.send(
       JSON.stringify({
         command: "create-server",
