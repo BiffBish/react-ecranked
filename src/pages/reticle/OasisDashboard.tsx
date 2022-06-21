@@ -715,7 +715,7 @@ const LinkButton = ({ queue, linkCode, team }: {
   if (linkCode) {
     return (
       <div className="border centered button" onClick={async () => {
-        navigator.clipboard.writeText("<reticle://" + linkCode + ">");
+        navigator.clipboard.writeText("<reticle://join/" + linkCode + ">");
       }} onMouseEnter={
         () => {
           setHover(true);
