@@ -501,9 +501,13 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
           <div
             className="padded button"
             onClick={async () => {
-              let code = await Shortener.shortenData({
-                sessionID: gameID,
-                teamID: 0,
+              if (!gameID) return;
+              let code = await Shortener.shortenGameInvite({
+                session_id: gameID,
+                game_rules: "",
+                map_name: "null",
+                region: "null",
+                team: "spectate"
               })
 
               navigator.clipboard.writeText("<reticle://join/" + code + ">");
@@ -726,7 +730,7 @@ const LinkButton = ({ queue, linkCode, team }: {
         }
 
       }>
-        <p>{hover ? "<reticle://join" + linkCode + ">" : "Click to copy join-link"}</p>
+        <p>{hover ? "<reticle://join/" + linkCode + ">" : "Click to copy join-link"}</p>
       </div >
     );
   }
@@ -1016,6 +1020,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
       });
     }
   }, [joinCode, me])
+
   useEffect(() => {
     console.log("client", client, client?.readyState, "server", serverLive?.readyState)
     if (client) {
@@ -1027,29 +1032,28 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
 
         if (joinCode) {
           console.log("Getting code", joinCode)
-          Shortener.getShortenedQueueInvite(joinCode).then((invite) => {
-            console.log("Got code", invite)
-            if (!invite) {
-              alert("Invalid invite code")
-              return;
+          Shortener.getShortenedGameInvite(joinCode).then((data) => {
+            if (!data) {
+              alert("Invalid join code")
+              window.close();
+              return
             }
-            APIQueue.fetch(invite.queue_id).then((queue) => {
-              console.log("Queue", queue)
-              if (!queue) {
-                alert("Invalid queue")
+            let teamID = 0;
+            switch (data.team) {
+              case "blue":
+                teamID = 0;
+                break;
+              case "orange":
+                teamID = 1;
+                break;
+              case "spectate":
+                teamID = 2;
+                break;
+            }
 
-                return;
-              }
-              let inviteTeam = invite.type
-              if (inviteTeam === "any") {
-                inviteTeam = "spectate"
-              }
-              queue.joinWithCode(joinCode, inviteTeam).then(() => {
-                alert("Joined queue")
-              })
-
-            });
+            JoinServer(client, data.session_id, teamID);
           });
+
 
 
           // Shortener.getShortenedData<{
