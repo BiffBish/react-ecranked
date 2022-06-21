@@ -3,7 +3,7 @@ import { useRef, useEffect } from "react";
 import useState from 'react-usestateref';
 import styled from "styled-components";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { Queue as APIQueue, Shortener, QueueUser as APIQueueUser, useMe } from "@ecranked/api"
+import api, { Queue as APIQueue, Shortener, QueueUser as APIQueueUser, useMe, Api } from "@ecranked/api"
 
 // import api from "../../api";
 function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
@@ -675,11 +675,14 @@ interface QueueProps {
 }
 
 
-const QueueUser = ({ user, queue }: { user: APIQueueUser, queue: APIQueue }) => {
+const QueueUser = ({ user, queue, ready }: { user: APIQueueUser, queue: APIQueue, ready?: boolean }) => {
+  // console.log(user, queue, ready)
   return (
     <div className="horizontal-fill">
-      <div className="padded rounded border-thick">
+      <div className="padded rounded border-thick horizontal-fill">
+        <div className="padded rounded border-thick button" style={{ backgroundColor: ready === true ? "green" : ready === false ? "yellow" : "gray", maxWidth: "5px" }} />
         <h3>{user.oculus_name}</h3>
+
       </div>
       {/* <div className="padded">
         <h3>{user.isJoined ? "True" : "False"}</h3>
@@ -691,7 +694,8 @@ const QueueUser = ({ user, queue }: { user: APIQueueUser, queue: APIQueue }) => 
           </div>
           : null
       }
-    </div>
+
+    </div >
   );
 }
 
@@ -752,6 +756,27 @@ const LinkButton = ({ queue, linkCode, team }: {
 }
 
 const QueuePage = ({ queue: selectedQueue }: QueueProps) => {
+  const { readyUsers, isLoading } = APIQueue.useReadyUsers();
+  const { me } = useMe();
+
+  useEffect(() => {
+    if (selectedQueue && me) {
+      selectedQueue.setReady(false);
+    }
+  }, [me, selectedQueue])
+
+  const [processedReadyUsers, setProcessedReadyUsers] = useState<{ [key: string]: boolean }>({})
+  console.log("Rendering Queue Page")
+
+  useEffect(() => {
+    console.log("Processing ready users")
+    const newProcessedReadyUsers = {} as { [key: string]: boolean }
+    readyUsers?.forEach((user) => {
+      newProcessedReadyUsers[user.oculus_id] = user.ready;
+    });
+    setProcessedReadyUsers(newProcessedReadyUsers);
+    console.log("Processed ready users", newProcessedReadyUsers)
+  }, [readyUsers])
 
 
   return (
@@ -767,24 +792,26 @@ const QueuePage = ({ queue: selectedQueue }: QueueProps) => {
         <div className="list">
           <h3 className="rounded padded border-thick horizontal-fill"><h3>Blue Team</h3> <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Blue" /></h3>
 
-          {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} />)}
+          {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} />)}
           {selectedQueue.can_join_blue ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("blue") }}>+ Join team</div> : null}
         </div>
         <div className="list">
           <h3 className="rounded padded border-thick horizontal-fill"><h3>Spectator Team</h3> <LinkButton linkCode={selectedQueue.spectate_link} queue={selectedQueue} team="Spectator" /></h3>
 
-          {selectedQueue.spectate_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} />)}
+          {selectedQueue.spectate_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} />)}
           {selectedQueue.can_join_spectate ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("spectate") }}>+ Join team</div> : null}
 
         </div>
         <div className="list">
           <h3 className="rounded padded border-thick horizontal-fill"><h3>Orange Team</h3> <LinkButton linkCode={selectedQueue.orange_link} queue={selectedQueue} team="Orange" /></h3>
 
-          {selectedQueue.orange_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} />)}
+          {selectedQueue.orange_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} />)}
           {selectedQueue.can_join_orange ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("orange") }}>+ Join team</div> : null}
 
         </div>
       </div >
+      {/* A giant Ready up button */}
+      <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
     </div >
   )
 }
