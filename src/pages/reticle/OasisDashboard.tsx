@@ -671,7 +671,10 @@ const Queues = ({ queues }: QueuesProps) => {
 
 
 interface QueueProps {
-  queue: APIQueue
+  queue: APIQueue,
+  client: W3CWebSocket | null;
+
+  gameID: string | null;
 }
 
 
@@ -755,9 +758,19 @@ const LinkButton = ({ queue, linkCode, team }: {
   )
 }
 
-const QueuePage = ({ queue: selectedQueue }: QueueProps) => {
+const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
   const { readyUsers, isLoading } = APIQueue.useReadyUsers();
   const { me } = useMe();
+
+
+  const [waitingForGameID, setWaitingForGameID] = useState<boolean>(false);
+  useEffect(() => {
+    if (gameID && waitingForGameID) {
+      selectedQueue.issueJoin(gameID)
+    }
+  }, [gameID])
+
+
 
   useEffect(() => {
     if (selectedQueue && me) {
@@ -778,6 +791,45 @@ const QueuePage = ({ queue: selectedQueue }: QueueProps) => {
     console.log("Processed ready users", newProcessedReadyUsers)
   }, [readyUsers])
 
+  APIQueue.onJoinGameCallback = (sessionID) => {
+    //Get the team the user is in
+    let team = 0;
+
+    if (selectedQueue.blue_users.find((user) => user.oculus_id === me?.oculus_id)) {
+      team = 0;
+    }
+    if (selectedQueue.orange_users.find((user) => user.oculus_id === me?.oculus_id)) {
+      team = 1;
+    }
+    if (selectedQueue.spectate_users.find((user) => user.oculus_id === me?.oculus_id)) {
+      team = 2;
+    }
+
+    JoinServer(client, sessionID, team);
+  }
+
+  APIQueue.onLaunchGameCallback = (queueID, mapName, gameRules, region) => {
+    let team = 0;
+
+    if (selectedQueue.blue_users.find((user) => user.oculus_id === me?.oculus_id)) {
+      team = 0;
+    }
+    if (selectedQueue.orange_users.find((user) => user.oculus_id === me?.oculus_id)) {
+      team = 1;
+    }
+    if (selectedQueue.spectate_users.find((user) => user.oculus_id === me?.oculus_id)) {
+      team = 2;
+    }
+
+    client?.send(
+      JSON.stringify({
+        command: "create-server",
+        map: mapName,
+        region: region,
+        lobby_team: team,
+      })
+    );
+  }
 
   return (
     <div className="padded rounded list border-thick">
@@ -812,6 +864,7 @@ const QueuePage = ({ queue: selectedQueue }: QueueProps) => {
       </div >
       {/* A giant Ready up button */}
       <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
+      <div className="padded rounded button" onClick={() => { selectedQueue.launchQueue(selectedQueue.blue_users[0].oculus_id) }}>Launch Game</div>
     </div >
   )
 }
@@ -1304,6 +1357,9 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
 
 
 
+
+
+
   return (
     <div className="list" style={{ margin: "20px" }}>
       <CurrentGameState currentGameState={currentGameState} gameID={gameID} />
@@ -1316,7 +1372,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         {
           currentMenuState === "Queue" ? (
             <>
-              {selectedQueue ? <QueuePage queue={selectedQueue} /> : <Queues queues={queues} />}
+              {selectedQueue ? <QueuePage queue={selectedQueue} gameID={gameID} client={client} /> : <Queues queues={queues} />}
               <GameHistory history={gameHistory} />
             </>
           ) : null
