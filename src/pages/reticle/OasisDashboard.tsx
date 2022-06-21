@@ -1034,8 +1034,8 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
           console.log("Getting code", joinCode)
           Shortener.getShortenedGameInvite(joinCode).then((data) => {
             if (!data) {
-              alert("Invalid join code")
-              window.close();
+              // alert("Invalid join code")
+              // window.close();
               return
             }
             let teamID = 0;
