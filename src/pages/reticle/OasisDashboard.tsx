@@ -800,6 +800,7 @@ const LinkButton = ({ queue, linkCode, team }: {
 const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
   const { readyUsers, isLoading } = APIQueue.useReadyUsers();
   const { me } = useMe();
+  const [hostLaunching, setHostLaunching] = useState<boolean>(false);
 
 
   const [waitingForGameID, setWaitingForGameID] = useState<boolean>(false);
@@ -843,7 +844,7 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
     if (selectedQueue.spectate_users.find((user) => user.oculus_id === me?.oculus_id)) {
       team = 2;
     }
-
+    setHostLaunching(false)
     JoinServer(client, sessionID, team);
   }
 
@@ -885,6 +886,10 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
     , [processedReadyUsers, selectedQueue])
 
 
+  APIQueue.onGameLaunchingCallback = () => {
+    setHostLaunching(true);
+  }
+
 
 
 
@@ -892,6 +897,11 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
   return (
     <div className="padded rounded list border-thick">
       <h2>Queue</h2>
+      {hostLaunching ?
+        <div className="padded rounded horizontal-fill">
+          <h3 className="centered">Host is launching the game. Please wait...</h3>
+        </div> : null
+      }
       <h3>{selectedQueue.id}</h3>
       <div className="horizontal-fill">
         {selectedQueue.can_leave ? <div className="button" onClick={async () => { await selectedQueue.leave() }}>Leave</div> : null}
