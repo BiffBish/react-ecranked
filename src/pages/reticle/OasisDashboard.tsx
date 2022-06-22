@@ -545,8 +545,9 @@ interface ClientActionsProps {
   client: W3CWebSocket | null;
   reticlePreferences: reticlePreferencesInterface;
   clientConnected: boolean;
+  currentGameState: number
 }
-const ClientActions = ({ client, reticlePreferences, clientConnected }: ClientActionsProps) => {
+const ClientActions = ({ client, reticlePreferences, clientConnected, currentGameState }: ClientActionsProps) => {
   if (!clientConnected) {
     return <div className="padded border button">
       Connecting to reticle instance...
@@ -554,6 +555,29 @@ const ClientActions = ({ client, reticlePreferences, clientConnected }: ClientAc
   }
   return (
     <>
+      <div
+        className="padded border button"
+        onClick={() => {
+          client?.send(
+            JSON.stringify({
+              command: currentGameState === 0
+                ? "launch-game"
+                : "kill-game",
+            })
+          );
+          setTimeout(() => {
+            client?.send(
+              JSON.stringify({
+                command: "get-config",
+              })
+            );
+          }, 200);
+        }}
+      >
+        {currentGameState === 0
+          ? "Launch Game"
+          : "Close Game"}
+      </div>
       <div
         className="padded border button"
         onClick={() => {
@@ -1502,7 +1526,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         </div>
       </div>
       <div className="horizontal-fill no-gap">
-        <ClientActions client={client} reticlePreferences={reticlePreferences} clientConnected={clientConnected} />
+        <ClientActions client={client} reticlePreferences={reticlePreferences} clientConnected={clientConnected} currentGameState={currentGameState} />
       </div>
     </div>
   );
