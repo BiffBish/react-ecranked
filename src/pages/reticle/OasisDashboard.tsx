@@ -33,11 +33,27 @@ const AutoCompleteInput = styled.input`
   // width: 10px;
 `;
 
-interface RadioSwitchProps {
+type RadioSwitchProps = {
   label: string
-  value?: (string | number)
-  setCurrent: (value: string | number) => void
-  current: string | number,
+  value?: string
+  setCurrent: (value: string) => void
+  current: string,
+  buttonStyle?: React.CSSProperties
+  buttonClassName?: string
+} |
+{
+  label: string
+  value?: number
+  setCurrent: (value: number) => void
+  current: number,
+  buttonStyle?: React.CSSProperties
+  buttonClassName?: string
+} |
+{
+  label: string
+  value?: boolean
+  setCurrent: (value: boolean) => void
+  current: boolean,
   buttonStyle?: React.CSSProperties
   buttonClassName?: string
 }
@@ -50,8 +66,10 @@ const RadioSwitch = ({ label, value, current, setCurrent, buttonStyle, buttonCla
       className={"rounded button padded" + (buttonClassName ? " " + buttonClassName : "")}
       onClick={() => {
         if (value === undefined) {
+          // @ts-ignore
           setCurrent(label);
         } else {
+          // @ts-ignore
           setCurrent(value);
         }
       }}
@@ -70,12 +88,14 @@ interface HostGameOptionsProps {
   websocket: W3CWebSocket
 }
 const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
-  const [gameName, setGameName] = useState<string | number>("");
-  const [gameRegion, setGameRegion] = useState<string | number>("");
-  const [gameTeam, setGameTeam] = useState<string | number>("");
+  const [gameName, setGameName] = useState<string>("");
+  const [gameRegion, setGameRegion] = useState<string>("");
+  const [gameTeam, setGameTeam] = useState<number>(2);
+  const [isPrivate, setIsPrivate] = useState<boolean>(false);
+
   // const history = useHistory();
   function onSubmit() {
-    if (gameName === "" || gameRegion === "" || gameTeam === "") {
+    if (gameName === "" || gameRegion === "") {
       alert("Please fill out all fields");
       return;
     }
@@ -89,7 +109,7 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
     );
   }
   function onSubmitQueue() {
-    if (gameName === "" || gameRegion === "" || gameTeam === "") {
+    if (gameName === "" || gameRegion === "") {
       alert("Please fill out all fields");
       return;
     }
@@ -98,9 +118,10 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
         map_name: gameName + "",
         region: gameRegion + "",
         game_rules: "{}",
-        live_only: false,
-        public: false,
-      });
+        live_only: true,
+        public: isPrivate,
+      }
+    );
   }
   return (
     <div className="horizontal-fill border-thick padded">
@@ -304,6 +325,39 @@ const HostGameOptions = ({ websocket }: HostGameOptionsProps) => {
 
 
           </div>
+
+        </div>
+      </div>
+      {/* Public Private selector */}
+
+      <div className="list no-gap">
+        <div className="centered">Visibility</div>
+
+        <div className="list no-gap">
+          <RadioSwitch
+            label={"Public"}
+            value={true}
+            current={isPrivate}
+            setCurrent={setIsPrivate}
+            buttonStyle={{
+              borderRadius: "0px",
+              borderWidth: "4px",
+              borderBottomWidth: "2px"
+
+            }}
+          />
+          <RadioSwitch
+            label={"Private"}
+            value={false}
+            current={isPrivate}
+            setCurrent={setIsPrivate}
+            buttonStyle={{
+              borderRadius: "0px",
+              borderWidth: "4px",
+              borderTopWidth: "2px"
+
+            }}
+          />
 
         </div>
       </div>
