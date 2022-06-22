@@ -687,17 +687,22 @@ interface QueueProps {
 }
 
 
-const QueueUser = ({ user, queue, ready }: { user: APIQueueUser, queue: APIQueue, ready?: boolean }) => {
+const QueueUser = ({ user, queue, ready, style }: { user: APIQueueUser, queue: APIQueue, ready?: boolean, style: React.CSSProperties }) => {
   // console.log(user, queue, ready)
-
+  const { me } = useMe();
   const canSetHost = (queue.isHost || queue.hasAdminPerms) && user.oculus_id !== queue.host_id;
+
+  const canSetAdmin = (queue.isAdmin || queue.hasAdminPerms) && user.oculus_id !== queue.admin_id;
+
+  const canKick = (queue.isAdmin || queue.hasAdminPerms) && user.oculus_id !== queue.admin_id && user.oculus_id !== me?.oculus_id;
+
 
   const isHost = user.oculus_id === queue.host_id;
 
   const isAdmin = user.oculus_id === queue.admin_id;
   return (
     <div className="horizontal-fill">
-      <div className="padded rounded border-thick horizontal-fill">
+      <div className="padded rounded border-thick horizontal-fill" style={style}>
         <div className="padded rounded border-thick button" style={{ backgroundColor: ready === true ? "green" : ready === false ? "yellow" : "gray", maxWidth: "5px" }} />
         {isAdmin ? <UserIcon title={"Queue Admin"} src={"/images/series_10_king.png"} /> : null}
         {isHost ? <UserIcon title={"Queue Host"} src={"/images/happy_cubesat.png"} /> : null}
@@ -709,7 +714,7 @@ const QueueUser = ({ user, queue, ready }: { user: APIQueueUser, queue: APIQueue
         <h3>{user.isJoined ? "True" : "False"}</h3>
       </div> */}
       {
-        user.can_kick ?
+        canKick ?
           <div className="padded rounded border-thick button" onClick={async () => { await queue.kick(user.oculus_id) }}>
             Kick
           </div>
@@ -722,6 +727,14 @@ const QueueUser = ({ user, queue, ready }: { user: APIQueueUser, queue: APIQueue
           </div>
           : null
       }
+      {
+        canSetAdmin ?
+          <div className="padded rounded border-thick button" onClick={async () => { await queue.setAdmin(user.oculus_id) }}>
+            Set Admin
+          </div>
+          : null
+      }
+
 
 
     </div >
@@ -857,6 +870,25 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
     );
   }
 
+  const [canLaunch, setCanLaunch] = useState<boolean>(false);
+  const [cantLaunchReason, setCantLaunchReason] = useState<string>("");
+
+  useEffect(() => {
+    if (selectedQueue.spectate_users.find((player) => processedReadyUsers[player.oculus_id] !== true) ||
+      selectedQueue.orange_users.find((player) => processedReadyUsers[player.oculus_id] !== true) ||
+      selectedQueue.blue_users.find((player) => processedReadyUsers[player.oculus_id] !== true)) {
+      setCantLaunchReason("Not all players are ready");
+    } else {
+      setCanLaunch(true);
+    }
+  }
+    , [processedReadyUsers, selectedQueue])
+
+
+
+
+
+
   return (
     <div className="padded rounded list border-thick">
       <h2>Queue</h2>
@@ -870,27 +902,31 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
         <div className="list">
           <h3 className="rounded padded border-thick horizontal-fill"><h3>Blue Team</h3> <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Blue" /></h3>
 
-          {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} />)}
+          {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(65, 160, 228)" }} />)}
           {selectedQueue.can_join_blue ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("blue") }}>+ Join team</div> : null}
         </div>
         <div className="list">
           <h3 className="rounded padded border-thick horizontal-fill"><h3>Spectator Team</h3> <LinkButton linkCode={selectedQueue.spectate_link} queue={selectedQueue} team="Spectator" /></h3>
 
-          {selectedQueue.spectate_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} />)}
+          {selectedQueue.spectate_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(255, 255, 255)" }} />)}
           {selectedQueue.can_join_spectate ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("spectate") }}>+ Join team</div> : null}
 
         </div>
         <div className="list">
           <h3 className="rounded padded border-thick horizontal-fill"><h3>Orange Team</h3> <LinkButton linkCode={selectedQueue.orange_link} queue={selectedQueue} team="Orange" /></h3>
 
-          {selectedQueue.orange_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} />)}
+          {selectedQueue.orange_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(230, 167, 50)" }} />)}
           {selectedQueue.can_join_orange ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("orange") }}>+ Join team</div> : null}
 
         </div>
       </div >
       {/* A giant Ready up button */}
       <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
-      <div className="padded rounded button" onClick={() => { selectedQueue.launchQueue(selectedQueue.blue_users[0].oculus_id) }}>Launch Game</div>
+      {canLaunch ? <div className="padded rounded button" onClick={() => { selectedQueue.launch() }}>Launch Game</div> :
+
+        <div className="padded rounded disabled-button">{"Launch Game (" + cantLaunchReason + ")"}</div>
+
+      }
     </div >
   )
 }
