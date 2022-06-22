@@ -5,6 +5,11 @@ import styled from "styled-components";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import api, { Queue as APIQueue, Shortener, QueueUser as APIQueueUser, useMe, Api } from "@ecranked/api"
 
+const UserIcon = styled.img`
+  max-width: 24px;
+  height: 24px;
+  
+`;
 // import api from "../../api";
 function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
   client?.send(
@@ -684,10 +689,19 @@ interface QueueProps {
 
 const QueueUser = ({ user, queue, ready }: { user: APIQueueUser, queue: APIQueue, ready?: boolean }) => {
   // console.log(user, queue, ready)
+
+  const canSetHost = (queue.isHost || queue.hasAdminPerms) && user.oculus_id !== queue.host_id;
+
+  const isHost = user.oculus_id === queue.host_id;
+
+  const isAdmin = user.oculus_id === queue.admin_id;
   return (
     <div className="horizontal-fill">
       <div className="padded rounded border-thick horizontal-fill">
         <div className="padded rounded border-thick button" style={{ backgroundColor: ready === true ? "green" : ready === false ? "yellow" : "gray", maxWidth: "5px" }} />
+        {isAdmin ? <UserIcon title={"Queue Admin"} src={"/images/series_10_king.png"} /> : null}
+        {isHost ? <UserIcon title={"Queue Host"} src={"/images/happy_cubesat.png"} /> : null}
+
         <h3>{user.oculus_name}</h3>
 
       </div>
@@ -701,6 +715,14 @@ const QueueUser = ({ user, queue, ready }: { user: APIQueueUser, queue: APIQueue
           </div>
           : null
       }
+      {
+        canSetHost ?
+          <div className="padded rounded border-thick button" onClick={async () => { await queue.setHost(user.oculus_id) }}>
+            Set Host
+          </div>
+          : null
+      }
+
 
     </div >
   );
@@ -1350,10 +1372,13 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
 
   const [selectedQueue, setSelectedQueue] = useState<APIQueue | null>(null)
   useEffect(() => {
-    if (!AllQueuesLoading && selectedQueue === null) {
+    if (!AllQueuesLoading) {
       if (queues.find(queue => queue.isJoined)) {
         setCurrentMenuState("Queue");
         setSelectedQueue(queues.find(queue => queue.isJoined) ?? null);
+      } else {
+
+        setSelectedQueue(null)
       }
     }
   }, [AllQueuesLoading, queues]);
