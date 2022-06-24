@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 
-export const OasisDashboardPopup = () => {
+export const OasisDashboardPopup = ({ url }) => {
   console.log("[23] Running useEffect");
   const [isEnabled, setIsEnabled] = useState(true);
 
@@ -40,7 +40,7 @@ export const OasisDashboardPopup = () => {
             );
           },
         };
-        let popup = window.open("/reticle/dashboard", "", "popup");
+        let popup = window.open(url, "", "popup");
         popupBlockerChecker.check(popup);
       });
       setIsEnabled(hasPopupsEnabled);

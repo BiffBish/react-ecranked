@@ -306,7 +306,7 @@ function Routes() {
           render={() => {
             setBannerHeight(100);
             setBannerText("Redirecting");
-            return <OasisDashboardPopup />;
+            return <OasisDashboardPopup url={"/reticle/dashboard"} />;
           }}
         />
         <Route
@@ -315,6 +315,15 @@ function Routes() {
           render={(props) => {
             console.log("[23] Open");
             return <OasisDashboard joinCode={props.match.params.id} subJoinPath={props.match.params.sub_code} />;
+          }}
+        />
+        <Route
+          exact
+          path={`/reticle/popout/:sub_code/:id`}
+          render={(props) => {
+            console.log("[23] Open");
+            return <OasisDashboardPopup url={"/reticle/" + props.match.params.sub_code + "/" + props.match.params.id
+            } />;
           }}
         />
       </PageBody>
