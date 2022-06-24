@@ -1510,10 +1510,11 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
 
   useEffect(() => {
     if (!client) return
-    window.addEventListener("beforeunload", (ev) => {
-      ev.preventDefault();
-      return (ev.returnValue = "Are you sure you want to close?");
-    });
+    // window.addEventListener("beforeunload", (ev) => {
+    //   ev.preventDefault();
+    //   // return (ev.returnValue = "Are you sure you want to close?");
+    // });
+    // window.removeEventListener("beforeunload", (ev) => {
     setWebsocket(client);
 
     // @ts-ignore
