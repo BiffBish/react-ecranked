@@ -990,6 +990,13 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
     setHostLaunching(true);
   }
 
+  APIQueue.onQueueCloseCallback = () => {
+    //Close the page if the queue is closed
+    window.close();
+  }
+
+
+
 
 
 
