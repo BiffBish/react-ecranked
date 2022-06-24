@@ -1118,7 +1118,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
   // 3 = In game
   const [currentGameState, setCurrentGameState] = useState(0);
 
-  const [currentMenuState, setCurrentMenuState] = useState<number | string>("");
+  let [currentMenuState, setCurrentMenuState] = useState<number | string>("");
 
   const pingServer = () => {
     client?.send(
@@ -1542,7 +1542,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
 
 
 
-
+  if (selectedQueue) currentMenuState = "Queue"
 
 
   return (
