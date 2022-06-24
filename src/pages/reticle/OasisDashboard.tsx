@@ -735,6 +735,7 @@ const ClientActions = ({ client, reticlePreferences, clientConnected, currentGam
 
 interface OasisDashboardProps {
   joinCode?: string;
+  subJoinPath?: string;
 }
 
 
@@ -1054,7 +1055,7 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
 
 
 
-export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
+export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboardProps) {
   // const clientIP = "192.168.50.105:13113"
   const clientIP = "127.0.0.1:13113"
   const { me } = useMe()
@@ -1150,38 +1151,48 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
   }, [currentGameState]);
 
 
+  let [joinOnConnect, setJoinOnConnect] = useState<{
+    team: "blue" | "orange" | "spectate" | "any",
+    session_id: string,
+  } | null>(null);
+
 
 
   useEffect(() => {
-    if (joinCode && me) {
-      console.log("Getting code", joinCode)
-      Shortener.getShortenedQueueInvite(joinCode).then((invite) => {
-        console.log("Got code", invite)
-        if (!invite) {
-          alert("Invalid invite code")
-          return;
-        }
-        APIQueue.fetch(invite.queue_id).then((queue) => {
-          console.log("Queue", queue)
+    async function asyncStuff() {
+      if (!joinCode) return
+
+      const { data: shortenedData, category } = await Shortener.getShortenedInvite(joinCode)
+
+      if (category === "session") {
+        setJoinOnConnect({
+          team: "any",
+          session_id: shortenedData.session_id,
+        })
+      }
+      if (category === "queue") {
+        if (me) {
+          const queue = await APIQueue.fetch(shortenedData.queue_id)
+
           if (!queue) {
             alert("Invalid queue")
 
             return;
           }
-          let inviteTeam = invite.type
+          let inviteTeam = shortenedData.type
 
           switch (inviteTeam) {
             case "blue":
-              queue.setBlueCode(invite.code)
+              queue.setBlueCode(shortenedData.code)
               break;
             case "orange":
-              queue.setOrangeCode(invite.code)
+              queue.setOrangeCode(shortenedData.code)
               break;
             case "spectate":
-              queue.setSpectateCode(invite.code)
+              queue.setSpectateCode(shortenedData.code)
               break;
             case "any":
-              queue.setAnyCode(invite.code)
+              queue.setAnyCode(shortenedData.code)
               break;
             default:
               break;
@@ -1190,13 +1201,17 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
           if (inviteTeam === "any") {
             inviteTeam = "spectate"
           }
-          queue.joinWithCode(invite.code, inviteTeam).then(() => {
-            // setSelectedQueue(queue)
-          })
+          queue.joinWithCode(shortenedData.code, inviteTeam)
 
-        });
-      });
+        } else {
+          alert("Invalid invite code")
+          window.close()
+        }
+        return;
+      };
     }
+    asyncStuff()
+
   }, [joinCode, me])
 
   useEffect(() => {
@@ -1208,48 +1223,25 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
       client.onopen = () => {
         console.log("WebSocket Client Connected");
 
-        if (joinCode) {
-          console.log("Getting code", joinCode)
-          Shortener.getShortenedGameInvite(joinCode).then((data) => {
-            if (!data) {
-              // alert("Invalid join code")
-              // window.close();
-              return
-            }
-            let teamID = 0;
-            switch (data.team) {
-              case "blue":
-                teamID = 0;
-                break;
-              case "orange":
-                teamID = 1;
-                break;
-              case "spectate":
-                teamID = 2;
-                break;
-              case "any":
-                teamID = 3;
-                break;
-            }
+        if (joinOnConnect) {
+          let teamID = 0;
+          switch (joinOnConnect.team) {
+            case "blue":
+              teamID = 0;
+              break;
+            case "orange":
+              teamID = 1;
+              break;
+            case "spectate":
+              teamID = 2;
+              break;
+            case "any":
+              teamID = 3;
+              break;
+          }
 
-            JoinServer(client, data.session_id, teamID);
-          });
-
-
-
-          // Shortener.getShortenedData<{
-          //   sessionID: string,
-          //   teamID: number
-          // }>(joinCode).then((data) => {
-          //   if (!data) {
-          //     alert("Invalid join code")
-          //     window.close();
-          //     return
-          //   }
-          //   JoinServer(client, data.sessionID, data.teamID);
-          //   //Close the page
-          //   window.close();
-          // });
+          JoinServer(client, joinOnConnect.session_id, teamID);
+          window.close()
         }
         // if (joinSession !== null) {
         //   if (client) {
@@ -1550,16 +1542,28 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
 
   if (selectedQueue) currentMenuState = "Queue"
 
+  if (joinOnConnect) {
+    return (
+      <div className="list" style={{ margin: "20px" }}>
+        <div className="padded list">Launching Game... Please wait...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="list" style={{ margin: "20px" }}>
       <CurrentGameState currentGameState={currentGameState} gameID={gameID} />
       <div className="padded list">
-        <div className="horizontal-fill">
+        {selectedQueue ? <div className="horizontal-fill">
+          <RadioSwitch label="Queue" current={currentMenuState} setCurrent={setCurrentMenuState} buttonClassName="border-thick" />
+          <RadioSwitch label="Join (Leave your current queue)" current={currentMenuState} setCurrent={() => { }} buttonClassName="border-thick" />
+          <RadioSwitch label="Host (Leave your current queue)" current={currentMenuState} setCurrent={() => { }} buttonClassName="border-thick" />
+        </div> : <div className="horizontal-fill">
           <RadioSwitch label="Queue" current={currentMenuState} setCurrent={setCurrentMenuState} buttonClassName="border-thick" />
           <RadioSwitch label="Join" current={currentMenuState} setCurrent={setCurrentMenuState} buttonClassName="border-thick" />
           <RadioSwitch label="Host" current={currentMenuState} setCurrent={setCurrentMenuState} buttonClassName="border-thick" />
-        </div>
+        </div>}
+
         {
           currentMenuState === "Queue" ? (
             <>
