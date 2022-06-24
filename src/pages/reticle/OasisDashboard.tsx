@@ -1464,7 +1464,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
     try {
       const data = JSON.parse(message.data);
       if (data.version) {
-        if (data.version !== "0.4.3") {
+        if (data.version !== "0.5.0") {
           alert("Reticle is out of date. Please update to the latest version.");
           // @ts-ignore
           window.history.push("/");
