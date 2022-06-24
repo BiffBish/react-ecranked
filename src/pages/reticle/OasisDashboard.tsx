@@ -569,7 +569,7 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
                 team: "spectate"
               })
 
-              navigator.clipboard.writeText("<reticle://join/" + code + ">");
+              navigator.clipboard.writeText("<reticle://j/" + code + ">");
             }}
             onMouseEnter={() => {
               setGameIDText("Click to copy!");
@@ -829,10 +829,25 @@ const LinkButton = ({ queue, linkCode, team }: {
   const [hover, setHover] = useState<boolean>(false);
   if (!queue.isAdmin) return null;
 
+  let subLink = "";
+  switch (team) {
+    case "Orange":
+      subLink = "q";
+      break;
+    case "Blue":
+      subLink = "q";
+      break;
+    case "Spectator":
+      subLink = "q";
+      break;
+    case "Join":
+      subLink = "q";
+      break;
+  }
   if (linkCode) {
     return (
       <div className="border centered button" onClick={async () => {
-        navigator.clipboard.writeText("<reticle://join/" + linkCode + ">");
+        navigator.clipboard.writeText("<reticle://" + subLink + "/" + linkCode + ">");
       }} onMouseEnter={
         () => {
           setHover(true);
@@ -843,7 +858,7 @@ const LinkButton = ({ queue, linkCode, team }: {
         }
 
       }>
-        <p>{hover ? "<reticle://join/" + linkCode + ">" : "Click to copy join-link"}</p>
+        <p>{hover ? "<reticle://" + subLink + "/" + linkCode + ">" : "Click to copy join-link"}</p>
       </div >
     );
   }
