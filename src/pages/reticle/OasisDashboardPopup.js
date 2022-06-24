@@ -40,7 +40,7 @@ export const OasisDashboardPopup = ({ url }) => {
             );
           },
         };
-        let popup = window.open(url, "", "popup");
+        let popup = window.open(url, "", "popup,width=1000,height=1000");
         popupBlockerChecker.check(popup);
       });
       setIsEnabled(hasPopupsEnabled);
