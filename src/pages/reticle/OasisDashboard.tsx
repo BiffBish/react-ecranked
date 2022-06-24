@@ -573,7 +573,7 @@ const CurrentGameState = ({ currentGameState = 0, gameID = null }: CurrentGameSt
                 game_rules: "",
                 map_name: "null",
                 region: "null",
-                team: "spectate"
+                team: "any"
               })
 
               navigator.clipboard.writeText("<reticle://j/" + code + ">");
