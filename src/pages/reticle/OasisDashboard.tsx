@@ -1202,13 +1202,12 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
             inviteTeam = "spectate"
           }
           queue.joinWithCode(shortenedData.code, inviteTeam)
-
-        } else {
-          alert("Invalid invite code")
-          window.close()
         }
-        return;
-      };
+      }
+      else {
+        alert("Invalid invite code")
+        window.close()
+      }
     }
     asyncStuff()
 
