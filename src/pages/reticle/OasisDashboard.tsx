@@ -607,8 +607,9 @@ interface ClientActionsProps {
   reticlePreferences: reticlePreferencesInterface;
   clientConnected: boolean;
   currentGameState: number
+  setGameID: (gameID: string | null) => void;
 }
-const ClientActions = ({ client, reticlePreferences, clientConnected, currentGameState }: ClientActionsProps) => {
+const ClientActions = ({ client, reticlePreferences, clientConnected, currentGameState, setGameID }: ClientActionsProps) => {
   if (!clientConnected) {
     return <div className="padded border button">
       Connecting to reticle instance...
@@ -619,6 +620,8 @@ const ClientActions = ({ client, reticlePreferences, clientConnected, currentGam
       <div
         className="padded border button"
         onClick={() => {
+          setGameID(null)
+
           client?.send(
             JSON.stringify({
               command: currentGameState === 0
@@ -1445,21 +1448,24 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
             command: "kill-game",
           })
         );
-        setTimeout(() => {
-          setGameData((currentGameData: { client_name: any; teams: { players: any[]; }[]; }) => {
-            var client_name = currentGameData.client_name;
-            var teamID = null;
-            currentGameData?.teams?.forEach((team: { players: any[]; }, index: any) => {
-              team?.players?.forEach((player: { name: any; }) => {
-                if (player.name === client_name) {
-                  teamID = index;
-                }
+        if (reticlePreferences.autojoin) {
+          setTimeout(() => {
+            setGameData((currentGameData: { client_name: any; teams: { players: any[]; }[]; }) => {
+              var client_name = currentGameData.client_name;
+              var teamID = null;
+              currentGameData?.teams?.forEach((team: { players: any[]; }, index: any) => {
+                team?.players?.forEach((player: { name: any; }) => {
+                  if (player.name === client_name) {
+                    teamID = index;
+                  }
+                });
               });
-            });
-            JoinServer(client, currentGameID, teamID ?? 3);
-            console.log("Game crash set id to null");
-          }); //Find the teamID of the player
-        }, 1500);
+              JoinServer(client, currentGameID, teamID ?? 3);
+              console.log("Game crash set id to null");
+            }); //Find the teamID of the player
+          }, 500);
+        }
+
       }
       return null;
     });
@@ -1612,7 +1618,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
         </div>
       </div>
       <div className="horizontal-fill no-gap">
-        <ClientActions client={client} reticlePreferences={reticlePreferences} clientConnected={clientConnected} currentGameState={currentGameState} />
+        <ClientActions client={client} reticlePreferences={reticlePreferences} clientConnected={clientConnected} currentGameState={currentGameState} setGameID={setGameID} />
       </div>
     </div>
   );
