@@ -311,7 +311,7 @@ function Routes() {
         />
         <Route
           exact
-          path={`/reticle/join/:id`}
+          path={`/reticle/:subCode/:id`}
           render={(props) => {
             console.log("[23] Open");
             return <OasisDashboard joinCode={props.match.params.id} />;
