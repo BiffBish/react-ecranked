@@ -11,6 +11,13 @@ const UserIcon = styled.img`
   
 `;
 // import api from "../../api";
+
+// enum GameTeam {
+//   Blue = 0,
+//   Orange = 1,
+
+// }
+
 function JoinServer(client: W3CWebSocket | null, sessionID: string, teamID: number) {
   client?.send(
     JSON.stringify({
@@ -1210,6 +1217,9 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
               case "spectate":
                 teamID = 2;
                 break;
+              case "any":
+                teamID = 3;
+                break;
             }
 
             JoinServer(client, data.session_id, teamID);
@@ -1439,7 +1449,7 @@ export default function OasisDashboard({ joinCode }: OasisDashboardProps) {
                 }
               });
             });
-            JoinServer(client, currentGameID, teamID ?? 2);
+            JoinServer(client, currentGameID, teamID ?? 3);
             console.log("Game crash set id to null");
           }); //Find the teamID of the player
         }, 1500);
