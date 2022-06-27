@@ -1020,40 +1020,49 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
         {selectedQueue.can_delete ? <div className="button" onClick={async () => { await selectedQueue.delete() }}>Delete Queue</div> : null}
         <LinkButton linkCode={selectedQueue.any_link} queue={selectedQueue} team="Join" />
       </div>
-      <div className="horizontal-fill">
-        <div className="list">
-          <h3 className="rounded padded border-thick horizontal-fill"><h3>Blue Team</h3> <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Blue" /></h3>
+      {selectedQueue.bellum_managed ?
+        <div className="horizontal-fill">
+          <div className="list">
+            <h3 className="rounded padded border-thick horizontal-fill"><h3>Queue</h3> <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Blue" /></h3>
 
-          {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(65, 160, 228)" }} />)}
-          {selectedQueue.can_join_blue ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("blue") }}>+ Join team</div> : null}
-        </div>
-        <div className="list">
-          <h3 className="rounded padded border-thick horizontal-fill"><h3>Spectator Team</h3> <LinkButton linkCode={selectedQueue.spectate_link} queue={selectedQueue} team="Spectator" /></h3>
+            {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(65, 160, 228)" }} />)}
+            {selectedQueue.can_join_blue ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("blue") }}>+ Join team</div> : null}
+          </div>
+        </div> :
+        <div className="horizontal-fill">
+          <div className="list">
+            <h3 className="rounded padded border-thick horizontal-fill"><h3>Blue Team</h3> <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Blue" /></h3>
 
-          {selectedQueue.spectate_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(255, 255, 255)" }} />)}
-          {selectedQueue.can_join_spectate ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("spectate") }}>+ Join team</div> : null}
+            {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(65, 160, 228)" }} />)}
+            {selectedQueue.can_join_blue ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("blue") }}>+ Join team</div> : null}
+          </div>
+          <div className="list">
+            <h3 className="rounded padded border-thick horizontal-fill"><h3>Spectator Team</h3> <LinkButton linkCode={selectedQueue.spectate_link} queue={selectedQueue} team="Spectator" /></h3>
 
-        </div>
-        <div className="list">
-          <h3 className="rounded padded border-thick horizontal-fill"><h3>Orange Team</h3> <LinkButton linkCode={selectedQueue.orange_link} queue={selectedQueue} team="Orange" /></h3>
+            {selectedQueue.spectate_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(255, 255, 255)" }} />)}
+            {selectedQueue.can_join_spectate ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("spectate") }}>+ Join team</div> : null}
 
-          {selectedQueue.orange_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(230, 167, 50)" }} />)}
-          {selectedQueue.can_join_orange ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("orange") }}>+ Join team</div> : null}
+          </div>
+          <div className="list">
+            <h3 className="rounded padded border-thick horizontal-fill"><h3>Orange Team</h3> <LinkButton linkCode={selectedQueue.orange_link} queue={selectedQueue} team="Orange" /></h3>
 
-        </div>
-      </div >
+            {selectedQueue.orange_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(230, 167, 50)" }} />)}
+            {selectedQueue.can_join_orange ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("orange") }}>+ Join team</div> : null}
+
+          </div>
+        </div >
+      }
       {/* A giant Ready up button */}
       <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
-      {canLaunch ? <div className="padded rounded button" onClick={() => { selectedQueue.launch() }}>Launch Game</div> :
+      {
+        canLaunch ? <div className="padded rounded button" onClick={() => { selectedQueue.launch() }}>Launch Game</div> :
 
-        <div className="padded rounded disabled-button">{"Launch Game (" + cantLaunchReason + ")"}</div>
+          <div className="padded rounded disabled-button">{"Launch Game (" + cantLaunchReason + ")"}</div>
 
       }
     </div >
   )
 }
-
-
 
 
 export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboardProps) {
