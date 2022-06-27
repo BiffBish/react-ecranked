@@ -1024,8 +1024,13 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
         <div className="horizontal-fill">
           <div className="list">
             <h3 className="rounded padded border-thick horizontal-fill"><h3>Queue</h3> <LinkButton linkCode={selectedQueue.blue_link} queue={selectedQueue} team="Blue" /></h3>
-
-            {selectedQueue.blue_users.map((player) => <QueueUser user={player.resolved} queue={selectedQueue} key={player.oculus_id} ready={processedReadyUsers[player.oculus_id]} style={{ borderColor: "rgb(65, 160, 228)" }} />)}
+            {selectedQueue.bellum_users.map((player) =>
+              <div className="horizontal-fill">
+                <div className="padded rounded border-thick horizontal-fill">
+                  <h3>{player.name}</h3>
+                </div>
+              </div>
+            )}
             {selectedQueue.can_join_blue ? <div className="padded rounded button" onClick={async () => { await selectedQueue.join("blue") }}>+ Join team</div> : null}
           </div>
         </div> :
