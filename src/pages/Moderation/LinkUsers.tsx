@@ -198,6 +198,7 @@ export default function LinkUsers() {
           <button onClick={async () => {
             let user = await User.fetch(enteredName);
             await user.setDiscordID(enteredID);
+            await user.setDiscordName(enteredName);
           }}>Link</button>
 
         </AllAvatarContainer>
