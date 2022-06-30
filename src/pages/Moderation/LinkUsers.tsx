@@ -196,8 +196,8 @@ export default function LinkUsers() {
             }} value={enteredID} />
           </AutoCompleteBox>
           <button onClick={async () => {
-            let user = await User.fetch(enteredID);
-            await user.setDiscordID(enteredName);
+            let user = await User.fetch(enteredName);
+            await user.setDiscordID(enteredID);
           }}>Link</button>
 
         </AllAvatarContainer>
