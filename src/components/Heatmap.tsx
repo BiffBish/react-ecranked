@@ -160,13 +160,16 @@ export const Heatmap = ({
 
   const changeSelectedHeatmap = (change: number) => {
     setImageLoaded(false);
-    var newSelectedHeatmap = sharedState.selectedHeatmap ?? 0 + change;
+
+    console.log("CHANGING HEATMAP");
+    var newSelectedHeatmap = (sharedState.selectedHeatmap ?? 0) + change;
     //Change selected heatmap by the change provided. If it goes out of bounds, set it to the last or first index
     if (newSelectedHeatmap < 0) {
       newSelectedHeatmap = Images.length - 1;
     } else if (newSelectedHeatmap >= Images.length) {
       newSelectedHeatmap = 0;
     }
+    console.log("CHANGING HEATMAP", { selectedHeatmap: newSelectedHeatmap });
 
     setSharedState({ selectedHeatmap: newSelectedHeatmap });
   }
