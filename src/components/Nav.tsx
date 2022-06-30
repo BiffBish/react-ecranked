@@ -170,11 +170,11 @@ export default function Nav() {
           />
           {/* <TopBarLink link="/TermsOfUse" text="Terms Of Use" />
           <TopBarLink link="/Changelog" text="Changelog" /> */}
-          {/* {globalUserState.moderator ? (
+          {me?.moderator ? (
             <TopBarLink link="/Moderator" text="Moderator" />
           ) : (
             ""
-          )} */}
+          )}
           <TopBarLink link="/contact" text="Contact me" />
           {/* <AuthorizeButton loggedIn={globalUserState.authorization_token} /> */}
           <AuthorizeButton />

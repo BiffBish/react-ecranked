@@ -26,6 +26,7 @@ export default function Moderator() {
     <div>
       <Button to={"Moderator/UnapprovedImages"}>Unapproved Images</Button>
       <Button to={"Moderator/UncontactedUsers"}>Uncontacted Users</Button>
+      <Button to={"Moderator/LinkUsers"}>Link Oculus And Discord</Button>
       <Button
         to={"Moderator"}
         onClick={() => {

@@ -32,6 +32,7 @@ import { useDispatch } from "react-redux";
 import { setHeight, setIconSrc, setText } from "./stores/banner";
 import { Banner } from "./components/Banner";
 import api from "./api";
+import LinkUsers from "./pages/Moderation/LinkUsers";
 
 const PageBody = styled.div`
   position: absolute;
@@ -57,7 +58,7 @@ function Routes() {
         const data = await response.json();
         if (data.maintenance) {
           if (localStorage.getItem("MODERATOR") !== "true") {
-            // alert("The server is down for maintenance. Please visit later");
+            alert("The server is down for maintenance. Please visit later");
             // window.location.reload(false);
           }
         }
@@ -274,6 +275,14 @@ function Routes() {
             setBannerHeight(100);
             setBannerText("Moderation");
             return <UncontactedUsersModeration />;
+          }}
+        />
+        <Route
+          path={`/Moderator/LinkUsers`}
+          render={() => {
+            setBannerHeight(100);
+            setBannerText("Moderation");
+            return <LinkUsers />;
           }}
         />
         <Route
