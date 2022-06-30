@@ -187,6 +187,7 @@ export default function LinkUsers() {
             Box={AutoCompleteBox}
             OptionDiv={autoCompleteOptionDiv}
             Input={AutoCompleteInput}
+
             maxAllowed={12}
           />
           Discord ID:
@@ -199,6 +200,9 @@ export default function LinkUsers() {
             let user = await User.fetch(enteredName);
             await user.setDiscordID(enteredID);
             await user.setDiscordName(enteredName);
+
+            setEnteredName("");
+            setEnteredID("");
           }}>Link</button>
 
         </AllAvatarContainer>
