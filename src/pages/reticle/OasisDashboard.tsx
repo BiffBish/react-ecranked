@@ -1177,13 +1177,31 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
     async function asyncStuff() {
       if (!joinCode) return
 
+      //if the join code follows a UUID format uppercase, assume it is a session ID
+      if (joinCode.match(/[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}/i)) {
+        if (client?.readyState === WebSocket.OPEN) {
+          console.log("Sending join request", joinOnConnect)
+          JoinServer(client, joinCode, 3);
+          window.close()
+        }
+        setJoinOnConnect({
+          team: "any",
+          session_id: joinCode,
+        })
+      }
+
+
       const { data: shortenedData, category } = await Shortener.getShortenedInvite(joinCode)
+
+
+
+
       console.log("Loading Quick Link", shortenedData, category)
       if (category === "session") {
 
         if (client?.readyState === WebSocket.OPEN) {
           let teamID = 0;
-          switch (shortenedData.session_id) {
+          switch (shortenedData.team) {
             case "blue":
               teamID = 0;
               break;
