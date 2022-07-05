@@ -191,6 +191,16 @@ export const Heatmap = ({
   if (userData?.heatmap_completed === true) {
     return (
       <HeatmapStyle>
+        <a href={"https://ecranked.ddns.net/public/" +
+          userData.oculus_id +
+          "/heatmap_" +
+          Images[sharedState.selectedHeatmap ?? 2].name +
+          "_recent.png"}>
+          <HeatmapButtonStyle onClick={onHeatmapRequested}>
+            View Raw!
+          </HeatmapButtonStyle>
+        </a>
+
         <div
           style={{
             display: "flex",
