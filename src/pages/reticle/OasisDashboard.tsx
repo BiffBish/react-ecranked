@@ -1180,12 +1180,33 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
       const { data: shortenedData, category } = await Shortener.getShortenedInvite(joinCode)
       console.log("Loading Quick Link", shortenedData, category)
       if (category === "session") {
+
+        if (client?.readyState === WebSocket.OPEN) {
+          let teamID = 0;
+          switch (shortenedData.session_id) {
+            case "blue":
+              teamID = 0;
+              break;
+            case "orange":
+              teamID = 1;
+              break;
+            case "spectate":
+              teamID = 2;
+              break;
+            case "any":
+              teamID = 3;
+              break;
+          }
+          console.log("Sending join request", joinOnConnect)
+          JoinServer(client, shortenedData.session_id, teamID);
+          window.close()
+        }
         setJoinOnConnect({
           team: "any",
           session_id: shortenedData.session_id,
         })
       }
-      if (category === "queue") {
+      else if (category === "queue") {
         if (me) {
           const queue = await APIQueue.fetch(shortenedData.queue_id)
 
@@ -1288,7 +1309,7 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client, clientConnected, serverLive]);
+  }, [client, clientConnected, serverLive,]);
 
   useEffect(() => {
     if (!serverConnected) return
