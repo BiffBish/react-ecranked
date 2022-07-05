@@ -1178,7 +1178,7 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
       if (!joinCode) return
 
       const { data: shortenedData, category } = await Shortener.getShortenedInvite(joinCode)
-
+      console.log("Loading Quick Link", shortenedData, category)
       if (category === "session") {
         setJoinOnConnect({
           team: "any",
