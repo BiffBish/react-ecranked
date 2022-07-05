@@ -196,7 +196,7 @@ export const Heatmap = ({
           "/heatmap_" +
           Images[sharedState.selectedHeatmap ?? 2].name +
           "_recent.png"}>
-          <HeatmapButtonStyle onClick={onHeatmapRequested}>
+          <HeatmapButtonStyle>
             View Raw!
           </HeatmapButtonStyle>
         </a>
