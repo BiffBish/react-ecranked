@@ -1253,7 +1253,7 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
               teamID = 3;
               break;
           }
-
+          console.log("Sending join request", joinOnConnect)
           JoinServer(client, joinOnConnect.session_id, teamID);
           window.close()
         }
