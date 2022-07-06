@@ -1062,9 +1062,9 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
       {/* A giant Ready up button */}
       {
         isReady ?
-          <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
-          :
           <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(false) }}>Unready</div>
+          :
+          <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
 
       }
       {
