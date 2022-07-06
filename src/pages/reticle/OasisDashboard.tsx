@@ -906,6 +906,7 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
   const { me } = useMe();
   const [hostLaunching, setHostLaunching] = useState<boolean>(false);
 
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const [waitingForGameID, setWaitingForGameID] = useState<boolean>(false);
   useEffect(() => {
@@ -933,6 +934,7 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
     });
     setProcessedReadyUsers(newProcessedReadyUsers);
     console.log("Processed ready users", newProcessedReadyUsers)
+    setIsReady(newProcessedReadyUsers[me?.oculus_id ?? "0"] === true);
   }, [readyUsers])
 
   APIQueue.onJoinGameCallback = (sessionID) => {
@@ -1058,7 +1060,13 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
         </div >
       }
       {/* A giant Ready up button */}
-      <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
+      {
+        isReady ?
+          <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(true) }}>Ready up</div>
+          :
+          <div className="padded rounded button" onClick={async () => { await selectedQueue.setReady(false) }}>Unready</div>
+
+      }
       {
         canLaunch ? <div className="padded rounded button" onClick={() => { selectedQueue.launch() }}>Launch Game</div> :
 
