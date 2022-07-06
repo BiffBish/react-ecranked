@@ -1530,7 +1530,7 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
     try {
       const data = JSON.parse(message.data);
       if (data.version) {
-        if (data.version !== "0.5.0") {
+        if (data.version !== "0.5.1") {
           alert("Reticle is out of date. Please update to the latest version.");
           // @ts-ignore
           window.history.push("/");
