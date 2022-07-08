@@ -43,7 +43,7 @@ const RecentGamesStyle = styled.div`
   color: white;
   border: 1px solid rgb(70, 70, 70);
   border-radius: 10px;
-  width: 50%;
+  width: max(390px, 50%);
   flex: 300px 2;
 `;
 
@@ -58,7 +58,7 @@ const ContainerTitle = styled.h2`
 const AboutContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  flex: 300px 2;
+  flex: 100px 2;
   flex-direction: row;
   gap: 20px;
 `;
@@ -327,6 +327,26 @@ export default function Home() {
         .catch(() => {});
     }
   }, []);
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height,
+    };
+  }
+
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <>
@@ -356,91 +376,100 @@ export default function Home() {
         </div>
 
         <AboutContainer>
-          <AboutPage style={{ minWidth: "1000px" }}>
+          <AboutPage>
             <ContainerTitle>Graphs</ContainerTitle>
-            <div style={{ position: "relative", height: "200px" }}>
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  top: "0",
-                  left: "0",
-                }}
-              >
-                <Chart
-                  width={"100%"}
-                  height={"100%"}
-                  chartType="ColumnChart"
-                  loader={<div>Loading Chart</div>}
-                  data={[
-                    [
-                      "Date",
-                      "Combustion Games",
-                      { role: "style" },
-                      "Dyson Games",
-                      { role: "style" },
-                      "Fission Games",
-                      { role: "style" },
-                      "Surge Games",
-                      { role: "style" },
-                      { label: "Total", type: "number" },
-                      { role: "annotation" },
-                    ],
-                    ...replayTimestamps,
-                  ]}
-                  options={{
-                    ...chartOptions,
-                    title: "Quarterly game review!",
-                    isStacked: true,
-                    series: {
-                      4: {
-                        annotations: {
-                          stem: {
-                            color: "transparent",
-                            length: 0,
-                          },
-                          textStyle: {
-                            color: "#fff",
-                            fontSize: 10,
+            {windowDimensions.width > 1000 ? (
+              <>
+                <div style={{ position: "relative", height: "200px" }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      top: "0",
+                      left: "0",
+                    }}
+                  >
+                    <Chart
+                      width={"100%"}
+                      height={"100%"}
+                      chartType="ColumnChart"
+                      loader={<div>Loading Chart</div>}
+                      data={[
+                        [
+                          "Date",
+                          "Combustion Games",
+                          { role: "style" },
+                          "Dyson Games",
+                          { role: "style" },
+                          "Fission Games",
+                          { role: "style" },
+                          "Surge Games",
+                          { role: "style" },
+                          { label: "Total", type: "number" },
+                          { role: "annotation" },
+                        ],
+                        ...replayTimestamps,
+                      ]}
+                      options={{
+                        ...chartOptions,
+                        title: "Quarterly game review!",
+                        isStacked: true,
+                        series: {
+                          4: {
+                            annotations: {
+                              stem: {
+                                color: "transparent",
+                                length: 0,
+                              },
+                              textStyle: {
+                                color: "#fff",
+                                fontSize: 10,
+                              },
+                            },
+                            enableInteractivity: false,
+                            tooltip: "none",
+                            visibleInLegend: false,
                           },
                         },
-                        enableInteractivity: false,
-                        tooltip: "none",
-                        visibleInLegend: false,
-                      },
-                    },
-                  }}
-                  rootProps={{ "data-testid": "5" }}
-                />
-              </div>
-            </div>
-            {localStorage.getItem("MODERATOR") === "1" ? (
-              <div style={{ position: "relative", height: "200px" }}>
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    top: "0",
-                    left: "0",
-                  }}
-                >
-                  <Chart
-                    width={"100%"}
-                    height={"100%"}
-                    chartType="ColumnChart"
-                    loader={<div>Loading Chart</div>}
-                    data={[["Date", "Users", { role: "style" }], ...newUsers]}
-                    options={{
-                      ...chartOptions,
-                      title: "Joins per day! (moderator only)",
-                    }}
-                    // rootProps={{ "data-testid": "5" }}
-                  />
+                      }}
+                      rootProps={{ "data-testid": "5" }}
+                    />
+                  </div>
                 </div>
-              </div>
-            ) : null}
+                {localStorage.getItem("MODERATOR") === "1" ? (
+                  <div style={{ position: "relative", height: "200px" }}>
+                    <div
+                      style={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        top: "0",
+                        left: "0",
+                      }}
+                    >
+                      <Chart
+                        width={"100%"}
+                        height={"100%"}
+                        chartType="ColumnChart"
+                        loader={<div>Loading Chart</div>}
+                        data={[
+                          ["Date", "Users", { role: "style" }],
+                          ...newUsers,
+                        ]}
+                        options={{
+                          ...chartOptions,
+                          title: "Joins per day! (moderator only)",
+                        }}
+                        // rootProps={{ "data-testid": "5" }}
+                      />
+                    </div>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <div>Graphs are only available on desktop.</div>
+            )}
             {/* <div>
             <Chart
               width={"100%"}
