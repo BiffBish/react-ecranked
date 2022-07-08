@@ -1006,8 +1006,6 @@ const QueuePage = ({ queue: selectedQueue, gameID, client }: QueueProps) => {
 
 
 
-
-
   return (
     <div className="padded rounded list border-thick">
       <h2>Queue</h2>
@@ -1496,28 +1494,29 @@ export default function OasisDashboard({ joinCode, subJoinPath }: OasisDashboard
     setGameID((currentGameID) => {
       console.log("Connection Error", gameID);
       if (currentGameID !== null) {
-        client?.send(
-          JSON.stringify({
-            command: "kill-game",
-          })
-        );
-        if (reticlePreferences.autojoin) {
-          setTimeout(() => {
-            setGameData((currentGameData: { client_name: any; teams: { players: any[]; }[]; }) => {
-              var client_name = currentGameData.client_name;
-              var teamID = null;
-              currentGameData?.teams?.forEach((team: { players: any[]; }, index: any) => {
-                team?.players?.forEach((player: { name: any; }) => {
-                  if (player.name === client_name) {
-                    teamID = index;
-                  }
-                });
-              });
-              JoinServer(client, currentGameID, teamID ?? 3);
-              console.log("Game crash set id to null");
-            }); //Find the teamID of the player
-          }, 500);
-        }
+
+        // if (reticlePreferences.autojoin) {
+        //   client?.send(
+        //     JSON.stringify({
+        //       command: "kill-game",
+        //     })
+        //   );
+        //   setTimeout(() => {
+        //     setGameData((currentGameData: { client_name: any; teams: { players: any[]; }[]; }) => {
+        //       var client_name = currentGameData.client_name;
+        //       var teamID = null;
+        //       currentGameData?.teams?.forEach((team: { players: any[]; }, index: any) => {
+        //         team?.players?.forEach((player: { name: any; }) => {
+        //           if (player.name === client_name) {
+        //             teamID = index;
+        //           }
+        //         });
+        //       });
+        //       JoinServer(client, currentGameID, teamID ?? 3);
+        //       console.log("Game crash set id to null");
+        //     }); //Find the teamID of the player
+        //   }, 500);
+        // }
 
       }
       return null;
