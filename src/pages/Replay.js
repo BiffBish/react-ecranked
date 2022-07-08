@@ -12,6 +12,7 @@ const ReplayBody = styled.div`
     transition-duration: 1s;
     opacity: 100%
     transition-property: height margin opacity;
+    min-height: 100vh;
   `;
 
 export default function Replay({ session_id }) {
